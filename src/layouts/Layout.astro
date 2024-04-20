@@ -49,7 +49,8 @@ import "@fontsource/geist-mono/900.css";
 		margin: 0;
 		padding: 0;
 	}
-	p {
+	p,
+	span {
 		text-align: start;
 		font-size: 0.95rem;
 		line-height: 1.5;
@@ -58,6 +59,7 @@ import "@fontsource/geist-mono/900.css";
 		text-wrap: pretty;
 		padding-inline: 0.8rem;
 	}
+	h1,
 	h2,
 	h3,
 	h4 {
@@ -69,13 +71,12 @@ import "@fontsource/geist-mono/900.css";
 	}
 	h1 {
 		color: #00bc44;
-		padding-inline: 0.5rem;
-		font-size: 2.5rem;
-		font-style: normal;
-		font-weight: 700;
-		text-align: center;
+		font-size: 2rem;
+		font-style: bold;
+		font-weight: 900;
+		/* text-align: center; */
 		line-height: 0.9;
-		margin-block: 1rem;
+		margin-top: 1rem;
 	}
 	h2 {
 		color: #887850;

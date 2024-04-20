@@ -10,11 +10,37 @@ const { city, region } = location;
 		<div class="info">
 			<h1>{name}</h1>
 			<h2>{label}</h2>
-			<p>{location}</p>
+			<span>
+				<!-- -icon - -->
+				{city}, {region}
+			</span>
+			<footer>
+				{
+					email && (
+						<a
+							href={"mailto:${email}"}
+							title={
+								"Send an email to ${name} at ${email}"
+							}
+							target="_blank"
+							rel="noopener noreferrer"
+						/>
+					)
+				}
+			</footer>
 		</div>
+		<figure>
+			<img src={image} alt={name} />
+		</figure>
 	</div>
 </section>
 <style>
 	.container {
+		display: flex;
+		flex-direction: row;
+	}
+	.info {
+		display: flex;
+		flex-direction: column;
 	}
 </style>

@@ -1,5 +1,5 @@
 <div align="center">
-<img src="logo.png" height="90px" width="auto" /> 
+<img src="logo.webp" height="90px" width="auto" /> 
 <h2>
     <em>Reprogrammable JSON Resume</em> built by Cello Rondon (<a href="https://github.com/laztaxon">laztaxon</a>)</h2>
 <p>
