@@ -1,1 +1,20 @@
-<h1>Cello.Dev</h1>
+---
+import { basics } from "@cv";
+
+const { name, label, image, location, profiles, email } = basics;
+const { city, region } = location;
+---
+
+<section>
+	<div class="container">
+		<div class="info">
+			<h1>{name}</h1>
+			<h2>{label}</h2>
+			<p>{location}</p>
+		</div>
+	</div>
+</section>
+<style>
+	.container {
+	}
+</style>
