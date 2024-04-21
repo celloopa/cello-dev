@@ -24,12 +24,12 @@
   },
   "work": [
     {
-      "name": "Company",
-      "position": "President",
-      "url": "https://company.com",
-      "startDate": "2013-01-01",
-      "endDate": "2014-01-01",
-      "summary": "Description…",
+      "name": "Asheville Dispensary",
+      "position": "Design Lead",
+      "url": "https://www.avldispensary.com",
+      "startDate": "2022-01",
+      "endDate": "Present",
+      "summary": "Spearheaded the UX design and development of user touch-points including website landing pages and educational funnels. Focused on creating responsive, fast, useful, and intuitive interfaces. Designed and proofed product packaging and print marketing materials, maintaining brand consistency across various media and contributing to enhanced sales performance.rained and deployed an internal AI assistant using Retrieval-Augmented-Generation (RAG) on internal company-data for content writing, brand consistency, and SEO improvement, showcasing innovative use of AI in enhancing content strategy and digital marketing.Optimized the e-commerce platform, employing strategic design, SEO, and rigorous website testing. These combined efforts led to a substantial increase in online sales and customer engagement, significantly growing the ecommerce site's gross sales from approximately $1,000 to over $30,000 per month.",
       "highlights": [
         "Started the company"
       ]
