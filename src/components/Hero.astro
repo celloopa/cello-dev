@@ -1,20 +1,31 @@
 ---
 import { basics } from "@cv";
+import Mail from "@/icons/Mail.astro";
+import Phone from "@/icons/Phone.astro";
+import GitHub from "@/icons/GitHub.astro";
+import Linkedin from "@/icons/Linkedin.astro";
+import X from "@/icons/X.astro";
+import Worldmap from "@/icons/Worldmap.astro";
 
 const { name, label, image, location, profiles, email } = basics;
 const { city, region } = location;
+const SOCIAL_ICONS: Record<string, any> = {
+	GitHub,
+	Linkedin,
+	X,
+};
 ---
 
 <section>
 	<div class="container">
 		<div class="info">
-			<h1>{name}</h1>
-			<h2>{label}</h2>
-			<span>
-				<!-- -icon - -->
-				{city}, {region}
-			</span>
 			<footer>
+				<h1>{name}</h1>
+				<h2>{label}</h2>
+				<span>
+					<!-- -icon - -->
+					{city}, {region}
+				</span>
 				{
 					email && (
 						<a
@@ -25,6 +36,35 @@ const { city, region } = location;
 							target="_blank"
 							rel="noopener noreferrer"
 						/>
+					)
+				},
+				{
+					profiles.map(
+						({
+							network,
+							url,
+							username,
+						}) => {
+							const Icon =
+								SOCIAL_ICONS[
+									network
+								];
+
+							return (
+								<a
+									href={
+										url
+									}
+									title={
+										"Visit ${username}'s profile in ${network}"
+									}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									<Icon />
+								</a>
+							);
+						},
 					)
 				}
 			</footer>
