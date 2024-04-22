@@ -2,7 +2,7 @@
   "basics": {
     "name": "Marcelo (Cello) Rondon",
     "label": "Designer & Developer",
-    "image": "https://drive.google.com/uc?export=view&id=12zRoaPT0KT6fyFCm2YBiFjdYPluWRo_u",
+    "image": "https://avatars.githubusercontent.com/u/72777489?s=400&u=1258e88539c515802c5c603559cd7b63c032814c&v=4",
     "email": "cello@cello.design",
     "phone": "(305) 496-0039",
     "url": "https://www.cello.design",
@@ -16,9 +16,19 @@
     },
     "profiles": [
       {
-        "network": "Twitter",
-        "username": "john",
-        "url": "https://twitter.com/john"
+        "network": "GitHub",
+        "username": "laztaxon",
+        "url": "https://github.com/laztaxon"
+      },
+      {
+        "network": "LinkedIn",
+        "username": "marcelorondon",
+        "url": "https://linkedin.com/in/marcelorondon"
+      },
+      {
+        "network": "X",
+        "username": "cello_dev",
+        "url": "https://x.com/cello_dev"
       }
     ]
   },
@@ -50,13 +60,14 @@
   ],
   "education": [
     {
-      "institution": "University",
-      "url": "https://institution.com/",
-      "area": "Software Development",
+      "institution": "University of Florida",
+      "url": "https://ufl.edu/",
+      "area": "Visual Journalism & Communications",
+      "minorType": "Minor: Digital Arts & Sciences",
       "studyType": "Bachelor",
-      "startDate": "2011-01-01",
-      "endDate": "2013-01-01",
-      "score": "4.0",
+      "startDate": "2016-08-22",
+      "endDate": "2019-12-16",
+      "score": "3.7",
       "courses": [
         "DB1101 - Basic SQL"
       ]

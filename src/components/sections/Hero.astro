@@ -3,18 +3,25 @@ import { basics } from "@cv";
 import Section from "@/components/Section.astro";
 import Mail from "@/icons/Mail.astro";
 import Phone from "@/icons/Phone.astro";
-import GitHub from "@/icons/GitHub.astro";
-import Linkedin from "@/icons/Linkedin.astro";
 import X from "@/icons/X.astro";
-import Worldmap from "@/icons/Worldmap.astro";
+import LinkedIn from "@/icons/LinkedIn.astro";
+import GitHub from "@/icons/GitHub.astro";
+import WorldMap from "@/icons/WorldMap.astro";
+import type { SocialIcon } from "@/types";
 
-const { name, label, image, location, profiles, email } = basics;
+const { name, label, image, location, profiles, phone, email } = basics;
 const { city, region } = location;
-const SOCIAL_ICONS: Record<string, any> = {
+
+const SOCIAL_ICONS: SocialIcon = {
 	GitHub,
-	Linkedin,
+	LinkedIn,
 	X,
 };
+
+const linkedInfo = profiles.find(({ network }) => network === "LinkedIn");
+const linkedUrl = linkedInfo?.url;
+
+const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 ---
 
 <Section>
@@ -23,23 +30,37 @@ const SOCIAL_ICONS: Record<string, any> = {
 			<h1>{name}</h1>
 			<h2>{label}</h2>
 			<span>
-				<Worldmap />
+				<WorldMap />
 				{city}, {region}
 			</span>
-			<footer>
+			<footer class="print">
+				{printInfo}
+			</footer>
+			<footer class="no-print">
 				{
 					email && (
 						<a
-							href={"mailto:${email}"}
-							title={
-								"Send an email to ${name} at ${email}"
-							}
+							href={`mailto:${email}`}
+							title={`Send an email to ${name} at ${email}`}
 							target="_blank"
-							rel="noopener
-							noreferrer"
-						/>
+							rel="noopener noreferrer"
+						>
+							<Mail />
+						</a>
 					)
-				},
+				}
+				{
+					phone && (
+						<a
+							href={`tel:${phone}`}
+							title={`Call ${name} at ${phone}`}
+							target="_blank"
+							rel="noopener noreferrer"
+						>
+							<Phone />
+						</a>
+					)
+				}
 				{
 					profiles.map(
 						({
@@ -57,9 +78,7 @@ const SOCIAL_ICONS: Record<string, any> = {
 									href={
 										url
 									}
-									title={
-										"Visit ${username}'s profile in ${network}"
-									}
+									title={`Visit ${name}'s profile in ${network} at ${username}`}
 									target="_blank"
 									rel="noopener noreferrer"
 								>
@@ -76,19 +95,101 @@ const SOCIAL_ICONS: Record<string, any> = {
 		</figure>
 	</div>
 </Section>
+
 <style>
 	.container {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
+		gap: 1rem;
 	}
+
 	.info {
 		display: flex;
 		flex-direction: column;
+		/* gap: 0.5rem; */
+		padding-right: 32px;
 	}
-	figure {
+
+	h1 {
+		font-size: 2rem;
+	}
+
+	h2 {
+		color: #887850;
+		text-wrap: balance;
+	}
+
+	img {
+		aspect-ratio: 1 / 1;
+		object-fit: cover;
+		width: 184px;
+		border-radius: 12px;
+		margin-top: 1rem;
+		justify-content: center;
+	}
+
+	span {
+		color: #e0e0e0;
 		display: flex;
-		margin-right: 4rem;
+		align-items: center;
+		gap: 0.25rem;
+		font-size: 0.9rem;
+		letter-spacing: -0.05rem;
+	}
+
+	footer {
+		color: #887850;
+		padding-inline: 0.8rem;
+		font-size: 0.75rem;
+		display: flex;
+		gap: 0.5rem;
+		margin-top: 0.25rem;
+	}
+
+	footer a {
+		color: #e0e0e0;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid #eee;
+		padding: 2px;
+		height: 32px;
+		width: 32px;
+		border-radius: 4px;
+		transition: all 0.3s ease;
+	}
+
+	footer a:hover {
+		background: #00bc44;
+		border: 1px solid #ddd;
+	}
+
+	@media (width <= 800px) {
+		.container {
+			flex-direction: column-reverse;
+		}
+
+		.info {
+			justify-content: center;
+			align-items: center;
+			padding-right: 0;
+			text-align: center;
+		}
+
+		figure {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		h2 {
+			text-wrap: balance;
+		}
+
+		figure {
+			margin: 0 auto;
+		}
 	}
 </style>

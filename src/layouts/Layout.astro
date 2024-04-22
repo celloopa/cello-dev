@@ -1,9 +1,5 @@
 ---
-interface Props {
-	title: string;
-}
-
-const { title } = Astro.props;
+import { basics } from "@cv";
 import "@fontsource/geist-mono/100.css";
 import "@fontsource/geist-mono/200.css";
 import "@fontsource/geist-mono/300.css";
@@ -13,6 +9,12 @@ import "@fontsource/geist-mono/600.css";
 import "@fontsource/geist-mono/700.css";
 import "@fontsource/geist-mono/800.css";
 import "@fontsource/geist-mono/900.css";
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+const { image, summary, url } = basics;
 ---
 
 <!doctype html>
@@ -22,7 +24,22 @@ import "@fontsource/geist-mono/900.css";
 		<meta name="description" content="Cello's Website" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
+		<link rel="preload" as="image" href={image} />
+		<meta property="og:url" content={url} />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={summary} />
+		<meta property="og:image" content="" />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta
+			property="twitter:domain"
+			content={url.split("//")[1] ?? ""}
+		/>
+		<meta property="twitter:url" content={url} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={summary} />
+		<meta name="twitter:image" content="" />
 		<title>{title}</title>
 	</head>
 	<body>
@@ -40,6 +57,7 @@ import "@fontsource/geist-mono/900.css";
 	body,
 	figure {
 		margin: 0;
+		padding: 0;
 	}
 	a {
 		text-decoration: none;
@@ -59,13 +77,17 @@ import "@fontsource/geist-mono/900.css";
 		text-wrap: pretty;
 		padding-inline: 0.8rem;
 	}
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
 	h1,
 	h2,
 	h3,
 	h4 {
 		padding-inline: 0.8rem;
-		line-height: 1.75;
-		padding-inline: 0.8rem;
+		line-height: 1.5;
 		margin-bottom: -0.5rem;
 		margin-inline: 0;
 	}
@@ -84,5 +106,30 @@ import "@fontsource/geist-mono/900.css";
 		font-style: normal;
 		font-weight: 600;
 		text-align: start;
+	}
+	h4 {
+		font-size: 1.05rem;
+		font-style: normal;
+		font-weight: 400;
+	}
+	.print {
+		display: none !important;
+	}
+	@media print {
+		.no-print {
+			display: none !important;
+		}
+
+		.print {
+			display: block !important;
+		}
+
+		astro-dev-toolbar {
+			display: none !important;
+		}
+
+		article {
+			break-inside: avoid;
+		}
 	}
 </style>
