@@ -100,12 +100,138 @@
   ],
   "skills": [
     {
-      "name": "Web Development",
+      "name": "HTML",
       "level": "Master",
       "keywords": [
-        "HTML",
-        "CSS",
-        "JavaScript"
+        "Web development",
+        "Frontend"
+      ]
+    },
+    {
+      "name": "CSS",
+      "level": "Master",
+      "keywords": [
+        "Web development",
+        "Frontend",
+        "Diseño Responsive"
+      ]
+    },
+    {
+      "name": "JavaScript",
+      "level": "Master",
+      "keywords": [
+        "Web development",
+        "Frontend",
+        "Backend",
+        "Fullstack"
+      ]
+    },
+    {
+      "name": "Tailwind",
+      "level": "Advanced",
+      "keywords": [
+        "Web development",
+        "Frontend",
+        "CSS Framework",
+        "Diseño Responsive"
+      ]
+    },
+    {
+      "name": "TypeScript",
+      "level": "Advanced",
+      "keywords": [
+        "Web development",
+        "Frontend",
+        "Backend",
+        "JavaScript Superset"
+      ]
+    },
+    {
+      "name": "Node",
+      "level": "Advanced",
+      "keywords": [
+        "Web development",
+        "Backend",
+        "JavaScript",
+        "Servidor"
+      ]
+    },
+    {
+      "name": "MySQL",
+      "level": "Advanced",
+      "keywords": [
+        "Bases de Datos",
+        "SQL",
+        "Database",
+        "Backend"
+      ]
+    },
+    {
+      "name": "Git",
+      "level": "Advanced",
+      "keywords": [
+        "Version control",
+        "Colaboración",
+        "Source code"
+      ]
+    },
+    {
+      "name": "GitHub",
+      "level": "Advanced",
+      "keywords": [
+        "Version control",
+        "Collaboration",
+        "Source code",
+        "Git"
+      ]
+    },
+    {
+      "name": "Go",
+      "level": "Advanced",
+      "keywords": [
+        "Web development",
+        "Frontend",
+        "React Framework",
+        "SSR",
+        "Static Generation"
+      ]
+    },
+    {
+      "name": "React",
+      "level": "Advanced",
+      "keywords": [
+        "Web development",
+        "Frontend",
+        "JavaScript Library",
+        "UI"
+      ]
+    },
+    {
+      "name": "Photoshop",
+      "level": "Master",
+      "keywords": [
+        "Image Manipulation",
+        "Graphic Design",
+        "Photo-editing"
+      ]
+    },
+    {
+      "name": "Python",
+      "level": "Intermediate",
+      "keywords": [
+        "Web development",
+        "Backend",
+        "ML"
+      ]
+    },
+    {
+      "name": "Figma",
+      "level": "Master",
+      "keywords": [
+        "Web development",
+        "Frontend",
+        "UI",
+        "Design"
       ]
     }
   ],
@@ -113,6 +239,14 @@
     {
       "language": "English",
       "fluency": "Native speaker"
+    },
+    {
+      "language": "Spanish",
+      "fluency": "Native speaker"
+    },
+    {
+      "language": "Portuguese",
+      "fluency": "Advanced"
     }
   ],
   "interests": [

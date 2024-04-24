@@ -1,5 +1,88 @@
 ---
-import Section from "@/components/Section.astro";
+import { skills } from "@cv";
+import Section from "../Section.astro";
+import AdobeAe from "@/icons/adobe_ae.astro";
+import AdobeIl from "@/icons/adobe_il.astro";
+import AdobeIndd from "@/icons/adobe_indd.astro";
+import AdobePr from "@/icons/adobe_pr.astro";
+import AdobePhotoshop from "@/icons/adobe_ps.astro";
+import AdobeXd from "@/icons/adobe_xd.astro";
+import Astro from "@/icons/astro.astro";
+import HTML from "@/icons/html.astro";
+import CSS from "@/icons/css.astro";
+import Figma from "@/icons/figma.astro";
+import JavaScript from "@/icons/javascript.astro";
+import TypeScript from "@/icons/typescript.astro";
+import React from "@/icons/react.astro";
+import Node from "@/icons/node.astro";
+import MySQL from "@/icons/sql.astro";
+import Go from "@/icons/go.astro";
+import Git from "@/icons/git.astro";
+import GitHub from "@/icons/GitHub.astro";
+import Php from "@/icons/php.astro";
+import Python from "@/icons/python.astro";
+import Tailwind from "@/icons/tailwind.astro";
+
+const SKILLS_ICONS: Record<string, any> = {
+	Astro,
+	HTML,
+	CSS,
+	Figma,
+	JavaScript,
+	TypeScript,
+	React,
+	Node,
+	MySQL,
+	Go,
+	Git,
+	GitHub,
+	AdobePhotoshop,
+	Php,
+	Python,
+	Tailwind,
+};
 ---
 
-<Section title="Skills" />
+<Section title="Skills">
+	<ul>
+		{
+			skills.map(({ name }) => {
+				const iconName =
+					name === "Photoshop"
+						? "AdobePhotoshop"
+						: name;
+				const Icon = SKILLS_ICONS[iconName];
+
+				return (
+					<li>
+						{Icon && <Icon />}{" "}
+						<span>{name}</span>
+					</li>
+				);
+			})
+		}
+	</ul>
+</Section>
+
+<style>
+	ul {
+		margin-top: 1rem;
+		display: inline-flex;
+		gap: 8px;
+		flex-wrap: wrap;
+		padding-inline: 0.8rem;
+	}
+
+	li {
+		align-items: center;
+		background: #e0e0e0;
+		border-radius: 6px;
+		color: black;
+		display: flex;
+		font-size: 0.2rem;
+		font-weight: 500;
+		gap: 0.1rem;
+		padding-block: 0.1rem;
+		padding-left: 0.5rem;
+	}
+</style>
