@@ -1,6 +1,7 @@
 ---
 import { work } from "@cv";
 import Section from "@/components/Section.astro";
+import "@/styles/colors.css";
 ---
 
 <Section title="Work Experience">
@@ -15,16 +16,23 @@ import Section from "@/components/Section.astro";
 					summary,
 					highlights,
 					url,
+				}: {
+					name: string;
+					startDate: string;
+					endDate?: string | null;
+					position: string;
+					summary: string;
+					highlights: string[];
+					url: string;
 				}) => {
 					const startYear = new Date(
 						startDate,
 					).getFullYear();
-					const endYear =
-						endDate != null
-							? new Date(
-									endDate,
-								).getFullYear()
-							: "Actual";
+					const endYear = endDate
+						? new Date(
+								endDate,
+							).getFullYear()
+						: " Present";
 
 					return (
 						<li>
@@ -36,7 +44,7 @@ import Section from "@/components/Section.astro";
 												href={
 													url
 												}
-												title={`Ver ${name}`}
+												title={`View ${name}`}
 												target="_blank"
 											>
 												{
@@ -50,7 +58,6 @@ import Section from "@/components/Section.astro";
 											}
 										</h4>
 									</div>
-
 									<div>
 										<time
 											datetime={
@@ -65,14 +72,16 @@ import Section from "@/components/Section.astro";
 											}
 										</time>
 										{
-											" - "
+											"-"
 										}
 										<time
 											datetime={
-												endDate
+												endDate ||
+												" Present"
 											}
 											data-title={
-												endDate
+												endDate ||
+												" Present"
 											}
 										>
 											{
@@ -81,18 +90,30 @@ import Section from "@/components/Section.astro";
 										</time>
 									</div>
 								</header>
-
 								<footer>
-									<p>
+									<h5>
 										{
 											summary
 										}
-									</p>
-									<p>
-										{
-											highlights
-										}
-									</p>
+									</h5>
+									<div>
+										{highlights.map(
+											(
+												highlight,
+												index,
+											) => (
+												<p
+													key={
+														index
+													}
+												>
+													{
+														highlight
+													}
+												</p>
+											),
+										)}
+									</div>
 								</footer>
 							</article>
 						</li>
@@ -102,20 +123,33 @@ import Section from "@/components/Section.astro";
 		}
 	</ul>
 </Section>
+
 <style>
+	div {
+		margin-top: 1rem;
+	}
 	ul {
 		display: flex;
 		flex-direction: column;
-		gap: 32px;
+		gap: 24px;
+		margin-top: 1.5rem;
+		margin-bottom: 1.5rem;
 	}
 
 	article h3 {
-		font-weight: 500;
-		color: #00bc44;
+		line-height: 1;
+		font-weight: 700;
+		margin-block: -0.5rem;
 	}
 
 	article a {
-		color: #00bc44;
+		color: var(--color-text);
+	}
+
+	article p {
+		font-weight: 300;
+		font-size: 0.85rem;
+		text-wrap: pretty;
 	}
 
 	article a:hover {
@@ -123,22 +157,32 @@ import Section from "@/components/Section.astro";
 	}
 
 	article h4 {
-		color: #887850;
-		font-weight: 400;
+		font-size: 1.15rem;
+		line-height: 1;
+		margin-top: 1rem;
+		font-weight: 600;
+	}
+
+	article h5 {
+		font-weight: 600;
+		font-size: 0.9rem;
+		text-wrap: pretty;
+		color: var(--color-text);
 	}
 
 	header {
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
-		margin-bottom: 4px;
 	}
 
 	time {
-		color: #e0e0e0;
+		color: var(--color-accent);
 		font-size: 0.85rem;
-		min-width: 102px;
+		font-weight: 600;
+		font-style: italic;
 		cursor: default;
+		padding-inline: 0.8rem;
 	}
 
 	[data-title]:hover:after {
@@ -149,17 +193,17 @@ import Section from "@/components/Section.astro";
 
 	[data-title]:after {
 		content: attr(data-title);
-		background-color: #887850;
-		color: #fff;
+		background-color: var(--color-accent);
+		color: var(--color-text);
 		font-size: 0.75rem;
 		position: absolute;
 		padding: 0.2rem 0.5rem;
 		bottom: -1.4rem;
 		left: 50%;
 		white-space: nowrap;
-		box-shadow: 1px 1px 1px #e0e0e0;
+		box-shadow: 1px 1px 1px var(--color-text);
 		opacity: 0;
-		border: 1px solid #000012;
+		border: 1px solid var(--color-text);
 		z-index: 99999;
 		visibility: hidden;
 		border-radius: 6px;
@@ -169,7 +213,7 @@ import Section from "@/components/Section.astro";
 		position: relative;
 	}
 
-	@media (width <= 800px) {
+	@media (width <= 700px) {
 		time {
 			text-align: right;
 		}

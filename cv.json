@@ -1,12 +1,12 @@
 {
   "basics": {
-    "name": "Marcelo (Cello) Rondon",
+    "name": "Marcelo Rondon",
     "label": "Designer & Developer",
     "image": "https://avatars.githubusercontent.com/u/72777489?s=400&u=1258e88539c515802c5c603559cd7b63c032814c&v=4",
     "email": "cello@cello.design",
     "phone": "(305) 496-0039",
     "url": "https://www.cello.design",
-    "summary": "A summary of Cello Rondon…",
+    "summary": "Hey! I'm Cello, a designer who codes. I work in the intersection of creativity and functionality. My professional journey is rooted in the art of visual storytelling and robust systems management, balancing aesthetic precision with efficient process automation. I approach design and development with a purpose-driven ethos. My recent endeavors focus on automating and documenting essential workflows, enhancing productivity and transparency. Eager to pivot towards a more backend-centric role, I am committed to mastering new technologies and methodologies that drive innovation and achieve strategic goals.",
     "location": {
       "address": "1115 NW 35th Ave",
       "postalCode": "FL 32609",
@@ -37,11 +37,72 @@
       "name": "Asheville Dispensary",
       "position": "Design Lead",
       "url": "https://www.avldispensary.com",
-      "startDate": "2022-01",
-      "endDate": "Present",
-      "summary": "Spearheaded the UX design and development of user touch-points including website landing pages and educational funnels. Focused on creating responsive, fast, useful, and intuitive interfaces. Designed and proofed product packaging and print marketing materials, maintaining brand consistency across various media and contributing to enhanced sales performance.rained and deployed an internal AI assistant using Retrieval-Augmented-Generation (RAG) on internal company-data for content writing, brand consistency, and SEO improvement, showcasing innovative use of AI in enhancing content strategy and digital marketing.Optimized the e-commerce platform, employing strategic design, SEO, and rigorous website testing. These combined efforts led to a substantial increase in online sales and customer engagement, significantly growing the ecommerce site's gross sales from approximately $1,000 to over $30,000 per month.",
+      "startDate": "2022-01-24",
+      "endDate": "",
+      "summary": "Implemented a centralized design and style system, enhancing productivity and brand coherence across packaging, web, print, and marketing.",
       "highlights": [
-        "Started the company"
+        "Initiated as the sole designer, focusing on all key design aspects from packaging to digital marketing, then expanded to head a team of designers enabling effective management of diverse design tasks while maintaining high-quality standards.",
+        "Spearheaded the development of a comprehensive design and style system that standardized processes and ensured consistency across all marketing and product mediums.",
+        "Organized and managed a growing library of company assets, improving design workflow and asset reuse across projects.",
+        "Instrumental in transforming brand image through meticulous design upgrades, directly impacting customer engagement and satisfaction through strategic planning and execution of integrated marketing campaigns that significantly boosted the company's online presence and sales.",
+        "Documented and standardized company design practices, reducing time spent on project onboarding and enhancing team efficiency."
+      ]
+    },
+    {
+      "name": "The Green Phial",
+      "position": "Senior Designer/Web Developer",
+      "url": "www.thegreenphial.com",
+      "startDate": "2022-10",
+      "endDate": "2024-01",
+      "summary": "Worked with brand owner in the conceptualization and implementation of product visual concepts and comprehensive visual branding and web implementation.",
+      "highlights": [
+        "Redesigned website look and management of the website, aligning with brand ethos and enhancing user experience.",
+        "Developed marketing materials, including flyers and digital graphics, enhancing brand visibility and product outreach."
+      ]
+    },
+    {
+      "name": "Mantera Advertising Agency",
+      "position": "Senior Contract Designer",
+      "url": "https://www.chocolatebash.com/",
+      "startDate": "2021-09",
+      "endDate": "2022-02",
+      "summary": "Collaborated with agency retail clients to develop visually impactful graphics and marketing materials under tight deadlines.",
+      "highlights": [
+        "Efficiently incorporated client feedback into designs, ensuring timely delivery and client satisfaction.",
+        "Facilitated direct communication with clients to effectively deliver desired graphics."
+      ]
+    },
+    {
+      "name": "Success Academy Charter Schools",
+      "position": "Associate Teacher",
+      "url": "https://successacademies.org",
+      "startDate": "2020-06",
+      "endDate": "2021-08",
+      "summary": "Implemented innovative education strategies and utilized learning frameworks to teach ELA and math remotely.",
+      "highlights": [
+        "Produced educational content and visual aids, applying design thinking to optimize learning experiences and enhance educational outcomes."
+      ]
+    },
+    {
+      "name": "The Fine Print Magazine",
+      "position": "Photo Editor",
+      "url": "https://thefineprintmagazine.org",
+      "startDate": "2017-09",
+      "endDate": "2019-12",
+      "summary": "Led a team of photographers and managed artistic direction for various events, capturing impactful visual stories.",
+      "highlights": [
+        "Developed artistic direction for fundraising events, utilizing design and photography skills to enhance event visibility and engagement."
+      ]
+    },
+    {
+      "name": "Cello.Design Studio",
+      "position": "Freelance Designer",
+      "url": "https://www.cello.design",
+      "startDate": "2017-01",
+      "endDate": "",
+      "summary": "Worked with a diverse range of clients, providing comprehensive design services and managing multiple projects simultaneously.",
+      "highlights": [
+        "Developed effective design strategies to meet client objectives and enhance brand visibility."
       ]
     }
   ],
@@ -100,6 +161,18 @@
   ],
   "skills": [
     {
+      "name": "Figma",
+      "level": "Master",
+      "keywords": [
+        "Web development",
+        "Frontend",
+        "UI",
+        "Prototyping",
+        "Development Documentation",
+        "Design"
+      ]
+    },
+    {
       "name": "HTML",
       "level": "Master",
       "keywords": [
@@ -117,6 +190,62 @@
       ]
     },
     {
+      "name": "Photoshop",
+      "level": "Master",
+      "keywords": [
+        "Image Manipulation",
+        "Graphic Design",
+        "Photo-editing"
+      ]
+    },
+    {
+      "name": "Illustrator",
+      "level": "Master",
+      "keywords": [
+        "Vector Manipulation",
+        "Graphic Design",
+        "Illustration"
+      ]
+    },
+    {
+      "name": "Premiere",
+      "level": "Master",
+      "keywords": [
+        "Video Editing",
+        "Sound Design",
+        "Visual Storytelling"
+      ]
+    },
+    {
+      "name": "XD",
+      "level": "Master",
+      "keywords": [
+        "UI",
+        "Interface Design",
+        "Prototyping",
+        "Graphic Manipulation"
+      ]
+    },
+    {
+      "name": "InDesign",
+      "level": "Master",
+      "keywords": [
+        "Catalog Creation",
+        "Spread Manipulation",
+        "Print Design"
+      ]
+    },
+    {
+      "name": "After Effects",
+      "level": "Master",
+      "keywords": [
+        "Video Effects",
+        "Rotoscoping",
+        "Motion Graphics",
+        "Titles"
+      ]
+    },
+    {
       "name": "JavaScript",
       "level": "Master",
       "keywords": [
@@ -127,73 +256,11 @@
       ]
     },
     {
-      "name": "Tailwind",
-      "level": "Advanced",
-      "keywords": [
-        "Web development",
-        "Frontend",
-        "CSS Framework",
-        "Diseño Responsive"
-      ]
-    },
-    {
-      "name": "TypeScript",
-      "level": "Advanced",
-      "keywords": [
-        "Web development",
-        "Frontend",
-        "Backend",
-        "JavaScript Superset"
-      ]
-    },
-    {
-      "name": "Node",
-      "level": "Advanced",
-      "keywords": [
-        "Web development",
-        "Backend",
-        "JavaScript",
-        "Servidor"
-      ]
-    },
-    {
-      "name": "MySQL",
-      "level": "Advanced",
-      "keywords": [
-        "Bases de Datos",
-        "SQL",
-        "Database",
-        "Backend"
-      ]
-    },
-    {
-      "name": "Git",
-      "level": "Advanced",
-      "keywords": [
-        "Version control",
-        "Colaboración",
-        "Source code"
-      ]
-    },
-    {
-      "name": "GitHub",
-      "level": "Advanced",
-      "keywords": [
-        "Version control",
-        "Collaboration",
-        "Source code",
-        "Git"
-      ]
-    },
-    {
       "name": "Go",
-      "level": "Advanced",
+      "level": "Intermediate",
       "keywords": [
         "Web development",
-        "Frontend",
-        "React Framework",
-        "SSR",
-        "Static Generation"
+        "Backend"
       ]
     },
     {
@@ -207,15 +274,6 @@
       ]
     },
     {
-      "name": "Photoshop",
-      "level": "Master",
-      "keywords": [
-        "Image Manipulation",
-        "Graphic Design",
-        "Photo-editing"
-      ]
-    },
-    {
       "name": "Python",
       "level": "Intermediate",
       "keywords": [
@@ -225,13 +283,40 @@
       ]
     },
     {
-      "name": "Figma",
-      "level": "Master",
+      "name": "Tailwind",
+      "level": "Advanced",
       "keywords": [
         "Web development",
         "Frontend",
-        "UI",
-        "Design"
+        "CSS Framework",
+        "Responsive Design"
+      ]
+    },
+    {
+      "name": "TypeScript",
+      "level": "Advanced",
+      "keywords": [
+        "Web development",
+        "Frontend",
+        "Backend",
+        "JavaScript Superset"
+      ]
+    },
+    {
+      "name": "MySQL",
+      "level": "Intermediate",
+      "keywords": [
+        "SQL",
+        "Database",
+        "Backend"
+      ]
+    },
+    {
+      "name": "Git",
+      "level": "Advanced",
+      "keywords": [
+        "Version control",
+        "Source code"
       ]
     }
   ],

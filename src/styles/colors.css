@@ -1,0 +1,17 @@
+/* src/styles/global.css */
+:root[data-theme="light"] {
+	--color-background: #e0e0e0;
+	/* Light background */
+	--color-text: #000012;
+	/* Dark text */
+	--color-accent: #887850;
+	/* Accent */
+}
+
+:root[data-theme="dark"] {
+	--color-background: #000012;
+	/* Dark background */
+	--color-text: #e0e0e0;
+	/* Light text */
+	--color-accent: #00bc44;
+}

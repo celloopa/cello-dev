@@ -1,28 +1,41 @@
 ---
-
+import "@/styles/colors.css";
 ---
 
-<footer>
-	<h2>i am footer.</h2>
-	<script></script>
+<footer class="no-print">
+	<div>
+		<h5>Designed & Built by Cello Rondon.</h5>
+		<p>Copyright 2024.</p>
+	</div>
 </footer>
 <style>
 	footer {
 		display: flex;
+		flex-direction: row;
 		align-items: center;
-		justify-content: center;
-		background: #00bc44;
-		text-align: center;
-		color: #000012;
-		padding: 0;
+		justify-content: space-evenly;
+		background: var(--color-accent);
 		bottom: 0;
+		margin-top: 1rem;
 		padding-block: 0.25rem;
 		width: 100%;
 	}
-	h2 {
-		color: #000012;
-		font-weight: 800;
-		font-size: 1rem;
-		margin-block: 0;
+	div {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+	h5,
+	p {
+		color: var(--color-background);
+		line-height: 1.5;
+	}
+	p {
+		margin-bottom: 0.5rem;
+		font-size: 0.75rem;
+	}
+	h5 {
+		margin-top: 0.5rem;
 	}
 </style>

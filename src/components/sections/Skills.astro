@@ -1,11 +1,12 @@
 ---
 import { skills } from "@cv";
 import Section from "../Section.astro";
+import "@/styles/colors.css";
 import AdobeAe from "@/icons/adobe_ae.astro";
 import AdobeIl from "@/icons/adobe_il.astro";
 import AdobeIndd from "@/icons/adobe_indd.astro";
 import AdobePr from "@/icons/adobe_pr.astro";
-import AdobePhotoshop from "@/icons/adobe_ps.astro";
+import AdobePs from "@/icons/adobe_ps.astro";
 import AdobeXd from "@/icons/adobe_xd.astro";
 import Astro from "@/icons/astro.astro";
 import HTML from "@/icons/html.astro";
@@ -14,7 +15,6 @@ import Figma from "@/icons/figma.astro";
 import JavaScript from "@/icons/javascript.astro";
 import TypeScript from "@/icons/typescript.astro";
 import React from "@/icons/react.astro";
-import Node from "@/icons/node.astro";
 import MySQL from "@/icons/sql.astro";
 import Go from "@/icons/go.astro";
 import Git from "@/icons/git.astro";
@@ -24,6 +24,12 @@ import Python from "@/icons/python.astro";
 import Tailwind from "@/icons/tailwind.astro";
 
 const SKILLS_ICONS: Record<string, any> = {
+	"Adobe After Effects": AdobeAe,
+	"Adobe Illustrator": AdobeIl,
+	"Adobe InDesign": AdobeIndd,
+	"Adobe Premiere": AdobePr,
+	"Adobe Photoshop": AdobePs,
+	"Adobe XD": AdobeXd,
 	Astro,
 	HTML,
 	CSS,
@@ -31,15 +37,32 @@ const SKILLS_ICONS: Record<string, any> = {
 	JavaScript,
 	TypeScript,
 	React,
-	Node,
 	MySQL,
 	Go,
 	Git,
 	GitHub,
-	AdobePhotoshop,
 	Php,
 	Python,
 	Tailwind,
+};
+
+const getIconName = (name: string) => {
+	switch (name) {
+		case "Photoshop":
+			return "Adobe Photoshop";
+		case "Illustrator":
+			return "Adobe Illustrator";
+		case "After Effects":
+			return "Adobe After Effects";
+		case "InDesign":
+			return "Adobe InDesign";
+		case "Premiere":
+			return "Adobe Premiere";
+		case "XD":
+			return "Adobe XD";
+		default:
+			return name;
+	}
 };
 ---
 
@@ -47,10 +70,7 @@ const SKILLS_ICONS: Record<string, any> = {
 	<ul>
 		{
 			skills.map(({ name }) => {
-				const iconName =
-					name === "Photoshop"
-						? "AdobePhotoshop"
-						: name;
+				const iconName = getIconName(name);
 				const Icon = SKILLS_ICONS[iconName];
 
 				return (
@@ -75,13 +95,13 @@ const SKILLS_ICONS: Record<string, any> = {
 
 	li {
 		align-items: center;
-		background: #e0e0e0;
+		background: var(--color-text);
 		border-radius: 6px;
-		color: black;
+		color: var(--color-background);
 		display: flex;
-		font-size: 0.2rem;
+		font-size: 0.3rem;
 		font-weight: 500;
-		gap: 0.1rem;
+		gap: 0.05rem;
 		padding-block: 0.1rem;
 		padding-left: 0.5rem;
 	}

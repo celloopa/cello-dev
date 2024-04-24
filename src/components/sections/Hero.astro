@@ -1,12 +1,14 @@
 ---
 import { basics } from "@cv";
 import Section from "@/components/Section.astro";
+import "@/styles/colors.css";
 import Mail from "@/icons/Mail.astro";
 import Phone from "@/icons/Phone.astro";
 import X from "@/icons/X.astro";
 import LinkedIn from "@/icons/LinkedIn.astro";
 import GitHub from "@/icons/GitHub.astro";
 import WorldMap from "@/icons/WorldMap.astro";
+import Sun from "@/icons/Sun.astro";
 import type { SocialIcon } from "@/types";
 
 const { name, label, image, location, profiles, phone, email } = basics;
@@ -32,6 +34,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 			<span>
 				<WorldMap />
 				{city}, {region}
+				<WorldMap />
 			</span>
 			<footer class="print">
 				{printInfo}
@@ -88,6 +91,56 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 						},
 					)
 				}
+				<button onclick="toggleTheme()"><Sun /></button>
+				<script is:inline>
+					// Function to set the theme
+					function setTheme(theme) {
+						document.documentElement.setAttribute(
+							"data-theme",
+							theme,
+						);
+						localStorage.setItem(
+							"theme",
+							theme,
+						);
+					}
+
+					// Function to toggle the theme
+					function toggleTheme() {
+						const currentTheme =
+							localStorage.getItem(
+								"theme",
+							) || "dark";
+						const newTheme =
+							currentTheme === "dark"
+								? "light"
+								: "dark";
+						setTheme(newTheme);
+					}
+
+					// Initialize theme on page load and after navigation
+					document.addEventListener(
+						"DOMContentLoaded",
+						() => {
+							const savedTheme =
+								localStorage.getItem(
+									"theme",
+								) || "dark";
+							setTheme(savedTheme);
+						},
+					);
+
+					document.addEventListener(
+						"astro:after-swap",
+						() => {
+							const savedTheme =
+								localStorage.getItem(
+									"theme",
+								) || "dark";
+							setTheme(savedTheme);
+						},
+					);
+				</script>
 			</footer>
 		</div>
 		<figure>
@@ -108,16 +161,10 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 	.info {
 		display: flex;
 		flex-direction: column;
-		/* gap: 0.5rem; */
 		padding-right: 32px;
 	}
 
-	h1 {
-		font-size: 2rem;
-	}
-
 	h2 {
-		color: #887850;
 		text-wrap: balance;
 	}
 
@@ -130,17 +177,35 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		justify-content: center;
 	}
 
-	span {
-		color: #e0e0e0;
+	span,
+	p {
+		color: var(--color-text);
 		display: flex;
 		align-items: center;
 		gap: 0.25rem;
 		font-size: 0.9rem;
 		letter-spacing: -0.05rem;
+		padding-inline: 0.8rem;
 	}
-
+	button {
+		background: var(--color-background);
+		color: var(--color-text);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid var(--color-accent);
+		padding: 2px;
+		height: 32px;
+		width: 32px;
+		border-radius: 4px;
+		transition: all 0.3s ease;
+	}
+	button:hover {
+		background: var(--color-accent);
+		border: 1px solid var(--color-background);
+	}
 	footer {
-		color: #887850;
+		color: var(--color-accent);
 		padding-inline: 0.8rem;
 		font-size: 0.75rem;
 		display: flex;
@@ -149,11 +214,11 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 	}
 
 	footer a {
-		color: #e0e0e0;
+		color: var(--color-text);
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		border: 1px solid #eee;
+		border: 1px solid var(--color-accent);
 		padding: 2px;
 		height: 32px;
 		width: 32px;
@@ -162,34 +227,29 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 	}
 
 	footer a:hover {
-		background: #00bc44;
-		border: 1px solid #ddd;
+		background: var(--color-accent);
+		border: 1px solid var(--color-background);
 	}
 
-	@media (width <= 800px) {
+	@media (width <= 700px) {
 		.container {
 			flex-direction: column-reverse;
 		}
 
 		.info {
 			justify-content: center;
-			align-items: center;
 			padding-right: 0;
 			text-align: center;
 		}
 
 		figure {
 			display: flex;
+			margin: 0 auto;
 			justify-content: center;
-			align-items: center;
 		}
 
 		h2 {
 			text-wrap: balance;
-		}
-
-		figure {
-			margin: 0 auto;
 		}
 	}
 </style>
