@@ -77,11 +77,11 @@ import "@/styles/colors.css";
 										<time
 											datetime={
 												endDate ||
-												" Present"
+												"Present"
 											}
 											data-title={
 												endDate ||
-												" Present"
+												"Present"
 											}
 										>
 											{
@@ -126,9 +126,14 @@ import "@/styles/colors.css";
 	ul {
 		display: flex;
 		flex-direction: column;
-		gap: 24px;
+		gap: 16px;
 		margin-top: 1.5rem;
 		margin-bottom: 1.5rem;
+	}
+
+	li {
+		display: flex;
+		gap: 4px;
 	}
 
 	article h3 {
@@ -173,11 +178,12 @@ import "@/styles/colors.css";
 
 	time {
 		color: var(--color-accent);
-		font-size: 0.85rem;
+		font-size: 0.8rem;
 		font-weight: 600;
+		gap: 0px;
 		font-style: italic;
 		cursor: default;
-		padding-inline: 0.8rem;
+		padding-right: 0.8rem;
 	}
 
 	[data-title]:hover:after {
