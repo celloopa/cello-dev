@@ -1,5 +1,7 @@
 ---
 import { basics } from "@cv";
+// import { Image } from "astro:assets";
+import thumbnailImage from "@/assets/cello_thumbnail.webp";
 import "@fontsource/geist-mono/100.css";
 import "@fontsource/geist-mono/200.css";
 import "@fontsource/geist-mono/300.css";
@@ -29,7 +31,7 @@ const { image, summary, url } = basics;
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={summary} />
-		<meta property="og:image" content="" />
+		<!-- <meta property="og:image" content={thumbnailImage.src} /> -->
 
 		<meta name="twitter:card" content="summary_large_image" />
 		<meta

@@ -1,0 +1,108 @@
+---
+import Layout from "@/layouts/blogLayout.astro";
+import "@/styles/colors.css";
+import Sun from "@/icons/Sun.astro";
+---
+<Layout title=`Cello's Devlog - infinityCanvas`>
+	<header>
+		<div class="container">
+		<h1>infinityCanvas - illustrated reflections on code and design</h1>
+				<button onclick="toggleTheme()"><Sun /></button>
+				<script is:inline>
+					// Function to set the theme
+					function setTheme(theme) {
+						document.documentElement.setAttribute(
+							"data-theme",
+							theme,
+						);
+						localStorage.setItem(
+							"theme",
+							theme,
+						);
+					}
+
+					// Function to toggle the theme
+					function toggleTheme() {
+						const currentTheme =
+							localStorage.getItem(
+								"theme",
+							) || "dark";
+						const newTheme =
+							currentTheme === "dark"
+								? "light"
+								: "dark";
+						setTheme(newTheme);
+					}
+
+					// Initialize theme on page load and after navigation
+					document.addEventListener(
+						"DOMContentLoaded",
+						() => {
+							const savedTheme =
+								localStorage.getItem(
+									"theme",
+								) || "dark";
+							setTheme(savedTheme);
+						},
+					);
+
+					document.addEventListener(
+						"astro:after-swap",
+						() => {
+							const savedTheme =
+								localStorage.getItem(
+									"theme",
+								) || "dark";
+							setTheme(savedTheme);
+						},
+					);
+				</script>
+			</div>
+	</header>
+</Layout>
+
+<style>
+	header {
+		display: flex;
+		color: var(--color-text);
+		flex-direction: column;
+		background: var(--color-background);
+	}
+	.container {
+		display: flex;
+		padding-inline: 1rem;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+		gap: 1rem;
+	}
+	button {
+		margin-top: 1.5rem;
+		background: var(--color-background);
+		color: var(--color-text);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid var(--color-accent);
+		padding: 2px;
+		height: 32px;
+		width: 32px;
+		border-radius: 4px;
+		transition: all 0.3s ease;
+	}
+	button:hover {
+		background: var(--color-accent);
+		border: 1px solid var(--color-background);
+	}
+	@media (width <= 700px) {
+		.container {
+			flex-direction: column-reverse;
+			gap: 0.5rem;
+		}
+	}
+
+	h1 {
+		font-size: 1rem;
+	}
+	<a href="/">Home</a>
+</style>
