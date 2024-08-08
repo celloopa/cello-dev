@@ -186,7 +186,7 @@
       "keywords": [
         "Web development",
         "Frontend",
-        "Diseño Responsive"
+        "Responsive Design"
       ]
     },
     {
@@ -271,6 +271,23 @@
         "Frontend",
         "JavaScript Library",
         "UI"
+      ]
+    },
+    {
+      "name": "Wordpress",
+      "level": "Advanced",
+      "keywords": [
+        "Web development",
+        "Backend",
+        "Frontend"
+      ]
+    },
+    {
+      "name": "Php",
+      "level": "Intermediate",
+      "keywords": [
+        "Web development",
+        "Backend"
       ]
     },
     {
