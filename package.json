@@ -11,12 +11,13 @@
   },
   "dependencies": {
     "@astrojs/check": "^0.5.10",
-    "@fontsource/geist-mono": "^5.0.2",
-    "astro": "^4.6.3",
-    "typescript": "^5.4.5"
+    "@astrojs/mdx": "^3.1.4",
+    "@fontsource/geist-mono": "^5.0.3",
+    "astro": "^4.14.4",
+    "typescript": "^5.5.4"
   },
   "devDependencies": {
-    "prettier": "^3.2.5",
+    "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.13.0"
   }
 }
