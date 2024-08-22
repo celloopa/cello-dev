@@ -1,0 +1,14 @@
+---
+layout: ../../layouts/blogLayout.astro
+title: 'My first MDX post'
+publishDate: '2024-08-21'
+---
+import blogLayout from '../../layouts/blogLayout.astro'
+
+export function fancyJsHelper() {
+  return "Try doing that with YAML!";
+}
+
+<blogLayout title={frontmatter.title} fancyJsHelper={fancyJsHelper}>
+  Welcome to my new Astro blog, using MDX!
+</blogLayout>
