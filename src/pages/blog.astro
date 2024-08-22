@@ -1,5 +1,6 @@
 ---
 import Layout from "@/layouts/blogLayout.astro";
+import TestComponent from "@/components/svelte/TestComponent.svelte";
 import "@/styles/colors.css";
 import Sun from "@/icons/Sun.astro";
 ---
@@ -62,6 +63,7 @@ import Sun from "@/icons/Sun.astro";
 	</header>
 	<div class="hero">
 	<h2 class="hero-title">Blog</h2>
+		<TestComponent client:only="svelte" />
 	</div>
 </Layout>
 
