@@ -1,5 +1,4 @@
 ---
-// import colors from '../styles/colors.css';
 import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 ---
 
@@ -71,30 +70,48 @@ import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 		text-align: center;
 	}
 	.label {
-		font-family: GeistSans;
+		font-family: GeistSans, sans-serif;
 		font-size: 0.9rem;
 		font-weight: 700;
 		padding: 2px 6px;
 		border-radius: 3px;
 		margin: 0 2px;
 	}
-	/* .label:hover,
-  .label:active {
-	background-color: var(--color-background);
-    color: var(--color-text);
-  } */
-	h5,
 	p {
 		color: var(--color-background);
 		line-height: 1.5;
-	}
-	p {
 		margin-bottom: 0.5rem;
 		font-weight: 700;
 		font-size: 0.9rem;
 	}
-	h5 {
-		margin-top: 0.5rem;
+
+	@media (max-width: 768px) {
+		footer {
+			padding: 0.5rem;
+		}
+		div {
+			flex-direction: column;
+			align-items: center;
+			gap: 0.5rem;
+		}
+		.keyboard-indicator {
+			padding: 8px 12px;
+			margin-bottom: 0.5rem;
+		}
+		.key, .label {
+			font-size: 1rem;
+		}
+		p {
+			margin-bottom: 0.25rem;
+			font-size: 0.8rem;
+		}
+	}
+
+	@media (max-width: 480px) {
+		.keyboard-indicator {
+			width: 100%;
+			justify-content: center;
+		}
 	}
 </style>
 

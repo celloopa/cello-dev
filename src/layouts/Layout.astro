@@ -1,6 +1,7 @@
 ---
 import { basics } from "@cv";
-import treesBackground from "@/assets/trees.png"; // Import the trees.png image
+import treesBackground from "@/assets/trees.webp"; // Updated to WebP
+import treesBackgroundMobile from "@/assets/trees-mobile.webp"; // Updated to WebP
 // import { Image } from "astro:assets";
 import thumbnailImage from "@/assets/cello_thumbnail.webp";
 import "@fontsource/geist-mono/100.css";
@@ -51,15 +52,18 @@ const { image, summary, url } = basics;
 		<KeyboardManager />
 	</body>
 </html>
-<style is:global define:vars={{treesBackgroundUrl: `url(${treesBackground.src})`}}>
+<style is:global define:vars={{
+	treesBackgroundUrl: `url(${treesBackground.src})`,
+	treesBackgroundMobileUrl: `url(${treesBackgroundMobile.src})`
+}}>
 	html {
 		font-family: "GeistMono", monospace;
 		font-weight: 400;
 		background-image: 
 			radial-gradient(
 				circle at center,
-				rgba(var(--color-background-rgb), 0.97) 0%,
-				rgba(var(--color-background-rgb), 0.80) 100%
+				rgba(var(--color-background-rgb), var(--color-background-gradient-start)) 0%,
+				rgba(var(--color-background-rgb), var(--color-background-gradient-end)) 100%
 			),
 			var(--treesBackgroundUrl);
 		background-size: cover;
@@ -68,6 +72,19 @@ const { image, summary, url } = basics;
 		color: var(--color-text);
 		letter-spacing: -0.025rem;
 	}
+
+	@media (max-width: 768px) {
+		html {
+			background-image: 
+				radial-gradient(
+					circle at center,
+					rgba(var(--color-background-rgb), var(--color-background-gradient-start)) 0%,
+					rgba(var(--color-background-rgb), var(--color-background-gradient-end)) 100%
+				),
+				var(--treesBackgroundMobileUrl);
+		}
+	}
+
 	body {
 		margin: 0;
 		padding: 0;
@@ -119,7 +136,6 @@ const { image, summary, url } = basics;
 		font-size: 2rem;
 		font-style: bold;
 		font-weight: 900;
-		/* text-align: center; */
 		line-height: 0.9;
 		margin-top: 1rem;
 	}

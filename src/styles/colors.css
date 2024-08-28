@@ -12,7 +12,9 @@
 	--color-sunset-rgb: 255, 107, 53;
 	/* Warm sunset orange */
 	--color-background-translucent: #1a1a1aCC;
-	--color-background-opacity: 0.2; /* 80% opacity */
+	--color-background-opacity: 0.8; /* 80% opacity */
+	--color-background-gradient-start: 0.97;
+	--color-background-gradient-end: 0.80;
 }
 
 :root[data-theme="light"] {

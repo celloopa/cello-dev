@@ -1,4 +1,5 @@
 <script>
+  console.log("KeyboardShortcutsMenu loaded");
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
   import { toggleTheme as toggleThemeUtil } from "@/utils/themeToggle.js";
@@ -134,20 +135,25 @@
   }
 
   function executeShortcut(shortcut) {
+    console.log("Executing shortcut:", shortcut);
     activeShortcut = shortcut.key;
     
     // Check if the action is an outbound link
     if (shortcut.action.toString().includes('window.open')) {
+      console.log("Executing outbound link action");
       shortcut.action();
       // Close the menu after a short delay for outbound links
       setTimeout(() => {
+        console.log("Closing menu after outbound link");
         activeShortcut = null;
         toggleMenu();
       }, 100);
     } else {
       // For other actions, keep the current behavior
+      console.log("Executing non-outbound link action");
       shortcut.action();
       setTimeout(() => {
+        console.log("Closing menu after non-outbound link action");
         activeShortcut = null;
         toggleMenu();
       }, 300);
@@ -188,9 +194,11 @@
   }
 
   onMount(() => {
+    console.log("Attaching event listeners");
     window.addEventListener("keydown", handleKeydown);
     window.addEventListener("toggleKeyboardMenu", toggleMenu);
     return () => {
+      console.log("Removing event listeners");
       window.removeEventListener("keydown", handleKeydown);
       window.removeEventListener("toggleKeyboardMenu", toggleMenu);
     };
@@ -267,7 +275,7 @@
   .menu {
     background-color: var(--color-background);
     border-radius: 8px;
-    padding: 20px;
+    padding: 15px; /* Reduced from 20px */
     width: 400px;
     max-width: 90%;
     border: none;
@@ -289,17 +297,18 @@
   h3 {
     font-size: 0.8rem;
     color: var(--color-accent);
-    margin-top: 15px;
-    margin-bottom: 5px;
+    margin-top: 10px; /* Reduced from 15px */
+    margin-bottom: 3px; /* Reduced from 5px */
   }
 
   ul {
     list-style-type: none;
     padding: 0;
+    margin: 0; /* Added to remove default margin */
   }
 
   li {
-    margin-bottom: 5px;
+    margin-bottom: 2px; /* Reduced from 5px */
   }
 
   button {
@@ -309,7 +318,7 @@
     text-align: left;
     background: none;
     border: none;
-    padding: 5px;
+    padding: 3px 5px; /* Reduced vertical padding */
     border-radius: 4px;
     cursor: pointer;
     color: inherit;
@@ -326,13 +335,15 @@
     background-color: var(--color-text);
     color: var(--color-background);
     font-weight: bold;
-    padding: 2px 6px;
+    padding: 1px 4px; /* Reduced padding */
     border-radius: 3px;
-    margin-right: 10px;
+    margin-right: 8px; /* Reduced from 10px */
+    font-size: 0.9em; /* Slightly smaller font size */
   }
 
   .label {
     color: var(--color-text);
+    font-size: 0.9em; /* Slightly smaller font size */
   }
 
   button:hover .key,
@@ -350,6 +361,6 @@
     border: none;
     border-top: 1px solid var(--color-text);
     opacity: 0.2;
-    margin: 10px 0;
+    margin: 6px 0; /* Reduced from 10px */
   }
 </style>

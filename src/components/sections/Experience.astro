@@ -16,23 +16,9 @@ import "@/styles/colors.css";
 					summary,
 					highlights,
 					url,
-				}: {
-					name: string;
-					startDate: string;
-					endDate?: string | null;
-					position: string;
-					summary: string;
-					highlights: string[];
-					url: string;
 				}) => {
-					const startYear = new Date(
-						startDate,
-					).getFullYear();
-					const endYear = endDate
-						? new Date(
-								endDate,
-							).getFullYear()
-						: "Present";
+					const startYear = new Date(startDate).getFullYear();
+					const endYear = endDate ? new Date(endDate).getFullYear() : "Present";
 
 					return (
 						<li>
@@ -40,74 +26,28 @@ import "@/styles/colors.css";
 								<header>
 									<div>
 										<h3>
-											<a
-												href={
-													url
-												}
-												title={`View ${name}`}
-												target="_blank"
-											>
-												{
-													name
-												}
+											<a href={url} title={`View ${name}`} target="_blank">
+												{name}
 											</a>
 										</h3>
-										<h4>
-											{
-												position
-											}
-										</h4>
+										<h4>{position}</h4>
 									</div>
-									<div>
-										<time
-											datetime={
-												startDate
-											}
-											data-title={
-												startDate
-											}
-										>
-											{
-												startYear
-											}
+									<div class="date-range">
+										<time datetime={startDate} data-title={startDate}>
+											{startYear}
 										</time>
-										{
-											"-"
-										}
-										<time
-											datetime={
-												endDate ||
-												"Present"
-											}
-											data-title={
-												endDate ||
-												"Present"
-											}
-										>
-											{
-												endYear
-											}
+										<span class="date-separator">-</span>
+										<time datetime={endDate || "Present"} data-title={endDate || "Present"}>
+											{endYear}
 										</time>
 									</div>
 								</header>
 								<footer>
-									<h5>
-										{
-											summary
-										}
-									</h5>
+									<h5>{summary}</h5>
 									<div>
-										{highlights.map(
-											(
-												highlight,
-											) => (
-												<p>
-													{
-														highlight
-													}
-												</p>
-											),
-										)}
+										{highlights.map((highlight) => (
+											<p>{highlight}</p>
+										))}
 									</div>
 								</footer>
 							</article>
@@ -177,14 +117,24 @@ import "@/styles/colors.css";
 		align-items: flex-start;
 	}
 
-	time {
+	.date-range {
+		display: flex;
+		align-items: center;
+		gap: 2px; /* Reduced from 4px */
 		color: var(--color-accent);
-		font-size: 0.8rem;
+		font-size: 0.8rem; /* Increased from 0.75rem */
 		font-weight: 600;
-		gap: 0px;
 		font-style: italic;
 		cursor: default;
-		padding-right: 0.8rem;
+	}
+
+	time {
+		white-space: nowrap;
+	}
+
+	.date-separator {
+		color: var(--color-accent);
+		margin: 0 1px; /* Added small margin */
 	}
 
 	[data-title]:hover:after {
@@ -218,6 +168,10 @@ import "@/styles/colors.css";
 	@media (width <= 700px) {
 		time {
 			text-align: right;
+		}
+		.date-range {
+			text-align: right;
+			font-size: 0.75rem; /* Increased from 0.7rem */
 		}
 	}
 </style>
