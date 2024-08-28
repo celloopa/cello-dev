@@ -10,6 +10,8 @@ import GitHub from "@/icons/GitHub.astro";
 import WorldMap from "@/icons/WorldMap.astro";
 import Sun from "@/icons/Sun.astro";
 import type { SocialIcon } from "@/types";
+import KeyboardShortcutsMenu from "@/components/svelte/KeyboardShortcutsMenu.svelte";
+import { toggleTheme, setInitialTheme } from "@/utils/themeToggle.js";
 
 const { name, label, image, location, profiles, phone, email } = basics;
 const { city, region } = location;
@@ -92,6 +94,13 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 					)
 				}
 				<button onclick="toggleTheme()"><Sun /></button>
+				<button
+					id="keyboard-shortcut-indicator"
+					class="keyboard-shortcut-indicator"
+					aria-label="Keyboard shortcuts menu"
+				>
+					<span class="key"></span>
+				</button>
 				<script is:inline>
 					// Function to set the theme
 					function setTheme(theme) {
@@ -140,6 +149,49 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 							setTheme(savedTheme);
 						},
 					);
+
+					// Keyboard shortcut indicator script
+					function detectOS() {
+						const userAgent =
+							navigator.userAgent.toLowerCase();
+						if (userAgent.includes("mac"))
+							return "mac";
+						if (userAgent.includes("win"))
+							return "windows";
+						if (userAgent.includes("linux"))
+							return "linux";
+						return "other";
+					}
+
+					const isMac = detectOS() === "mac";
+					const keyboardShortcutIndicator =
+						document.getElementById(
+							"keyboard-shortcut-indicator",
+						);
+					const keySpan =
+						keyboardShortcutIndicator?.querySelector(
+							".key",
+						);
+
+					if (
+						keyboardShortcutIndicator &&
+						keySpan
+					) {
+						keySpan.textContent = isMac
+							? "⌘ + K"
+							: "Ctrl + K";
+
+						keyboardShortcutIndicator.addEventListener(
+							"click",
+							() => {
+								window.dispatchEvent(
+									new CustomEvent(
+										"toggleKeyboardMenu",
+									),
+								);
+							},
+						);
+					}
 				</script>
 			</footer>
 		</div>
@@ -233,6 +285,33 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		border: 1px solid var(--color-background);
 	}
 
+	.keyboard-shortcut-indicator {
+		background: var(--color-background);
+		color: var(--color-text);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		border: 1px solid var(--color-accent);
+		padding: 2px;
+		height: 32px;
+		width: auto;
+		min-width: 32px;
+		border-radius: 4px;
+		transition: all 0.3s ease;
+		cursor: pointer;
+	}
+
+	.keyboard-shortcut-indicator:hover {
+		background: var(--color-accent);
+		color: var(--color-background);
+	}
+
+	.key {
+		font-size: 0.8rem;
+		font-weight: bold;
+		padding: 0 4px;
+	}
+
 	@media (width <= 700px) {
 		.container {
 			flex-direction: column-reverse;
@@ -256,3 +335,4 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		}
 	}
 </style>
+

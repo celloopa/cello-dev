@@ -12,6 +12,7 @@ import "@fontsource/geist-mono/600.css";
 import "@fontsource/geist-mono/700.css";
 import "@fontsource/geist-mono/800.css";
 import "@fontsource/geist-mono/900.css";
+import KeyboardManager from "@/components/KeyboardManager.astro";
 interface Props {
     title: string;
 }
@@ -44,7 +45,8 @@ const { image, summary, url } = basics;
     </head>
     <body>
         <slot />
-    </body>
+        <KeyboardManager />
+        </body>
 </html>
 <style is:global>
     html {

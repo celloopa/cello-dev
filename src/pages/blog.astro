@@ -3,6 +3,7 @@ import Layout from "@/layouts/blogLayout.astro";
 import TestComponent from "@/components/svelte/TestComponent.svelte";
 import "@/styles/colors.css";
 import Sun from "@/icons/Sun.astro";
+import KeyboardManager from "@/components/KeyboardManager.astro";
 ---
 <Layout title=`Cello's Devlog - infinityCanvas`>
 	<header>
@@ -62,8 +63,9 @@ import Sun from "@/icons/Sun.astro";
 				</div>
 	</header>
 	<div class="hero">
-	<h2 class="hero-title">Blog</h2>
-		<TestComponent client:only="svelte" />
+	<h2 class="hero-title">Blog - COMING SOON</h2>
+	<p>We're working hard to bring you amazing content. Stay tuned!</p>
+		<!-- <TestComponent client:only="svelte" /> -->
 	</div>
 </Layout>
 
@@ -132,4 +134,23 @@ import Sun from "@/icons/Sun.astro";
 		font-size: 1rem;
 	}
 	<a href="/">Home</a>
+
+	.hero {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 50vh;
+		text-align: center;
+	}
+
+	.hero-title {
+		font-size: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	p {
+		font-size: 1.2rem;
+		color: var(--color-accent);
+	}
 </style>
