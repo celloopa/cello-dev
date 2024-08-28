@@ -10,9 +10,9 @@ import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 			aria-label="Keyboard shortcuts menu"
 		>
 			<span class="key"></span>
-			<span class="label">Keyboard shortcuts</span>
+			<span class="label">⌨️ Shortcuts</span>
 		</button>
-		<p>Designed & Built by Cello Rondon.</p>
+		<p>Designed & Built by Cello.</p>
 		<p>Copyright 2024.</p>
 	</div>
 </footer>
@@ -71,11 +71,22 @@ import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 	}
 	.label {
 		font-family: GeistSans, sans-serif;
-		font-size: 0.9rem;
+		font-size: 0.8rem;
 		font-weight: 700;
+		color: var(--color-background);
 		padding: 2px 6px;
 		border-radius: 3px;
 		margin: 0 2px;
+	}
+	button:hover,
+	button:active {
+		background: var(--color-background);
+		color: var(--color-text);
+	}
+	.label:hover,
+	.label:active {
+		background: var(--color-background);
+		color: var(--color-text);
 	}
 	p {
 		color: var(--color-background);
@@ -98,7 +109,8 @@ import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 			padding: 8px 12px;
 			margin-bottom: 0.5rem;
 		}
-		.key, .label {
+		.key,
+		.label {
 			font-size: 1rem;
 		}
 		p {
@@ -147,7 +159,9 @@ import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 		keySpan.textContent = isMac ? "⌘ + K" : "Ctrl + K";
 
 		keyboardIndicator.addEventListener("click", () => {
-			window.dispatchEvent(new CustomEvent("toggleKeyboardMenu"));
+			window.dispatchEvent(
+				new CustomEvent("toggleKeyboardMenu"),
+			);
 		});
 	}
 
@@ -178,4 +192,3 @@ import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 		attributeFilter: ["data-theme"],
 	});
 </script>
-
