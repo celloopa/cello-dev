@@ -29,7 +29,7 @@ import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 		background: var(--color-accent);
 		bottom: 0;
 		margin-top: 1rem;
-		padding-block: 0.25rem;
+		padding-block: 0.15rem;
 		width: 100%;
 	}
 	.keyboard-indicator {
@@ -39,7 +39,7 @@ import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 		background: none;
 		border: none;
 		border-radius: 4px;
-		padding: 4px 8px;
+		padding: 6px 8px;
 		cursor: pointer;
 		transition:
 			background-color 0.2s ease,
@@ -48,14 +48,15 @@ import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 
 	.keyboard-indicator:hover,
 	.keyboard-indicator.active {
-		background: var(--color-background);
+		border-color: var(--color-background);
+		background: var(--color-text);
 		color: var(--color-text);
 	}
 
 	.key {
 		display: inline-block;
-		background: var(--color-text);
-		color: var(--color-background);
+		background: var(--color-background);
+		color: var(--color-accent);
 		font-size: 0.8rem;
 		font-weight: bold;
 		padding: 2px 6px;
@@ -71,27 +72,17 @@ import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 	}
 	.label {
 		font-family: GeistSans, sans-serif;
-		font-size: 0.8rem;
+		font-size: 0.9rem;
 		font-weight: 700;
 		color: var(--color-background);
-		padding: 2px 6px;
+		/* padding: 2px 6px; */
 		border-radius: 3px;
 		margin: 0 2px;
-	}
-	button:hover,
-	button:active {
-		background: var(--color-background);
-		color: var(--color-text);
-	}
-	.label:hover,
-	.label:active {
-		background: var(--color-background);
-		color: var(--color-text);
 	}
 	p {
 		color: var(--color-background);
 		line-height: 1.5;
-		margin-bottom: 0.5rem;
+		/* margin-bottom: 0.5rem; */
 		font-weight: 700;
 		font-size: 0.9rem;
 	}
