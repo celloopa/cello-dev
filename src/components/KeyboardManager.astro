@@ -1,31 +1,88 @@
 ---
-import "@/styles/colors.css";
+// import colors from '../styles/colors.css';
+import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 ---
 
 <footer class="no-print">
 	<div>
-		<h5>Designed & Built by Cello Rondon.</h5>
+		<button
+			id="keyboard-indicator"
+			class="keyboard-indicator"
+			aria-label="Keyboard shortcuts menu"
+		>
+			<span class="key"></span>
+			<span class="label">Keyboard shortcuts</span>
+		</button>
+		<p>Designed & Built by Cello Rondon.</p>
 		<p>Copyright 2024.</p>
 	</div>
 </footer>
+
+<KeyboardShortcutsMenu client:only="svelte" />
+
 <style>
 	footer {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		justify-content: space-evenly;
+		justify-content: space-around;
+		opacity: 80%;
 		background: var(--color-accent);
 		bottom: 0;
 		margin-top: 1rem;
 		padding-block: 0.25rem;
 		width: 100%;
 	}
+	.keyboard-indicator {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: none;
+		border: none;
+		border-radius: 4px;
+		padding: 4px 8px;
+		cursor: pointer;
+		transition:
+			background-color 0.2s ease,
+			color 0.2s ease;
+	}
+
+	.keyboard-indicator:hover,
+	.keyboard-indicator.active {
+		background: var(--color-background);
+		color: var(--color-text);
+	}
+
+	.key {
+		display: inline-block;
+		background: var(--color-text);
+		color: var(--color-background);
+		font-size: 0.8rem;
+		font-weight: bold;
+		padding: 2px 6px;
+		border-radius: 3px;
+		margin: 0 2px;
+		box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+	}
 	div {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		align-items: center;
 		text-align: center;
 	}
+	.label {
+		font-family: GeistSans;
+		font-size: 0.9rem;
+		font-weight: 700;
+		padding: 2px 6px;
+		border-radius: 3px;
+		margin: 0 2px;
+	}
+	/* .label:hover,
+  .label:active {
+	background-color: var(--color-background);
+    color: var(--color-text);
+  } */
 	h5,
 	p {
 		color: var(--color-background);
@@ -33,9 +90,75 @@ import "@/styles/colors.css";
 	}
 	p {
 		margin-bottom: 0.5rem;
-		font-size: 0.75rem;
+		font-weight: 700;
+		font-size: 0.9rem;
 	}
 	h5 {
 		margin-top: 0.5rem;
 	}
 </style>
+
+<script>
+	// Define the custom event interface
+	interface MenuVisibilityChangedEvent extends CustomEvent {
+		detail: { isVisible: boolean };
+	}
+
+	// Extend the WindowEventMap to include our custom event
+	declare global {
+		interface WindowEventMap {
+			menuVisibilityChanged: MenuVisibilityChangedEvent;
+		}
+	}
+
+	const keyboardIndicator = document.getElementById("keyboard-indicator");
+	const keySpan = keyboardIndicator?.querySelector(".key");
+
+	function detectOS() {
+		// Note: This method of OS detection is not foolproof and may not work in all cases.
+		// For production use, consider using a more robust solution or feature detection.
+		const userAgent = navigator.userAgent.toLowerCase();
+		if (userAgent.includes("mac")) return "mac";
+		if (userAgent.includes("win")) return "windows";
+		if (userAgent.includes("linux")) return "linux";
+		return "other";
+	}
+
+	const isMac = detectOS() === "mac";
+
+	if (keyboardIndicator && keySpan) {
+		keySpan.textContent = isMac ? "⌘ + K" : "Ctrl + K";
+
+		keyboardIndicator.addEventListener("click", () => {
+			window.dispatchEvent(new CustomEvent("toggleKeyboardMenu"));
+		});
+	}
+
+	// Now TypeScript will recognize our custom event
+	window.addEventListener("menuVisibilityChanged", (event) => {
+		if (event.detail.isVisible) {
+			keyboardIndicator?.classList.add("active");
+		} else {
+			keyboardIndicator?.classList.remove("active");
+		}
+	});
+
+	// Add a theme change listener
+	const observer = new MutationObserver((mutations) => {
+		mutations.forEach((mutation) => {
+			if (
+				mutation.type === "attributes" &&
+				mutation.attributeName === "data-theme"
+			) {
+				// Theme has changed, ensure the button is not stuck in active state
+				keyboardIndicator?.classList.remove("active");
+			}
+		});
+	});
+
+	observer.observe(document.documentElement, {
+		attributes: true,
+		attributeFilter: ["data-theme"],
+	});
+</script>
+

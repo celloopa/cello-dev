@@ -1,5 +1,4 @@
 ---
-import "@/styles/colors.css";
 import { basics } from "@cv";
 // import { Image } from "astro:assets";
 import thumbnailImage from "@/assets/cello_thumbnail.webp";
@@ -12,10 +11,10 @@ import "@fontsource/geist-mono/600.css";
 import "@fontsource/geist-mono/700.css";
 import "@fontsource/geist-mono/800.css";
 import "@fontsource/geist-mono/900.css";
-import KeyboardManager from "@/components/KeyboardManager.astro";
 interface Props {
     title: string;
 }
+
 const { title } = Astro.props;
 const { image, summary, url } = basics;
 ---
@@ -44,8 +43,7 @@ const { image, summary, url } = basics;
     </head>
     <body>
         <slot />
-        <KeyboardManager />
-        </body>
+    </body>
 </html>
 <style is:global>
     html {
