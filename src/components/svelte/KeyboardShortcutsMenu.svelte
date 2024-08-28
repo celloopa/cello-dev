@@ -135,11 +135,23 @@
 
   function executeShortcut(shortcut) {
     activeShortcut = shortcut.key;
-    shortcut.action();
-    setTimeout(() => {
-      activeShortcut = null;
-      toggleMenu();
-    }, 300);
+    
+    // Check if the action is an outbound link
+    if (shortcut.action.toString().includes('window.open')) {
+      shortcut.action();
+      // Close the menu after a short delay for outbound links
+      setTimeout(() => {
+        activeShortcut = null;
+        toggleMenu();
+      }, 100);
+    } else {
+      // For other actions, keep the current behavior
+      shortcut.action();
+      setTimeout(() => {
+        activeShortcut = null;
+        toggleMenu();
+      }, 300);
+    }
   }
 
   function navigate(path) {
