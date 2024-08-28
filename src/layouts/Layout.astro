@@ -1,5 +1,6 @@
 ---
 import { basics } from "@cv";
+import treesBackground from "@/assets/trees.png"; // Import the trees.png image
 // import { Image } from "astro:assets";
 import thumbnailImage from "@/assets/cello_thumbnail.webp";
 import "@fontsource/geist-mono/100.css";
@@ -50,15 +51,32 @@ const { image, summary, url } = basics;
 		<KeyboardManager />
 	</body>
 </html>
-<style is:global>
+<style is:global define:vars={{treesBackgroundUrl: `url(${treesBackground.src})`}}>
 	html {
 		font-family: "GeistMono", monospace;
 		font-weight: 400;
-		background: var(--color-background);
+		background-image: 
+			radial-gradient(
+				circle at center,
+				rgba(var(--color-background-rgb), 0.97) 0%,
+				rgba(var(--color-background-rgb), 0.80) 100%
+			),
+			var(--treesBackgroundUrl);
+		background-size: cover;
+		background-position: center;
+		background-attachment: fixed;
 		color: var(--color-text);
 		letter-spacing: -0.025rem;
 	}
-	body,
+	body {
+		margin: 0;
+		padding: 0;
+		animation: fadeIn 0.5s ease-in-out 0.3s both;
+	}
+	@keyframes fadeIn {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	}
 	figure {
 		margin: 0;
 		padding: 0;
