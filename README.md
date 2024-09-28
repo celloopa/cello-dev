@@ -1,7 +1,7 @@
 <div align="center">
 <img src="logo.webp" height="90px" width="auto" /> 
 <h2>
-    <em>Reprogrammable JSON Resume</em> built by Cello Rondon (<a href="https://github.com/laztaxon">laztaxon</a>)</h2>
+    <em>Reprogrammable JSON Resume</em> built by Cello Rondon (<a href="https://github.com/designengineered">@designengineered</a>)</h2>
 <p>
 JSON schema from <a href="https://jsonresume.org/schema/">Open-Source jsonresume.org project</a>
 </p>
