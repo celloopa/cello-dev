@@ -4,7 +4,6 @@ import Section from "@/components/Section.astro";
 import "@/styles/colors.css";
 import Mail from "@/icons/Mail.astro";
 import Phone from "@/icons/Phone.astro";
-import X from "@/icons/X.astro";
 import LinkedIn from "@/icons/LinkedIn.astro";
 import GitHub from "@/icons/GitHub.astro";
 import WorldMap from "@/icons/WorldMap.astro";
@@ -12,6 +11,7 @@ import Sun from "@/icons/Sun.astro";
 import type { SocialIcon } from "@/types";
 import KeyboardShortcutsMenu from "@/components/svelte/KeyboardShortcutsMenu.svelte";
 import { toggleTheme, setInitialTheme } from "@/utils/themeToggle.js";
+import Bsky from "@/icons/Bsky.astro";
 
 const { name, label, image, location, profiles, phone, email } = basics;
 const { city, region } = location;
@@ -19,7 +19,7 @@ const { city, region } = location;
 const SOCIAL_ICONS: SocialIcon = {
 	GitHub,
 	LinkedIn,
-	X,
+	Bsky,
 };
 
 const linkedInfo = profiles.find(({ network }) => network === "LinkedIn");
@@ -335,4 +335,3 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		}
 	}
 </style>
-
