@@ -17,8 +17,14 @@ import "@/styles/colors.css";
 					highlights,
 					url,
 				}) => {
-					const startYear = new Date(startDate).getFullYear();
-					const endYear = endDate ? new Date(endDate).getFullYear() : "Present";
+					const startYear = new Date(
+						startDate,
+					).getFullYear();
+					const endYear = endDate
+						? new Date(
+								endDate,
+							).getFullYear()
+						: "Present";
 
 					return (
 						<li>
@@ -26,28 +32,74 @@ import "@/styles/colors.css";
 								<header>
 									<div>
 										<h3>
-											<a href={url} title={`View ${name}`} target="_blank">
-												{name}
+											<a
+												href={
+													url
+												}
+												title={`View ${name}`}
+												target="_blank"
+											>
+												{
+													name
+												}
 											</a>
 										</h3>
-										<h4>{position}</h4>
+										<h4>
+											{
+												position
+											}
+										</h4>
 									</div>
 									<div class="date-range">
-										<time datetime={startDate} data-title={startDate}>
-											{startYear}
+										<time
+											datetime={
+												startDate
+											}
+											data-title={
+												startDate
+											}
+										>
+											{
+												startYear
+											}
 										</time>
-										<span class="date-separator">-</span>
-										<time datetime={endDate || "Present"} data-title={endDate || "Present"}>
-											{endYear}
+										<span class="date-separator">
+											-
+										</span>
+										<time
+											datetime={
+												endDate ||
+												"Present"
+											}
+											data-title={
+												endDate ||
+												"Present"
+											}
+										>
+											{
+												endYear
+											}
 										</time>
 									</div>
 								</header>
 								<footer>
-									<h5>{summary}</h5>
+									<h5>
+										{
+											summary
+										}
+									</h5>
 									<div>
-										{highlights.map((highlight) => (
-											<p>{highlight}</p>
-										))}
+										{highlights.map(
+											(
+												highlight,
+											) => (
+												<p>
+													{
+														highlight
+													}
+												</p>
+											),
+										)}
 									</div>
 								</footer>
 							</article>
@@ -168,6 +220,7 @@ import "@/styles/colors.css";
 	@media (width <= 700px) {
 		time {
 			text-align: right;
+			margin-right: 0.5rem;
 		}
 		.date-range {
 			text-align: right;
