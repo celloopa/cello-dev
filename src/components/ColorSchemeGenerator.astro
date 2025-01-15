@@ -1,0 +1,226 @@
+---
+// ColorSchemeGenerator.astro
+---
+
+<div class="generator-wrapper">
+	<div class="input">
+		<input type="color" id="colorPicker" />
+		<select id="scheme-selector">
+			<option value="monochrome">Monochrome</option>
+			<option value="monochrome-dark">Monochrome-dark</option>
+			<option value="monochrome-light"
+				>Monochrome-light</option
+			>
+			<option value="analogic">Analogic</option>
+			<option value="complement">Complement</option>
+			<option value="analogic-complement"
+				>Analogic-complement</option
+			>
+			<option value="triad">Triad</option>
+			<option value="quad">Quad</option>
+		</select>
+		<button id="submit">Submit</button>
+	</div>
+	<div id="color-container"></div>
+</div>
+
+<style>
+	.generator-wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		row-gap: 2rem;
+		width: 100%;
+		max-width: 1200px;
+		margin: 0 auto;
+	}
+
+	.input {
+		display: flex;
+		justify-content: center;
+		gap: 1rem;
+		padding-block: 0.75rem;
+		flex-wrap: wrap;
+	}
+
+	#color-container {
+		display: flex;
+		justify-content: center;
+		/* flex-wrap: wrap; */
+		gap: 0rem;
+		width: 100%;
+		padding: 0 1rem;
+	}
+	/* @media (max-width: 568px) { */
+	/* 	:global(.color-div) { */
+	/* 		flex: 1 1 calc(33.333% - 1rem); */
+	/* 		min-width: min(150px, calc(33.333% - 1rem)); */
+	/* 		max-width: calc(33.333% - 1rem); */
+	/* 	} */
+	/* } */
+	button,
+	input,
+	select {
+		cursor: pointer;
+		text-align: center;
+		border-style: solid;
+		border-radius: 8px;
+		border-color: var(--color-accent);
+		background-color: var(--color-accent);
+		color: var(--color-text);
+		font-weight: 600;
+		padding: 0rem 0.25rem;
+	}
+
+	button:hover,
+	input:hover,
+	select:hover {
+		background-color: transparent;
+		border-color: var(--color-text);
+	}
+
+	:global(.color-div) {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	:global(.color-block) {
+		cursor: pointer;
+		aspect-ratio: 1/2;
+		padding: 0;
+		height: 8rem;
+		margin-bottom: 2px;
+		border-radius: 12px;
+		border-style: solid;
+		border-color: var(--color-accent);
+	}
+
+	:global(.hex-text) {
+		font-size: 0.75rem;
+		cursor: pointer;
+	}
+
+	:global(.hex-text:hover) {
+		color: var(--color-accent);
+	}
+
+	:global(.color-block:hover) {
+		border-color: var(--color-text);
+	}
+
+	:global(.tooltip) {
+		position: absolute;
+		background: var(--color-accent);
+		padding: 0.25rem 0.5rem;
+		border-radius: 4px;
+		font-size: 0.75rem;
+		transform: translateY(-2.75rem);
+	}
+</style>
+
+<script>
+	async function getScheme(hexColor, scheme) {
+		let count;
+		switch (scheme) {
+			case "monochrome":
+			case "monochrome-dark":
+			case "monochrome-light":
+			case "analogic":
+				count = 5;
+				break;
+			case "complement":
+			case "quad":
+				count = 4;
+				break;
+			case "triad":
+				count = 3;
+				break;
+			case "analogic-complement":
+				count = 6;
+				break;
+			default:
+				count = 5;
+		}
+		try {
+			const response = await fetch(
+				`https://www.thecolorapi.com/scheme?hex=${hexColor.replace("#", "")}&mode=${scheme}&count=${count}`,
+			);
+			if (!response.ok) {
+				throw new Error(
+					`HTTP error! status: ${response.status}`,
+				);
+			}
+			const data = await response.json();
+			return data;
+		} catch (error) {
+			console.error("Error fetching color info:", error);
+		}
+	}
+
+	async function handleSubmit() {
+		const hex = document.getElementById("colorPicker").value;
+		const mode = document.getElementById("scheme-selector").value;
+		const result = await getScheme(hex, mode);
+
+		if (!result) return;
+
+		const container = document.getElementById("color-container");
+		container.innerHTML = "";
+		result.colors.forEach((color) => {
+			const wrapper = document.createElement("div");
+			wrapper.className = "color-div";
+			const colorDiv = document.createElement("div");
+			colorDiv.className = "color-block";
+			colorDiv.style.backgroundColor = color.hex.value;
+
+			const hexText = document.createElement("p");
+			hexText.className = "hex-text";
+			hexText.textContent = color.hex.value;
+
+			const copyHex = () => {
+				navigator.clipboard
+					.writeText(color.hex.value)
+					.then(() => {
+						const tooltip =
+							document.createElement(
+								"span",
+							);
+						tooltip.textContent = "Copied!";
+						tooltip.className = "tooltip";
+						wrapper.appendChild(tooltip);
+						setTimeout(
+							() => tooltip.remove(),
+							1000,
+						);
+					});
+			};
+
+			colorDiv.addEventListener("click", copyHex);
+			hexText.addEventListener("click", copyHex);
+
+			wrapper.appendChild(colorDiv);
+			wrapper.appendChild(hexText);
+			container.appendChild(wrapper);
+		});
+	}
+
+	// Initialize event listeners
+	document.addEventListener("DOMContentLoaded", () => {
+		document.getElementById("submit")?.addEventListener(
+			"click",
+			handleSubmit,
+		);
+
+		const themeToggle = document.getElementById("theme-toggle");
+		themeToggle?.addEventListener("click", () => {
+			const root = document.documentElement;
+			const currentTheme =
+				root.getAttribute("data-theme") || "dark";
+			root.setAttribute(
+				"data-theme",
+				currentTheme === "dark" ? "light" : "dark",
+			);
+		});
+	});
+</script>

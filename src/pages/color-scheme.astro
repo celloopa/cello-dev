@@ -1,19 +1,15 @@
 ---
 import Layout from "@/layouts/blogLayout.astro";
-import TestComponent from "@/components/svelte/TestComponent.svelte";
 import "@/styles/colors.css";
 import Sun from "@/icons/Sun.astro";
-import KeyboardManager from "@/components/KeyboardManager.astro";
+import ColorSchemeGenerator from "@/components/ColorSchemeGenerator.astro";
 ---
 
-<Layout title=`Cello's Devlog - infinityCanvas`>
+<Layout title=`Color Scheme Generator`>
 	<div class="content-wrapper">
 		<header>
 			<div class="container">
-				<h1>
-					infinityCanvas - illustrated reflections
-					on code and design
-				</h1>
+				<h1>Projects</h1>
 				<div class="button-group">
 					<a href="/" class="button-link">🏠</a>
 					<button onclick="toggleTheme()"
@@ -30,12 +26,8 @@ import KeyboardManager from "@/components/KeyboardManager.astro";
 			</div>
 		</header>
 		<main class="hero">
-			<h2 class="hero-title">Blog - COMING SOON</h2>
-			<p>
-				We're working hard to bring you amazing content.
-				Stay tuned!
-			</p>
-			<!-- <TestComponent client:only="svelte" /> -->
+			<h2 class="hero-title">Color Scheme Generator</h2>
+			<ColorSchemeGenerator />
 		</main>
 	</div>
 </Layout>
@@ -157,6 +149,7 @@ import KeyboardManager from "@/components/KeyboardManager.astro";
 	.hero-title {
 		font-size: 2rem;
 		margin-bottom: 1rem;
+		text-align: center;
 	}
 	p {
 		font-size: 1.2rem;
@@ -188,4 +181,3 @@ import KeyboardManager from "@/components/KeyboardManager.astro";
 		}
 	}
 </style>
-
