@@ -46,18 +46,12 @@
 	#color-container {
 		display: flex;
 		justify-content: center;
-		/* flex-wrap: wrap; */
-		gap: 0rem;
+		/* Reduced gap from 1rem to 0.5rem to bring color blocks closer together while keeping single row */
+		gap: 0.5rem;
 		width: 100%;
 		padding: 0 1rem;
 	}
-	/* @media (max-width: 568px) { */
-	/* 	:global(.color-div) { */
-	/* 		flex: 1 1 calc(33.333% - 1rem); */
-	/* 		min-width: min(150px, calc(33.333% - 1rem)); */
-	/* 		max-width: calc(33.333% - 1rem); */
-	/* 	} */
-	/* } */
+
 	button,
 	input,
 	select {
@@ -120,8 +114,45 @@
 </style>
 
 <script>
-	async function getScheme(hexColor, scheme) {
-		let count;
+	interface ColorResponse {
+		hex: {
+			value: string;
+			clean: string;
+		};
+		rgb: {
+			value: string;
+		};
+		name: {
+			value: string;
+		};
+	}
+
+	interface SchemeResponse {
+		mode: string;
+		count: number;
+		colors: ColorResponse[];
+		seed: {
+			hex: {
+				value: string;
+			};
+		};
+	}
+
+	type SchemeType =
+		| "monochrome"
+		| "monochrome-dark"
+		| "monochrome-light"
+		| "analogic"
+		| "complement"
+		| "analogic-complement"
+		| "triad"
+		| "quad";
+
+	async function getScheme(
+		hexColor: string,
+		scheme: SchemeType,
+	): Promise<SchemeResponse | undefined> {
+		let count: number;
 		switch (scheme) {
 			case "monochrome":
 			case "monochrome-dark":
@@ -151,25 +182,39 @@
 					`HTTP error! status: ${response.status}`,
 				);
 			}
-			const data = await response.json();
+			const data: SchemeResponse = await response.json();
 			return data;
 		} catch (error) {
 			console.error("Error fetching color info:", error);
+			return undefined;
 		}
 	}
 
 	async function handleSubmit() {
-		const hex = document.getElementById("colorPicker").value;
-		const mode = document.getElementById("scheme-selector").value;
+		const colorPicker = document.getElementById(
+			"colorPicker",
+		) as HTMLInputElement | null;
+		const schemeSelector = document.getElementById(
+			"scheme-selector",
+		) as HTMLSelectElement | null;
+		const container = document.getElementById("color-container");
+
+		if (!colorPicker || !schemeSelector || !container) {
+			console.error("Required elements not found");
+			return;
+		}
+
+		const hex = colorPicker.value;
+		const mode = schemeSelector.value as SchemeType;
 		const result = await getScheme(hex, mode);
 
 		if (!result) return;
 
-		const container = document.getElementById("color-container");
 		container.innerHTML = "";
-		result.colors.forEach((color) => {
+		result.colors.forEach((color: ColorResponse) => {
 			const wrapper = document.createElement("div");
 			wrapper.className = "color-div";
+
 			const colorDiv = document.createElement("div");
 			colorDiv.className = "color-block";
 			colorDiv.style.backgroundColor = color.hex.value;
@@ -207,20 +252,9 @@
 
 	// Initialize event listeners
 	document.addEventListener("DOMContentLoaded", () => {
-		document.getElementById("submit")?.addEventListener(
-			"click",
-			handleSubmit,
-		);
-
-		const themeToggle = document.getElementById("theme-toggle");
-		themeToggle?.addEventListener("click", () => {
-			const root = document.documentElement;
-			const currentTheme =
-				root.getAttribute("data-theme") || "dark";
-			root.setAttribute(
-				"data-theme",
-				currentTheme === "dark" ? "light" : "dark",
-			);
-		});
+		const submitButton = document.getElementById("submit");
+		if (submitButton) {
+			submitButton.addEventListener("click", handleSubmit);
+		}
 	});
 </script>
