@@ -6,7 +6,7 @@
     "email": "cello@cello.design",
     "phone": "(305) 496-0039",
     "url": "https://www.cello.design",
-    "summary": "Hey! I'm Cello, a designer who codes. I work in the intersection of creativity and functionality. My professional journey is rooted in the art of visual storytelling and robust systems management, balancing aesthetic precision with efficient process automation. I approach design and development with a purpose-driven ethos. My recent endeavors focus on automating and documenting essential workflows, enhancing productivity and transparency. Eager to pivot towards a more full-stack role, I am committed to mastering new technologies and methodologies that drive innovation and achieve strategic goals.",
+    "summary": "I'm Cello, a designer who codes, working at the intersection of creativity and functionality. My design experience spans diverse mediums, from packaging and print to web and digital marketing, with a focus on leveraging programming to build scalable design systems and streamline workflows. Proficient in languages like Python and Go, I've developed tools to automate tasks such as generating HTML components from product data and lab certificates, significantly reducing manual updates and improving data accuracy. Additionally, I've created PHP plugins with JS, CSS, and HTML to add custom functionality and UI enhancements to our WordPress site.",
     "location": {
       "address": "13608 NW 145th Ave.",
       "postalCode": "FL 32615",
@@ -41,11 +41,11 @@
       "endDate": "",
       "summary": "Implemented a centralized design and style system, enhancing productivity and brand coherence across packaging, web, print, and marketing.",
       "highlights": [
-        "Initiated as the sole designer, focusing on all key design aspects from packaging to digital marketing, then expanded to head a team of designers enabling effective management of diverse design tasks while maintaining high-quality standards.",
-        "Spearheaded the development of a comprehensive design and style system that standardized processes and ensured consistency across all marketing and product mediums.",
+        "Implemented centralized branding guidelines and a scalable design system in Figma, Canva, and the Adobe Suite, improving productivity and brand coherence across packaging, web, print, and marketing.",
+        "Began as the sole designer, focusing on all key design aspects from packaging to digital marketing, then expanded to head a team of designers enabling effective management of diverse design tasks while maintaining high-quality standards.",
         "Organized and managed a growing library of company assets, improving design workflow and asset reuse across projects.",
         "Instrumental in transforming brand image through meticulous design upgrades, directly impacting customer engagement and satisfaction through strategic planning and execution of integrated marketing campaigns that significantly boosted the company's online presence and sales.",
-        "Documented and standardized company design practices, reducing time spent on project onboarding and enhancing team efficiency."
+        "Coded automation tools in Python/Golang to process/maintain product data, as well as reusable UI components and implemented them on Wordpress sites through PHP, Javascript, HTML/CSS plugins."
       ]
     },
     {
@@ -92,6 +92,17 @@
       "summary": "Led a team of photographers and managed artistic direction for various events, capturing impactful visual stories.",
       "highlights": [
         "Developed artistic direction for fundraising events, utilizing design and photography skills to enhance event visibility and engagement."
+      ]
+    },
+    {
+      "name": "Looking 4 Good Charity Stream",
+      "position": "Social Media Manager",
+      "url": "https://arts.ufl.edu/in-the-loop/news/students-raise-over-2-000-in-24-hour-charity-game-stream/",
+      "startDate": "2019-04",
+      "endDate": "2019-04",
+      "summary": "Photographed, assisted in production and promoted Looking 4 Good’s charity stream prior and during the 24-hour livestream event through social media. Coverage included Twitch, Instagram, Facebook and Twitter.",
+      "highlights": [
+        "Raised over $2,100 for victim support of the Christchurch victims in New Zealand through the livestream."
       ]
     },
     {
@@ -145,7 +156,7 @@
   "certificates": [
     {
       "name": "Certificate",
-      "date": "2021-11-07",
+      "date": "2021-08",
       "issuer": "Company",
       "url": "https://certificate.com"
     }
