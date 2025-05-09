@@ -10,16 +10,16 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.3",
-    "@astrojs/mdx": "^3.1.4",
-    "@astrojs/svelte": "^5.7.0",
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/mdx": "^4.2.6",
+    "@astrojs/svelte": "^7.0.13",
     "@fontsource/geist-mono": "^5.0.3",
-    "astro": "^4.14.5",
-    "svelte": "^4.2.18",
+    "astro": "^5.7.12",
+    "svelte": "^5.28.2",
     "typescript": "^5.5.4"
   },
   "devDependencies": {
-    "@astrojs/ts-plugin": "^1.10.1",
+    "@astrojs/ts-plugin": "^1.10.4",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.13.0"
   }
