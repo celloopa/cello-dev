@@ -10,7 +10,7 @@ const navItems = [
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="site-header has-texture">
+<header class="site-header">
 	<nav class="nav-container">
 		<a href="/" class="logo">
 			<img src="/images/favicon.svg" alt="Logo" class="logo-img" />
@@ -84,8 +84,24 @@ const currentPath = Astro.url.pathname;
 		position: sticky;
 		top: 0;
 		z-index: 100;
-		background: var(--color-background);
+		background: color-mix(in srgb, var(--color-background) 10%, transparent);
 		margin-bottom: 5.5rem;
+	}
+
+	.site-header::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		height: 3rem;
+		transform: translateY(100%);
+		background: linear-gradient(
+			to bottom,
+			color-mix(in srgb, var(--color-background) 20%, transparent),
+			transparent
+		);
+		pointer-events: none;
 	}
 
 	.nav-container {
@@ -109,6 +125,7 @@ const currentPath = Astro.url.pathname;
 		width: 56px;
 		height: 56px;
 		transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		filter: drop-shadow(0 2px 8px rgba(var(--color-background-rgb), 0.6));
 	}
 
 	.logo:hover .logo-img {
@@ -148,6 +165,7 @@ const currentPath = Astro.url.pathname;
 		color: var(--color-text);
 		border: 2px solid transparent;
 		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		text-shadow: 0 2px 8px rgba(var(--color-background-rgb), 0.6);
 	}
 
 	.nav-link::after {
@@ -196,6 +214,7 @@ const currentPath = Astro.url.pathname;
 		opacity: 0;
 		animation: headerSlideRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
 		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		box-shadow: 0 2px 8px rgba(var(--color-background-rgb), 0.6);
 	}
 
 	.menu-btn:hover {
@@ -230,6 +249,7 @@ const currentPath = Astro.url.pathname;
 		letter-spacing: 0.1em;
 		color: var(--color-text);
 		transition: color 0.3s ease;
+		text-shadow: 0 2px 8px rgba(var(--color-background-rgb), 0.6);
 	}
 
 	@keyframes headerSlideLeft {
