@@ -9,14 +9,6 @@ const currentYear = new Date().getFullYear()
 			<span class="footer-bar"></span>
 			<p>Designed & Built by Cello</p>
 		</div>
-		<button
-			id="keyboard-indicator"
-			class="keyboard-indicator"
-			aria-label="Keyboard shortcuts menu"
-		>
-			<span class="key"></span>
-			<span class="label">Menu</span>
-		</button>
 		<div class="footer-right">
 			<p>{currentYear}</p>
 			<span class="footer-bar"></span>
@@ -57,53 +49,6 @@ const currentYear = new Date().getFullYear()
 		background: var(--color-accent);
 	}
 
-	.keyboard-indicator {
-		display: flex;
-		align-items: center;
-		gap: 0.25rem;
-		background: transparent;
-		border: 3px solid var(--color-text);
-		padding: 0.5rem 0.75rem;
-		cursor: pointer;
-		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-	}
-
-	.keyboard-indicator:hover,
-	.keyboard-indicator.active {
-		background: var(--color-accent);
-		border-color: var(--color-accent);
-		color: var(--color-background);
-	}
-
-	.keyboard-indicator:hover .key,
-	.keyboard-indicator.active .key {
-		background: var(--color-background);
-		color: var(--color-accent);
-	}
-
-	.keyboard-indicator:hover .label,
-	.keyboard-indicator.active .label {
-		color: var(--color-background);
-	}
-
-	.key {
-		display: inline-block;
-		background: var(--color-text);
-		color: var(--color-background);
-		font-size: 0.75rem;
-		font-weight: 700;
-		padding: 0.25rem 0.5rem;
-		letter-spacing: 0.05em;
-	}
-
-	.label {
-		font-size: 0.85rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		color: var(--color-text);
-	}
-
 	p {
 		color: var(--color-text);
 		font-size: 0.85rem;
@@ -121,7 +66,7 @@ const currentYear = new Date().getFullYear()
 
 		.footer-content {
 			flex-direction: column;
-			gap: 1.5rem;
+			gap: 1rem;
 		}
 
 		.footer-left,
@@ -134,92 +79,9 @@ const currentYear = new Date().getFullYear()
 			display: none;
 		}
 
-		.keyboard-indicator {
-			width: 100%;
-			justify-content: center;
-		}
-
 		p {
 			font-size: 0.8rem;
 		}
 	}
 </style>
 
-<script>
-	// Define the custom event interface
-	interface MenuVisibilityChangedEvent extends CustomEvent {
-		detail: { isVisible: boolean };
-	}
-
-	// Extend the WindowEventMap to include our custom event
-	declare global {
-		interface WindowEventMap {
-			menuVisibilityChanged: MenuVisibilityChangedEvent;
-		}
-	}
-
-	const keyboardIndicator = document.getElementById("keyboard-indicator");
-	const keySpan = keyboardIndicator?.querySelector<HTMLElement>(".key");
-
-	function detectOS() {
-		const userAgent = navigator.userAgent.toLowerCase();
-		// Check for Apple devices (Mac, iPhone, iPad)
-		if (
-			userAgent.includes("mac") ||
-			userAgent.includes("iphone") ||
-			userAgent.includes("ipad")
-		)
-			return "mac";
-		if (userAgent.includes("win")) return "windows";
-		if (userAgent.includes("linux")) return "linux";
-		return "other";
-	}
-
-	function isTouchDevice() {
-		return "ontouchstart" in window || navigator.maxTouchPoints > 0;
-	}
-
-	const isMac = detectOS() === "mac";
-	const isTouch = isTouchDevice();
-
-	if (keyboardIndicator && keySpan) {
-		// Hide keyboard shortcut on touch devices
-		if (isTouch) {
-			keySpan.style.display = "none";
-		} else {
-			keySpan.textContent = isMac ? "⌘K" : "Ctrl+K";
-		}
-
-		keyboardIndicator.addEventListener("click", () => {
-			window.dispatchEvent(
-				new CustomEvent("toggleKeyboardMenu"),
-			);
-		});
-	}
-
-	window.addEventListener("menuVisibilityChanged", (event) => {
-		if (event.detail.isVisible) {
-			keyboardIndicator?.classList.add("active");
-		} else {
-			keyboardIndicator?.classList.remove("active");
-		}
-	});
-
-	// Add a theme change listener
-	const observer = new MutationObserver((mutations) => {
-		mutations.forEach((mutation) => {
-			if (
-				mutation.type === "attributes" &&
-				mutation.attributeName === "data-theme"
-			) {
-				// Theme has changed, ensure the button is not stuck in active state
-				keyboardIndicator?.classList.remove("active");
-			}
-		});
-	});
-
-	observer.observe(document.documentElement, {
-		attributes: true,
-		attributeFilter: ["data-theme"],
-	});
-</script>

@@ -3,6 +3,7 @@ import "@/styles/colors.css";
 
 const navItems = [
 	{ label: "Projects", href: "/projects" },
+	{ label: "Visuals", href: "/visuals" },
 	{ label: "Resume", href: "/resume" },
 ];
 
@@ -84,6 +85,7 @@ const currentPath = Astro.url.pathname;
 		top: 0;
 		z-index: 100;
 		background: var(--color-background);
+		margin-bottom: 8rem;
 	}
 
 	.nav-container {
@@ -266,9 +268,8 @@ const currentPath = Astro.url.pathname;
 			height: 44px;
 		}
 
-		.nav-link {
-			padding: 0.4rem 0.6rem;
-			font-size: 0.75rem;
+		.nav-links {
+			display: none;
 		}
 
 		.menu-btn {

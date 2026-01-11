@@ -31,4 +31,18 @@ const projects = defineCollection({
 	}),
 });
 
-export const collections = { projects };
+const visuals = defineCollection({
+	type: "content",
+	schema: z.object({
+		title: z.string(),
+		description: z.string(),
+		category: z.enum(["packaging", "graphic", "motion", "video", "photography"]),
+		image: z.string().optional(),
+		tags: z.array(z.string()).optional(),
+		featured: z.boolean().default(false),
+		order: z.number().default(0),
+		media: z.array(mediaGallery).optional(),
+	}),
+});
+
+export const collections = { projects, visuals };

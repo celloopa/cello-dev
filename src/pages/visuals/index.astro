@@ -1,0 +1,87 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import VisualsCard from "@/components/VisualsCard.astro";
+import "@/styles/colors.css";
+
+const visuals = await getCollection("visuals");
+const sortedVisuals = visuals
+	.filter((v) => !v.slug.startsWith("_"))
+	.sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout title="Visuals - Marcelo Rondon">
+	<Section>
+		<h1>Visuals</h1>
+		<p class="intro">A collection of photography and design work samples.</p>
+	</Section>
+
+	<Section>
+		<div class="visuals-grid">
+			{sortedVisuals.map((item, i) => (
+				<VisualsCard
+					title={item.data.title}
+					description={item.data.description}
+					category={item.data.category}
+					image={item.data.image}
+					tags={item.data.tags}
+					slug={item.slug}
+					index={i}
+				/>
+			))}
+		</div>
+	</Section>
+</Layout>
+
+<script is:inline>
+	function setTheme(theme) {
+		document.documentElement.setAttribute("data-theme", theme);
+		localStorage.setItem("theme", theme);
+	}
+
+	document.addEventListener("DOMContentLoaded", () => {
+		const savedTheme = localStorage.getItem("theme") || "dark";
+		setTheme(savedTheme);
+	});
+
+	document.addEventListener("astro:after-swap", () => {
+		const savedTheme = localStorage.getItem("theme") || "dark";
+		setTheme(savedTheme);
+	});
+</script>
+
+<style>
+	h1 {
+		font-size: 2.5rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--color-accent);
+		margin-bottom: 0;
+	}
+
+	.intro {
+		color: var(--color-text);
+		opacity: 0.8;
+		margin-top: 0.5rem;
+	}
+
+	.visuals-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 2rem;
+	}
+
+	@media (width <= 900px) {
+		.visuals-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (width <= 700px) {
+		.visuals-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

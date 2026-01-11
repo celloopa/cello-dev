@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Section from "@/components/Section.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
+import VisualsCard from "@/components/VisualsCard.astro";
 import { basics } from "@cv";
 import "@/styles/colors.css";
 import Mail from "@/icons/Mail.astro";
@@ -23,6 +24,11 @@ const SOCIAL_ICONS: SocialIcon = {
 const allProjects = await getCollection("projects");
 const featuredProjects = allProjects
 	.filter((p) => p.data.featured)
+	.sort((a, b) => a.data.order - b.data.order);
+
+const allVisuals = await getCollection("visuals");
+const featuredVisuals = allVisuals
+	.filter((v) => v.data.featured && !v.slug.startsWith("_"))
 	.sort((a, b) => a.data.order - b.data.order);
 ---
 
@@ -65,6 +71,7 @@ const featuredProjects = allProjects
 		</div>
 	</section>
 
+	<div class="projects-section-wrapper">
 	<Section title="Projects">
 		<div class="bar section-bar"></div>
 		<div class="projects-grid">
@@ -88,6 +95,34 @@ const featuredProjects = allProjects
 			</svg>
 		</a>
 	</Section>
+	</div>
+
+	{featuredVisuals.length > 0 && (
+		<div class="visuals-section-wrapper">
+			<Section title="Visuals">
+				<div class="bar section-bar"></div>
+				<div class="visuals-grid">
+					{featuredVisuals.map((item, i) => (
+						<VisualsCard
+							title={item.data.title}
+							description={item.data.description}
+							category={item.data.category}
+							image={item.data.image}
+							tags={item.data.tags}
+							slug={item.slug}
+							index={i}
+						/>
+					))}
+				</div>
+				<a href="/visuals" class="view-all visuals-view-all">
+					<span>All Visuals</span>
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+						<path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+				</a>
+			</Section>
+		</div>
+	)}
 </Layout>
 
 <script is:inline>
@@ -160,7 +195,7 @@ const featuredProjects = allProjects
 		grid-template-columns: 1fr auto;
 		gap: 4rem;
 		align-items: center;
-		min-height: 80vh;
+		min-height: 40vh;
 		padding: 2rem;
 		max-width: 1100px;
 		margin: 0 auto;
@@ -352,6 +387,24 @@ const featuredProjects = allProjects
 		gap: 2rem;
 	}
 
+	.projects-section-wrapper {
+		margin-top: 8rem;
+	}
+
+	.visuals-section-wrapper {
+		margin-top: 8rem;
+	}
+
+	.visuals-section-wrapper :global(.card) {
+		--color-accent: var(--color-sunset);
+	}
+
+	.visuals-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 2rem;
+	}
+
 	.view-all {
 		display: inline-flex;
 		align-items: center;
@@ -413,6 +466,12 @@ const featuredProjects = allProjects
 		}
 	}
 
+	@media (width <= 900px) {
+		.visuals-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
 	@media (width <= 700px) {
 		.hero {
 			grid-template-columns: 1fr;
@@ -461,6 +520,10 @@ const featuredProjects = allProjects
 		}
 
 		.projects-grid {
+			grid-template-columns: 1fr;
+		}
+
+		.visuals-grid {
 			grid-template-columns: 1fr;
 		}
 	}

@@ -17,6 +17,7 @@
       shortcuts: [
         { key: "h", label: "Home", action: () => navigate("/") },
         { key: "p", label: "Projects", action: () => navigate("/projects") },
+        { key: "v", label: "Visuals", action: () => navigate("/visuals") },
         { key: "r", label: "Resume", action: () => navigate("/resume") },
         {
           key: "b",
