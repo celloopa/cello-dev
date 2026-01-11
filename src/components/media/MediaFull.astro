@@ -52,15 +52,16 @@ const isVideo = src?.endsWith('.webm') || src?.endsWith('.mp4');
 		transition: filter 0.3s ease;
 	}
 
-	.media-full .project-media {
+	.media-full img.project-media {
 		max-height: 600px;
 		object-fit: cover;
 	}
 
-	video.project-media {
+	.media-full video.project-media {
 		height: auto;
 		aspect-ratio: auto;
 		max-height: none;
+		object-fit: contain;
 	}
 
 	.project-media:hover {
@@ -79,7 +80,7 @@ const isVideo = src?.endsWith('.webm') || src?.endsWith('.mp4');
 	}
 
 	@media (width <= 700px) {
-		.media-full .project-media {
+		.media-full img.project-media {
 			max-height: 300px;
 		}
 	}

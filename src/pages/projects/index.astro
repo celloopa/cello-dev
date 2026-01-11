@@ -67,8 +67,8 @@ const sortedProjects = projects.sort((a, b) => a.data.order - b.data.order);
 
 	.projects-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-		gap: 1.5rem;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 2rem;
 	}
 
 	@media (width <= 700px) {

@@ -2,7 +2,6 @@
 import "@/styles/colors.css";
 
 const navItems = [
-	{ label: "Home", href: "/" },
 	{ label: "Projects", href: "/projects" },
 	{ label: "Resume", href: "/resume" },
 ];
@@ -15,20 +14,69 @@ const currentPath = Astro.url.pathname;
 		<a href="/" class="logo">
 			<img src="/images/favicon.svg" alt="Logo" class="logo-img" />
 		</a>
-		<ul class="nav-links">
-			{navItems.map((item, i) => (
-				<li class="nav-item" style={`--delay: ${i * 0.1}s`}>
-					<a
-						href={item.href}
-						class:list={["nav-link", { active: currentPath === item.href || (item.href !== "/" && currentPath.startsWith(item.href)) }]}
-					>
-						{item.label}
-					</a>
-				</li>
-			))}
-		</ul>
+		<div class="nav-right">
+			<ul class="nav-links">
+				{navItems.map((item, i) => (
+					<li class="nav-item" style={`--delay: ${i * 0.1}s`}>
+						<a
+							href={item.href}
+							class:list={["nav-link", { active: currentPath === item.href || (item.href !== "/" && currentPath.startsWith(item.href)) }]}
+						>
+							{item.label}
+						</a>
+					</li>
+				))}
+			</ul>
+			<button id="header-menu-btn" class="menu-btn" aria-label="Open menu">
+				<span class="menu-key"></span>
+				<span class="menu-label">Menu</span>
+			</button>
+		</div>
 	</nav>
 </header>
+
+<script>
+	function initHeaderMenu() {
+		const menuBtn = document.getElementById("header-menu-btn");
+		const menuKey = menuBtn?.querySelector(".menu-key");
+		const menuLabel = menuBtn?.querySelector(".menu-label");
+
+		function detectOS() {
+			const userAgent = navigator.userAgent.toLowerCase();
+			if (
+				userAgent.includes("mac") ||
+				userAgent.includes("iphone") ||
+				userAgent.includes("ipad")
+			)
+				return "mac";
+			if (userAgent.includes("win")) return "windows";
+			if (userAgent.includes("linux")) return "linux";
+			return "other";
+		}
+
+		function isTouchDevice() {
+			return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+		}
+
+		const isMac = detectOS() === "mac";
+		const isTouch = isTouchDevice();
+
+		if (menuBtn && menuKey && menuLabel) {
+			if (isTouch) {
+				menuKey.style.display = "none";
+			} else {
+				menuKey.textContent = isMac ? "⌘K" : "Ctrl+K";
+			}
+
+			menuBtn.addEventListener("click", () => {
+				window.dispatchEvent(new CustomEvent("toggleKeyboardMenu"));
+			});
+		}
+	}
+
+	document.addEventListener("DOMContentLoaded", initHeaderMenu);
+	document.addEventListener("astro:after-swap", initHeaderMenu);
+</script>
 
 <style>
 	.site-header {
@@ -63,6 +111,12 @@ const currentPath = Astro.url.pathname;
 
 	.logo:hover .logo-img {
 		transform: scale(1.15) rotate(-5deg);
+	}
+
+	.nav-right {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
 	}
 
 	.nav-links {
@@ -129,6 +183,53 @@ const currentPath = Astro.url.pathname;
 		transform: none;
 	}
 
+	.menu-btn {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+		padding: 0.5rem 0.75rem;
+		background: transparent;
+		border: 2px solid var(--color-text);
+		cursor: pointer;
+		opacity: 0;
+		animation: headerSlideRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.menu-btn:hover {
+		background: var(--color-accent);
+		border-color: var(--color-accent);
+	}
+
+	.menu-btn:hover .menu-key {
+		background: var(--color-background);
+		color: var(--color-accent);
+	}
+
+	.menu-btn:hover .menu-label {
+		color: var(--color-background);
+	}
+
+	.menu-key {
+		display: inline-block;
+		background: var(--color-text);
+		color: var(--color-background);
+		font-size: 0.7rem;
+		font-weight: 700;
+		padding: 0.15rem 0.35rem;
+		letter-spacing: 0.03em;
+		transition: all 0.3s ease;
+	}
+
+	.menu-label {
+		font-size: 0.8rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--color-text);
+		transition: color 0.3s ease;
+	}
+
 	@keyframes headerSlideLeft {
 		from {
 			opacity: 0;
@@ -156,6 +257,10 @@ const currentPath = Astro.url.pathname;
 			padding: 0.75rem 1rem;
 		}
 
+		.nav-right {
+			gap: 0.5rem;
+		}
+
 		.logo-img {
 			width: 44px;
 			height: 44px;
@@ -163,6 +268,14 @@ const currentPath = Astro.url.pathname;
 
 		.nav-link {
 			padding: 0.4rem 0.6rem;
+			font-size: 0.75rem;
+		}
+
+		.menu-btn {
+			padding: 0.4rem 0.6rem;
+		}
+
+		.menu-label {
 			font-size: 0.75rem;
 		}
 	}

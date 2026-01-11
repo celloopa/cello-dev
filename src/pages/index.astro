@@ -26,12 +26,11 @@ const featuredProjects = allProjects
 	.sort((a, b) => a.data.order - b.data.order);
 ---
 
-<Layout title={`${name} - ${label}`}>
+<Layout title={`Cello - ${label}`}>
 	<section class="hero">
 		<div class="hero-content">
 			<div class="title-block">
-				<h1 class="name">{name.split(" ")[0]}</h1>
-				<h1 class="surname">{name.split(" ")[1]}</h1>
+				<h1 class="nickname" id="typewriter-name"><span class="typewriter-text"></span><span class="cursor">|</span></h1>
 				<div class="bar"></div>
 			</div>
 			<p class="label">{label}</p>
@@ -63,10 +62,6 @@ const featuredProjects = allProjects
 					<Sun />
 				</button>
 			</div>
-			<button class="keyboard-hint" id="hero-keyboard-hint" aria-label="Open keyboard shortcuts">
-				<span class="hint-key"></span>
-				<span class="hint-label">Menu</span>
-			</button>
 		</div>
 	</section>
 
@@ -107,30 +102,55 @@ const featuredProjects = allProjects
 		setTheme(newTheme);
 	}
 
-	function initKeyboardHint() {
-		const heroKeyboardHint = document.getElementById("hero-keyboard-hint");
-		const hintKey = heroKeyboardHint?.querySelector(".hint-key");
+	// Typewriter animation
+	function initTypewriter() {
+		const text = "Cello";
+		const element = document.querySelector(".typewriter-text");
+		if (!element) return;
 
-		if (heroKeyboardHint && hintKey) {
-			const isMac = navigator.userAgent.toLowerCase().includes("mac");
-			hintKey.textContent = isMac ? "⌘K" : "Ctrl+K";
+		const typeSpeed = 150;
+		const eraseSpeed = 100;
+		const pauseAfterType = 2000;
+		const pauseAfterErase = 500;
 
-			heroKeyboardHint.addEventListener("click", () => {
-				window.dispatchEvent(new CustomEvent("toggleKeyboardMenu"));
-			});
+		let charIndex = 0;
+		let isTyping = true;
+
+		function type() {
+			if (charIndex < text.length) {
+				element.textContent = text.substring(0, charIndex + 1);
+				charIndex++;
+				setTimeout(type, typeSpeed);
+			} else {
+				isTyping = false;
+				setTimeout(erase, pauseAfterType);
+			}
 		}
+
+		function erase() {
+			if (charIndex > 0) {
+				element.textContent = text.substring(0, charIndex - 1);
+				charIndex--;
+				setTimeout(erase, eraseSpeed);
+			} else {
+				isTyping = true;
+				setTimeout(type, pauseAfterErase);
+			}
+		}
+
+		type();
 	}
 
 	document.addEventListener("DOMContentLoaded", () => {
 		const savedTheme = localStorage.getItem("theme") || "dark";
 		setTheme(savedTheme);
-		initKeyboardHint();
+		initTypewriter();
 	});
 
 	document.addEventListener("astro:after-swap", () => {
 		const savedTheme = localStorage.getItem("theme") || "dark";
 		setTheme(savedTheme);
-		initKeyboardHint();
+		initTypewriter();
 	});
 </script>
 
@@ -154,21 +174,47 @@ const featuredProjects = allProjects
 		margin-bottom: 1.5rem;
 	}
 
-	.name {
-		font-size: clamp(4rem, 12vw, 7rem);
-		line-height: 0.85;
-		margin: 0;
-		padding: 0;
-		animation: slideLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-	}
-
-	.surname {
-		font-size: clamp(4rem, 12vw, 7rem);
-		line-height: 0.85;
+	h1.nickname {
+		font-size: 10rem !important;
+		line-height: 1 !important;
 		margin: 0;
 		padding: 0;
 		color: var(--color-accent);
-		animation: slideLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+		display: inline-flex;
+		align-items: baseline;
+		letter-spacing: normal;
+		white-space: nowrap;
+	}
+
+	@media (max-width: 900px) {
+		h1.nickname {
+			font-size: 6rem !important;
+		}
+	}
+
+	@media (max-width: 600px) {
+		h1.nickname {
+			font-size: 4rem !important;
+		}
+	}
+
+	.typewriter-text {
+		display: inline-block;
+		min-width: 1ch;
+		font-size: inherit !important;
+	}
+
+	.cursor {
+		display: inline-block;
+		color: var(--color-text);
+		font-weight: 400;
+		font-size: inherit !important;
+		animation: blink 0.7s step-end infinite;
+	}
+
+	@keyframes blink {
+		0%, 100% { opacity: 1; }
+		50% { opacity: 0; }
 	}
 
 	.bar {
@@ -262,8 +308,8 @@ const featuredProjects = allProjects
 	}
 
 	img {
-		width: 240px;
-		height: 240px;
+		width: 300px;
+		height: 300px;
 		object-fit: cover;
 		display: block;
 		filter: grayscale(30%);
@@ -300,56 +346,9 @@ const featuredProjects = allProjects
 		color: var(--color-background);
 	}
 
-	.keyboard-hint {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		background: transparent;
-		border: 2px solid var(--color-text);
-		padding: 0.5rem 0.75rem;
-		cursor: pointer;
-		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-		animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s backwards;
-	}
-
-	.keyboard-hint:hover {
-		background: var(--color-accent);
-		border-color: var(--color-accent);
-		color: var(--color-background);
-	}
-
-	.keyboard-hint:hover .hint-key {
-		background: var(--color-background);
-		color: var(--color-accent);
-	}
-
-	.keyboard-hint:hover .hint-label {
-		color: var(--color-background);
-	}
-
-	.hint-key {
-		display: inline-block;
-		background: var(--color-text);
-		color: var(--color-background);
-		font-size: 0.7rem;
-		font-weight: 700;
-		padding: 0.2rem 0.4rem;
-		letter-spacing: 0.05em;
-		transition: all 0.3s ease;
-	}
-
-	.hint-label {
-		font-size: 0.75rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		color: var(--color-text);
-		transition: color 0.3s ease;
-	}
-
 	.projects-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+		grid-template-columns: repeat(2, 1fr);
 		gap: 2rem;
 	}
 
@@ -457,8 +456,8 @@ const featuredProjects = allProjects
 		}
 
 		img {
-			width: 200px;
-			height: 200px;
+			width: 240px;
+			height: 240px;
 		}
 
 		.projects-grid {

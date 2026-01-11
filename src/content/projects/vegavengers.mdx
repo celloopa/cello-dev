@@ -1,18 +1,20 @@
 ---
 title: VegAvengers Marketing
-description: A high-performance website for VegFests and animal sanctuaries with searchable components and responsive design.
+description: A mission-driven platform for discovering vegan festivals and animal sanctuaries, featuring intelligent search, smooth animations, and a showcase of featured advocacy organizations.
 image: /images/projects/vegHero.webm
 url: https://vegavengers.com
 techStack:
+  - Astro
   - React
   - TypeScript
-  - Vite
   - Tailwind CSS
+  - Framer Motion
 role: Front-End Developer
 highlights:
-  - Built responsive, backend-integrated searchable components for VegFests and animal sanctuaries
-  - Translated UI/UX mockups into clean, maintainable front-end code
-  - Optimized for performance with lazy loading and efficient state management
+  - Built intelligent search system with smart date parsing and location synonyms for VegFests and sanctuaries
+  - Developed animated ResourceToggle component with Framer Motion for seamless mode switching
+  - Created responsive project showcase grid featuring vegan advocacy organizations
+  - Implemented Astro DB integration with server-side API routes for real-time filtering
 featured: true
 order: 1
 ---
@@ -23,31 +25,47 @@ import MediaThree from '@/components/media/MediaThree.astro';
 
 ## Overview
 
-VegAvengers Marketing needed a modern, performant website to showcase VegFests and animal sanctuaries across the country. The site required searchable, filterable components that could handle large datasets while maintaining a smooth user experience.
+Veg Avengers Marketing is a web platform dedicated to promoting vegan causes and animal rights advocacy. The site serves as a discovery hub for vegan festivals (VegFests), animal sanctuaries, and featured organizations—helping users connect with the vegan community and support animal welfare initiatives.
 
-<MediaFull src="/images/projects/sanctuary.webm" caption="Real-time sanctuary search" />
+<MediaFull
+  src="/images/projects/vegavengers-hero.webm"
+  alt="Homepage hero section showing animated cycling taglines and navigation to Resources, Projects, and About pages"
+  caption="Animated hero with cycling mission taglines"
+/>
 
-## Challenge
+## The Resource Discovery System
 
-The main challenge was creating a search system that could filter through hundreds of events and sanctuaries in real-time while keeping the interface responsive on mobile devices.
+The core feature is an intelligent search system that helps users find VegFests by date, location, or month, and discover animal sanctuaries by region. The animated ResourceToggle lets users seamlessly switch between search modes with smooth slide and fade transitions.
 
 <MediaTwo items={[
-  { src: "/images/projects/sanctuary.webm", caption: "Mobile view" },
-  { src: "/images/projects/sanctuary.webm", caption: "Desktop view" }
+  { src: "/images/projects/vegavengers-toggle.webm", alt: "ResourceToggle component animation showing emoji buttons (carrot and cow) with hover effects and mode switching", caption: "Animated mode toggle" },
+  { src: "/images/projects/vegavengers-vegfest-search.webm", alt: "VegFest search interface filtering festivals by typing a city name, showing real-time results with dates and locations", caption: "VegFest location search" }
 ]} />
 
-## Solution
+## Smart Search Features
 
-Built a React/TypeScript application with Vite for fast development and optimized builds. Implemented a custom search component with debounced filtering and lazy-loaded results to ensure smooth performance even on slower connections.
+The search system handles complex date formats, supports month-based filtering (e.g., searching "March" or "3"), and uses location synonyms so users can search "UK" and find results for "United Kingdom," "England," or "GB." Results are categorized into upcoming, TBD (unconfirmed), and past events.
+
+<MediaFull
+  src="/images/projects/vegavengers-sanctuary-search.webm"
+  alt="Sanctuary search showing results filtered by region with cards displaying sanctuary names, locations, and website links"
+  caption="Sanctuary discovery with flexible location matching"
+/>
+
+## Featured Projects Showcase
+
+A responsive grid showcases featured vegan organizations and sanctuaries, including Juliana's Animal Sanctuary and Rowdy Girl Sanctuary. Each card features staggered entry animations, hover effects, and multiple call-to-action buttons.
 
 <MediaThree items={[
-  { src: "/images/projects/sanctuary.webm", alt: "Feature 1" },
-  { src: "/images/projects/sanctuary.webm", alt: "Feature 2" },
-  { src: "/images/projects/sanctuary.webm", alt: "Feature 3" }
+  { src: "/images/projects/vegavengers-projects-grid.webm", alt: "Projects page grid layout with staggered card animations as they enter the viewport" },
+  { src: "/images/projects/vegavengers-project-hover.webm", alt: "Project card hover interaction showing scale animation and highlighted selection state" },
+  { src: "/images/projects/vegavengers-mobile-responsive.webm", alt: "Mobile responsive view showing single-column layout with touch-friendly card interactions" }
 ]} />
 
-## Results
+## Technical Highlights
 
-- Fast initial load times with code splitting
-- Responsive design that works seamlessly across all devices
-- Intuitive search interface that helps users find events quickly
+- **Astro Islands Architecture**: React components hydrate only where needed, keeping static pages fast
+- **Server-Side Rendering**: API routes handle search queries with Astro DB (SQLite-based)
+- **Framer Motion Animations**: Smooth transitions, staggered reveals, and interactive hover states
+- **Persistent Preferences**: localStorage saves search queries across sessions
+- **Yearly Data Model**: Scalable structure for adding new festival data each year

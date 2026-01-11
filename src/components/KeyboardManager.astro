@@ -15,7 +15,7 @@ const currentYear = new Date().getFullYear()
 			aria-label="Keyboard shortcuts menu"
 		>
 			<span class="key"></span>
-			<span class="label">Shortcuts</span>
+			<span class="label">Menu</span>
 		</button>
 		<div class="footer-right">
 			<p>{currentYear}</p>
@@ -163,16 +163,32 @@ const currentYear = new Date().getFullYear()
 
 	function detectOS() {
 		const userAgent = navigator.userAgent.toLowerCase();
-		if (userAgent.includes("mac")) return "mac";
+		// Check for Apple devices (Mac, iPhone, iPad)
+		if (
+			userAgent.includes("mac") ||
+			userAgent.includes("iphone") ||
+			userAgent.includes("ipad")
+		)
+			return "mac";
 		if (userAgent.includes("win")) return "windows";
 		if (userAgent.includes("linux")) return "linux";
 		return "other";
 	}
 
+	function isTouchDevice() {
+		return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+	}
+
 	const isMac = detectOS() === "mac";
+	const isTouch = isTouchDevice();
 
 	if (keyboardIndicator && keySpan) {
-		keySpan.textContent = isMac ? "⌘ + K" : "Ctrl + K";
+		// Hide keyboard shortcut on touch devices
+		if (isTouch) {
+			keySpan.style.display = "none";
+		} else {
+			keySpan.textContent = isMac ? "⌘K" : "Ctrl+K";
+		}
 
 		keyboardIndicator.addEventListener("click", () => {
 			window.dispatchEvent(

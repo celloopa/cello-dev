@@ -1,7 +1,7 @@
 ---
 title: Ad Asset Directory
 description: A multi-brand digital asset management system with fuzzy search, dynamic theming, and an admin CMS for organizing marketing assets across brand portfolios.
-image: /images/projects/ad-asset-directory/hero.png
+image: /images/projects/ad-assets/hero.webm
 techStack:
   - Astro
   - React
@@ -27,9 +27,6 @@ import MediaThree from '@/components/media/MediaThree.astro';
 
 The Ad Asset Directory is a centralized digital asset management platform designed for teams managing multiple brand identities. It allows users to organize, search, and access marketing assets—graphics, documents, brand guides, and more—across different brands from a single interface.
 
-{/* SCREENSHOT: Hero shot showing the brand selection grid on the home page with all brand cards visible */}
-<MediaFull src="/images/projects/ad-asset-directory/hero.png" caption="Brand portal selection grid" />
-
 ## The Problem
 
 Managing digital assets across multiple brands was fragmented and inefficient. Team members spent significant time searching through Google Drive folders, Dropbox, and scattered bookmark collections to find the right assets. Each brand had different folder structures, naming conventions, and storage locations.
@@ -44,18 +41,15 @@ Key pain points:
 
 I built a server-rendered Astro application with React for interactive components, backed by Supabase for data persistence.
 
-{/* SCREENSHOT: Show a brand portal page (e.g., Asheville Dispensary) with expanded categories showing the asset links */}
-<MediaFull src="/images/projects/ad-asset-directory/brand-portal.png" caption="Brand portal with organized asset categories" />
+<MediaFull src="/images/projects/ad-assets/ad-portal.webm" caption="Asheville Dispensary portal with organized asset categories" />
 
 ### Multi-Brand Portal System
 
 Each brand gets its own themed portal with customizable colors. The theming system uses CSS custom properties that dynamically update based on the selected brand, allowing unlimited color customization without code changes.
 
-{/* SCREENSHOTS: Show 2-3 different brand portals side by side to demonstrate the theming system */}
-<MediaThree items={[
-  { src: "/images/projects/ad-asset-directory/brand-asheville.png", alt: "Asheville Dispensary portal" },
-  { src: "/images/projects/ad-asset-directory/brand-plantbar.png", alt: "Plantbar portal" },
-  { src: "/images/projects/ad-asset-directory/brand-nightshade.png", alt: "Nightshade portal" }
+<MediaTwo items={[
+  { src: "/images/projects/ad-assets/brand-plantbar.png", alt: "Plantbar portal" },
+  { src: "/images/projects/ad-assets/brand-nightshade.png", alt: "Nightshade portal" }
 ]} />
 
 ### Fuzzy Search with Intelligent Caching
@@ -68,7 +62,7 @@ The search system was the core technical challenge. I implemented client-side fu
 - **Weighted results**: Title > Description > Brand > Category > Tags
 
 {/* SCREENSHOT: Show the search modal open with a query and results dropdown visible */}
-<MediaFull src="/images/projects/ad-asset-directory/search.png" caption="Fuzzy search with keyboard navigation and filtering" />
+<MediaFull src="/images/projects/ad-assets/search.png" caption="Fuzzy search with keyboard navigation and filtering" />
 
 The search supports keyboard shortcuts (`⌘K` to open, arrow keys to navigate) and special filters (`!brand` to filter by brand, `#` for categories).
 
@@ -83,8 +77,8 @@ Non-technical team members needed to manage assets without developer interventio
 
 {/* SCREENSHOTS: Show the admin dashboard with stats, and one of the editing forms */}
 <MediaTwo items={[
-  { src: "/images/projects/ad-asset-directory/admin-dashboard.png", caption: "Admin dashboard overview" },
-  { src: "/images/projects/ad-asset-directory/admin-form.png", caption: "Asset link editing form" }
+  { src: "/images/projects/ad-assets/admin-dashboard.png", caption: "Admin dashboard overview" },
+  { src: "/images/projects/ad-assets/admin-form.png", caption: "Asset link editing form" }
 ]} />
 
 ## Technical Decisions

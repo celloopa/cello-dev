@@ -280,7 +280,7 @@
     border: 4px solid var(--color-text);
     padding: 1.5rem;
     width: 420px;
-    max-width: 90%;
+    max-width: calc(90% - 16px);
     color: var(--color-text);
     position: relative;
     animation: menuSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -296,6 +296,53 @@
     border: 4px solid var(--color-accent);
     z-index: -1;
     pointer-events: none;
+  }
+
+  @media (max-width: 480px) {
+    .menu {
+      padding: 0.75rem;
+      max-width: calc(100% - 2rem);
+      max-height: calc(100vh - 3rem);
+      overflow-y: auto;
+    }
+
+    .menu::before {
+      top: 4px;
+      left: 4px;
+      right: -4px;
+      bottom: -4px;
+    }
+
+    section {
+      margin-bottom: 0.5rem;
+    }
+
+    h3 {
+      font-size: 0.65rem;
+      margin-bottom: 0.25rem;
+    }
+
+    li {
+      margin-bottom: 0.125rem;
+    }
+
+    button {
+      padding: 0.35rem 0.5rem;
+    }
+
+    .key {
+      font-size: 0.7rem;
+      padding: 0.15rem 0.35rem;
+      margin-right: 0.5rem;
+    }
+
+    .label {
+      font-size: 0.75rem;
+    }
+
+    hr {
+      margin: 0.5rem 0;
+    }
   }
 
   @keyframes menuSlideIn {
