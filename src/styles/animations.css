@@ -1,19 +1,80 @@
 /* Paper/grain texture - Saul Bass style */
-.texture::before {
-	content: "";
+/* Base texture layer - subtle background */
+.texture-layer {
 	position: fixed;
-	top: 0;
-	left: 0;
-	width: calc(100% + 512px);
-	height: calc(100% + 512px);
+	top: -512px;
+	left: -512px;
+	width: calc(100% + 1024px);
+	height: calc(100% + 1024px);
 	pointer-events: none;
 	opacity: 0.05;
-	z-index: 9999;
+	z-index: 1;
 	background-image: url("/images/noise-mosaic.webp");
 	background-repeat: repeat;
 	background-size: 512px 512px;
 	mix-blend-mode: overlay;
 	animation: noiseScroll 40s linear infinite;
+}
+
+.content-layer {
+	position: relative;
+	z-index: 2;
+}
+
+/* Texture overlay for specific elements */
+.has-texture {
+	position: relative;
+	overflow: hidden;
+}
+
+.has-texture::after {
+	content: "";
+	position: absolute;
+	top: -512px;
+	left: -512px;
+	width: calc(100% + 1024px);
+	height: calc(100% + 1024px);
+	pointer-events: none;
+	opacity: 0.08;
+	background-image: url("/images/noise-mosaic.webp");
+	background-repeat: repeat;
+	background-size: 512px 512px;
+	mix-blend-mode: overlay;
+	animation: noiseScroll 40s linear infinite;
+	z-index: 1;
+}
+
+/* Texture on hover for cards */
+.has-texture-hover {
+	position: relative;
+	overflow: hidden;
+}
+
+.has-texture-hover::after {
+	content: "";
+	position: absolute;
+	top: -512px;
+	left: -512px;
+	width: calc(100% + 1024px);
+	height: calc(100% + 1024px);
+	pointer-events: none;
+	opacity: 0;
+	background-image: url("/images/noise-mosaic.webp");
+	background-repeat: repeat;
+	background-size: 512px 512px;
+	mix-blend-mode: overlay;
+	animation: noiseScroll 40s linear infinite;
+	z-index: 1;
+	transition: opacity 0.3s ease;
+}
+
+.has-texture-hover:hover::after {
+	opacity: 0.03;
+}
+
+/* For cards that already use ::before, increase z-index to layer above content */
+.card.has-texture-hover::after {
+	z-index: 10;
 }
 
 @keyframes noiseScroll {
@@ -248,7 +309,7 @@
 		transition-duration: 0.01ms !important;
 	}
 
-	.texture::before {
+	.texture-layer {
 		animation: none;
 	}
 }

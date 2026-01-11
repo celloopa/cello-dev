@@ -219,23 +219,26 @@ const featuredVisuals = allVisuals
 		align-items: baseline;
 		letter-spacing: normal;
 		white-space: nowrap;
+		position: relative;
 	}
 
 	@media (max-width: 900px) {
 		h1.nickname {
 			font-size: 6rem !important;
+			min-height: 6rem;
 		}
 	}
 
 	@media (max-width: 600px) {
 		h1.nickname {
 			font-size: 4rem !important;
+			min-height: 4rem;
 		}
 	}
 
 	.typewriter-text {
 		display: inline-block;
-		min-width: 1ch;
+		min-width: 5ch; /* Reserve space for "Cello" */
 		font-size: inherit !important;
 	}
 
@@ -245,6 +248,13 @@ const featuredVisuals = allVisuals
 		font-weight: 400;
 		font-size: inherit !important;
 		animation: blink 0.7s step-end infinite;
+	}
+
+	@media (max-width: 700px) {
+		.cursor {
+			margin-left: -0.5ch;
+			margin-right: -0.5ch;
+		}
 	}
 
 	@keyframes blink {
@@ -492,6 +502,13 @@ const featuredVisuals = allVisuals
 			display: flex;
 			flex-direction: column;
 			align-items: center;
+			min-height: 8rem;
+		}
+
+		h1.nickname {
+			display: flex;
+			justify-content: center;
+			min-height: 5rem;
 		}
 
 		.bar {
@@ -500,6 +517,11 @@ const featuredVisuals = allVisuals
 
 		.summary {
 			max-width: none;
+			text-align: center;
+		}
+
+		.label {
+			text-align: center;
 		}
 
 		.actions {

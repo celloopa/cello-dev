@@ -17,7 +17,7 @@ const { title, description, image, url, techStack, role, slug, index = 0 } = Ast
 const isVideo = image?.endsWith('.webm') || image?.endsWith('.mp4');
 ---
 
-<article class="card" style={`--i: ${index}`}>
+<article class="card has-texture-hover" style={`--i: ${index}`}>
 	<a href={`/projects/${slug}`} class="card-link">
 		{image && (
 			<div class="image-box">

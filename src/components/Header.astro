@@ -10,7 +10,7 @@ const navItems = [
 const currentPath = Astro.url.pathname;
 ---
 
-<header class="site-header">
+<header class="site-header has-texture">
 	<nav class="nav-container">
 		<a href="/" class="logo">
 			<img src="/images/favicon.svg" alt="Logo" class="logo-img" />
@@ -85,7 +85,7 @@ const currentPath = Astro.url.pathname;
 		top: 0;
 		z-index: 100;
 		background: var(--color-background);
-		margin-bottom: 8rem;
+		margin-bottom: 5.5rem;
 	}
 
 	.nav-container {
@@ -251,6 +251,12 @@ const currentPath = Astro.url.pathname;
 		to {
 			opacity: 1;
 			transform: translateX(0);
+		}
+	}
+
+	@media (max-width: 900px) {
+		.site-header {
+			margin-bottom: 4rem;
 		}
 	}
 

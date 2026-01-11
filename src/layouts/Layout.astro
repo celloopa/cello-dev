@@ -47,12 +47,15 @@ const { image, summary, url } = basics;
 		<meta name="twitter:image" content="" />
 		<title>{title}</title>
 	</head>
-	<body class="texture">
-		<Header />
-		<main>
-			<slot />
-		</main>
-		<KeyboardManager />
+	<body>
+		<div class="texture-layer" aria-hidden="true"></div>
+		<div class="content-layer">
+			<Header />
+			<main>
+				<slot />
+			</main>
+			<KeyboardManager />
+		</div>
 	</body>
 </html>
 <style is:global>
@@ -184,7 +187,7 @@ const { image, summary, url } = basics;
 			break-inside: avoid;
 		}
 
-		.texture::before {
+		.texture-layer {
 			display: none !important;
 		}
 	}
