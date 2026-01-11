@@ -1,5 +1,6 @@
 ---
 import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
+const currentYear = new Date().getFullYear()
 ---
 
 <footer class="no-print">
@@ -17,7 +18,7 @@ import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 			<span class="label">Shortcuts</span>
 		</button>
 		<div class="footer-right">
-			<p>2025</p>
+			<p>{currentYear}</p>
 			<span class="footer-bar"></span>
 		</div>
 	</div>

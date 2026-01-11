@@ -1,0 +1,117 @@
+---
+title: Ad Asset Directory
+description: A multi-brand digital asset management system with fuzzy search, dynamic theming, and an admin CMS for organizing marketing assets across brand portfolios.
+image: /images/projects/ad-asset-directory/hero.png
+techStack:
+  - Astro
+  - React
+  - TypeScript
+  - Tailwind CSS
+  - Supabase
+  - Fuse.js
+role: Full-Stack Developer
+highlights:
+  - Built a multi-brand portal system with dynamic CSS theming per brand
+  - Implemented client-side fuzzy search with intelligent caching for sub-100ms responses
+  - Created a full admin CMS with CRUD operations and inline editing capabilities
+  - Designed a data architecture with Supabase primary storage and JSON fallback
+featured: true
+order: 2
+---
+
+import MediaFull from '@/components/media/MediaFull.astro';
+import MediaTwo from '@/components/media/MediaTwo.astro';
+import MediaThree from '@/components/media/MediaThree.astro';
+
+## Overview
+
+The Ad Asset Directory is a centralized digital asset management platform designed for teams managing multiple brand identities. It allows users to organize, search, and access marketing assets—graphics, documents, brand guides, and more—across different brands from a single interface.
+
+{/* SCREENSHOT: Hero shot showing the brand selection grid on the home page with all brand cards visible */}
+<MediaFull src="/images/projects/ad-asset-directory/hero.png" caption="Brand portal selection grid" />
+
+## The Problem
+
+Managing digital assets across multiple brands was fragmented and inefficient. Team members spent significant time searching through Google Drive folders, Dropbox, and scattered bookmark collections to find the right assets. Each brand had different folder structures, naming conventions, and storage locations.
+
+Key pain points:
+- **Asset discovery**: Finding specific files took 5-10 minutes on average
+- **Brand consistency**: No single source of truth for brand assets
+- **Onboarding friction**: New team members struggled to locate resources
+- **No search**: Existing storage solutions lacked intelligent search across brands
+
+## Solution Architecture
+
+I built a server-rendered Astro application with React for interactive components, backed by Supabase for data persistence.
+
+{/* SCREENSHOT: Show a brand portal page (e.g., Asheville Dispensary) with expanded categories showing the asset links */}
+<MediaFull src="/images/projects/ad-asset-directory/brand-portal.png" caption="Brand portal with organized asset categories" />
+
+### Multi-Brand Portal System
+
+Each brand gets its own themed portal with customizable colors. The theming system uses CSS custom properties that dynamically update based on the selected brand, allowing unlimited color customization without code changes.
+
+{/* SCREENSHOTS: Show 2-3 different brand portals side by side to demonstrate the theming system */}
+<MediaThree items={[
+  { src: "/images/projects/ad-asset-directory/brand-asheville.png", alt: "Asheville Dispensary portal" },
+  { src: "/images/projects/ad-asset-directory/brand-plantbar.png", alt: "Plantbar portal" },
+  { src: "/images/projects/ad-asset-directory/brand-nightshade.png", alt: "Nightshade portal" }
+]} />
+
+### Fuzzy Search with Intelligent Caching
+
+The search system was the core technical challenge. I implemented client-side fuzzy search using Fuse.js with several optimizations:
+
+- **Pre-built search index**: Generated at build time for instant initialization
+- **LRU cache**: 5-minute TTL prevents redundant searches
+- **Debounced queries**: 150ms debounce reduces unnecessary processing
+- **Weighted results**: Title > Description > Brand > Category > Tags
+
+{/* SCREENSHOT: Show the search modal open with a query and results dropdown visible */}
+<MediaFull src="/images/projects/ad-asset-directory/search.png" caption="Fuzzy search with keyboard navigation and filtering" />
+
+The search supports keyboard shortcuts (`⌘K` to open, arrow keys to navigate) and special filters (`!brand` to filter by brand, `#` for categories).
+
+### Admin CMS
+
+Non-technical team members needed to manage assets without developer intervention. I built a complete admin interface with:
+
+- **Brand management**: Create brands with custom themes
+- **Category organization**: Group assets logically with icons
+- **Link management**: Add/edit asset URLs with metadata and tags
+- **Inline editing**: Edit content directly from brand portals when authenticated
+
+{/* SCREENSHOTS: Show the admin dashboard with stats, and one of the editing forms */}
+<MediaTwo items={[
+  { src: "/images/projects/ad-asset-directory/admin-dashboard.png", caption: "Admin dashboard overview" },
+  { src: "/images/projects/ad-asset-directory/admin-form.png", caption: "Asset link editing form" }
+]} />
+
+## Technical Decisions
+
+**Astro + React hybrid**: Astro handles routing and static content while React powers interactive components (search, forms, admin). This gives us fast initial loads with rich interactivity where needed.
+
+**Supabase with JSON fallback**: Primary data lives in Supabase PostgreSQL, but I implemented a graceful fallback to local JSON files. This ensures the application works even if the database is temporarily unavailable.
+
+**Client-side search**: Rather than server-side search, I opted for client-side Fuse.js. The dataset is small enough to load entirely, and this approach eliminates search latency and reduces server load.
+
+## Results
+
+{/* SCREENSHOT: Optional - show the search in action or a before/after comparison */}
+
+The system delivered measurable improvements:
+
+- **90% reduction** in time to find assets (from ~5 min to under 30 sec)
+- **Sub-100ms** search response times
+- **Zero-training** onboarding for new team members
+- **Self-service** asset management via admin CMS
+- **Brand consistency** with centralized asset organization
+
+## Key Learnings
+
+Building this project reinforced several principles:
+
+1. **Client-side search scales further than expected** for small-to-medium datasets
+2. **Fallback architectures** (Supabase → JSON) add resilience with minimal complexity
+3. **CSS custom properties** enable powerful runtime theming without JavaScript overhead
+4. **Keyboard accessibility** dramatically improves power user experience

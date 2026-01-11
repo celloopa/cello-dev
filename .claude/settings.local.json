@@ -7,7 +7,9 @@
       "Bash(pnpm update:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nupdate astro to 5.16.8\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git push:*)",
-      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix favicon path after images reorganization\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")"
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix favicon path after images reorganization\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(cat:*)",
+      "Bash(pnpm dev:*)"
     ]
   }
 }
