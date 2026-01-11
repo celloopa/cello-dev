@@ -159,7 +159,7 @@ const currentYear = new Date().getFullYear()
 	}
 
 	const keyboardIndicator = document.getElementById("keyboard-indicator");
-	const keySpan = keyboardIndicator?.querySelector(".key");
+	const keySpan = keyboardIndicator?.querySelector<HTMLElement>(".key");
 
 	function detectOS() {
 		const userAgent = navigator.userAgent.toLowerCase();

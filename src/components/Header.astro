@@ -38,8 +38,8 @@ const currentPath = Astro.url.pathname;
 <script>
 	function initHeaderMenu() {
 		const menuBtn = document.getElementById("header-menu-btn");
-		const menuKey = menuBtn?.querySelector(".menu-key");
-		const menuLabel = menuBtn?.querySelector(".menu-label");
+		const menuKey = menuBtn?.querySelector<HTMLElement>(".menu-key");
+		const menuLabel = menuBtn?.querySelector<HTMLElement>(".menu-label");
 
 		function detectOS() {
 			const userAgent = navigator.userAgent.toLowerCase();
