@@ -1,4 +1,5 @@
 :root {
+	/* Original palette - forest & sunset */
 	--color-night: #0a0f1f;
 	--color-night-rgb: 10, 15, 31;
 	/* Deep night sky blue */
@@ -12,20 +13,18 @@
 	--color-sunset-rgb: 255, 107, 53;
 	/* Warm sunset orange */
 	--color-background-translucent: #1a1a1aCC;
-	--color-background-opacity: 0.8; /* 80% opacity */
-	--color-background-gradient-start: 0.97;
-	--color-background-gradient-end: 0.80;
+	--color-background-opacity: 0.8;
 }
 
 :root[data-theme="light"] {
 	--color-background: var(--color-snow);
 	--color-background-rgb: var(--color-snow-rgb);
 	--color-text: var(--color-night);
+	--color-text-rgb: var(--color-night-rgb);
 	--color-accent: var(--color-sunset);
 	--color-accent-rgb: var(--color-sunset-rgb);
 	--color-accent-secondary: var(--color-forest);
-	--gradient-opacity-top: 0.3;
-	--gradient-opacity-bottom: 0.7;
+	--color-accent-secondary-rgb: var(--color-forest-rgb);
 	--color-background-translucent: rgba(var(--color-snow-rgb), var(--color-background-opacity));
 }
 
@@ -33,10 +32,10 @@
 	--color-background: var(--color-night);
 	--color-background-rgb: var(--color-night-rgb);
 	--color-text: var(--color-snow);
+	--color-text-rgb: var(--color-snow-rgb);
 	--color-accent: var(--color-forest);
 	--color-accent-rgb: var(--color-forest-rgb);
 	--color-accent-secondary: var(--color-sunset);
-	--gradient-opacity-top: 0.7;
-	--gradient-opacity-bottom: 0.9;
+	--color-accent-secondary-rgb: var(--color-sunset-rgb);
 	--color-background-translucent: rgba(var(--color-night-rgb), var(--color-background-opacity));
 }

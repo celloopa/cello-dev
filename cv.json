@@ -1,16 +1,16 @@
 {
   "basics": {
     "name": "Marcelo Rondon",
-    "label": "Designer & Developer",
+    "label": "Front-End Developer | Designer",
     "image": "https://avatars.githubusercontent.com/u/72777489?s=400&u=1258e88539c515802c5c603559cd7b63c032814c&v=4",
     "email": "cello@cello.design",
     "phone": "(305) 496-0039",
-    "url": "https://www.cello.design",
-    "summary": "I'm Cello, a designer who codes, working at the intersection of creativity and functionality. My design experience spans diverse mediums, from packaging and print to web and digital marketing, with a focus on leveraging programming to build scalable design systems and streamline workflows. Proficient in languages like Python and Go, I've developed tools to automate tasks such as generating HTML components from product data and lab certificates, significantly reducing manual updates and improving data accuracy. Additionally, I've created PHP plugins with JS, CSS, and HTML to add custom functionality and UI enhancements to our WordPress site.",
+    "url": "https://cello.design",
+    "summary": "Front-End Developer and UX/UI Designer specializing in React and WordPress development. I build reusable UI components, accessible web experiences, and scalable design systems.",
     "location": {
-      "address": "13608 NW 145th Ave.",
-      "postalCode": "FL 32615",
-      "city": "Alachua",
+      "address": "",
+      "postalCode": "",
+      "city": "Gainesville",
       "countryCode": "US",
       "region": "Florida"
     },
@@ -35,101 +35,69 @@
   "work": [
     {
       "name": "Asheville Dispensary",
-      "position": "Design Lead",
+      "position": "Design Lead / Front-End Developer",
       "url": "https://www.avldispensary.com",
       "startDate": "2022-01",
       "endDate": "",
-      "summary": "Implemented a centralized design and style system, enhancing productivity and brand coherence across packaging, web, print, and marketing.",
+      "summary": "Asheville, NC (Remote)",
       "highlights": [
-        "Implemented centralized branding guidelines and a scalable design system in Figma, Canva, and the Adobe Suite, improving productivity and brand coherence across packaging, web, print, and marketing.",
-        "Began as the sole designer, focusing on all key design aspects from packaging to digital marketing, then expanded to head a team of designers enabling effective management of diverse design tasks while maintaining high-quality standards.",
-        "Organized and managed a growing library of company assets, improving design workflow and asset reuse across projects.",
-        "Instrumental in transforming brand image through meticulous design upgrades, directly impacting customer engagement and satisfaction through strategic planning and execution of integrated marketing campaigns that significantly boosted the company's online presence and sales.",
-        "Coded automation tools in Python/Golang to process/maintain product data, as well as reusable UI components and implemented them on Wordpress sites through PHP, Javascript, HTML/CSS plugins."
+        "Built reusable UI components integrated into WordPress via custom PHP and JavaScript plugins.",
+        "Developed an internal asset management system using React, TypeScript, and Tailwind CSS.",
+        "Implemented a scalable design system in Figma, improving brand coherence across web, print, and packaging.",
+        "Collaborated with cross-functional teams (design, marketing, operations) to deliver projects on deadline.",
+        "Managed Git workflows with branching, merging, and pull requests."
+      ]
+    },
+    {
+      "name": "VegAvengers Marketing",
+      "position": "Front-End Developer",
+      "url": "https://vegavengers.com",
+      "startDate": "2025-02",
+      "endDate": "",
+      "summary": "Freelance project",
+      "highlights": [
+        "Built a high-performance React/TypeScript/Vite website with responsive design and backend-integrated searchable components for VegFests and animal sanctuaries.",
+        "Translated UI/UX mockups into clean, maintainable front-end code highlighting the organization's mission."
+      ]
+    },
+    {
+      "name": "ADA Compliance Consulting",
+      "position": "Web Accessibility Developer",
+      "url": "",
+      "startDate": "2025-12",
+      "endDate": "",
+      "summary": "North Central Florida",
+      "highlights": [
+        "Brought multiple organizations to WCAG 2.1 compliance; optimized for screen readers and keyboard navigation.",
+        "Contracted with River Phoenix Center for Peacebuilding on accessibility and performance improvements."
+      ]
+    },
+    {
+      "name": "Legal Impact For Chickens",
+      "position": "Developer",
+      "url": "",
+      "startDate": "2025-03",
+      "endDate": "2025-04",
+      "summary": "Remote",
+      "highlights": [
+        "Developed scripting tools for secure data management; handled confidential materials with discretion."
       ]
     },
     {
       "name": "The Green Phial",
-      "position": "Senior Designer/Web Developer",
+      "position": "Senior Designer / Web Developer",
       "url": "https://www.thegreenphial.com",
       "startDate": "2022-10",
       "endDate": "2024-01",
-      "summary": "Worked with brand owner in the conceptualization and implementation of product visual concepts and comprehensive visual branding and web implementation.",
+      "summary": "Remote",
       "highlights": [
-        "Redesigned website look and management of the website, aligning with brand ethos and enhancing user experience.",
-        "Developed marketing materials, including flyers and digital graphics, enhancing brand visibility and product outreach."
-      ]
-    },
-    {
-      "name": "Mantera Advertising Agency",
-      "position": "Senior Contract Designer",
-      "url": "https://www.chocolatebash.com/",
-      "startDate": "2021-09",
-      "endDate": "2022-02",
-      "summary": "Collaborated with agency retail clients to develop visually impactful graphics and marketing materials under tight deadlines.",
-      "highlights": [
-        "Efficiently incorporated client feedback into designs, ensuring timely delivery and client satisfaction.",
-        "Facilitated direct communication with clients to effectively deliver desired graphics."
-      ]
-    },
-    {
-      "name": "Success Academy Charter Schools",
-      "position": "Associate Teacher",
-      "url": "https://successacademies.org",
-      "startDate": "2020-06",
-      "endDate": "2021-08",
-      "summary": "Implemented innovative education strategies and utilized learning frameworks to teach ELA and math remotely.",
-      "highlights": [
-        "Produced educational content and visual aids, applying design thinking to optimize learning experiences and enhance educational outcomes."
-      ]
-    },
-    {
-      "name": "The Fine Print Magazine",
-      "position": "Photo Editor",
-      "url": "https://thefineprintmagazine.org",
-      "startDate": "2017-09",
-      "endDate": "2019-12",
-      "summary": "Led a team of photographers and managed artistic direction for various events, capturing impactful visual stories.",
-      "highlights": [
-        "Developed artistic direction for fundraising events, utilizing design and photography skills to enhance event visibility and engagement."
-      ]
-    },
-    {
-      "name": "Looking 4 Good Charity Stream",
-      "position": "Social Media Manager",
-      "url": "https://arts.ufl.edu/in-the-loop/news/students-raise-over-2-000-in-24-hour-charity-game-stream/",
-      "startDate": "2019-04",
-      "endDate": "2019-04",
-      "summary": "Photographed, assisted in production and promoted Looking 4 Good’s charity stream prior and during the 24-hour livestream event through social media. Coverage included Twitch, Instagram, Facebook and Twitter.",
-      "highlights": [
-        "Raised over $2,100 for victim support of the Christchurch victims in New Zealand through the livestream."
-      ]
-    },
-    {
-      "name": "Cello.Design Studio",
-      "position": "Freelance Designer",
-      "url": "https://www.cello.design",
-      "startDate": "2017-01",
-      "endDate": "",
-      "summary": "Worked with a diverse range of clients, providing comprehensive design services and managing multiple projects simultaneously.",
-      "highlights": [
-        "Developed effective design strategies to meet client objectives and enhance brand visibility."
+        "Redesigned and maintained WordPress site using HTML5, CSS3, PHP, and JavaScript (ES6+).",
+        "Translated UI mockups into responsive, accessible front-end code; improved performance and SEO.",
+        "Collaborated directly with brand owner to align digital presence with brand ethos and UX goals."
       ]
     }
   ],
-  "volunteer": [
-    {
-      "organization": "Organization",
-      "position": "Volunteer",
-      "url": "https://organization.com/",
-      "startDate": "2012-01-01",
-      "endDate": "2013-01-01",
-      "summary": "Description…",
-      "highlights": [
-        "Awarded 'Volunteer of the Month'"
-      ]
-    }
-  ],
+  "volunteer": [],
   "education": [
     {
       "institution": "University of Florida",
@@ -137,214 +105,156 @@
       "area": "Visual Journalism & Communications",
       "minorType": "Minor: Digital Arts & Sciences",
       "studyType": "Bachelor",
-      "startDate": "2016-08-22",
-      "endDate": "2019-12-16",
-      "score": "3.7",
-      "courses": [
-        "DB1101 - Basic SQL"
-      ]
+      "startDate": "2016-08",
+      "endDate": "2019-12",
+      "score": "",
+      "courses": []
     }
   ],
-  "awards": [
-    {
-      "title": "Award",
-      "date": "2014-11-01",
-      "awarder": "Company",
-      "summary": "There is no spoon."
-    }
-  ],
-  "certificates": [
-    {
-      "name": "Certificate",
-      "date": "2021-08",
-      "issuer": "Company",
-      "url": "https://certificate.com"
-    }
-  ],
-  "publications": [
-    {
-      "name": "Publication",
-      "publisher": "Company",
-      "releaseDate": "2014-10-01",
-      "url": "https://publication.com",
-      "summary": "Description…"
-    }
-  ],
+  "awards": [],
+  "certificates": [],
+  "publications": [],
   "skills": [
-    {
-      "name": "Figma",
-      "level": "Master",
-      "keywords": [
-        "Web development",
-        "Frontend",
-        "UI",
-        "Prototyping",
-        "Development Documentation",
-        "Design"
-      ]
-    },
     {
       "name": "HTML",
       "level": "Master",
       "keywords": [
-        "Web development",
-        "Frontend"
+        "Front-End",
+        "Web development"
       ]
     },
     {
       "name": "CSS",
       "level": "Master",
       "keywords": [
+        "Front-End",
         "Web development",
-        "Frontend",
         "Responsive Design"
-      ]
-    },
-    {
-      "name": "Photoshop",
-      "level": "Master",
-      "keywords": [
-        "Image Manipulation",
-        "Graphic Design",
-        "Photo-editing"
-      ]
-    },
-    {
-      "name": "Illustrator",
-      "level": "Master",
-      "keywords": [
-        "Vector Manipulation",
-        "Graphic Design",
-        "Illustration"
-      ]
-    },
-    {
-      "name": "Premiere",
-      "level": "Master",
-      "keywords": [
-        "Video Editing",
-        "Sound Design",
-        "Visual Storytelling"
-      ]
-    },
-    {
-      "name": "XD",
-      "level": "Master",
-      "keywords": [
-        "UI",
-        "Interface Design",
-        "Prototyping",
-        "Graphic Manipulation"
-      ]
-    },
-    {
-      "name": "InDesign",
-      "level": "Master",
-      "keywords": [
-        "Catalog Creation",
-        "Spread Manipulation",
-        "Print Design"
-      ]
-    },
-    {
-      "name": "After Effects",
-      "level": "Master",
-      "keywords": [
-        "Video Effects",
-        "Rotoscoping",
-        "Motion Graphics",
-        "Titles"
       ]
     },
     {
       "name": "JavaScript",
       "level": "Master",
       "keywords": [
-        "Web development",
-        "Frontend",
-        "Backend",
-        "Fullstack"
-      ]
-    },
-    {
-      "name": "Go",
-      "level": "Intermediate",
-      "keywords": [
-        "Web development",
-        "Backend"
-      ]
-    },
-    {
-      "name": "React",
-      "level": "Advanced",
-      "keywords": [
-        "Web development",
-        "Frontend",
-        "JavaScript Library",
-        "UI"
-      ]
-    },
-    {
-      "name": "Wordpress",
-      "level": "Advanced",
-      "keywords": [
-        "Web development",
-        "Backend",
-        "Frontend"
-      ]
-    },
-    {
-      "name": "Php",
-      "level": "Intermediate",
-      "keywords": [
-        "Web development",
-        "Backend"
-      ]
-    },
-    {
-      "name": "Python",
-      "level": "Intermediate",
-      "keywords": [
-        "Web development",
-        "Backend",
-        "ML"
-      ]
-    },
-    {
-      "name": "Tailwind",
-      "level": "Advanced",
-      "keywords": [
-        "Web development",
-        "Frontend",
-        "CSS Framework",
-        "Responsive Design"
+        "Front-End",
+        "ES6+",
+        "Web development"
       ]
     },
     {
       "name": "TypeScript",
       "level": "Advanced",
       "keywords": [
-        "Web development",
-        "Frontend",
-        "Backend",
-        "JavaScript Superset"
+        "Front-End",
+        "Web development"
       ]
     },
     {
-      "name": "MySQL",
-      "level": "Intermediate",
+      "name": "React",
+      "level": "Advanced",
       "keywords": [
-        "SQL",
-        "Database",
-        "Backend"
+        "Front-End",
+        "UI",
+        "Web development"
+      ]
+    },
+    {
+      "name": "Tailwind",
+      "level": "Advanced",
+      "keywords": [
+        "Front-End",
+        "CSS Framework",
+        "Responsive Design"
       ]
     },
     {
       "name": "Git",
       "level": "Advanced",
       "keywords": [
-        "Version control",
-        "Source code"
+        "Tools & CMS",
+        "Version control"
+      ]
+    },
+    {
+      "name": "Wordpress",
+      "level": "Advanced",
+      "keywords": [
+        "Tools & CMS",
+        "Web development"
+      ]
+    },
+    {
+      "name": "Php",
+      "level": "Intermediate",
+      "keywords": [
+        "Tools & CMS",
+        "Backend"
+      ]
+    },
+    {
+      "name": "MySQL",
+      "level": "Intermediate",
+      "keywords": [
+        "Tools & CMS",
+        "Database",
+        "Backend"
+      ]
+    },
+    {
+      "name": "Figma",
+      "level": "Master",
+      "keywords": [
+        "Design",
+        "UI",
+        "Prototyping"
+      ]
+    },
+    {
+      "name": "Photoshop",
+      "level": "Master",
+      "keywords": [
+        "Design",
+        "Image Manipulation"
+      ]
+    },
+    {
+      "name": "Illustrator",
+      "level": "Master",
+      "keywords": [
+        "Design",
+        "Vector Graphics"
+      ]
+    },
+    {
+      "name": "After Effects",
+      "level": "Advanced",
+      "keywords": [
+        "Design",
+        "Motion Graphics"
+      ]
+    },
+    {
+      "name": "Premiere",
+      "level": "Advanced",
+      "keywords": [
+        "Design",
+        "Video Editing"
+      ]
+    },
+    {
+      "name": "Python",
+      "level": "Intermediate",
+      "keywords": [
+        "Other Languages",
+        "Backend"
+      ]
+    },
+    {
+      "name": "Go",
+      "level": "Intermediate",
+      "keywords": [
+        "Other Languages",
+        "Backend"
       ]
     }
   ],
@@ -362,31 +272,7 @@
       "fluency": "Advanced"
     }
   ],
-  "interests": [
-    {
-      "name": "Wildlife",
-      "keywords": [
-        "Ferrets",
-        "Unicorns"
-      ]
-    }
-  ],
-  "references": [
-    {
-      "name": "Jane Doe",
-      "reference": "Reference…"
-    }
-  ],
-  "projects": [
-    {
-      "name": "Project",
-      "startDate": "2019-01-01",
-      "endDate": "2021-01-01",
-      "description": "Description...",
-      "highlights": [
-        "Won award at AIHacks 2016"
-      ],
-      "url": "https://project.com/"
-    }
-  ]
+  "interests": [],
+  "references": [],
+  "projects": []
 }

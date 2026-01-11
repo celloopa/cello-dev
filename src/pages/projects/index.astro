@@ -1,0 +1,79 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import "@/styles/colors.css";
+
+const projects = await getCollection("projects");
+const sortedProjects = projects.sort((a, b) => a.data.order - b.data.order);
+---
+
+<Layout title="Projects - Marcelo Rondon">
+	<Section>
+		<h1>Projects</h1>
+		<p class="intro">A collection of projects I've worked on.</p>
+	</Section>
+
+	<Section>
+		<div class="projects-grid">
+			{sortedProjects.map((project) => (
+				<ProjectCard
+					title={project.data.title}
+					description={project.data.description}
+					image={project.data.image}
+					url={project.data.url}
+					techStack={project.data.techStack}
+					role={project.data.role}
+					slug={project.slug}
+				/>
+			))}
+		</div>
+	</Section>
+</Layout>
+
+<script is:inline>
+	function setTheme(theme) {
+		document.documentElement.setAttribute("data-theme", theme);
+		localStorage.setItem("theme", theme);
+	}
+
+	document.addEventListener("DOMContentLoaded", () => {
+		const savedTheme = localStorage.getItem("theme") || "dark";
+		setTheme(savedTheme);
+	});
+
+	document.addEventListener("astro:after-swap", () => {
+		const savedTheme = localStorage.getItem("theme") || "dark";
+		setTheme(savedTheme);
+	});
+</script>
+
+<style>
+	h1 {
+		font-size: 2.5rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--color-accent);
+		margin-bottom: 0;
+	}
+
+	.intro {
+		color: var(--color-text);
+		opacity: 0.8;
+		margin-top: 0.5rem;
+	}
+
+	.projects-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+		gap: 1.5rem;
+	}
+
+	@media (width <= 700px) {
+		.projects-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

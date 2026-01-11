@@ -14,48 +14,26 @@ import Section from "@/components/Section.astro";
 					area,
 					minorType,
 				}) => {
-					const startYear = new Date(
-						startDate,
-					).getFullYear();
-					const endYear =
-						endDate != null
-							? new Date(
-									endDate,
-								).getFullYear()
-							: "Present";
-					const years = `${startYear} - ${endYear}`;
+					const startYear = new Date(startDate).getFullYear();
+					const endYear = endDate != null ? new Date(endDate).getFullYear() : "Present";
+					const isSameYear = startYear === endYear;
+					const years = isSameYear ? startYear : `${startYear} - ${endYear}`;
 
 					return (
 						<li>
 							<article>
 								<header>
-									<div>
-										<h3>
-											{
-												institution
-											}
-										</h3>
+									<div class="edu-info">
+										<h3>{institution}</h3>
+										<h4>{area}</h4>
 									</div>
-
-									<time>
-										{
-											years
-										}
-									</time>
+									<time>{years}</time>
 								</header>
-
-								<footer>
-									<h4>
-										{
-											area
-										}
-									</h4>
-									<p>
-										{
-											minorType
-										}
-									</p>
-								</footer>
+								{minorType && (
+									<footer>
+										<p>{minorType}</p>
+									</footer>
+								)}
 							</article>
 						</li>
 					);
@@ -68,42 +46,79 @@ import Section from "@/components/Section.astro";
 	ul {
 		display: flex;
 		flex-direction: column;
+		gap: 1.5rem;
+		margin: 1rem 0 0 0;
+		padding: 0;
+		list-style: none;
 	}
 
-	article h3 {
-		color: var(--color-text);
-		line-height: 0.9;
+	li {
+		padding-bottom: 1.5rem;
+		border-bottom: 1px solid rgba(var(--color-text-rgb), 0.1);
 	}
 
-	article p {
-		font-weight: 300;
-		font-size: 0.85rem;
-		text-wrap: pretty;
+	li:last-child {
+		border-bottom: none;
+		padding-bottom: 0;
 	}
-	article h4 {
-		font-size: 1.15rem;
-		line-height: 1;
-		margin-top: 1rem;
-		font-weight: 600;
-	}
+
 	header {
 		display: flex;
 		justify-content: space-between;
 		align-items: flex-start;
+		gap: 1rem;
+	}
+
+	.edu-info {
+		flex: 1;
+	}
+
+	article h3 {
+		font-size: 1.1rem;
+		font-weight: 700;
+		color: var(--color-text);
+		line-height: 1.2;
+		margin: 0;
+		padding: 0;
+	}
+
+	article h4 {
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--color-accent);
+		margin: 0.25rem 0 0 0;
+		padding: 0;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	article p {
+		font-weight: 400;
+		font-size: 0.85rem;
+		margin: 0.5rem 0 0 0;
+		padding: 0;
+		opacity: 0.85;
+	}
+
+	footer {
+		margin-top: 0.5rem;
 	}
 
 	time {
 		color: var(--color-accent);
-		font-size: 0.85rem;
+		font-size: 0.8rem;
 		font-weight: 600;
-		font-style: italic;
-		cursor: default;
+		white-space: nowrap;
 	}
 
 	@media (width <= 700px) {
+		header {
+			flex-direction: column;
+			gap: 0.25rem;
+		}
+
 		time {
-			margin-right: 0.5rem;
-			text-align: right;
+			font-size: 0.75rem;
 		}
 	}
 </style>

@@ -1,0 +1,59 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Hero from "@/components/sections/Hero.astro";
+import Experience from "@/components/sections/Experience.astro";
+import About from "@/components/sections/About.astro";
+import Education from "@/components/sections/Education.astro";
+import Skills from "@/components/sections/Skills.astro";
+import Section from "@/components/Section.astro";
+---
+
+<Layout title="Cello's Resume">
+	<Hero />
+	<Section>
+		<a href="/files/marcelo_rondon-resume.pdf" download class="download-btn">
+			<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+				<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+				<polyline points="7 10 12 15 17 10"/>
+				<line x1="12" y1="15" x2="12" y2="3"/>
+			</svg>
+			<span>Download PDF</span>
+		</a>
+	</Section>
+	<About />
+	<Experience />
+	<Skills />
+	<Education />
+</Layout>
+
+<style>
+	.download-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.75rem 1.25rem;
+		background: transparent;
+		color: var(--color-text);
+		border: 2px solid var(--color-text);
+		font-size: 0.85rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		cursor: pointer;
+		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.download-btn:hover {
+		background: var(--color-accent);
+		border-color: var(--color-accent);
+		color: var(--color-background);
+	}
+
+	.download-btn svg {
+		transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.download-btn:hover svg {
+		transform: translateY(2px);
+	}
+</style>

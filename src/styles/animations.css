@@ -1,0 +1,242 @@
+/* Paper/grain texture - Saul Bass style */
+.texture::before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	opacity: 0.4;
+	z-index: 9999;
+	background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+	mix-blend-mode: overlay;
+}
+
+/* Saul Bass inspired smooth animations */
+
+/* Slide up reveal - like title cards */
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(60px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+/* Slide in from left - kinetic typography */
+@keyframes slideLeft {
+	from {
+		opacity: 0;
+		transform: translateX(-80px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+/* Slide in from right */
+@keyframes slideRight {
+	from {
+		opacity: 0;
+		transform: translateX(80px);
+	}
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+/* Scale reveal - geometric shapes */
+@keyframes scaleReveal {
+	from {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+	to {
+		opacity: 1;
+		transform: scale(1);
+	}
+}
+
+/* Wipe reveal - like film transitions */
+@keyframes wipeIn {
+	from {
+		clip-path: inset(0 100% 0 0);
+	}
+	to {
+		clip-path: inset(0 0 0 0);
+	}
+}
+
+/* Rotate in - geometric motion */
+@keyframes rotateIn {
+	from {
+		opacity: 0;
+		transform: rotate(-10deg) scale(0.9);
+	}
+	to {
+		opacity: 1;
+		transform: rotate(0) scale(1);
+	}
+}
+
+/* Draw line - graphic element */
+@keyframes drawLine {
+	from {
+		transform: scaleX(0);
+	}
+	to {
+		transform: scaleX(1);
+	}
+}
+
+/* Fade only - subtle */
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Animation utility classes */
+.animate-slide-up {
+	animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-left {
+	animation: slideLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-right {
+	animation: slideRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-scale {
+	animation: scaleReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-wipe {
+	animation: wipeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-rotate {
+	animation: rotateIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-fade {
+	animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Staggered delays - like title sequence timing */
+.delay-1 { animation-delay: 0.1s; }
+.delay-2 { animation-delay: 0.2s; }
+.delay-3 { animation-delay: 0.3s; }
+.delay-4 { animation-delay: 0.4s; }
+.delay-5 { animation-delay: 0.5s; }
+.delay-6 { animation-delay: 0.6s; }
+.delay-7 { animation-delay: 0.7s; }
+.delay-8 { animation-delay: 0.8s; }
+
+/* Start hidden for animation */
+.anim-ready {
+	opacity: 0;
+}
+
+/* Smooth easing for interactions */
+.smooth {
+	transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Bold geometric accents */
+.accent-bar {
+	display: block;
+	height: 4px;
+	background: var(--color-accent);
+	transform-origin: left;
+	animation: drawLine 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.accent-bar-vertical {
+	display: block;
+	width: 4px;
+	background: var(--color-accent);
+	transform-origin: top;
+	animation: drawLine 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Geometric shape decorations */
+.geo-circle {
+	position: absolute;
+	border-radius: 50%;
+	border: 3px solid var(--color-accent);
+	pointer-events: none;
+}
+
+.geo-square {
+	position: absolute;
+	border: 3px solid var(--color-accent-secondary);
+	pointer-events: none;
+	transform: rotate(45deg);
+}
+
+/* Hover lift with shadow */
+.hover-lift {
+	transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+				box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-lift:hover {
+	transform: translateY(-6px);
+	box-shadow: 0 20px 40px rgba(var(--color-text-rgb), 0.15);
+}
+
+/* Bold underline hover */
+.hover-underline {
+	position: relative;
+}
+
+.hover-underline::after {
+	content: "";
+	position: absolute;
+	bottom: -2px;
+	left: 0;
+	width: 100%;
+	height: 3px;
+	background: var(--color-accent);
+	transform: scaleX(0);
+	transform-origin: right;
+	transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-underline:hover::after {
+	transform: scaleX(1);
+	transform-origin: left;
+}
+
+/* Focus styles - accessible */
+:focus-visible {
+	outline: 3px solid var(--color-accent);
+	outline-offset: 3px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+
+	.texture::before {
+		animation: none;
+	}
+}

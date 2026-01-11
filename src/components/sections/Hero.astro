@@ -207,7 +207,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-		gap: 1rem;
+		gap: 2rem;
 	}
 
 	.info {
@@ -217,16 +217,26 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		padding-right: 32px;
 	}
 
-	h2 {
+	.info h1 {
+		font-size: clamp(2rem, 6vw, 3rem);
+		margin: 0;
+	}
+
+	.info h2 {
+		font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--color-accent);
 		text-wrap: balance;
+		margin-top: 0.5rem;
 	}
 
 	img {
 		aspect-ratio: 1 / 1;
 		object-fit: cover;
-		width: 184px;
+		width: 160px;
 		border-radius: 12px;
-		margin-top: 1rem;
 		align-items: center;
 		justify-content: center;
 	}
@@ -239,7 +249,6 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		gap: 0.25rem;
 		font-size: 0.9rem;
 		letter-spacing: -0.05rem;
-		padding-inline: 0.8rem;
 	}
 	button {
 		background: var(--color-background);
@@ -260,7 +269,6 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 	}
 	footer {
 		color: var(--color-accent);
-		padding-inline: 0.8rem;
 		font-size: 0.75rem;
 		display: flex;
 		gap: 0.5rem;

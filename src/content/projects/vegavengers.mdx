@@ -1,0 +1,53 @@
+---
+title: VegAvengers Marketing
+description: A high-performance website for VegFests and animal sanctuaries with searchable components and responsive design.
+image: /images/projects/sanctuary.webm
+url: https://vegavengers.com
+techStack:
+  - React
+  - TypeScript
+  - Vite
+  - Tailwind CSS
+role: Front-End Developer
+highlights:
+  - Built responsive, backend-integrated searchable components for VegFests and animal sanctuaries
+  - Translated UI/UX mockups into clean, maintainable front-end code
+  - Optimized for performance with lazy loading and efficient state management
+featured: true
+order: 1
+---
+
+import MediaFull from '@/components/media/MediaFull.astro';
+import MediaTwo from '@/components/media/MediaTwo.astro';
+import MediaThree from '@/components/media/MediaThree.astro';
+
+## Overview
+
+VegAvengers Marketing needed a modern, performant website to showcase VegFests and animal sanctuaries across the country. The site required searchable, filterable components that could handle large datasets while maintaining a smooth user experience.
+
+<MediaFull src="/images/projects/sanctuary.webm" caption="Real-time sanctuary search" />
+
+## Challenge
+
+The main challenge was creating a search system that could filter through hundreds of events and sanctuaries in real-time while keeping the interface responsive on mobile devices.
+
+<MediaTwo items={[
+  { src: "/images/projects/sanctuary.webm", caption: "Mobile view" },
+  { src: "/images/projects/sanctuary.webm", caption: "Desktop view" }
+]} />
+
+## Solution
+
+Built a React/TypeScript application with Vite for fast development and optimized builds. Implemented a custom search component with debounced filtering and lazy-loaded results to ensure smooth performance even on slower connections.
+
+<MediaThree items={[
+  { src: "/images/projects/sanctuary.webm", alt: "Feature 1" },
+  { src: "/images/projects/sanctuary.webm", alt: "Feature 2" },
+  { src: "/images/projects/sanctuary.webm", alt: "Feature 3" }
+]} />
+
+## Results
+
+- Fast initial load times with code splitting
+- Responsive design that works seamlessly across all devices
+- Intuitive search interface that helps users find events quickly

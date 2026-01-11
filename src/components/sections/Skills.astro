@@ -69,13 +69,13 @@ const getIconName = (name: string) => {
 <Section title="Skills">
 	<ul>
 		{
-			skills.map(({ name }) => {
+			skills.map(({ name }, i) => {
 				const iconName = getIconName(name);
 				const Icon = SKILLS_ICONS[iconName];
 
 				return (
-					<li>
-						{Icon && <Icon />}{" "}
+					<li style={`--i: ${i}`}>
+						{Icon && <Icon />}
 						<span>{name}</span>
 					</li>
 				);
@@ -86,23 +86,79 @@ const getIconName = (name: string) => {
 
 <style>
 	ul {
-		margin-top: 1rem;
-		display: inline-flex;
-		gap: 8px;
+		display: flex;
+		gap: 0.5rem;
 		flex-wrap: wrap;
-		padding-inline: 0.8rem;
+		margin: 1rem 0 0 0;
+		padding: 0;
+		list-style: none;
 	}
 
 	li {
+		display: inline-flex;
 		align-items: center;
+		gap: 0.5rem;
+		font-size: 0.8rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--color-text);
+		background: transparent;
+		border: 2px solid var(--color-text);
+		padding: 0.4rem 0.75rem;
+		cursor: default;
+		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		animation: skillSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+		animation-delay: calc(var(--i) * 0.03s);
+	}
+
+	li:hover {
 		background: var(--color-text);
-		border-radius: 6px;
 		color: var(--color-background);
-		display: flex;
-		font-size: 0.3rem;
-		font-weight: 500;
-		gap: 0.05rem;
-		padding-block: 0.1rem;
-		padding-left: 0.5rem;
+		transform: translateY(-2px);
+	}
+
+	li :global(svg) {
+		width: 18px;
+		height: 18px;
+		transition: transform 0.3s ease;
+	}
+
+	li:hover :global(svg) {
+		transform: scale(1.1);
+	}
+
+	span {
+		font-size: 0.8rem;
+		padding: 0;
+		margin: 0;
+		line-height: 1;
+	}
+
+	@keyframes skillSlideUp {
+		from {
+			opacity: 0;
+			transform: translateY(10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@media (width <= 700px) {
+		li {
+			font-size: 0.7rem;
+			padding: 0.35rem 0.6rem;
+		}
+
+		li :global(svg) {
+			width: 14px;
+			height: 14px;
+		}
+
+		span {
+			font-size: 0.7rem;
+		}
 	}
 </style>
