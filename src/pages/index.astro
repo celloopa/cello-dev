@@ -3,7 +3,7 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Section from "@/components/Section.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
-import VisualsCard from "@/components/VisualsCard.astro";
+// import VisualsCard from "@/components/VisualsCard.astro"; // Hidden until content is ready
 import { basics } from "@cv";
 import "@/styles/colors.css";
 import Mail from "@/icons/Mail.astro";
@@ -26,10 +26,11 @@ const featuredProjects = allProjects
 	.filter((p) => p.data.featured)
 	.sort((a, b) => a.data.order - b.data.order);
 
-const allVisuals = await getCollection("visuals");
-const featuredVisuals = allVisuals
-	.filter((v) => v.data.featured && !v.slug.startsWith("_"))
-	.sort((a, b) => a.data.order - b.data.order);
+// Visuals hidden until content is ready
+// const allVisuals = await getCollection("visuals");
+// const featuredVisuals = allVisuals
+// 	.filter((v) => v.data.featured && !v.slug.startsWith("_"))
+// 	.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout title={`Cello - ${label}`}>
@@ -97,6 +98,7 @@ const featuredVisuals = allVisuals
 	</Section>
 	</div>
 
+	{/* Visuals section hidden until content is ready
 	{featuredVisuals.length > 0 && (
 		<div class="visuals-section-wrapper">
 			<Section title="Visuals">
@@ -123,6 +125,7 @@ const featuredVisuals = allVisuals
 			</Section>
 		</div>
 	)}
+	*/}
 </Layout>
 
 <script is:inline>
