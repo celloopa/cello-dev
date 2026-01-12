@@ -264,15 +264,17 @@ const mainIsVideo = isVideo(image || '');
 		object-fit: cover;
 	}
 
-	.media-two .visuals-media,
-	.media-three .visuals-media {
+	.media-two .media-item,
+	.media-three .media-item {
 		aspect-ratio: 16/10;
-		object-fit: cover;
+		overflow: hidden;
 	}
 
-	video.visuals-media {
-		height: auto;
-		aspect-ratio: auto;
+	.media-two .visuals-media,
+	.media-three .visuals-media {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
 	}
 
 	.visuals-media:hover {
