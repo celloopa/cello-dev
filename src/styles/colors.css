@@ -1,41 +1,41 @@
 :root {
-	/* Original palette - forest & sunset */
-	--color-night: #0a0f1f;
-	--color-night-rgb: 10, 15, 31;
-	/* Deep night sky blue */
-	--color-snow: #f0f4f8;
-	--color-snow-rgb: 240, 244, 248;
-	/* Soft snow white */
-	--color-forest: #228B22;
-	--color-forest-rgb: 34, 139, 34;
-	/* Vibrant forest green */
-	--color-sunset: #FF6B35;
-	--color-sunset-rgb: 255, 107, 53;
-	/* Warm sunset orange */
-	--color-background-translucent: #1a1a1aCC;
+	/* New palette - midnight & starlight */
+	--color-midnight: #001A11;
+	--color-midnight-rgb: 0, 26, 17;
+	/* Deep midnight green */
+	--color-starlight: #E0E0E0;
+	--color-starlight-rgb: 224, 224, 224;
+	/* Soft starlight gray */
+	--color-treescape: #887850;
+	--color-treescape-rgb: 136, 120, 80;
+	/* Earthy treescape */
+	--color-night-shine: #00BC44;
+	--color-night-shine-rgb: 0, 188, 68;
+	/* Vibrant night-shine green */
+	--color-background-translucent: #001A11CC;
 	--color-background-opacity: 0.8;
 }
 
 :root[data-theme="light"] {
-	--color-background: var(--color-snow);
-	--color-background-rgb: var(--color-snow-rgb);
-	--color-text: var(--color-night);
-	--color-text-rgb: var(--color-night-rgb);
-	--color-accent: var(--color-sunset);
-	--color-accent-rgb: var(--color-sunset-rgb);
-	--color-accent-secondary: var(--color-forest);
-	--color-accent-secondary-rgb: var(--color-forest-rgb);
-	--color-background-translucent: rgba(var(--color-snow-rgb), var(--color-background-opacity));
+	--color-background: var(--color-starlight);
+	--color-background-rgb: var(--color-starlight-rgb);
+	--color-text: var(--color-midnight);
+	--color-text-rgb: var(--color-midnight-rgb);
+	--color-accent: var(--color-treescape);
+	--color-accent-rgb: var(--color-treescape-rgb);
+	--color-accent-secondary: var(--color-night-shine);
+	--color-accent-secondary-rgb: var(--color-night-shine-rgb);
+	--color-background-translucent: rgba(var(--color-starlight-rgb), var(--color-background-opacity));
 }
 
 :root[data-theme="dark"] {
-	--color-background: var(--color-night);
-	--color-background-rgb: var(--color-night-rgb);
-	--color-text: var(--color-snow);
-	--color-text-rgb: var(--color-snow-rgb);
-	--color-accent: var(--color-forest);
-	--color-accent-rgb: var(--color-forest-rgb);
-	--color-accent-secondary: var(--color-sunset);
-	--color-accent-secondary-rgb: var(--color-sunset-rgb);
-	--color-background-translucent: rgba(var(--color-night-rgb), var(--color-background-opacity));
+	--color-background: var(--color-midnight);
+	--color-background-rgb: var(--color-midnight-rgb);
+	--color-text: var(--color-starlight);
+	--color-text-rgb: var(--color-starlight-rgb);
+	--color-accent: var(--color-night-shine);
+	--color-accent-rgb: var(--color-night-shine-rgb);
+	--color-accent-secondary: var(--color-treescape);
+	--color-accent-secondary-rgb: var(--color-treescape-rgb);
+	--color-background-translucent: rgba(var(--color-midnight-rgb), var(--color-background-opacity));
 }
