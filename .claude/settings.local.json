@@ -12,7 +12,8 @@
       "Bash(pnpm dev:*)",
       "Bash(git commit:*)",
       "Bash(ffmpeg:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(git status:*)"
     ]
   }
 }

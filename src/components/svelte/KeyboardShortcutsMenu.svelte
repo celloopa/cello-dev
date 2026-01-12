@@ -58,9 +58,9 @@
             window.open("https://www.linkedin.com/in/marcelorondon/", "_blank"),
         },
         {
-          key: "x",
-          label: "X (Twitter)",
-          action: () => window.open("https://twitter.com/cello_dev", "_blank"),
+          key: "s",
+          label: "Bluesky",
+          action: () => window.open("https://bsky.app/profile/cello.design", "_blank"),
         },
       ],
     },
@@ -99,7 +99,7 @@
         executeShortcut(shortcut);
       } else {
         switch (key) {
-          case "ArrowUp":
+          case "arrowup":
             if (selectedShortcutIndex > 0) {
               selectedShortcutIndex--;
             } else if (selectedCategoryIndex > 0) {
@@ -108,7 +108,7 @@
                 shortcutCategories[selectedCategoryIndex].shortcuts.length - 1;
             }
             break;
-          case "ArrowDown":
+          case "arrowdown":
             if (
               selectedShortcutIndex <
               shortcutCategories[selectedCategoryIndex].shortcuts.length - 1
@@ -119,7 +119,7 @@
               selectedShortcutIndex = 0;
             }
             break;
-          case "Enter":
+          case "enter":
             const selectedCategory = shortcutCategories[selectedCategoryIndex];
             if (selectedCategory && selectedCategory.shortcuts.length > 0) {
               executeShortcut(
