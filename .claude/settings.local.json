@@ -14,7 +14,10 @@
       "Bash(ffmpeg:*)",
       "Bash(ls:*)",
       "Bash(git status:*)",
-      "Bash(ffprobe:*)"
+      "Bash(ffprobe:*)",
+      "Bash(for f in ./public/images/projects/ad-assets/*.webm ./public/images/projects/*.webm)",
+      "Bash(do echo -n \"$f: \")",
+      "Bash(done)"
     ]
   }
 }
