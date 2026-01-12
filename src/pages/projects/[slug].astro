@@ -77,7 +77,7 @@ const mainIsVideo = isVideo(image || '');
 	</Section>
 )}
 
-{media && media.map((gallery, galleryIndex) => (
+{media && media.map((gallery) => (
 	<Section>
 		<div class={`media-gallery media-${gallery.layout}`}>
 			{gallery.items.map((item, itemIndex) => (

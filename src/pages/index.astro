@@ -13,7 +13,7 @@ import Bsky from "@/icons/Bsky.astro";
 import Sun from "@/icons/Sun.astro";
 import type { SocialIcon } from "@/types";
 
-const { name, label, image, summary, profiles, email } = basics;
+const { name, label, summary, profiles, email } = basics;
 
 const SOCIAL_ICONS: SocialIcon = {
 	GitHub,
@@ -149,7 +149,6 @@ const featuredVisuals = allVisuals
 		const pauseAfterErase = 500;
 
 		let charIndex = 0;
-		let isTyping = true;
 
 		function type() {
 			if (charIndex < text.length) {
