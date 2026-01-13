@@ -1,0 +1,95 @@
+---
+title: Ghosted
+description: A terminal-based job application tracker built with Go and Bubble Tea, featuring a TUI for interactive tracking and a CLI for automation and AI agent integration.
+image: /images/projects/ghosted/hero.webm
+github: https://github.com/celloopa/ghosted
+techStack:
+  - Go
+  - Bubble Tea
+  - Lip Gloss
+  - JSON
+role: Solo Developer
+highlights:
+  - Built dual-interface system with interactive TUI and scriptable CLI for AI agent integration
+  - Designed 8-stage status pipeline tracking the full recruitment lifecycle
+  - Implemented vim-style navigation with quick-action keyboard shortcuts
+  - Developed in collaboration with Claude Code, open-sourced under MIT license
+featured: true
+order: 3
+---
+
+import MediaFull from '@/components/media/MediaFull.astro';
+import MediaTwo from '@/components/media/MediaTwo.astro';
+
+## Overview
+
+Ghosted is a terminal-based job application tracker designed for developers navigating the modern hiring process. Built in collaboration with Claude Code, it provides both an interactive TUI for daily use and a CLI for automation—making it ideal for integration with AI agents that can parse job postings and update statuses automatically.
+
+The project is open-sourced under the MIT license.
+
+{/* <MediaFull
+  src="/images/projects/ghosted/hero.webm"
+  alt="Ghosted TUI showing the main list view with job applications and status indicators"
+  caption="Main application list with status indicators"
+/> */}
+
+## Dual Interface Design
+
+The project offers two ways to interact: a rich Terminal User Interface for exploration and manual updates, and a CLI for programmatic access. Both share the same JSON data store, so changes sync instantly.
+
+{/* <MediaTwo items={[
+  { src: "/images/projects/ghosted/tui-list.webm", alt: "TUI list view with keyboard navigation", caption: "Interactive TUI with vim-style navigation" },
+  { src: "/images/projects/ghosted/cli-demo.webm", alt: "CLI commands adding and listing applications", caption: "CLI for scripting and automation" }
+]} /> */}
+
+The CLI was specifically designed for AI agent integration—commands accept and output JSON, making it trivial to build automation that parses job postings from emails or websites and automatically creates tracked applications.
+
+## Status Pipeline
+
+Applications flow through an 8-stage pipeline reflecting the real recruitment journey:
+
+1. **Saved** - Bookmarked for later
+2. **Applied** - Application submitted
+3. **Screening** - Initial review
+4. **Interview** - In progress
+5. **Offer** - Received
+6. **Accepted** - Job secured
+7. **Rejected** - Application declined
+8. **Withdrawn** - Candidate withdrew
+
+Quick keyboard shortcuts (1-8) let you update status without leaving the list view.
+
+{/* <MediaFull
+  src="/images/projects/ghosted/detail-view.webm"
+  alt="Detailed view of a single application showing all tracked fields"
+  caption="Application detail view with salary, contacts, and interview history"
+/> */}
+
+## Rich Data Tracking
+
+Each application tracks comprehensive details beyond just company and status:
+
+- **Compensation**: Salary range with smart formatting ($150k display)
+- **Contacts**: Recruiter name and email for follow-ups
+- **Documents**: Links to resume version and cover letter used
+- **Interviews**: Multiple interviews with type, date, interviewer, and notes
+- **Follow-ups**: Next action reminders
+
+## Technical Highlights
+
+- **Bubble Tea Framework**: Elm-inspired architecture with clean state management and a view state machine
+- **Zero Database Overhead**: Plain JSON files make data portable, version-controllable, and human-readable
+- **Smart Partial Matching**: CLI accepts partial UUIDs (`ghosted get abc` finds first match starting with "abc")
+- **Cross-Platform**: Single Go binary compiles for macOS, Linux, and Windows
+- **Sample Data Seeding**: New installations auto-populate with example applications for immediate exploration
+
+## Building with Claude Code
+
+This project was developed in collaboration with Claude Code, Anthropic's AI coding assistant. The pairing workflow proved especially effective for:
+
+- Designing the data model and status state machine
+- Implementing the Bubble Tea view architecture
+- Building the CLI command structure with proper flag handling
+- Writing comprehensive documentation
+
+The experience reinforced how AI-assisted development can accelerate solo projects while maintaining code quality and architectural consistency.
