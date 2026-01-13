@@ -17,7 +17,12 @@
       "Bash(ffprobe:*)",
       "Bash(for f in ./public/images/projects/ad-assets/*.webm ./public/images/projects/*.webm)",
       "Bash(do echo -n \"$f: \")",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(git config:*)",
+      "Bash(gh auth status:*)",
+      "Bash(gh auth logout:*)",
+      "Bash(git filter-branch:*)",
+      "Bash(git stash push:*)"
     ]
   }
 }

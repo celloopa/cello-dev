@@ -1,189 +1,92 @@
 ---
-import Layout from "@/layouts/blogLayout.astro";
+import { getCollection } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import BlogCard from "@/components/BlogCard.astro";
 import "@/styles/colors.css";
-import Sun from "@/icons/Sun.astro";
+
+const allPosts = await getCollection("blog");
+const publishedPosts = allPosts
+	.filter((post) => !post.data.draft)
+	.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
 ---
 
-<Layout title=`Cello's Devlog - infinityCanvas`>
-	<div class="content-wrapper">
-		<header>
-			<div class="container">
-				<h1>
-					infinityCanvas - illustrated reflections
-					on code and design
-				</h1>
-				<div class="button-group">
-					<a href="/" class="button-link">🏠</a>
-					<button onclick="toggleTheme()"
-						><Sun /></button
-					>
-					<button
-						id="keyboard-shortcut-indicator"
-						class="keyboard-shortcut-indicator"
-						aria-label="Keyboard shortcuts menu"
-					>
-						<span class="key"></span>
-					</button>
-				</div>
+<Layout title="Blog - Marcelo Rondon">
+	<Section>
+		<h1>Blog</h1>
+		<p class="intro">Thoughts on code, design, and creative development.</p>
+	</Section>
+
+	<Section>
+		{publishedPosts.length > 0 ? (
+			<div class="blog-grid">
+				{publishedPosts.map((post, i) => (
+					<BlogCard
+						title={post.data.title}
+						description={post.data.description}
+						publishDate={post.data.publishDate}
+						image={post.data.image}
+						tags={post.data.tags}
+						slug={post.slug}
+						index={i}
+					/>
+				))}
 			</div>
-		</header>
-		<main class="hero">
-			<h2 class="hero-title">Blog - COMING SOON</h2>
-			<p>
-				We're working hard to bring you amazing content.
-				Stay tuned!
-			</p>
-			<!-- <TestComponent client:only="svelte" /> -->
-		</main>
-	</div>
+		) : (
+			<p class="empty">No posts yet. Check back soon!</p>
+		)}
+	</Section>
 </Layout>
 
-<script>
-	function setTheme(theme: string) {
+<script is:inline>
+	function setTheme(theme) {
 		document.documentElement.setAttribute("data-theme", theme);
 		localStorage.setItem("theme", theme);
-		// Remove the dynamic setting of background-translucent
 	}
 
-	function toggleTheme() {
-		const currentTheme = localStorage.getItem("theme") || "dark";
-		const newTheme = currentTheme === "dark" ? "light" : "dark";
-		setTheme(newTheme);
-	}
-
-	// Set initial theme
-	function initTheme() {
+	document.addEventListener("DOMContentLoaded", () => {
 		const savedTheme = localStorage.getItem("theme") || "dark";
 		setTheme(savedTheme);
-	}
+	});
 
-	// Run initTheme on page load
-	document.addEventListener("DOMContentLoaded", initTheme);
-
-	// Keyboard shortcut indicator logic
-	function detectOS() {
-		const userAgent = navigator.userAgent.toLowerCase();
-		if (userAgent.includes("mac")) return "mac";
-		if (userAgent.includes("win")) return "windows";
-		if (userAgent.includes("linux")) return "linux";
-		return "other";
-	}
-
-	const isMac = detectOS() === "mac";
-	const keyboardShortcutIndicator = document.getElementById(
-		"keyboard-shortcut-indicator",
-	);
-	const keySpan = keyboardShortcutIndicator?.querySelector(".key");
-
-	if (keyboardShortcutIndicator && keySpan) {
-		keySpan.textContent = isMac ? "⌘ + K" : "Ctrl + K";
-
-		keyboardShortcutIndicator.addEventListener("click", () => {
-			window.dispatchEvent(
-				new CustomEvent("toggleKeyboardMenu"),
-			);
-		});
-	}
-	// Make toggleTheme available globally
-	(window as any).toggleTheme = toggleTheme;
+	document.addEventListener("astro:after-swap", () => {
+		const savedTheme = localStorage.getItem("theme") || "dark";
+		setTheme(savedTheme);
+	});
 </script>
 
 <style>
-	.content-wrapper {
-		display: flex;
-		flex-direction: column;
-		min-height: 100vh;
-	}
-	header {
-		display: flex;
-		color: var(--color-text);
-		flex-direction: column;
-		align-items: center;
-		background: var(--color-background-translucent);
-		padding: 1rem;
-		border-bottom: 1px solid var(--color-text);
-	}
-	.container {
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-		width: 100%;
-		max-width: 1200px;
-		padding: 0 1rem;
-	}
-	.button-group {
-		display: flex;
-		gap: 0.5rem;
-	}
-	.button-link,
-	button {
-		background: var(--color-background);
-		color: var(--color-text);
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		border: 1px solid var(--color-accent);
-		padding: 2px;
-		height: 32px;
-		width: 32px;
-		border-radius: 4px;
-		transition: all 0.3s ease;
-	}
-	.button-link:hover,
-	button:hover {
-		background: var(--color-accent);
-		border: 1px solid var(--color-background);
-	}
-	.keyboard-shortcut-indicator {
-		width: auto;
-		padding: 2px 4px; /* Reduced padding */
-	}
 	h1 {
-		font-size: 1.2rem;
-		margin: 0;
-	}
-	.hero {
-		flex-grow: 1;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		text-align: center;
-		padding: 2rem;
-	}
-	.hero-title {
-		font-size: 2rem;
-		margin-bottom: 1rem;
-	}
-	p {
-		font-size: 1.2rem;
+		font-size: 2.5rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
 		color: var(--color-accent);
+		margin-bottom: 0;
 	}
-	.key {
-		font-size: 0.8rem;
-		font-weight: bold;
-		padding: 0 4px;
+
+	.intro {
+		color: var(--color-text);
+		opacity: 0.8;
+		margin-top: 0.5rem;
 	}
-	@media (max-width: 600px) {
-		h1 {
-			font-size: 1rem;
-		}
-		.hero-title {
-			font-size: 1.5rem;
-		}
-		p {
-			font-size: 1rem;
-		}
+
+	.blog-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 2rem;
 	}
-	@media (max-width: 768px) {
-		.container {
-			flex-direction: column;
-			gap: 1rem;
-		}
-		h1 {
-			text-align: center;
+
+	.empty {
+		text-align: center;
+		color: var(--color-text);
+		opacity: 0.6;
+		font-size: 1.1rem;
+	}
+
+	@media (width <= 700px) {
+		.blog-grid {
+			grid-template-columns: 1fr;
 		}
 	}
 </style>
-

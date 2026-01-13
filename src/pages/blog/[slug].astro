@@ -1,0 +1,420 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import "@/styles/colors.css";
+
+export async function getStaticPaths() {
+	const posts = await getCollection("blog");
+	return posts
+		.filter((post) => !post.data.draft)
+		.map((post) => ({
+			params: { slug: post.slug },
+			props: { post },
+		}));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const { title, description, publishDate, image, tags, updatedDate } = post.data;
+
+const formattedDate = publishDate.toLocaleDateString("en-US", {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+});
+
+const formattedUpdatedDate = updatedDate?.toLocaleDateString("en-US", {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+});
+
+const isVideo = (src: string) => src?.endsWith('.webm') || src?.endsWith('.mp4');
+const mainIsVideo = isVideo(image || '');
+---
+
+<Layout title={`${title} - Marcelo Rondon`}>
+	<article class="blog-post">
+		<Section>
+			<div class="top-row">
+				<span class="date-badge">{formattedDate}</span>
+				<a href="/blog" class="back-link">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+						<path d="M19 12H5M5 12L12 5M5 12L12 19" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+					<span>Back</span>
+				</a>
+			</div>
+
+			<header class="post-header">
+				<h1>{title}</h1>
+				<div class="bar"></div>
+				<p class="description">{description}</p>
+
+				{tags && tags.length > 0 && (
+					<ul class="tags">
+						{tags.map((tag, i) => (
+							<li style={`--i: ${i}`}>{tag}</li>
+						))}
+					</ul>
+				)}
+
+				{formattedUpdatedDate && (
+					<p class="updated">Updated: {formattedUpdatedDate}</p>
+				)}
+			</header>
+		</Section>
+
+		{image && (
+			<Section>
+				<div class="hero-image">
+					{mainIsVideo ? (
+						<video src={image} class="post-media" autoplay loop muted playsinline />
+					) : (
+						<img src={image} alt={title} class="post-media" />
+					)}
+				</div>
+			</Section>
+		)}
+
+		<Section>
+			<div class="content">
+				<Content />
+			</div>
+		</Section>
+
+		<Section>
+			<div class="footer-nav">
+				<a href="/blog" class="nav-link">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+						<path d="M19 12H5M5 12L12 19M5 12L12 5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+					</svg>
+					<span>All Posts</span>
+				</a>
+			</div>
+		</Section>
+	</article>
+</Layout>
+
+<script is:inline>
+	function setTheme(theme) {
+		document.documentElement.setAttribute("data-theme", theme);
+		localStorage.setItem("theme", theme);
+	}
+
+	document.addEventListener("DOMContentLoaded", () => {
+		const savedTheme = localStorage.getItem("theme") || "dark";
+		setTheme(savedTheme);
+	});
+
+	document.addEventListener("astro:after-swap", () => {
+		const savedTheme = localStorage.getItem("theme") || "dark";
+		setTheme(savedTheme);
+	});
+</script>
+
+<style>
+	.blog-post {
+		padding-top: 1rem;
+	}
+
+	.top-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding-inline: 0.8rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.back-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		color: var(--color-text);
+		font-size: 0.9rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.back-link:hover {
+		color: var(--color-accent);
+		gap: 0.75rem;
+	}
+
+	.post-header {
+		padding-inline: 0.8rem;
+	}
+
+	.date-badge {
+		display: inline-block;
+		font-size: 0.8rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.1em;
+		color: var(--color-accent);
+		border: 2px solid var(--color-accent);
+		padding: 0.4rem 0.8rem;
+	}
+
+	h1 {
+		font-size: clamp(2.5rem, 8vw, 4rem);
+		line-height: 1.1;
+		margin: 0 0 1rem 0;
+		padding: 0;
+		animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+	}
+
+	.bar {
+		width: 80px;
+		height: 5px;
+		background: var(--color-accent);
+		margin-bottom: 1.5rem;
+		animation: wipeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
+	}
+
+	.description {
+		font-size: 1.1rem;
+		line-height: 1.8;
+		max-width: 60ch;
+		margin: 0 0 2rem 0;
+		padding: 0;
+		animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+		margin-bottom: 1.5rem;
+	}
+
+	.tags li {
+		font-size: 0.75rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--color-text);
+		border: 2px solid var(--color-text);
+		padding: 0.4rem 0.8rem;
+		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+		animation-delay: calc(0.4s + var(--i) * 0.05s);
+	}
+
+	.tags li:hover {
+		background: var(--color-text);
+		color: var(--color-background);
+	}
+
+	.updated {
+		font-size: 0.85rem;
+		color: var(--color-text);
+		opacity: 0.7;
+		font-style: italic;
+	}
+
+	.hero-image {
+		padding-inline: 0.8rem;
+		animation: scaleIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+	}
+
+	.post-media {
+		width: 100%;
+		max-height: 600px;
+		object-fit: cover;
+		border: 4px solid var(--color-text);
+		filter: grayscale(20%);
+		transition: filter 0.3s ease;
+	}
+
+	.post-media:hover {
+		filter: grayscale(0%);
+	}
+
+	.content {
+		padding-inline: 0.8rem;
+		animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+	}
+
+	.content :global(h2) {
+		font-size: 1.5rem;
+		line-height: 1.2;
+		color: var(--color-accent);
+		margin: 3rem 0 1rem 0;
+		padding: 0;
+		text-transform: uppercase;
+	}
+
+	.content :global(h2:first-child) {
+		margin-top: 0;
+	}
+
+	.content :global(h3) {
+		font-size: 1.25rem;
+		line-height: 1.3;
+		color: var(--color-text);
+		margin: 2rem 0 0.75rem 0;
+		padding: 0;
+	}
+
+	.content :global(p) {
+		padding: 0;
+		margin: 0 0 1.25rem 0;
+		font-size: 1rem;
+		line-height: 1.8;
+	}
+
+	.content :global(ul),
+	.content :global(ol) {
+		padding-left: 1.5rem;
+		margin: 0 0 1.25rem 0;
+	}
+
+	.content :global(ul) {
+		list-style: none;
+	}
+
+	.content :global(ul li) {
+		position: relative;
+		padding-left: 1.5rem;
+	}
+
+	.content :global(ul li::before) {
+		content: "—";
+		position: absolute;
+		left: 0;
+		color: var(--color-accent);
+		font-weight: 700;
+	}
+
+	.content :global(ol) {
+		list-style: decimal;
+	}
+
+	.content :global(li) {
+		margin-bottom: 0.5rem;
+		line-height: 1.7;
+	}
+
+	.content :global(code) {
+		background: rgba(var(--color-accent-rgb), 0.1);
+		border: 1px solid rgba(var(--color-accent-rgb), 0.2);
+		padding: 0.2rem 0.4rem;
+		font-size: 0.9em;
+	}
+
+	.content :global(pre) {
+		background: var(--color-text);
+		color: var(--color-background);
+		border: 3px solid var(--color-text);
+		padding: 1.5rem;
+		overflow-x: auto;
+		margin: 0 0 1.5rem 0;
+	}
+
+	.content :global(pre code) {
+		background: none;
+		border: none;
+		padding: 0;
+	}
+
+	.content :global(blockquote) {
+		border-left: 4px solid var(--color-accent);
+		padding-left: 1.5rem;
+		margin: 1.5rem 0;
+		font-style: italic;
+	}
+
+	.content :global(a) {
+		color: var(--color-accent);
+		text-decoration: underline;
+		text-underline-offset: 2px;
+		transition: opacity 0.2s ease;
+	}
+
+	.content :global(a:hover) {
+		opacity: 0.8;
+	}
+
+	.footer-nav {
+		display: flex;
+		justify-content: center;
+		padding: 3rem 0.8rem;
+		border-top: 3px solid var(--color-text);
+		margin-top: 2rem;
+	}
+
+	.nav-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.75rem;
+		color: var(--color-accent);
+		font-weight: 700;
+		font-size: 1rem;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		padding: 0.8rem 1.5rem;
+		border: 3px solid var(--color-accent);
+		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.nav-link:hover {
+		background: var(--color-accent);
+		color: var(--color-background);
+		gap: 0.5rem;
+	}
+
+	@keyframes slideUp {
+		from {
+			opacity: 0;
+			transform: translateY(30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
+	@keyframes wipeIn {
+		from {
+			transform: scaleX(0);
+			transform-origin: left;
+		}
+		to {
+			transform: scaleX(1);
+			transform-origin: left;
+		}
+	}
+
+	@keyframes scaleIn {
+		from {
+			opacity: 0;
+			transform: scale(0.95);
+		}
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	@media (width <= 700px) {
+		.blog-post {
+			padding-top: 0.5rem;
+		}
+
+		h1 {
+			font-size: clamp(2rem, 10vw, 3rem);
+		}
+
+		.description {
+			font-size: 1rem;
+		}
+
+		.post-media {
+			max-height: 300px;
+		}
+	}
+</style>
