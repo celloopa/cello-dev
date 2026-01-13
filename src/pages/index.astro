@@ -42,10 +42,6 @@ const featuredProjects = allProjects
 			</div>
 			<p class="label">{label}</p>
 			<p class="summary">{summary}</p>
-			<nav class="actions">
-				<a href="/resume" class="btn">View Resume</a>
-				<a href="/projects" class="btn outline">Projects</a>
-			</nav>
 		</div>
 		<div class="hero-visual">
 			<div class="image-frame">
@@ -75,6 +71,8 @@ const featuredProjects = allProjects
 	<div class="projects-section-wrapper">
 	<Section title="Projects">
 		<div class="bar section-bar"></div>
+	</Section>
+	<div class="featured-carousel">
 		<div class="projects-grid">
 			{featuredProjects.map((project, i) => (
 				<ProjectCard
@@ -89,6 +87,8 @@ const featuredProjects = allProjects
 				/>
 			))}
 		</div>
+	</div>
+	<Section>
 		<a href="/projects" class="view-all">
 			<span>All Projects</span>
 			<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -103,6 +103,8 @@ const featuredProjects = allProjects
 		<div class="visuals-section-wrapper">
 			<Section title="Visuals">
 				<div class="bar section-bar"></div>
+			</Section>
+			<div class="featured-carousel">
 				<div class="visuals-grid">
 					{featuredVisuals.map((item, i) => (
 						<VisualsCard
@@ -116,6 +118,8 @@ const featuredProjects = allProjects
 						/>
 					))}
 				</div>
+			</div>
+			<Section>
 				<a href="/visuals" class="view-all visuals-view-all">
 					<span>All Visuals</span>
 					<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -291,43 +295,7 @@ const featuredProjects = allProjects
 		font-size: 1rem;
 		line-height: 1.7;
 		max-width: 45ch;
-		margin-bottom: 2rem;
 		animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
-	}
-
-	.actions {
-		display: flex;
-		gap: 1rem;
-		animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards;
-	}
-
-	.btn {
-		display: inline-block;
-		padding: 0.8rem 1.5rem;
-		font-size: 0.85rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		background: var(--color-accent);
-		color: var(--color-background);
-		border: 3px solid var(--color-accent);
-		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-	}
-
-	.btn:hover {
-		background: var(--color-background);
-		color: var(--color-accent);
-	}
-
-	.btn.outline {
-		background: transparent;
-		color: var(--color-text);
-		border-color: var(--color-text);
-	}
-
-	.btn.outline:hover {
-		background: var(--color-text);
-		color: var(--color-background);
 	}
 
 	.hero-visual {
@@ -393,10 +361,31 @@ const featuredProjects = allProjects
 		color: var(--color-background);
 	}
 
+	.featured-carousel {
+		width: 100vw;
+		margin-left: calc(50% - 50vw);
+		padding-inline: max(2rem, calc((100vw - 1500px) / 2));
+		overflow-x: auto;
+		overflow-y: hidden;
+		scroll-snap-type: x mandatory;
+		scroll-behavior: smooth;
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+
+	.featured-carousel::-webkit-scrollbar {
+		display: none;
+	}
+
 	.projects-grid {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(3, minmax(340px, 1fr));
 		gap: 2rem;
+		scroll-snap-align: start;
+	}
+
+	.projects-grid :global(.card) {
+		animation-name: slideFromRight;
 	}
 
 	.projects-section-wrapper {
@@ -413,8 +402,13 @@ const featuredProjects = allProjects
 
 	.visuals-grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(3, minmax(340px, 1fr));
 		gap: 2rem;
+		scroll-snap-align: start;
+	}
+
+	.visuals-grid :global(.card) {
+		animation-name: slideFromLeft;
 	}
 
 	.view-all {
@@ -478,9 +472,31 @@ const featuredProjects = allProjects
 		}
 	}
 
+	@keyframes slideFromRight {
+		from {
+			opacity: 0;
+			transform: translateX(60px);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
+	@keyframes slideFromLeft {
+		from {
+			opacity: 0;
+			transform: translateX(-60px);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
 	@media (width <= 900px) {
 		.visuals-grid {
-			grid-template-columns: repeat(2, 1fr);
+			grid-template-columns: repeat(3, minmax(300px, 1fr));
 		}
 	}
 
@@ -526,11 +542,6 @@ const featuredProjects = allProjects
 			text-align: center;
 		}
 
-		.actions {
-			justify-content: center;
-			flex-wrap: wrap;
-		}
-
 		.image-frame::before {
 			top: 8px;
 			left: 8px;
@@ -541,6 +552,24 @@ const featuredProjects = allProjects
 		img {
 			width: 240px;
 			height: 240px;
+		}
+
+		.featured-carousel {
+			width: 100%;
+			margin-left: 0;
+			padding-inline: 1rem;
+			overflow-x: visible;
+			scroll-snap-type: none;
+		}
+
+		.projects-section-wrapper :global(h2),
+		.visuals-section-wrapper :global(h2) {
+			text-align: center;
+		}
+
+		.projects-section-wrapper .section-bar,
+		.visuals-section-wrapper .section-bar {
+			margin-inline: auto;
 		}
 
 		.projects-grid {
