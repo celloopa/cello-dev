@@ -555,12 +555,29 @@ const mainIsVideo = isVideo(image || '');
 			padding-top: 0.5rem;
 		}
 
+		.top-row {
+			flex-direction: column;
+			align-items: center;
+			gap: 0.75rem;
+		}
+
 		h1 {
 			font-size: clamp(2rem, 10vw, 3rem);
+			text-align: center;
+		}
+
+		.bar {
+			margin-left: auto;
+			margin-right: auto;
 		}
 
 		.description {
 			font-size: 1rem;
+			text-align: center;
+		}
+
+		.tech-stack {
+			justify-content: center;
 		}
 
 		.project-image {
@@ -574,6 +591,7 @@ const mainIsVideo = isVideo(image || '');
 
 		.links {
 			flex-direction: column;
+			align-items: center;
 		}
 
 		.btn {
