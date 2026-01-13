@@ -1,6 +1,10 @@
 ---
 import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
+import { basics } from "@cv";
 const currentYear = new Date().getFullYear()
+
+const socialProfiles = basics.profiles;
+const email = basics.email;
 ---
 
 <footer class="no-print has-texture">
@@ -16,7 +20,7 @@ const currentYear = new Date().getFullYear()
 	</div>
 </footer>
 
-<KeyboardShortcutsMenu client:only="svelte" />
+<KeyboardShortcutsMenu client:only="svelte" socialProfiles={socialProfiles} email={email} />
 
 <style>
 	footer {

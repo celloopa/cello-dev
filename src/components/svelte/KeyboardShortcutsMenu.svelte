@@ -4,12 +4,31 @@
   import { fade } from "svelte/transition";
   import { toggleTheme as toggleThemeUtil } from "@/utils/themeToggle.js";
 
-  let isVisible = false;
-  let activeShortcut = null;
-  let selectedCategoryIndex = 0;
-  let selectedShortcutIndex = 0;
+  // Props from cv.json
+  let { socialProfiles = [], email = "" } = $props();
+
+  let isVisible = $state(false);
+  let activeShortcut = $state(null);
+  let selectedCategoryIndex = $state(0);
+  let selectedShortcutIndex = $state(0);
   let dialogElement;
   let overlayElement;
+
+  // Map network names to shortcut keys
+  const networkKeyMap = {
+    github: "g",
+    linkedin: "l",
+    bsky: "s",
+    bluesky: "s",
+    twitter: "x",
+  };
+
+  // Build social shortcuts from props
+  const socialShortcuts = socialProfiles.map((profile) => ({
+    key: networkKeyMap[profile.network.toLowerCase()] || profile.network.charAt(0).toLowerCase(),
+    label: profile.network === "Bsky" ? "Bluesky" : profile.network,
+    action: () => window.open(profile.url, "_blank"),
+  }));
 
   const shortcutCategories = [
     {
@@ -35,30 +54,13 @@
         {
           key: "e",
           label: "Email",
-          action: () => (window.location.href = "mailto:cello@cello.design"),
+          action: () => (window.location.href = `mailto:${email}`),
         },
       ],
     },
     {
       title: "SOCIAL MEDIA",
-      shortcuts: [
-        {
-          key: "g",
-          label: "GitHub",
-          action: () => window.open("https://github.com/laztaxon", "_blank"),
-        },
-        {
-          key: "l",
-          label: "LinkedIn",
-          action: () =>
-            window.open("https://www.linkedin.com/in/marcelorondon/", "_blank"),
-        },
-        {
-          key: "s",
-          label: "Bluesky",
-          action: () => window.open("https://bsky.app/profile/cello.design", "_blank"),
-        },
-      ],
+      shortcuts: socialShortcuts,
     },
   ];
 

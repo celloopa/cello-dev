@@ -17,13 +17,18 @@ pnpm preview    # Preview production build locally
 ## Site Structure
 
 **Pages:**
-- `/` - Homepage with hero, about, skills, experience, education
+- `/` - Homepage with hero and featured content carousels
 - `/resume` - Full resume page
 - `/projects` - Project listing → `/projects/[slug]` for details
-- `/visuals` - Visual work listing → `/visuals/[slug]` for details
+- `/visuals` - Visual work listing → `/visuals/[slug]` for details (WIP - hidden until content ready)
 - `/blog` - Blog listing → `/blog/[slug]` for posts
 - `/color-scheme` - Color scheme generator tool
 - `/watchlist` - Movie watchlist (WIP)
+
+**Header Navigation** (`src/components/Header.astro`):
+- Sticky header with animated logo, nav links, and keyboard shortcuts menu button
+- Nav links hidden on mobile, accessible via keyboard menu (Cmd/Ctrl + K)
+- Logo animates in from left, nav items stagger in from right
 
 ## Architecture
 
@@ -41,11 +46,11 @@ Collection schemas defined in `src/content.config.ts` using Zod validation.
 - `@/*` → `src/*` (source files)
 
 **Key Directories:**
-- `src/layouts/` - Layout.astro (main wrapper)
+- `src/layouts/` - Layout.astro (main wrapper), projectLayout.astro
+- `src/components/` - Reusable components (Header, ProjectCard, VisualsCard, BlogCard, Section, AnimatedLogo)
 - `src/components/sections/` - Resume sections (Hero, About, Skills, Experience, Education)
-- `src/components/` - Reusable components (ProjectCard, VisualsCard, BlogCard, Section)
 - `src/components/media/` - Media gallery components (MediaFull, MediaTwo, MediaThree)
-- `src/components/svelte/` - Svelte interactive components
+- `src/components/svelte/` - Svelte interactive components (KeyboardMenu)
 - `src/icons/` - SVG icon components
 - `src/styles/` - Global CSS (colors.css)
 
@@ -108,14 +113,33 @@ media:
 
 **Layout**:
 - Max-width: 1100px for content sections
-- Responsive breakpoint: 700px
+- Responsive breakpoints: 700px (mobile), 900px (tablet)
 - Section padding: 2rem inline (1rem on mobile)
 - Global styles in Layout.astro
+
+**Featured Carousel Pattern** (homepage):
+- Breakout container extends full viewport width beyond 1100px max-width
+- Uses `width: 100vw; margin-left: calc(50% - 50vw)` for edge-to-edge
+- Horizontal scroll with scroll-snap on narrower viewports
+- Section titles stay within container, only card grid breaks out
+- Cards use `minmax(340px, 1fr)` for consistent sizing
+- Reverts to single column on mobile (≤700px)
+
+**Directional Entry Animations**:
+- Projects cards: `slideFromRight` (enter from right side)
+- Visuals cards: `slideFromLeft` (enter from left side)
+- Creates visual contrast between sections
 
 **Interactive Elements**:
 - Theme toggle persists to localStorage
 - Keyboard shortcuts menu (Cmd/Ctrl + K)
 - Hover animations on all interactive elements
+
+**Open Graph / Social Previews**:
+- Layout accepts `title`, `description`, and `image` props for dynamic meta tags
+- Content pages (projects, blog, visuals) pass frontmatter data to Layout
+- Falls back to site defaults (`/images/thumbnail.png`) when no image provided
+- Supports both OG and Twitter card meta tags
 
 ## Adding Content
 

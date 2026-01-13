@@ -1,5 +1,169 @@
 ---
+import { projects } from "@cv";
 import Section from "@/components/Section.astro";
+import "@/styles/colors.css";
 ---
 
-<Section title="Projects" />
+<Section title="Personal Projects">
+	<ul>
+		{
+			projects.map(
+				({
+					name,
+					startDate,
+					description,
+					highlights,
+					keywords,
+					url,
+				}) => {
+					const startYear = new Date(startDate).getFullYear();
+
+					return (
+						<li>
+							<article>
+								<header>
+									<div class="project-info">
+										<h3>
+											<a href={url} title={`View ${name}`} target="_blank">
+												{name}
+											</a>
+										</h3>
+										<p class="description">{description}</p>
+									</div>
+									<time class="date-range">{startYear}</time>
+								</header>
+								<footer>
+									<div class="highlights">
+										{highlights.map((highlight) => (
+											<p>{highlight}</p>
+										))}
+									</div>
+									{keywords && keywords.length > 0 && (
+										<div class="keywords">
+											{keywords.map((keyword) => (
+												<span class="keyword">{keyword}</span>
+											))}
+										</div>
+									)}
+								</footer>
+							</article>
+						</li>
+					);
+				},
+			)
+		}
+	</ul>
+</Section>
+
+<style>
+	ul {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		margin: 1rem 0 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	li {
+		padding-bottom: 1.5rem;
+		border-bottom: 1px solid rgba(var(--color-text-rgb), 0.1);
+	}
+
+	li:last-child {
+		border-bottom: none;
+		padding-bottom: 0;
+	}
+
+	header {
+		display: flex;
+		justify-content: space-between;
+		align-items: flex-start;
+		gap: 1rem;
+	}
+
+	.project-info {
+		flex: 1;
+		margin: 0;
+	}
+
+	article h3 {
+		font-size: 1.1rem;
+		font-weight: 700;
+		line-height: 1.2;
+		margin: 0;
+		padding: 0;
+	}
+
+	article a {
+		color: var(--color-text);
+		transition: color 0.2s ease;
+	}
+
+	article a:hover {
+		color: var(--color-accent);
+	}
+
+	.description {
+		font-size: 0.9rem;
+		font-weight: 500;
+		color: var(--color-text);
+		margin: 0.5rem 0 0 0;
+		padding: 0;
+		line-height: 1.5;
+		opacity: 0.9;
+	}
+
+	.highlights p {
+		font-weight: 400;
+		font-size: 0.85rem;
+		line-height: 1.6;
+		margin: 0.25rem 0;
+		padding: 0;
+		opacity: 0.85;
+	}
+
+	footer {
+		margin-top: 0.75rem;
+	}
+
+	.highlights {
+		margin-bottom: 0.75rem;
+	}
+
+	.keywords {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.5rem;
+	}
+
+	.keyword {
+		font-size: 0.7rem;
+		font-weight: 600;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		padding: 0.25rem 0.5rem;
+		border: 2px solid var(--color-accent);
+		color: var(--color-accent);
+	}
+
+	.date-range {
+		color: var(--color-accent);
+		font-size: 0.8rem;
+		font-weight: 600;
+		white-space: nowrap;
+		padding: 0;
+		margin: 0;
+	}
+
+	@media (width <= 700px) {
+		header {
+			flex-direction: column;
+			gap: 0.25rem;
+		}
+
+		.date-range {
+			font-size: 0.75rem;
+		}
+	}
+</style>

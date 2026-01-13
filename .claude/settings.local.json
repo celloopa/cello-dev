@@ -28,7 +28,8 @@
       "Bash(for f in ./public/images/projects/ghosted/*.webm)",
       "Bash(do echo \"=== $f ===\")",
       "Bash(for f in ./public/images/projects/ghosted/*.mkv)",
-      "Bash(xargs:*)"
+      "Bash(xargs:*)",
+      "Bash(curl:*)"
     ]
   }
 }

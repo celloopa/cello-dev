@@ -34,7 +34,7 @@ const isVideo = (src: string) => src?.endsWith('.webm') || src?.endsWith('.mp4')
 const mainIsVideo = isVideo(image || '');
 ---
 
-<Layout title={`${title} - Marcelo Rondon`}>
+<Layout title={`${title} - Marcelo Rondon`} description={description} image={image}>
 	<article class="blog-post">
 		<Section>
 			<div class="top-row">
