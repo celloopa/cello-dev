@@ -19,7 +19,6 @@ order: 3
 ---
 
 import MediaFull from '@/components/media/MediaFull.astro';
-import MediaTwo from '@/components/media/MediaTwo.astro';
 
 ## Overview
 
@@ -27,22 +26,23 @@ Ghosted is a terminal-based job application tracker designed for developers navi
 
 The project is open-sourced under the MIT license.
 
-{/* <MediaFull
-  src="/images/projects/ghosted/hero.webm"
-  alt="Ghosted TUI showing the main list view with job applications and status indicators"
-  caption="Main application list with status indicators"
-/> */}
+<MediaFull
+  src="/images/projects/ghosted/ghosted-intro.webm"
+  alt="Ghosted TUI showing the main look and flow of the application"
+  caption="Main application list with status indicators and vim-style navigation"
+/>
 
 ## Dual Interface Design
 
 The project offers two ways to interact: a rich Terminal User Interface for exploration and manual updates, and a CLI for programmatic access. Both share the same JSON data store, so changes sync instantly.
 
-{/* <MediaTwo items={[
-  { src: "/images/projects/ghosted/tui-list.webm", alt: "TUI list view with keyboard navigation", caption: "Interactive TUI with vim-style navigation" },
-  { src: "/images/projects/ghosted/cli-demo.webm", alt: "CLI commands adding and listing applications", caption: "CLI for scripting and automation" }
-]} /> */}
-
 The CLI was specifically designed for AI agent integration—commands accept and output JSON, making it trivial to build automation that parses job postings from emails or websites and automatically creates tracked applications.
+
+<MediaFull
+  src="/images/projects/ghosted/ghosted-agent.webm"
+  alt="Adding job postings to the postings folder for the AI agent to reference and add to the tracker"
+  caption="AI agent integration: adding postings for automated job tracking"
+/>
 
 ## Status Pipeline
 
@@ -59,11 +59,11 @@ Applications flow through an 8-stage pipeline reflecting the real recruitment jo
 
 Quick keyboard shortcuts (1-8) let you update status without leaving the list view.
 
-{/* <MediaFull
-  src="/images/projects/ghosted/detail-view.webm"
-  alt="Detailed view of a single application showing all tracked fields"
-  caption="Application detail view with salary, contacts, and interview history"
-/> */}
+<MediaFull
+  src="/images/projects/ghosted/ghosted-end.webm"
+  alt="Viewing an agent-added job application and updating its status"
+  caption="Reviewing agent-added applications and changing status with quick shortcuts"
+/>
 
 ## Rich Data Tracking
 

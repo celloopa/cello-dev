@@ -22,7 +22,12 @@
       "Bash(gh auth status:*)",
       "Bash(gh auth logout:*)",
       "Bash(git filter-branch:*)",
-      "Bash(git stash push:*)"
+      "Bash(git stash push:*)",
+      "Bash(while read f)",
+      "Bash(do echo \"$f\")",
+      "Bash(for f in ./public/images/projects/ghosted/*.webm)",
+      "Bash(do echo \"=== $f ===\")",
+      "Bash(for f in ./public/images/projects/ghosted/*.mkv)"
     ]
   }
 }
