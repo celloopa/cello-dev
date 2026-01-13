@@ -19,6 +19,7 @@ const projects = defineCollection({
 		title: z.string(),
 		description: z.string(),
 		image: z.string().optional(),
+		ogImage: z.string().optional(), // Static image for social media previews
 		url: z.string().url().optional(),
 		github: z.string().url().optional(),
 		techStack: z.array(z.string()),

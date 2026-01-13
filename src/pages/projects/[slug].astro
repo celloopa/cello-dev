@@ -14,13 +14,13 @@ export async function getStaticPaths() {
 
 const { project } = Astro.props;
 const { Content } = await render(project);
-const { title, description, image, url, github, techStack, role, highlights, media } = project.data;
+const { title, description, image, ogImage, url, github, techStack, role, highlights, media } = project.data;
 
 const isVideo = (src: string) => src?.endsWith('.webm') || src?.endsWith('.mp4');
 const mainIsVideo = isVideo(image || '');
 ---
 
-<Layout title={`${title} - Marcelo Rondon`} description={description} image={image}>
+<Layout title={`${title} - Marcelo Rondon`} description={description} image={ogImage || image}>
 	<article class="project-page">
 		<Section>
 			<div class="top-row">
