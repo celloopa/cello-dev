@@ -60,8 +60,10 @@ Collection schemas defined in `src/content.config.ts` using Zod validation.
 
 **Projects:**
 ```yaml
-title, description, image?, url?, github?, techStack[], role, highlights[], featured?, order?, media[]?
+title, description, image?, ogImage?, url?, github?, techStack[], role, highlights[], featured?, order?, media[]?
 ```
+- `image`: Display media on site (can be .webm video)
+- `ogImage`: Static image for social media previews (1200x630 recommended)
 
 **Visuals:**
 ```yaml
@@ -137,9 +139,10 @@ media:
 
 **Open Graph / Social Previews**:
 - Layout accepts `title`, `description`, and `image` props for dynamic meta tags
-- Content pages (projects, blog, visuals) pass frontmatter data to Layout
+- Projects use `ogImage` field for social previews (falls back to `image` if not set)
 - Falls back to site defaults (`/images/thumbnail.png`) when no image provided
 - Supports both OG and Twitter card meta tags
+- Recommended image size: 1200x630px (static .jpg/.png/.webp, not video)
 
 ## Adding Content
 
@@ -151,7 +154,8 @@ media:
 **New Project:**
 1. Create `src/content/projects/your-project.mdx`
 2. Add frontmatter with techStack, role, highlights
-3. Optional: add media galleries for images/videos
+3. Add `ogImage` for social media thumbnail (1200x630 static image)
+4. Optional: add media galleries for images/videos
 
 **New Visual:**
 1. Create `src/content/visuals/your-visual.mdx`
