@@ -14,6 +14,8 @@ highlights:
   - Built dual-interface system with interactive TUI and scriptable CLI for AI agent integration
   - Designed 8-stage status pipeline tracking the full recruitment lifecycle
   - Implemented vim-style navigation with quick-action keyboard shortcuts
+  - Built multi-agent pipeline for automated resume and cover letter generation with scoring
+  - Added job board integration fetching postings from Lever, Greenhouse, Workday, and LinkedIn
   - Developed in collaboration with Claude Code, open-sourced under MIT license
 featured: true
 order: 1
@@ -84,6 +86,38 @@ Each application tracks comprehensive details beyond just company and status:
 - **Cross-Platform**: Single Go binary compiles for macOS, Linux, and Windows
 - **Sample Data Seeding**: New installations auto-populate with example applications for immediate exploration
 
+## AI Agent Pipeline
+
+One of Ghosted's most powerful features is its multi-agent system for automating the job application process. When you run `ghosted apply` on a job posting, it kicks off a coordinated pipeline:
+
+1. **Posting Parser** - Extracts key details from job descriptions
+2. **Resume Agent** - Generates a tailored resume highlighting relevant experience
+3. **Cover Letter Agent** - Crafts a personalized cover letter addressing the role
+4. **Review Agent** - Scores both documents (70+ to pass) and provides feedback
+
+The pipeline supports `--dry-run` for generating documents without updating the tracker, and `--auto-approve` for fully automated workflows.
+
+## Job Board Integration
+
+The `ghosted fetch` command automatically extracts job posting details from popular platforms:
+
+- **Lever** - Career pages
+- **Greenhouse** - Application portals
+- **Workday** - Enterprise job listings
+- **LinkedIn** - Job posts
+- **Ashby** - Modern ATS platforms
+
+Fetched postings are converted to markdown and stored locally for reference. From the TUI, press `u` to input a URL and immediately launch the agent pipeline.
+
+## Document Compilation
+
+Ghosted integrates with [Typst](https://typst.app/) for professional document formatting. The `ghosted compile` command converts `.typ` files to PDFs with intelligent auto-naming:
+
+- `{company}-{position}-resume.pdf`
+- `{company}-{position}-cover-letter.pdf`
+
+Press `o` in the TUI to instantly open the document folder for any application.
+
 ## Building with Claude Code
 
 This project was developed in collaboration with Claude Code, Anthropic's AI coding assistant. The pairing workflow proved especially effective for:
@@ -92,25 +126,18 @@ This project was developed in collaboration with Claude Code, Anthropic's AI cod
 - Implementing the Bubble Tea view architecture
 - Building the CLI command structure with proper flag handling
 - Writing comprehensive documentation
+- Building the multi-agent pipeline with proper handoffs
 
 The experience reinforced how AI-assisted development can accelerate solo projects while maintaining code quality and architectural consistency.
 
 ## Roadmap
 
-Looking ahead, Ghosted has room to grow into a more comprehensive job search companion. Here are the planned expansions:
+Looking ahead, Ghosted continues to evolve. Here are the remaining planned expansions:
 
-### Embedded Agent Integration
+### Proactive Pipeline Assistant
 
-The current CLI-first design enables external AI agents to interact with Ghosted, but the next step is bringing the agent inside the tool itself. An embedded agent could monitor your application pipeline, suggest when to follow up on stale applications, draft outreach messages, and even analyze job posting patterns to identify which opportunities match your profile best. The goal is proactive assistance without leaving the terminal.
+The current agent pipeline generates documents on-demand. The next evolution brings proactive assistance: monitoring your application pipeline for stale entries, suggesting follow-up timing, analyzing job posting patterns to identify best-fit opportunities, and drafting outreach messages—all without leaving the terminal.
 
-### Add Postings via Clipboard or Drag-and-Drop
+### Enhanced Document Management
 
-Currently, adding job postings requires manual entry or external automation. A more fluid workflow would let you paste a job posting URL or description directly from your clipboard, or drag-and-drop a file path into the TUI. The system would parse key details—company name, role title, requirements, compensation—and pre-populate the application record, reducing friction between finding a job and tracking it.
-
-### Add Resumes via Clipboard or Drag-and-Drop
-
-Tracking which resume version you sent to each company is easy to forget. This feature would let you attach resume files to applications by pasting a path or dragging the file into the interface. Each application would link to the specific resume used, making it simple to reference what the employer has seen and tailor your interview prep accordingly.
-
-### Add Cover Letters via Clipboard or Drag-and-Drop
-
-Similarly, cover letters deserve the same treatment. Drag-and-drop or clipboard input would associate cover letter files with their applications, building a complete document trail. When you land an interview, you'd have instant access to exactly what you wrote—no more hunting through folders trying to match files to companies.
+While the compile command handles PDF generation, future versions will streamline document attachment through clipboard paste or drag-and-drop in the TUI. Each application would link directly to the specific resume and cover letter versions used, building a complete audit trail for interview prep.

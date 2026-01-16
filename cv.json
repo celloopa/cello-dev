@@ -314,14 +314,15 @@
   "projects": [
     {
       "name": "Ghosted",
-      "description": "Terminal-based job application tracker built with Go and Bubble Tea, featuring dual TUI/CLI interfaces designed for AI agent integration.",
+      "description": "Terminal-based job application tracker with TUI and CLI. Features multi-agent pipeline for automated resume/cover letter generation, job board integration, and document compilation.",
       "highlights": [
         "Built in Go using Bubble Tea framework with Elm-inspired architecture and vim-style navigation",
         "Designed CLI interface specifically for AI agent automation—accepts and outputs JSON for seamless integration",
-        "Developed in collaboration with Claude Code, demonstrating targeted AI-assisted development workflow",
-        "Tracks full recruitment lifecycle with 8-stage pipeline, compensation, contacts, and document linking"
+        "Built multi-agent pipeline for automated resume and cover letter generation with quality scoring",
+        "Integrated job board fetching from Lever, Greenhouse, Workday, LinkedIn, and Ashby platforms",
+        "Added Typst document compilation with smart PDF naming and folder management"
       ],
-      "keywords": ["Go", "Bubble Tea", "TUI", "CLI", "AI Integration", "Open Source"],
+      "keywords": ["Go", "Bubble Tea", "TUI", "CLI", "AI Agents", "Automation", "Open Source"],
       "startDate": "2026-01",
       "url": "https://github.com/celloopa/ghosted",
       "type": "application"
