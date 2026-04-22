@@ -1,0 +1,650 @@
+---
+import cv from "@cv";
+import QRCode from "qrcode";
+import "@fontsource/geist-mono/400.css";
+import "@fontsource/geist-mono/500.css";
+import "@fontsource/geist-mono/700.css";
+import "@fontsource/geist-mono/900.css";
+import "@/styles/colors.css";
+import "@/styles/animations.css";
+import Mail from "@/icons/Mail.astro";
+import Phone from "@/icons/Phone.astro";
+import LinkedIn from "@/icons/LinkedIn.astro";
+import GitHub from "@/icons/GitHub.astro";
+
+const { basics } = cv;
+const { name, label, summary, email, phone, url, location, profiles } = basics;
+
+const cardUrl = new URL("/card", url).toString();
+const vCardUrl = new URL("/contact.vcf", url).toString();
+const siteHost = new URL(url).hostname.replace(/^www\./, "");
+const phoneDigits = phone.replace(/\D/g, "");
+const phoneHref = `tel:${phoneDigits.length === 10 ? `+1${phoneDigits}` : `+${phoneDigits}`}`;
+const locationLabel = [location.city, location.region]
+  .filter(Boolean)
+  .join(", ");
+const linkedin = profiles.find(({ network }) => network === "LinkedIn")?.url;
+const github = profiles.find(({ network }) => network === "GitHub")?.url;
+
+const featuredTags = [
+  "React",
+  "TypeScript",
+  "Astro",
+  "Accessible UI",
+  "Design Systems",
+];
+
+const qrCodeSvg = await QRCode.toString(url, {
+  type: "svg",
+  errorCorrectionLevel: "H",
+  margin: 1,
+  color: {
+    dark: "#001A11",
+    light: "#FFF8ED",
+  },
+});
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="Conference card for Marcelo Rondon. Scan the QR code for the portfolio, save the contact card, or share via AirDrop."
+    />
+    <meta name="theme-color" content="#001A11" />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="canonical" href={cardUrl} />
+    <meta property="og:url" content={cardUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${name} | Conference Card`} />
+    <meta
+      property="og:description"
+      content="Conference-ready contact page with QR, contact save, and quick share actions."
+    />
+    <meta property="og:image" content={`${url}/images/thumbnail.png`} />
+    <title>{name} | Conference Card</title>
+    <script is:inline>
+      (() => {
+        const savedTheme = localStorage.getItem("theme");
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+          .matches
+          ? "dark"
+          : "light";
+        document.documentElement.setAttribute(
+          "data-theme",
+          savedTheme || systemTheme,
+        );
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="texture-layer" aria-hidden="true"></div>
+    <div class="page-shell">
+      <main class="card-grid">
+        <section class="identity-panel has-texture">
+          <p class="eyebrow">Conference Card</p>
+          <div class="intro">
+            <div class="avatar-wrap">
+              <img src="/images/profile.webp" alt={name} class="avatar" />
+            </div>
+            <div class="intro-copy">
+              <h1>{name}</h1>
+              <p class="role">{label}</p>
+              <p class="meta">{locationLabel}</p>
+            </div>
+          </div>
+
+          <p class="summary">{summary}</p>
+
+          <ul class="tag-list" aria-label="Key skills">
+            {featuredTags.map((tag) => <li>{tag}</li>)}
+          </ul>
+
+          <div class="actions" aria-label="Quick actions">
+            <a
+              class="action action-primary"
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span class="action-title">Visit Site</span>
+              <span class="action-copy">{siteHost}</span>
+            </a>
+            <a class="action" href="/contact.vcf">
+              <span class="action-title">Save Contact</span>
+              <span class="action-copy">VCF for iPhone and desktop</span>
+            </a>
+            <a class="action" href={`mailto:${email}`}>
+              <span class="action-icon"><Mail /></span>
+              <span>
+                <span class="action-title">Email</span>
+                <span class="action-copy">{email}</span>
+              </span>
+            </a>
+            <a class="action" href={phoneHref}>
+              <span class="action-icon"><Phone /></span>
+              <span>
+                <span class="action-title">Call or Text</span>
+                <span class="action-copy">{phone}</span>
+              </span>
+            </a>
+            {
+              linkedin && (
+                <a
+                  class="action"
+                  href={linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span class="action-icon">
+                    <LinkedIn />
+                  </span>
+                  <span>
+                    <span class="action-title">LinkedIn</span>
+                    <span class="action-copy">Connect after the event</span>
+                  </span>
+                </a>
+              )
+            }
+            {
+              github && (
+                <a
+                  class="action"
+                  href={github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span class="action-icon">
+                    <GitHub />
+                  </span>
+                  <span>
+                    <span class="action-title">GitHub</span>
+                    <span class="action-copy">Recent code and experiments</span>
+                  </span>
+                </a>
+              )
+            }
+            <button
+              type="button"
+              class="action action-share"
+              data-share-button
+              data-share-url={cardUrl}
+              data-share-title={`${name} | Conference Card`}
+              data-share-text={`Connect with ${name}.`}
+            >
+              <span class="action-title" data-share-label>Share / AirDrop</span>
+              <span class="action-copy">Send this card from your iPhone</span>
+            </button>
+          </div>
+
+          <p class="share-note" data-share-status aria-live="polite">
+            Open this page on your iPhone and use Share to AirDrop it.
+          </p>
+        </section>
+
+        <aside class="qr-panel has-texture">
+          <p class="eyebrow">Scan To Visit</p>
+          <div class="qr-frame" set:html={qrCodeSvg} />
+          <p class="qr-label">Portfolio</p>
+          <a
+            class="qr-link"
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {siteHost}
+          </a>
+          <p class="qr-note">
+            Point a phone camera at the code to open the site immediately.
+          </p>
+          <a class="mini-link" href={vCardUrl}> Direct contact file </a>
+        </aside>
+      </main>
+    </div>
+
+    <script is:inline>
+      function initCardShare() {
+        const shareButton = document.querySelector("[data-share-button]");
+        const shareStatus = document.querySelector("[data-share-status]");
+        const shareLabel = document.querySelector("[data-share-label]");
+
+        if (
+          !(shareButton instanceof HTMLButtonElement) ||
+          !(shareStatus instanceof HTMLElement)
+        ) {
+          return;
+        }
+
+        if (shareButton.dataset.bound === "true") {
+          return;
+        }
+
+        shareButton.dataset.bound = "true";
+
+        const shareUrl = shareButton.dataset.shareUrl;
+        const shareTitle = shareButton.dataset.shareTitle;
+        const shareText = shareButton.dataset.shareText;
+
+        if (!navigator.share && shareLabel instanceof HTMLElement) {
+          shareLabel.textContent = "Copy Card Link";
+        }
+
+        shareButton.addEventListener("click", async () => {
+          if (!shareUrl) {
+            return;
+          }
+
+          try {
+            if (navigator.share) {
+              await navigator.share({
+                title: shareTitle,
+                text: shareText,
+                url: shareUrl,
+              });
+              shareStatus.textContent = "Share sheet opened.";
+              return;
+            }
+
+            if (navigator.clipboard?.writeText) {
+              await navigator.clipboard.writeText(shareUrl);
+              shareStatus.textContent = "Card link copied to the clipboard.";
+              return;
+            }
+
+            shareStatus.textContent = shareUrl;
+          } catch (error) {
+            if (error instanceof DOMException && error.name === "AbortError") {
+              return;
+            }
+
+            shareStatus.textContent = "Share failed on this browser.";
+          }
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", initCardShare);
+      document.addEventListener("astro:after-swap", initCardShare);
+    </script>
+  </body>
+</html>
+
+<style is:global>
+  html {
+    font-family: "GeistMono", monospace;
+    background: radial-gradient(
+        circle at top right,
+        rgba(var(--color-accent-rgb), 0.24),
+        transparent 30%
+      ),
+      radial-gradient(
+        circle at bottom left,
+        rgba(var(--color-accent-secondary-rgb), 0.18),
+        transparent 28%
+      ),
+      var(--color-background);
+    color: var(--color-text);
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  a,
+  button {
+    font: inherit;
+  }
+</style>
+
+<style>
+  .page-shell {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem
+      max(1.5rem, env(safe-area-inset-bottom));
+    display: grid;
+    place-items: center;
+  }
+
+  .card-grid {
+    width: min(100%, 1120px);
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+    gap: 1.25rem;
+    align-items: stretch;
+  }
+
+  .identity-panel,
+  .qr-panel {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(var(--color-text-rgb), 0.14);
+    border-radius: 2rem;
+    background: color-mix(
+      in srgb,
+      var(--color-background) 84%,
+      rgba(var(--color-text-rgb), 0.06)
+    );
+    box-shadow:
+      0 24px 80px rgba(0, 0, 0, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(18px);
+  }
+
+  .identity-panel {
+    padding: 1.75rem;
+    animation: slideLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .qr-panel {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    animation: slideRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .eyebrow {
+    margin: 0 0 1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .intro {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    align-items: center;
+  }
+
+  .avatar-wrap {
+    width: clamp(5rem, 18vw, 7rem);
+    aspect-ratio: 1;
+    padding: 0.28rem;
+    border-radius: 1.5rem;
+    background: linear-gradient(
+        145deg,
+        var(--color-accent),
+        rgba(var(--color-text-rgb), 0.18)
+      ),
+      var(--color-background);
+  }
+
+  .avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 1.2rem;
+    filter: saturate(1.05) contrast(1.02);
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2.6rem, 9vw, 5.5rem);
+    line-height: 0.92;
+    letter-spacing: -0.08em;
+    text-transform: uppercase;
+  }
+
+  .role,
+  .meta,
+  .summary,
+  .share-note,
+  .qr-note,
+  .qr-link,
+  .qr-label,
+  .mini-link {
+    margin: 0;
+  }
+
+  .role {
+    margin-top: 0.65rem;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.5;
+    color: var(--color-accent);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .meta {
+    margin-top: 0.45rem;
+    font-size: 0.95rem;
+    color: rgba(var(--color-text-rgb), 0.72);
+  }
+
+  .summary {
+    margin-top: 1.5rem;
+    max-width: 56ch;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: rgba(var(--color-text-rgb), 0.88);
+  }
+
+  .tag-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin: 1.5rem 0 0;
+    padding: 0;
+  }
+
+  .tag-list li {
+    padding: 0.55rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(var(--color-text-rgb), 0.08);
+    border: 1px solid rgba(var(--color-text-rgb), 0.08);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .actions {
+    margin-top: 1.75rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+
+  .action {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    min-height: 5.6rem;
+    padding: 1rem;
+    border-radius: 1.3rem;
+    border: 1px solid rgba(var(--color-text-rgb), 0.12);
+    background: rgba(var(--color-text-rgb), 0.045);
+    color: var(--color-text);
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      background 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .action:hover,
+  .action:focus-visible {
+    transform: translateY(-3px);
+    border-color: rgba(var(--color-accent-rgb), 0.55);
+    background: rgba(var(--color-accent-rgb), 0.11);
+    outline: none;
+  }
+
+  .action-primary {
+    background: linear-gradient(
+      135deg,
+      rgba(var(--color-accent-rgb), 0.24),
+      rgba(var(--color-accent-rgb), 0.08)
+    );
+    border-color: rgba(var(--color-accent-rgb), 0.45);
+  }
+
+  .action-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    background: rgba(var(--color-text-rgb), 0.08);
+    flex-shrink: 0;
+  }
+
+  .action-icon :global(svg) {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .action-title {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  .action-copy {
+    display: block;
+    margin-top: 0.28rem;
+    font-size: 0.84rem;
+    line-height: 1.55;
+    color: rgba(var(--color-text-rgb), 0.72);
+  }
+
+  .share-note {
+    margin-top: 1rem;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: rgba(var(--color-text-rgb), 0.7);
+  }
+
+  .qr-frame {
+    width: min(100%, 19rem);
+    aspect-ratio: 1;
+    padding: 1rem;
+    margin-top: 0.4rem;
+    border-radius: 1.5rem;
+    background: #fff8ed;
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.18);
+  }
+
+  .qr-frame :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .qr-label {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: rgba(var(--color-text-rgb), 0.64);
+  }
+
+  .qr-link {
+    margin-top: 0.55rem;
+    color: var(--color-text);
+    font-size: 1.1rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .qr-note {
+    margin-top: 0.85rem;
+    max-width: 24ch;
+    font-size: 0.92rem;
+    line-height: 1.7;
+    color: rgba(var(--color-text-rgb), 0.72);
+  }
+
+  .mini-link {
+    margin-top: 1rem;
+    color: var(--color-accent);
+    font-size: 0.84rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+  }
+
+  @media (max-width: 900px) {
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .qr-panel {
+      order: -1;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .page-shell {
+      padding-inline: 0.9rem;
+    }
+
+    .identity-panel,
+    .qr-panel {
+      border-radius: 1.5rem;
+    }
+
+    .identity-panel {
+      padding: 1.25rem;
+    }
+
+    .qr-panel {
+      padding: 1.25rem 1rem;
+    }
+
+    .intro {
+      grid-template-columns: 1fr;
+    }
+
+    h1 {
+      font-size: clamp(2.6rem, 14vw, 4rem);
+    }
+
+    .actions {
+      grid-template-columns: 1fr;
+    }
+
+    .qr-frame {
+      width: min(100%, 15rem);
+      padding: 0.8rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .identity-panel,
+    .qr-panel,
+    .action {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+</style>
