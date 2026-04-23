@@ -329,14 +329,30 @@ const featuredProjects = allProjects
 		background: var(--color-background);
 		color: var(--color-text);
 		cursor: pointer;
-		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		transition:
+			background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+			transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
 	.socials a:hover,
+	.socials a:focus-visible,
+	.socials button:focus-visible,
 	.socials button:hover {
 		background: var(--color-accent);
 		border-color: var(--color-accent);
 		color: var(--color-background);
+		transform: translateY(-2px);
+	}
+
+	@media (hover: none), (pointer: coarse) {
+		.image-frame:hover img,
+		.socials a:hover,
+		.socials button:hover {
+			transform: none;
+			filter: grayscale(30%);
+		}
 	}
 
 	.featured-carousel {
