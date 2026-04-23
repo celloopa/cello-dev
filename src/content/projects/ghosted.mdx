@@ -69,6 +69,12 @@ Quick keyboard shortcuts (1-8) let you update status without leaving the list vi
 
 ## Rich Data Tracking
 
+<MediaFull
+  src="/images/projects/ghosted/ghosted-details.webm"
+  alt="Application detail view showing contacts, interviews, and document links"
+  caption="Comprehensive tracking: salary, contacts, interviews, and linked documents"
+/>
+
 Each application tracks comprehensive details beyond just company and status:
 
 - **Compensation**: Salary range with smart formatting ($150k display)
@@ -87,6 +93,12 @@ Each application tracks comprehensive details beyond just company and status:
 
 ## AI Agent Pipeline
 
+<MediaFull
+  src="/images/projects/ghosted/ghosted-pipeline.webm"
+  alt="Multi-agent pipeline running with resume and cover letter generation"
+  caption="Agent pipeline: parsing, generating, and scoring documents automatically"
+/>
+
 One of Ghosted's most powerful features is its multi-agent system for automating the job application process. When you run `ghosted apply` on a job posting, it kicks off a coordinated pipeline:
 
 1. **Posting Parser** - Extracts key details from job descriptions
@@ -97,6 +109,12 @@ One of Ghosted's most powerful features is its multi-agent system for automating
 The pipeline supports `--dry-run` for generating documents without updating the tracker, and `--auto-approve` for fully automated workflows.
 
 ## Job Board Integration
+
+<MediaFull
+  src="/images/projects/ghosted/ghosted-fetch.webm"
+  alt="Fetching a job posting from a career page"
+  caption="Auto-fetch: extracting job details from Lever, Greenhouse, and more"
+/>
 
 The `ghosted fetch` command automatically extracts job posting details from popular platforms:
 
@@ -109,6 +127,12 @@ The `ghosted fetch` command automatically extracts job posting details from popu
 Fetched postings are converted to markdown and stored locally for reference. From the TUI, press `u` to input a URL and immediately launch the agent pipeline.
 
 ## Document Compilation
+
+<MediaFull
+  src="/images/projects/ghosted/ghosted-compile.webm"
+  alt="Compiling Typst documents to PDFs with smart naming"
+  caption="Document compilation: Typst to PDF with automatic naming conventions"
+/>
 
 Ghosted integrates with [Typst](https://typst.app/) for professional document formatting. The `ghosted compile` command converts `.typ` files to PDFs with intelligent auto-naming:
 

@@ -30,13 +30,24 @@ const ogImage = image ? `${url}${image}` : `${url}${siteImage}`;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width" />
+		<meta name="theme-color" content="#001A11" />
+		<meta name="color-scheme" content="dark light" />
 		<link rel="icon" type="image/svg+xml" href="/images/logos/SVG/full-light.svg" media="(prefers-color-scheme: light)" />
 		<link rel="icon" type="image/svg+xml" href="/images/logos/SVG/full-dark.svg" media="(prefers-color-scheme: dark)" />
+		<script is:inline>
+			(() => {
+				const savedTheme = localStorage.getItem("theme");
+				const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
+					? "dark"
+					: "light";
+				document.documentElement.setAttribute("data-theme", savedTheme || systemTheme);
+			})();
+		</script>
 
 		<!-- Open Graph -->
 		<meta property="og:url" content={url} />
@@ -211,4 +222,3 @@ const ogImage = image ? `${url}${image}` : `${url}${siteImage}`;
 		}
 	}
 </style>
-

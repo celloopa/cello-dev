@@ -1,5 +1,4 @@
 <script>
-  console.log("KeyboardShortcutsMenu loaded");
   import { onMount } from "svelte";
   import { fade } from "svelte/transition";
   import { toggleTheme as toggleThemeUtil } from "@/utils/themeToggle.js";
@@ -87,13 +86,11 @@
     } else if (isVisible) {
       event.preventDefault();
       const key = event.key.toLowerCase();
-      console.log("Key pressed:", key); // Debug log
       const shortcut = shortcutCategories
         .flatMap((category) => category.shortcuts)
         .find((s) => s.key === key);
 
       if (shortcut) {
-        console.log("Shortcut found:", shortcut); // Debug log
         executeShortcut(shortcut);
       } else {
         switch (key) {
@@ -131,25 +128,17 @@
   }
 
   function executeShortcut(shortcut) {
-    console.log("Executing shortcut:", shortcut);
     activeShortcut = shortcut.key;
-    
-    // Check if the action is an outbound link
-    if (shortcut.action.toString().includes('window.open')) {
-      console.log("Executing outbound link action");
+
+    if (shortcut.action.toString().includes("window.open")) {
       shortcut.action();
-      // Close the menu after a short delay for outbound links
       setTimeout(() => {
-        console.log("Closing menu after outbound link");
         activeShortcut = null;
         toggleMenu();
       }, 100);
     } else {
-      // For other actions, keep the current behavior
-      console.log("Executing non-outbound link action");
       shortcut.action();
       setTimeout(() => {
-        console.log("Closing menu after non-outbound link action");
         activeShortcut = null;
         toggleMenu();
       }, 300);
@@ -162,17 +151,8 @@
   }
 
   function toggleTheme() {
-    console.log("Toggling theme from KeyboardShortcutsMenu");
-    const currentTheme =
-      document.documentElement.getAttribute("data-theme") || "dark";
-    console.log("Current theme before toggle:", currentTheme);
-
     toggleThemeUtil();
 
-    const newTheme = document.documentElement.getAttribute("data-theme");
-    console.log("New theme after toggle:", newTheme);
-
-    // Force a re-render of the component
     isVisible = false;
     setTimeout(() => {
       isVisible = true;
@@ -195,11 +175,9 @@
   }
 
   onMount(() => {
-    console.log("Attaching event listeners");
     window.addEventListener("keydown", handleKeydown);
     window.addEventListener("toggleKeyboardMenu", toggleMenu);
     return () => {
-      console.log("Removing event listeners");
       window.removeEventListener("keydown", handleKeydown);
       window.removeEventListener("toggleKeyboardMenu", toggleMenu);
     };
@@ -212,17 +190,16 @@
     class="overlay"
     transition:fade={{ duration: 150 }}
     on:click={toggleMenu}
-    on:keydown={handleOverlayKeydown}
-    tabindex="0"
-    role="button"
-    aria-label="Close keyboard shortcuts menu"
   >
     <div
       bind:this={dialogElement}
       class="menu"
-      role="presentation"
+      id="keyboard-shortcuts-menu"
+      role="dialog"
+      aria-modal="true"
       aria-labelledby="dialog-title"
       on:click|stopPropagation
+      on:keydown={handleOverlayKeydown}
       tabindex="-1"
     >
       <h2 id="dialog-title" class="sr-only">Keyboard Shortcuts Menu</h2>

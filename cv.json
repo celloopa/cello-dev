@@ -1,7 +1,7 @@
 {
   "basics": {
     "name": "Marcelo Rondon",
-    "label": "Front-End Developer | Designer",
+    "label": "Design Engineer",
     "image": "https://avatars.githubusercontent.com/u/72777489?s=400&u=1258e88539c515802c5c603559cd7b63c032814c&v=4",
     "email": "cello@cello.design",
     "phone": "(305) 496-0039",
@@ -42,7 +42,7 @@
       "summary": "Asheville, NC (Remote)",
       "highlights": [
         "Built reusable UI components integrated into WordPress via custom PHP and JavaScript plugins.",
-        "Developed an internal asset management system using React, TypeScript, and Tailwind CSS.",
+        "Developed an internal asset management tool using React, TypeScript, and Tailwind CSS.",
         "Implemented a scalable design system in Figma, improving brand coherence across web, print, and packaging.",
         "Collaborated with cross-functional teams (design, marketing, operations) to deliver projects on deadline.",
         "Managed Git workflows with branching, merging, and pull requests."

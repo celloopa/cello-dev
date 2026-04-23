@@ -30,7 +30,25 @@
       "Bash(for f in ./public/images/projects/ghosted/*.mkv)",
       "Bash(xargs:*)",
       "Bash(curl:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "mcp__vibe_kanban__list_projects",
+      "mcp__vibe_kanban__create_task",
+      "mcp__vibe_kanban__update_task",
+      "mcp__vibe_kanban__list_tasks",
+      "Bash(gh issue list:*)",
+      "mcp__vibe_kanban__delete_task",
+      "mcp__vibe_kanban__get_task",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(pnpm sync-projects:*)",
+      "Bash(gh repo view:*)",
+      "Bash(npx tsx:*)",
+      "Bash(printf:*)",
+      "Bash(python cli.py:*)",
+      "Bash(python3:*)",
+      "Bash(open:*)",
+      "Bash(pip3 install:*)",
+      "Bash(brew install:*)"
     ]
   }
 }

@@ -38,23 +38,6 @@ const publishedPosts = allPosts
 	</Section>
 </Layout>
 
-<script is:inline>
-	function setTheme(theme) {
-		document.documentElement.setAttribute("data-theme", theme);
-		localStorage.setItem("theme", theme);
-	}
-
-	document.addEventListener("DOMContentLoaded", () => {
-		const savedTheme = localStorage.getItem("theme") || "dark";
-		setTheme(savedTheme);
-	});
-
-	document.addEventListener("astro:after-swap", () => {
-		const savedTheme = localStorage.getItem("theme") || "dark";
-		setTheme(savedTheme);
-	});
-</script>
-
 <style>
 	h1 {
 		font-size: 2.5rem;

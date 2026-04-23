@@ -125,23 +125,6 @@ const mainIsVideo = isVideo(image || '');
 	</article>
 </Layout>
 
-<script is:inline>
-	function setTheme(theme) {
-		document.documentElement.setAttribute("data-theme", theme);
-		localStorage.setItem("theme", theme);
-	}
-
-	document.addEventListener("DOMContentLoaded", () => {
-		const savedTheme = localStorage.getItem("theme") || "dark";
-		setTheme(savedTheme);
-	});
-
-	document.addEventListener("astro:after-swap", () => {
-		const savedTheme = localStorage.getItem("theme") || "dark";
-		setTheme(savedTheme);
-	});
-</script>
-
 <style>
 	.project-page {
 		padding-top: 1rem;

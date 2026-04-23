@@ -12,10 +12,10 @@ const currentPath = Astro.url.pathname;
 ---
 
 <header class="site-header">
-	<nav class="nav-container">
-		<a href="/" class="logo">
-			<AnimatedLogo />
-		</a>
+		<nav class="nav-container">
+			<a href="/" class="logo" aria-label="Home">
+				<AnimatedLogo />
+			</a>
 		<div class="nav-right">
 			<ul class="nav-links">
 				{navItems.map((item, i) => (
@@ -29,10 +29,10 @@ const currentPath = Astro.url.pathname;
 					</li>
 				))}
 			</ul>
-			<button id="header-menu-btn" class="menu-btn" aria-label="Open menu">
-				<span class="menu-key"></span>
-				<span class="menu-label">Menu</span>
-			</button>
+				<button id="header-menu-btn" class="menu-btn" aria-label="Menu" aria-haspopup="dialog" aria-controls="keyboard-shortcuts-menu">
+					<span class="menu-key"></span>
+					<span class="menu-label">Menu</span>
+				</button>
 		</div>
 	</nav>
 </header>
@@ -199,13 +199,15 @@ const currentPath = Astro.url.pathname;
 		transform: none;
 	}
 
-	.menu-btn {
-		display: flex;
-		align-items: center;
-		gap: 0.4rem;
-		padding: 0.5rem 0.75rem;
-		background: transparent;
-		border: 2px solid var(--color-text);
+		.menu-btn {
+			display: flex;
+			align-items: center;
+			gap: 0.4rem;
+			min-width: 44px;
+			min-height: 44px;
+			padding: 0.5rem 0.75rem;
+			background: transparent;
+			border: 2px solid var(--color-text);
 		cursor: pointer;
 		opacity: 0;
 		animation: headerSlideRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
@@ -276,7 +278,7 @@ const currentPath = Astro.url.pathname;
 		}
 	}
 
-	@media (max-width: 700px) {
+		@media (max-width: 700px) {
 		.site-header {
 			margin-bottom: 2rem;
 		}
@@ -298,9 +300,9 @@ const currentPath = Astro.url.pathname;
 			display: none;
 		}
 
-		.menu-btn {
-			padding: 0.4rem 0.6rem;
-		}
+			.menu-btn {
+				padding: 0.4rem 0.6rem;
+			}
 
 		.menu-label {
 			font-size: 0.75rem;

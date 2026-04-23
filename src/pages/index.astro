@@ -49,14 +49,14 @@ const featuredProjects = allProjects
 			</div>
 			<div class="socials">
 				{email && (
-					<a href={`mailto:${email}`} title="Email" target="_blank" rel="noopener noreferrer">
+					<a href={`mailto:${email}`} title="Email" aria-label="Email Marcelo Rondon" target="_blank" rel="noopener noreferrer">
 						<Mail />
 					</a>
 				)}
 				{profiles.map(({ network, url }) => {
 					const Icon = SOCIAL_ICONS[network];
 					return (
-						<a href={url} title={network} target="_blank" rel="noopener noreferrer">
+						<a href={url} title={network} aria-label={network === "Bsky" ? "Bluesky" : network} target="_blank" rel="noopener noreferrer">
 							<Icon />
 						</a>
 					);
@@ -133,28 +133,23 @@ const featuredProjects = allProjects
 </Layout>
 
 <script is:inline>
-	function setTheme(theme) {
-		document.documentElement.setAttribute("data-theme", theme);
-		localStorage.setItem("theme", theme);
-	}
-
 	function toggleTheme() {
 		const currentTheme = localStorage.getItem("theme") || "dark";
 		const newTheme = currentTheme === "dark" ? "light" : "dark";
-		setTheme(newTheme);
+		document.documentElement.setAttribute("data-theme", newTheme);
+		localStorage.setItem("theme", newTheme);
 	}
 
-	// Typewriter animation
 	function initTypewriter() {
 		const text = "Cello";
 		const element = document.querySelector(".typewriter-text");
 		if (!element) return;
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			element.textContent = text;
+			return;
+		}
 
 		const typeSpeed = 150;
-		const eraseSpeed = 100;
-		const pauseAfterType = 2000;
-		const pauseAfterErase = 500;
-
 		let charIndex = 0;
 
 		function type() {
@@ -162,35 +157,18 @@ const featuredProjects = allProjects
 				element.textContent = text.substring(0, charIndex + 1);
 				charIndex++;
 				setTimeout(type, typeSpeed);
-			} else {
-				isTyping = false;
-				setTimeout(erase, pauseAfterType);
 			}
 		}
 
-		function erase() {
-			if (charIndex > 0) {
-				element.textContent = text.substring(0, charIndex - 1);
-				charIndex--;
-				setTimeout(erase, eraseSpeed);
-			} else {
-				isTyping = true;
-				setTimeout(type, pauseAfterErase);
-			}
-		}
-
+		element.textContent = "";
 		type();
 	}
 
 	document.addEventListener("DOMContentLoaded", () => {
-		const savedTheme = localStorage.getItem("theme") || "dark";
-		setTheme(savedTheme);
 		initTypewriter();
 	});
 
 	document.addEventListener("astro:after-swap", () => {
-		const savedTheme = localStorage.getItem("theme") || "dark";
-		setTheme(savedTheme);
 		initTypewriter();
 	});
 </script>
@@ -345,8 +323,8 @@ const featuredProjects = allProjects
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 40px;
-		height: 40px;
+		width: 44px;
+		height: 44px;
 		border: 2px solid var(--color-text);
 		background: var(--color-background);
 		color: var(--color-text);
