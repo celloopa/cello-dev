@@ -4,6 +4,8 @@ dist/
 # generated types
 .astro/
 
+# agent shit
+.agents/
 # dependencies
 node_modules/
 
