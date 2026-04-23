@@ -1,19 +1,36 @@
+/* Shared motion tokens */
+:root {
+	--ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+	--motion-fast: 180ms;
+	--motion-base: 320ms;
+	--motion-slow: 720ms;
+	--texture-size: 512px;
+	--texture-travel: 512px;
+	--texture-opacity: 0.25;
+	--texture-overlay-opacity: 0.08;
+	--texture-hover-opacity: 0.07;
+	--texture-duration: 40s;
+}
+
 /* Paper/grain texture - Saul Bass style */
 /* Base texture layer - subtle background */
 .texture-layer {
 	position: fixed;
-	top: -512px;
-	left: -512px;
-	width: calc(100% + 1024px);
-	height: calc(100% + 1024px);
+	top: calc(var(--texture-travel) * -1);
+	left: calc(var(--texture-travel) * -1);
+	width: calc(100% + (var(--texture-travel) * 2));
+	height: calc(100% + (var(--texture-travel) * 2));
 	pointer-events: none;
-	opacity: 0.25;
+	opacity: var(--texture-opacity);
 	z-index: 1;
 	background-image: url("/images/noise-mosaic.webp");
 	background-repeat: repeat;
-	background-size: 512px 512px;
+	background-size: var(--texture-size) var(--texture-size);
 	mix-blend-mode: overlay;
-	animation: noiseScroll 40s linear infinite;
+	animation: noiseScroll var(--texture-duration) linear infinite;
+	transform: translate3d(0, 0, 0);
+	contain: paint;
 }
 
 .content-layer {
@@ -30,18 +47,20 @@
 .has-texture::after {
 	content: "";
 	position: absolute;
-	top: -512px;
-	left: -512px;
-	width: calc(100% + 1024px);
-	height: calc(100% + 1024px);
+	top: calc(var(--texture-travel) * -1);
+	left: calc(var(--texture-travel) * -1);
+	width: calc(100% + (var(--texture-travel) * 2));
+	height: calc(100% + (var(--texture-travel) * 2));
 	pointer-events: none;
-	opacity: 0.08;
+	opacity: var(--texture-overlay-opacity);
 	background-image: url("/images/noise-mosaic.webp");
 	background-repeat: repeat;
-	background-size: 512px 512px;
+	background-size: var(--texture-size) var(--texture-size);
 	mix-blend-mode: overlay;
-	animation: noiseScroll 40s linear infinite;
+	animation: noiseScroll var(--texture-duration) linear infinite;
 	z-index: 1;
+	transform: translate3d(0, 0, 0);
+	contain: paint;
 }
 
 /* Texture on hover for cards */
@@ -53,23 +72,27 @@
 .has-texture-hover::after {
 	content: "";
 	position: absolute;
-	top: -512px;
-	left: -512px;
-	width: calc(100% + 1024px);
-	height: calc(100% + 1024px);
+	top: calc(var(--texture-travel) * -1);
+	left: calc(var(--texture-travel) * -1);
+	width: calc(100% + (var(--texture-travel) * 2));
+	height: calc(100% + (var(--texture-travel) * 2));
 	pointer-events: none;
 	opacity: 0;
 	background-image: url("/images/noise-mosaic.webp");
 	background-repeat: repeat;
-	background-size: 512px 512px;
+	background-size: var(--texture-size) var(--texture-size);
 	mix-blend-mode: overlay;
-	animation: noiseScroll 40s linear infinite;
+	animation: noiseScroll var(--texture-duration) linear infinite;
 	z-index: 1;
-	transition: opacity 0.3s ease;
+	transition: opacity var(--motion-base) var(--ease-out-expo);
+	transform: translate3d(0, 0, 0);
+	contain: paint;
 }
 
-.has-texture-hover:hover::after {
-	opacity: 0.07;
+@media (hover: hover) and (pointer: fine) {
+	.has-texture-hover:hover::after {
+		opacity: var(--texture-hover-opacity);
+	}
 }
 
 /* For cards that already use ::before, layer above the background */
@@ -79,11 +102,11 @@
 
 @keyframes noiseScroll {
 	from {
-		transform: translate(0, 0);
+		transform: translate3d(0, 0, 0);
 	}
 
 	to {
-		transform: translate(-512px, -512px);
+		transform: translate3d(calc(var(--texture-travel) * -1), calc(var(--texture-travel) * -1), 0);
 	}
 }
 
@@ -189,27 +212,27 @@
 
 /* Animation utility classes */
 .animate-slide-up {
-	animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	animation: slideUp var(--motion-slow) var(--ease-out-expo) forwards;
 }
 
 .animate-slide-left {
-	animation: slideLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	animation: slideLeft var(--motion-slow) var(--ease-out-expo) forwards;
 }
 
 .animate-slide-right {
-	animation: slideRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	animation: slideRight var(--motion-slow) var(--ease-out-expo) forwards;
 }
 
 .animate-scale {
-	animation: scaleReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	animation: scaleReveal 0.6s var(--ease-out-expo) forwards;
 }
 
 .animate-wipe {
-	animation: wipeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	animation: wipeIn var(--motion-slow) var(--ease-out-expo) forwards;
 }
 
 .animate-rotate {
-	animation: rotateIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	animation: rotateIn 0.6s var(--ease-out-expo) forwards;
 }
 
 .animate-fade {
@@ -256,7 +279,7 @@
 
 /* Smooth easing for interactions */
 .smooth {
-	transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+	transition: all 0.4s var(--ease-out-expo);
 }
 
 /* Bold geometric accents */
@@ -293,8 +316,8 @@
 
 /* Hover lift with shadow */
 .hover-lift {
-	transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-		box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	transition: transform var(--motion-base) var(--ease-out-expo),
+		box-shadow var(--motion-base) var(--ease-out-expo);
 }
 
 .hover-lift:hover {
@@ -317,7 +340,7 @@
 	background: var(--color-accent);
 	transform: scaleX(0);
 	transform-origin: right;
-	transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	transition: transform var(--motion-base) var(--ease-out-expo);
 }
 
 .hover-underline:hover::after {
@@ -329,6 +352,19 @@
 :focus-visible {
 	outline: 3px solid var(--color-accent);
 	outline-offset: 3px;
+}
+
+@media (pointer: coarse), (max-width: 700px) {
+	:root {
+		--texture-opacity: 0.14;
+		--texture-overlay-opacity: 0.05;
+		--texture-hover-opacity: 0;
+		--texture-duration: 72s;
+	}
+
+	.has-texture-hover::after {
+		display: none;
+	}
 }
 
 /* Reduced motion */
@@ -343,6 +379,11 @@
 	}
 
 	.texture-layer {
+		animation: none;
+	}
+
+	.has-texture::after,
+	.has-texture-hover::after {
 		animation: none;
 	}
 }

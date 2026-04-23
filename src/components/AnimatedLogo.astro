@@ -150,20 +150,23 @@
 	}
 
 	.logo-c {
-		animation: logoSlideFromLeft 9s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+		animation: logoSlideFromLeft 12s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 		transform-origin: center center;
+		will-change: transform, opacity;
 	}
 
 	.logo-sun {
-		animation: logoSlideFromTopRight 9s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-		animation-delay: 0.15s;
+		animation: logoSlideFromTopRight 12s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+		animation-delay: 0.18s;
 		transform-origin: center center;
+		will-change: transform, opacity;
 	}
 
 	.logo-triangle {
-		animation: logoSlideFromBottom 9s cubic-bezier(0.16, 1, 0.3, 1) infinite;
-		animation-delay: 0.3s;
+		animation: logoSlideFromBottom 12s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+		animation-delay: 0.34s;
 		transform-origin: center center;
+		will-change: transform, opacity;
 	}
 
 	/* On hover, break apart with bounce animation */
@@ -179,6 +182,15 @@
 	.animated-logo:hover .logo-triangle {
 		animation: breakTriangle 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 		animation-delay: 0.1s;
+	}
+
+	@media (hover: none), (pointer: coarse) {
+		.logo-c,
+		.logo-sun,
+		.logo-triangle {
+			animation-iteration-count: 1;
+			animation-fill-mode: both;
+		}
 	}
 
 	/* Fallback for reduced motion */
