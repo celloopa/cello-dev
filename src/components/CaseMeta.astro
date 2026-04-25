@@ -1,0 +1,57 @@
+---
+import "@/styles/colors.css";
+
+interface MetaItem {
+	label: string;
+	value: string;
+}
+
+interface Props {
+	items: MetaItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<aside class="case-meta" aria-label="Case study summary">
+	{items.map((item) => (
+		<div class="meta-item">
+			<span>{item.label}</span>
+			<p>{item.value}</p>
+		</div>
+	))}
+</aside>
+
+<style>
+	.case-meta {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+		gap: 0.75rem;
+		margin: 2rem 0;
+	}
+
+	.meta-item {
+		border: 2px solid var(--color-text);
+		padding: 1rem;
+		background: rgba(var(--color-text-rgb), 0.04);
+	}
+
+	span {
+		display: block;
+		margin-bottom: 0.5rem;
+		color: var(--color-accent);
+		font-size: 0.72rem;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		line-height: 1.2;
+		text-transform: uppercase;
+	}
+
+	p {
+		margin: 0;
+		padding: 0;
+		color: var(--color-text);
+		font-size: 0.95rem;
+		line-height: 1.55;
+	}
+</style>

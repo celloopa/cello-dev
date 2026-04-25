@@ -1,6 +1,6 @@
 ---
 title: Ascendant Traders
-description: A crypto signals product spanning a static Astro marketing site, a Node-based signal engine, Discord and Telegram distribution, public data feeds, and VPS-ready deployment.
+description: A complex publishing and signal-tracking product spanning acquisition, conversion, live feeds, Discord and Telegram workflows, and operator diagnostics.
 image: /images/projects/ascendant/ascendant-home.jpg
 ogImage: /images/projects/ascendant/ascendant-home.jpg
 url: https://ascendanttraders.com
@@ -15,173 +15,109 @@ techStack:
   - Coolify
   - Blofin API
   - CoinGecko API
-role: Solo Full-Stack Developer
+role: Product Systems Designer
 highlights:
-  - "Built one product across two repos: a static Astro site for acquisition and a Node runtime for signal generation, publishing, and trade tracking"
-  - Implemented a signal engine using Blofin market data, CoinGecko confirmation, ATR-based price levels, and multi-timeframe scanner confluence
-  - Designed separate signal and tracker workflows with SQLite-backed state, public browser-safe feed endpoints, and fail-open Discord and Telegram publishing
-  - "Shipped the full business surface: free previews, VIP pricing, affiliate flows, SEO blog content, chart rendering, and Coolify deployment on a single VPS"
+  - Designed and built a product system across acquisition, conversion, signal publishing, tracking, and reporting
+  - Modeled signal states separately from activated trades so reporting reflected actual tracked positions
+  - Created browser-safe feed contracts between the static site and runtime engine
+  - Built operator diagnostics, monthly recaps, Discord and Telegram distribution, and chart media generation
+  - Framed observability, risk communication, and reporting honesty as product features
 featured: true
-order: 4
+order: 3
 media:
   - layout: two
     items:
       - src: /images/projects/ascendant/ascendant-signals.jpg
         alt: Free signal preview page showing recent closed position cards and monthly summary metrics
-        caption: Static-first preview page that can hydrate from the bot's public signal feed
+        caption: Static-first preview page that hydrates from the runtime feed while preserving fallback content.
       - src: /images/projects/ascendant/ascendant-vip.jpg
         alt: VIP pricing page comparing free and paid tiers with upgrade and affiliate calls to action
-        caption: Pricing and monetization flow built directly into the marketing site
+        caption: Pricing and conversion surface connected to the product's delivery model.
   - layout: full
     items:
       - src: /images/projects/ascendant/signal-chart-btc-short.png
         alt: Branded BTCUSDT short chart card with entry, take profit, stop loss, EMA, and VWAP overlays
-        caption: Chart media rendered by a dedicated service and attached to actionable signal posts
+        caption: Branded chart media attaches product context to channel posts without making the bot runtime handle rendering.
 ---
 
-## Overview
+import CaseMeta from '@/components/CaseMeta.astro';
+import FlowDiagram from '@/components/FlowDiagram.astro';
 
-Ascendant Traders is a crypto signals product I built across two repositories: `ascendant-web` for the public website and `signal-crypto-bot` for the always-on runtime behind the signals, tracking, and publishing workflow.
+<CaseMeta items={[
+  { label: "Role", value: "Solo product systems designer and full-stack builder across site, runtime, feeds, publishing, and operator tooling." },
+  { label: "Users", value: "Traders reading signal posts, operators activating and auditing trades, admins monitoring diagnostics, and site visitors evaluating the product." },
+  { label: "Constraints", value: "Static marketing site, always-on runtime, live market data, channel publishing, reporting accuracy, lean VPS deployment, and risk-sensitive communication." },
+  { label: "Tools", value: "Astro, TypeScript, Node.js, SQLite, Discord API, Telegram Bot API, Docker, Coolify, Blofin API, CoinGecko API." },
+  { label: "Outcome", value: "A coordinated product system with acquisition pages, VIP conversion, live previews, signal lifecycle tracking, channel distribution, diagnostics, and chart media." }
+]} />
 
-The split was intentional. I wanted the website to stay static, fast, and easy to deploy while the backend handled the stateful parts of the business: market analysis, trade lifecycle management, channel publishing, chart generation, and operational tooling. The result was less of a single app and more of a coordinated product system spanning acquisition, conversion, delivery, and reporting.
+## Context
 
-## Product Scope
+Ascendant Traders is useful to this portfolio when framed less as a crypto project and more as a complex product-systems case. The work connected a static public website, a Node runtime, signal publishing, trade tracking, Discord and Telegram distribution, public feeds, chart media, and operator diagnostics.
 
-The public-facing side covered the entire top of funnel:
+The core design challenge was trust. The product had to communicate live information clearly, separate ideas from activated positions, avoid coupling the marketing site to backend uptime, and give operators enough visibility to understand what the system was doing.
 
-- landing page and brand positioning
-- free signal preview page
-- VIP pricing and comparison tables
-- affiliate and Whop conversion flows
-- blog infrastructure for SEO content
-- about, education, and disclaimer pages
+## Product System
 
-The runtime side handled the operational core:
+The public side handled acquisition and conversion:
 
-- Discord signal publishing and tracker updates
-- Telegram mirroring
-- market-data ingestion and signal scoring
-- SQLite-backed signal and trade state
-- public feed endpoints for the website
-- chart rendering for branded signal attachments
+- Landing page and brand positioning.
+- Free signal preview.
+- VIP pricing and comparison.
+- Affiliate and Whop conversion paths.
+- SEO blog structure, education, about, and disclaimer pages.
 
-## Core Architecture
+The runtime side handled delivery and operations:
 
-### Static-first website
+- Signal scoring and market-data ingestion.
+- Discord signal posts and tracker updates.
+- Telegram mirroring.
+- SQLite-backed signal and trade state.
+- Public feed endpoints for the website.
+- Chart rendering for signal attachments.
 
-The Astro site is intentionally static. Signal examples, pricing content, and blog pages all build ahead of time, which keeps the deployment simple and the site reliable. At the same time, I exposed optional browser-side upgrades through public JSON feeds so the homepage ticker, featured signal card, recent examples, and monthly summary can refresh from live backend data without converting the site into a server-rendered app.
-
-That contract matters. If `/public/market-feed` or `/public/signal-feed` is unavailable, the frontend falls back to repo-backed data and still works. That let me keep the marketing site independent from backend uptime while still supporting live-looking product surfaces.
-
-### Signal engine and trade lifecycle
-
-The Node runtime analyzes `BTCUSDT`, `ETHUSDT`, and `SOLUSDT` using Blofin candles and ticker data as the source of truth. On top of that I added CoinGecko as a soft confirmation layer and computed local confluence using `RSI`, `MACD`, `EMA20`, `EMA50`, `VWAP`, `ATR`, `ADX`, and quote-volume checks.
-
-For the scanner flow, I tightened the qualification logic further. Instead of posting every possible setup, the scanner looks for a primary `1H` opportunity, then requires `4H` and `1D` confirmation plus SMC-style checks like structure break, liquidity sweep, displacement, fair value gap retest, and location validation before surfacing a signal.
-
-One of the most important modeling decisions was separating `posted` signals from `activated` trades. A setup can be published to the signal channel first and only become a tracked trade when it is explicitly activated, or auto-activated if the environment is configured that way. That kept open-trade reporting, close notifications, and monthly recaps tied to actual tracked positions instead of treating every published idea as if it were taken.
-
-### Distribution and observability
-
-The publishing flow was built around operational clarity rather than just message output. Signal posts and tracker events can go to different Discord channels, and the system exposes read commands and debug endpoints for open trades, monthly recaps, signal state, trade history, and scanner diagnostics.
-
-That meant the product had multiple consumers:
-
-- traders reading signal posts
-- operators activating and auditing trades
-- the website consuming browser-safe public feeds
-- admins checking diagnostics without opening SQLite directly
-
-Telegram mirroring was built to fail open so messaging issues would never block Discord posting or tracker state changes. On the frontend side, I also designed the product and information architecture around an eight-language rollout, with translated signal presentation on the site and channel structure ready for broader multilingual delivery expansion.
-
-### Media and deployment
-
-Instead of generating chart images inside the bot process, I split media rendering into its own service. The bot can request a branded chart card for a single actionable signal, receive a PNG response, and attach it to Discord or Telegram without taking on SVG and image-rendering concerns in the main command runtime.
-
-Infrastructure stayed deliberately lean:
-
-- Dockerized services for the bot and media renderer
-- Coolify deployment on a Hetzner VPS
-- SQLite persistence mounted as durable storage
-- internal service-to-service networking between bot and renderer
-
-That setup was simple enough to run cheaply on one box while still preserving clean runtime boundaries.
+<FlowDiagram
+  title="Product System Model"
+  items={[
+    { label: "Acquire", detail: "Static Astro pages explain the product, pricing, education content, and conversion paths." },
+    { label: "Preview", detail: "Public feed endpoints let the site show recent examples and monthly summaries." },
+    { label: "Publish", detail: "The runtime posts signals and tracker events to separate Discord and Telegram channels." },
+    { label: "Track", detail: "SQLite stores signal state, trade activation, history, and monthly recap data." },
+    { label: "Diagnose", detail: "Read commands and debug endpoints expose state without requiring direct database access." }
+  ]}
+  caption="The important product work was not the algorithm alone. It was the contract between acquisition, delivery, reporting, and operations."
+/>
 
 ## Key Product Decisions
 
-This project reinforced a few decisions that made the whole system easier to evolve:
+**Separate marketing from runtime.** The website stays static, fast, and deployable without depending on the signal engine. Public JSON feeds progressively enhance live-looking surfaces without turning the whole site into a server app.
 
-1. Keep marketing and runtime separate. The site can ship copy, design, SEO, and pricing changes without disturbing the signal engine.
-2. Use feed contracts instead of direct app coupling. The website only needs stable JSON, not awareness of bot internals.
-3. Model state transitions explicitly. In this kind of product, `posted`, `activated`, `open`, `tp_hit`, and `sl_hit` are the real business objects.
-4. Treat observability as a feature. Debug routes, recap endpoints, and scanner logs are part of the product, not just internal developer tooling.
+**Use feed contracts instead of direct coupling.** The website only needs browser-safe JSON from endpoints like signal and market feeds. If a feed is unavailable, the frontend falls back to repo-backed content.
 
-## Discord Message Examples
+**Model state explicitly.** I separated `posted` signals from `activated` trades because a published setup is not the same as a tracked position. That distinction protects reporting honesty and makes recaps more credible.
 
-One part of the product that mattered more than I expected was message design. The bot is not just generating trade ideas; it is publishing operationally useful updates that need to be scannable in fast-moving channels.
+**Treat observability as UX.** Operators needed commands, diagnostics, recaps, and state views that made the system legible without opening SQLite directly.
 
-Here are representative examples from the actual formatter layer.
+## Trust And Risk Communication
 
-### Signal post
+This category requires careful product judgment because users can misread confidence, risk, and performance. I designed the publishing layer to show context rather than only calls to action: source references, live read time, trend indicators, take-profit and stop-loss levels, confluence signals, and recap math.
 
-```text
-Signal 12 | April 2026
+The system also separates signal posts, activation posts, close posts, and monthly recaps. That structure makes it clearer what happened, what is open, what closed, and what should not be counted as an active trade.
 
-BTCUSDT
-Trade direction: Long 🟢
-Market entry @ 84250
-TP @ 85400
-SL @ 83800
-Recomended Leverage 50x | Max risk 0.5% - 2%
-Live read: 3:39pm Peru / 20:39 UTC | Price ~$84,250 | 24h 🟢 +2.34%
-Confluence: EMA50 🟢 above | VWAP 🟢 above | MACD 🟢 bull | RSI 🟢 58.14 | Vol 🟢 above avg | CG 🟢 +2.12%
-Score: Blofin Signal L5/S1 | Extra Confirmation L3/S0
-Why we take it: The bullish read is aligned enough to pass the trigger, with price above EMA50 and VWAP, ADX at 24.70 confirming trend strength, and coingecko agrees with +2.12% over 24h.
+## Interaction And Information Design
 
-Sources: Blofin 1H candles, Blofin live ticker, Blofin mark price, CoinGecko spot context when available
-[Join this BTC Trade with us →](https://blofin.com/futures/en/BTC-USDT)
-[Fuel the squad on Blofin →](https://partner.blofin.com/d/asc2454)
-@everyone
-```
+One part of the product that mattered more than expected was message design. Discord and Telegram posts are product surfaces: they need hierarchy, recognizable states, and enough supporting context to be scanned quickly.
 
-### Activation post
+Representative formatter decisions included:
 
-```text
-BTC Signal #12 activated
-📍 BTC Long | Entry 84250 | TP 85400 | SL 83800
-```
+- Signal number, date, pair, direction, entry, TP, and SL always appear in predictable positions.
+- Live market context and confluence indicators support the recommendation.
+- Activation posts are intentionally short and operational.
+- Close posts report whether the trade closed by TP or SL.
+- Monthly recaps separate open trades, closed trades, winrate, and total PnL.
 
-### Close post
+## Outcome And Learning
 
-```text
-That one did what it needed to do.
-ETH closed by TP
-🟢 ETH Signal #13 | +47.17%
-```
+The end result was a complete product stack: static acquisition site, free preview experience, VIP pricing surface, signal scoring runtime, persistent tracker, Discord and Telegram publishing, chart media service, public feeds, diagnostics, and lean VPS deployment.
 
-### Monthly recap
-
-```text
-Month recap so far:
-
-🔴 SOL Signal #10 | -14.11%
-📈 BTC Signal #12 | Open
-Open for: 1h 24m | Price: 84610 | TP: 0.93% away | SL: 0.96% away
-Projected resolution window: 1-4h (Volatility-based estimate, not a guaranteed close time)
-🟢 ETH Signal #13 | +47.17%
-
-Winrate:
-1 win / 2 closed = 50.00%
-
-Total PnL:
-Percent: +33.06%
-USDT: +330.60
-```
-
-The short lead lines on signal and close posts come from a controlled phrase bank, so the exact first sentence can vary without changing the structural layout of the message.
-
-## Outcome
-
-By the end of the project I had a complete product stack rather than just a signal bot: a branded website, free preview experience, VIP conversion flow, SEO content engine, signal scoring runtime, persistent tracker, chart media service, and deployable infrastructure that connected all of it together.
-
-The main lesson was that the signal algorithm is only one slice of the problem. The real work is in the contracts between systems, the honesty of the reporting layer, and the reliability of the publishing workflow that traders actually see.
+The main lesson was that complex systems become product design work when users and operators need to trust the state of the system. The strongest decisions were about boundaries: static versus runtime, posted versus activated, marketing copy versus reporting, and bot output versus operator diagnostics.

@@ -1,12 +1,12 @@
 {
   "basics": {
     "name": "Marcelo Rondon",
-    "label": "Design Engineer",
+    "label": "Product Designer / Design Engineer",
     "image": "https://avatars.githubusercontent.com/u/72777489?s=400&u=1258e88539c515802c5c603559cd7b63c032814c&v=4",
     "email": "cello@cello.design",
     "phone": "(305) 496-0039",
     "url": "https://cello.design",
-    "summary": "I design, build, and deploy apps and websites using React, Typescript, Astro & WordPress. Experienced with reusable UI components, accessible web experiences, and scalable design systems. Background in Education and Visual Storytelling.",
+    "summary": "I design and build working product prototypes for complex workflows, AI-assisted tools, and accessible web experiences. I use code to understand engineering constraints, test interaction ideas, and help connect product, design, and engineering.",
     "location": {
       "address": "",
       "postalCode": "",
@@ -35,102 +35,102 @@
   "work": [
     {
       "name": "Asheville Dispensary",
-      "position": "Design Lead / Front-End Developer",
+      "position": "Product Design Lead / Design Engineer",
       "url": "https://www.avldispensary.com",
       "startDate": "2022-01",
       "endDate": "",
       "summary": "Asheville, NC (Remote)",
       "highlights": [
-        "Built reusable UI components integrated into WordPress via custom PHP and JavaScript plugins.",
-        "Developed an internal asset management tool using React, TypeScript, and Tailwind CSS.",
-        "Implemented a scalable design system in Figma, improving brand coherence across web, print, and packaging.",
-        "Collaborated with cross-functional teams (design, marketing, operations) to deliver projects on deadline.",
-        "Managed Git workflows with branching, merging, and pull requests."
+        "Designed and built reusable UI components integrated into WordPress via custom PHP and JavaScript plugins.",
+        "Designed and developed an internal asset-management tool using React, TypeScript, and Tailwind CSS.",
+        "Created a scalable Figma design system to improve brand coherence across web, print, and packaging.",
+        "Collaborated with design, marketing, and operations partners to translate ambiguous needs into shipped product surfaces.",
+        "Used Git workflows with branching, merging, and pull requests to stay close to engineering constraints and delivery practices."
       ]
     },
     {
       "name": "VegAvengers Marketing",
-      "position": "Front-End Developer",
+      "position": "Product Designer / Front-End Engineer",
       "url": "https://vegavengers.com",
       "startDate": "2025-02",
       "endDate": "",
       "summary": "Freelance project",
       "highlights": [
-        "Built a high-performance React/TypeScript/Vite website with responsive design and backend-integrated searchable components for VegFests and animal sanctuaries.",
-        "Translated UI/UX mockups into clean, maintainable front-end code highlighting the organization's mission."
+        "Designed and built a responsive discovery experience with backend-integrated searchable components for VegFests and animal sanctuaries.",
+        "Translated mission, content structure, and UI/UX direction into maintainable React/TypeScript product surfaces."
       ]
     },
     {
       "name": "ADA Compliance Consulting",
-      "position": "Web Accessibility Developer",
+      "position": "Accessibility Designer / Developer",
       "url": "",
       "startDate": "2025-12",
       "endDate": "",
       "summary": "North Central Florida",
       "highlights": [
-        "Brought multiple organizations to WCAG 2.1 compliance; optimized for screen readers and keyboard navigation.",
+        "Improved WCAG 2.1 compliance across multiple organizations, with attention to screen-reader behavior, keyboard navigation, and accessible interaction patterns.",
         "Contracted with River Phoenix Center for Peacebuilding on accessibility and performance improvements."
       ]
     },
     {
       "name": "Legal Impact For Chickens",
-      "position": "Developer",
+      "position": "Product Tooling Developer",
       "url": "",
       "startDate": "2025-03",
       "endDate": "2025-04",
       "summary": "Remote",
       "highlights": [
-        "Developed scripting tools for secure data management; handled confidential materials with discretion."
+        "Developed secure internal tooling for data-management workflows; handled confidential materials with discretion."
       ]
     },
     {
       "name": "The Green Phial",
-      "position": "Senior Designer / Web Developer",
+      "position": "Senior Web Designer / Developer",
       "url": "https://www.thegreenphial.com",
       "startDate": "2022-10",
       "endDate": "2024-01",
       "summary": "Remote",
       "highlights": [
-        "Redesigned and maintained WordPress site using HTML5, CSS3, PHP, and JavaScript (ES6+).",
-        "Translated UI mockups into responsive, accessible front-end code; improved performance and SEO.",
-        "Collaborated directly with brand owner to align digital presence with brand ethos and UX goals."
+        "Redesigned and maintained a WordPress site using HTML5, CSS3, PHP, and JavaScript.",
+        "Translated UI direction into responsive, accessible front-end implementation; improved performance and SEO.",
+        "Collaborated directly with the brand owner to align site structure, visual direction, and UX goals."
       ]
     },
     {
       "name": "Mantera Advertising Agency",
-      "position": "Senior Contract Designer",
+      "position": "Senior Brand Designer",
       "url": "https://www.chocolatebash.com/",
       "startDate": "2021-09",
       "endDate": "2022-02",
       "summary": "Remote",
       "highlights": [
-        "Collaborated with agency retail clients to develop visually impactful graphics and marketing materials under tight deadlines.",
-        "Efficiently incorporated client feedback into designs, ensuring timely delivery and client satisfaction.",
-        "Facilitated direct communication with clients to effectively deliver desired graphics."
+        "Collaborated with retail clients to design visually impactful campaign and marketing materials under tight deadlines.",
+        "Incorporated client feedback through fast iteration cycles while preserving quality and delivery timelines.",
+        "Facilitated direct communication with clients to clarify goals, constraints, and final design direction."
       ]
     },
     {
       "name": "Success Academy Charter Schools",
-      "position": "Associate Teacher",
+      "position": "Learning Experience Designer / Teacher",
       "url": "https://successacademies.org",
       "startDate": "2020-06",
       "endDate": "2021-08",
       "summary": "New York, NY (Remote)",
       "highlights": [
-        "Implemented innovative education strategies and utilized learning frameworks to teach ELA and math remotely.",
-        "Produced educational content and visual aids, applying design thinking to optimize learning experiences and enhance educational outcomes."
+        "Designed remote learning experiences for ELA and math using structured learning frameworks.",
+        "Produced educational content and visual aids, applying design thinking to improve comprehension and engagement."
       ]
     },
     {
       "name": "The Fine Print Magazine",
-      "position": "Photo Editor",
+      "position": "Visual Storytelling Lead / Photo Editor",
       "url": "https://thefineprintmagazine.org",
       "startDate": "2017-09",
       "endDate": "2019-12",
       "summary": "Gainesville, FL",
       "highlights": [
-        "Led a team of photographers and managed artistic direction for various events, capturing impactful visual stories.",
-        "Developed artistic direction for fundraising events, utilizing design and photography skills to enhance event visibility and engagement."
+        "Led a team of photographers and directed visual coverage for editorial stories and events.",
+        "Developed visual direction for fundraising events, using photography and design to improve visibility and engagement."
       ]
     }
   ],
@@ -156,142 +156,156 @@
       "name": "HTML",
       "level": "Master",
       "keywords": [
-        "Front-End",
-        "Web development"
+        "Semantic Markup",
+        "Accessibility",
+        "Product UI"
       ]
     },
     {
       "name": "CSS",
       "level": "Master",
       "keywords": [
-        "Front-End",
-        "Web development",
-        "Responsive Design"
+        "Responsive Design",
+        "Design Systems",
+        "Theming",
+        "Visual Craft"
       ]
     },
     {
       "name": "JavaScript",
       "level": "Master",
       "keywords": [
-        "Front-End",
-        "ES6+",
-        "Web development"
+        "Interaction Design",
+        "Prototyping",
+        "State Management",
+        "Web Apps"
       ]
     },
     {
       "name": "TypeScript",
       "level": "Advanced",
       "keywords": [
-        "Front-End",
-        "Web development"
+        "Typed Interfaces",
+        "Product Systems",
+        "Developer Tooling"
       ]
     },
     {
       "name": "React",
       "level": "Advanced",
       "keywords": [
-        "Front-End",
-        "UI",
-        "Web development"
+        "Component Systems",
+        "Interactive UI",
+        "Prototyping"
       ]
     },
     {
       "name": "Tailwind",
       "level": "Advanced",
       "keywords": [
-        "Front-End",
-        "CSS Framework",
-        "Responsive Design"
+        "Design Tokens",
+        "Responsive UI",
+        "Rapid Prototyping"
       ]
     },
     {
       "name": "Git",
       "level": "Advanced",
       "keywords": [
-        "Tools & CMS",
-        "Version control"
+        "Collaboration",
+        "Version Control",
+        "Design-Dev Handoff"
       ]
     },
     {
       "name": "Wordpress",
       "level": "Advanced",
       "keywords": [
-        "Tools & CMS",
-        "Web development"
+        "CMS Design",
+        "Content Workflows",
+        "Operator Tools"
       ]
     },
     {
       "name": "Php",
       "level": "Intermediate",
       "keywords": [
-        "Tools & CMS",
-        "Backend"
+        "CMS Integration",
+        "Backend Constraints",
+        "Workflow Tooling"
       ]
     },
     {
       "name": "MySQL",
       "level": "Intermediate",
       "keywords": [
-        "Tools & CMS",
-        "Database",
-        "Backend"
+        "Data Modeling",
+        "Content Architecture",
+        "Operational Systems"
       ]
     },
     {
       "name": "Figma",
       "level": "Master",
       "keywords": [
-        "Design",
-        "UI",
-        "Prototyping"
+        "Product Design",
+        "Prototyping",
+        "Design Systems",
+        "Components"
       ]
     },
     {
       "name": "Photoshop",
       "level": "Master",
       "keywords": [
-        "Design",
-        "Image Manipulation"
+        "Visual Design",
+        "Image Systems",
+        "Asset Preparation"
       ]
     },
     {
       "name": "Illustrator",
       "level": "Master",
       "keywords": [
-        "Design",
-        "Vector Graphics"
+        "Brand Systems",
+        "Vector Design",
+        "Iconography"
       ]
     },
     {
       "name": "After Effects",
       "level": "Advanced",
       "keywords": [
-        "Design",
-        "Motion Graphics"
+        "Motion Design",
+        "Interaction Feel",
+        "Prototyping"
       ]
     },
     {
       "name": "Premiere",
       "level": "Advanced",
       "keywords": [
-        "Design",
-        "Video Editing"
+        "Storytelling",
+        "Motion Editing",
+        "Product Communication"
       ]
     },
     {
       "name": "Python",
       "level": "Intermediate",
       "keywords": [
-        "Other Languages",
-        "Backend"
+        "Automation",
+        "Data Workflows",
+        "Prototyping"
       ]
     },
     {
       "name": "Go",
       "level": "Intermediate",
       "keywords": [
-        "Other Languages",
-        "Backend"
+        "CLI Tools",
+        "Developer Tools",
+        "Workflow Systems"
       ]
     }
   ],
@@ -314,7 +328,7 @@
   "projects": [
     {
       "name": "Ghosted",
-      "description": "Terminal-based job application tracker with TUI and CLI. Track applications through 8 stages, manage interviews, and automate with AI agents. Built with Go + Bubble Tea.",
+      "description": "AI-assisted job application workflow tool with a keyboard-first TUI, scriptable CLI, 8-stage pipeline, interview tracking, and agent-ready document automation.",
       "highlights": [
         "Full-featured Terminal User Interface with vim-style navigation and keyboard shortcuts",
         "Scriptable CLI interface designed for AI agent integration with JSON I/O",
@@ -322,7 +336,7 @@
         "Document compilation system converting Typst files to PDFs with smart naming",
         "Job board integration fetching postings from Lever, Greenhouse, Workday, LinkedIn"
       ],
-      "keywords": ["Go", "Bubble Tea", "TUI", "CLI", "Job Search", "Open Source", "Productivity", "Terminal"],
+      "keywords": ["Product Design", "AI Workflow", "Developer Tools", "Internal Tools", "Design Systems", "Interaction Design", "Accessibility", "Human-in-the-Loop AI"],
       "startDate": "2026-01",
       "url": "https://github.com/celloopa/ghosted",
       "type": "application"

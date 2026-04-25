@@ -1,6 +1,6 @@
 ---
 title: VegAvengers Marketing
-description: A mission-driven platform for discovering vegan festivals and animal sanctuaries, featuring intelligent search, smooth animations, and a showcase of featured advocacy organizations.
+description: A mission-driven discovery platform for finding vegan festivals, animal sanctuaries, and advocacy organizations through flexible search and responsive interaction design.
 image: /images/projects/vegHero.webm
 ogImage: /images/projects/veg-avengers-thumbnail.png
 url: https://vegavengers.com
@@ -10,63 +10,84 @@ techStack:
   - TypeScript
   - Tailwind CSS
   - Framer Motion
-role: Front-End Developer
+role: Product Designer / Front-End
 highlights:
-  - Built intelligent search system with smart date parsing and location synonyms for VegFests and sanctuaries
-  - Developed animated ResourceToggle component with Framer Motion for seamless mode switching
-  - Created responsive project showcase grid featuring vegan advocacy organizations
-  - Implemented Astro DB integration with server-side API routes for real-time filtering
+  - Designed and built a discovery experience for people looking for vegan festivals, sanctuaries, and advocacy organizations
+  - Created flexible search behavior for month names, dates, regions, locations, and common synonyms
+  - Built an animated resource toggle so users could move between festival and sanctuary discovery modes
+  - Organized results into upcoming, TBD, and past states to match how event information changes over time
+  - Translated mission-driven content into responsive product surfaces with purposeful motion
 featured: true
-order: 2
+order: 4
 ---
 
+import CaseMeta from '@/components/CaseMeta.astro';
 import MediaFull from '@/components/media/MediaFull.astro';
 import MediaTwo from '@/components/media/MediaTwo.astro';
-import MediaThree from '@/components/media/MediaThree.astro';
 
-## Overview
+<CaseMeta items={[
+  { label: "Role", value: "Product designer and front-end builder for a mission-driven discovery website." },
+  { label: "Users", value: "People looking for vegan festivals, animal sanctuaries, advocacy projects, and community resources." },
+  { label: "Constraints", value: "Changing event dates, incomplete user queries, multiple resource types, responsive layouts, and mission-forward content." },
+  { label: "Tools", value: "Astro, React, TypeScript, Tailwind CSS, Framer Motion, Astro DB." },
+  { label: "Outcome", value: "A responsive discovery surface with flexible search, mode switching, animated feedback, and browsable advocacy project cards." }
+]} />
 
-Veg Avengers Marketing is a web platform dedicated to promoting vegan causes and animal rights advocacy. The site serves as a discovery hub for vegan festivals (VegFests), animal sanctuaries, and featured organizations—helping users connect with the vegan community and support animal welfare initiatives.
+## Context
+
+VegAvengers is a mission-driven platform for connecting people with vegan festivals, animal sanctuaries, and advocacy organizations. The product-design opportunity was discovery: visitors may not know the exact event name, sanctuary name, country spelling, or month format they need.
+
+I designed and built the front-end experience around flexible searching and lightweight mode switching, so visitors could move between resource types without needing to understand the site's data model.
 
 <MediaFull
   src="/images/projects/veg-approach.webm"
-  alt="Homepage hero section showing animated cycling taglines and navigation to Resources, Projects, and About pages"
-  caption="Animated hero with cycling mission taglines"
+  alt="Homepage hero section showing animated cycling taglines and navigation"
+  caption="The homepage frames advocacy as an active discovery path rather than a static directory."
 />
 
-## The Resource Discovery System
+## User Scenarios
 
-The core feature is an intelligent search system that helps users find VegFests by date, location, or month, and discover animal sanctuaries by region. The animated ResourceToggle lets users seamlessly switch between search modes with smooth slide and fade transitions.
+- A visitor remembers that a VegFest happens in March, but not the event name.
+- Someone searches for `UK` and expects to see results from the United Kingdom, England, or GB.
+- A traveler wants to find animal sanctuaries by region rather than by exact name.
+- A supporter wants to browse advocacy projects and quickly understand which organizations to visit.
+- An event listing has an uncertain date, so the interface needs to show TBD without burying it.
+
+## Product Decisions
+
+**Flexible query handling.** Search supports month names, month numbers, location synonyms, and region matching because real users rarely search with clean database terms.
+
+**Mode switching over separate pages.** The ResourceToggle lets users switch between VegFest and sanctuary discovery without losing the sense that both are part of the same resource system.
+
+**Temporal result states.** VegFest results are categorized into upcoming, TBD, and past events so uncertainty is visible instead of hidden.
+
+**Motion as feedback.** Framer Motion supports mode changes, staggered cards, and hover states. The goal was not decoration; it was helping the interface feel responsive and alive while users browse.
 
 <MediaTwo items={[
-  { src: "/images/projects/tool-switcher.webm", alt: "ResourceToggle component animation showing emoji buttons (carrot and cow) with hover effects and mode switching", caption: "Animated mode toggle" },
-  { src: "/images/projects/vegfests.webm", alt: "VegFest search interface filtering festivals by typing a city name, showing real-time results with dates and locations", caption: "VegFest location search" }
+  { src: "/images/projects/tool-switcher.webm", alt: "ResourceToggle animation showing mode switching", caption: "Annotated artifact: the toggle makes two resource modes feel related without forcing one large combined list." },
+  { src: "/images/projects/vegfests.webm", alt: "VegFest search filtering festivals by city", caption: "Annotated artifact: search is designed for partial knowledge, including dates, locations, and synonyms." }
 ]} />
 
-## Smart Search Features
+## Interaction Details
 
-The search system handles complex date formats, supports month-based filtering (e.g., searching "March" or "3"), and uses location synonyms so users can search "UK" and find results for "United Kingdom," "England," or "GB." Results are categorized into upcoming, TBD (unconfirmed), and past events.
+The search system handles complex date formats, month aliases, region matching, and location synonyms. It also persists search preferences locally so users can return to a familiar query state.
 
 <MediaFull
   src="/images/projects/sanctuary.webm"
-  alt="Sanctuary search showing results filtered by region with cards displaying sanctuary names, locations, and website links"
-  caption="Sanctuary discovery with flexible location matching"
+  alt="Sanctuary search showing results filtered by region"
+  caption="Sanctuary discovery supports flexible region matching for people browsing by place rather than exact organization name."
 />
 
-## Featured Projects Showcase
-
-A responsive grid showcases featured vegan organizations and sanctuaries, including Juliana's Animal Sanctuary and Rowdy Girl Sanctuary. Each card features staggered entry animations, hover effects, and multiple call-to-action buttons.
+The featured projects grid gives advocacy organizations a more editorial surface. Each card uses staggered entry, hover states, and multiple calls to action so the browsing experience stays mission-forward without feeling like a dense database.
 
 <MediaFull
   src="/images/projects/projects.webm"
-  alt="grid of projects and organizations that VegAvengers worked with"
-  caption="Project highlight Grid"
+  alt="Grid of projects and organizations VegAvengers works with"
+  caption="Featured projects act as a bridge between discovery and action."
 />
 
-## Technical Highlights
+## Outcome And Learning
 
-- **Astro Islands Architecture**: React components hydrate only where needed, keeping static pages fast
-- **Server-Side Rendering**: API routes handle search queries with Astro DB (SQLite-based)
-- **Framer Motion Animations**: Smooth transitions, staggered reveals, and interactive hover states
-- **Persistent Preferences**: localStorage saves search queries across sessions
-- **Yearly Data Model**: Scalable structure for adding new festival data each year
+VegAvengers is a useful supporting case because it shows product design in a public, mission-driven context. The strongest lesson was that search quality is not only about algorithms. It is about anticipating how people remember places, dates, organizations, and causes when they do not have perfect information.
+
+If I expanded the case study further, I would add usage data around the most common queries, no-result searches, and which resource mode drives the most engagement.

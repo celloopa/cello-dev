@@ -68,6 +68,24 @@ const featuredProjects = allProjects
 		</div>
 	</section>
 
+	<section class="proof-strip" aria-label="Product design proof points">
+		<div class="proof-item">
+			<span>01</span>
+			<h2>AI-assisted workflow tools</h2>
+			<p>Working prototypes for human-in-the-loop automation, agent handoffs, and keyboard-first product flows.</p>
+		</div>
+		<div class="proof-item">
+			<span>02</span>
+			<h2>Internal product systems</h2>
+			<p>Search, admin, and asset-management surfaces designed around real team operations and constraints.</p>
+		</div>
+		<div class="proof-item">
+			<span>03</span>
+			<h2>Design systems and accessible interfaces</h2>
+			<p>Reusable components, themeable UI patterns, and implementation-aware design decisions across web surfaces.</p>
+		</div>
+	</section>
+
 	<div class="projects-section-wrapper">
 	<Section title="Projects">
 		<div class="bar section-bar"></div>
@@ -355,6 +373,52 @@ const featuredProjects = allProjects
 		}
 	}
 
+	.proof-strip {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+		max-width: 1100px;
+		margin: 1rem auto 0;
+		padding: 0 2rem;
+		animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.45s backwards;
+	}
+
+	.proof-item {
+		border: 3px solid var(--color-text);
+		background: rgba(var(--color-text-rgb), 0.035);
+		padding: 1rem;
+		min-height: 100%;
+	}
+
+	.proof-item span {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		margin-bottom: 0.9rem;
+		border: 2px solid var(--color-accent);
+		color: var(--color-accent);
+		font-size: 0.75rem;
+		font-weight: 900;
+	}
+
+	.proof-item h2 {
+		margin: 0 0 0.65rem;
+		padding: 0;
+		font-size: clamp(1rem, 2vw, 1.2rem);
+		line-height: 1.15;
+		text-transform: uppercase;
+	}
+
+	.proof-item p {
+		margin: 0;
+		padding: 0;
+		font-size: 0.9rem;
+		line-height: 1.55;
+		opacity: 0.86;
+	}
+
 	.featured-carousel {
 		width: 100vw;
 		margin-left: calc(50% - 50vw);
@@ -383,7 +447,7 @@ const featuredProjects = allProjects
 	}
 
 	.projects-section-wrapper {
-		margin-top: 8rem;
+		margin-top: 6rem;
 	}
 
 	.visuals-section-wrapper {
@@ -489,6 +553,10 @@ const featuredProjects = allProjects
 	}
 
 	@media (width <= 900px) {
+		.proof-strip {
+			grid-template-columns: 1fr;
+		}
+
 		.visuals-grid {
 			grid-template-columns: repeat(3, minmax(300px, 1fr));
 		}
@@ -530,6 +598,10 @@ const featuredProjects = allProjects
 		.summary {
 			max-width: none;
 			text-align: center;
+		}
+
+		.proof-strip {
+			padding: 0 1rem;
 		}
 
 		.label {

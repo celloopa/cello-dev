@@ -1,6 +1,6 @@
 ---
 title: Ghosted
-description: A terminal-based job application tracker built with Go and Bubble Tea, featuring a TUI for interactive tracking and a CLI for automation and AI agent integration.
+description: An AI-assisted job application workflow tool with a keyboard-first TUI, scriptable CLI, 8-stage pipeline, and agent-ready document automation.
 image: /images/projects/ghosted/preview.webm
 ogImage: /images/projects/ghosted/ghosted-thumbnail.png
 github: https://github.com/celloopa/ghosted
@@ -9,158 +9,158 @@ techStack:
   - Bubble Tea
   - Lip Gloss
   - JSON
-role: Solo Developer
+role: Product Designer / AI Tools
 highlights:
-  - Full-featured Terminal User Interface with vim-style navigation and keyboard shortcuts
-  - Scriptable CLI interface designed for AI agent integration with JSON I/O
-  - Multi-agent pipeline for automated document generation and job application workflow
-  - Document compilation system converting Typst files to PDFs with smart naming
-  - Job board integration fetching postings from Lever, Greenhouse, Workday, LinkedIn
+  - Designed and built a working prototype for developers managing fragmented job-search workflows
+  - Created a keyboard-first TUI plus scriptable CLI so humans and AI agents could work from the same local data model
+  - Modeled an 8-stage application pipeline with document links, interview details, contacts, and follow-up actions
+  - Built JSON-based agent handoffs for parsing postings, generating documents, reviewing quality, and updating records
+  - Used the project to study how product designers can reason more clearly with engineering constraints
 featured: true
 order: 1
 ---
 
+import CaseMeta from '@/components/CaseMeta.astro';
+import FlowDiagram from '@/components/FlowDiagram.astro';
 import MediaFull from '@/components/media/MediaFull.astro';
 
-## Overview
+<CaseMeta items={[
+  { label: "Role", value: "Solo product designer-builder. I used code as the design medium so I could test interaction ideas, data constraints, and AI handoffs directly." },
+  { label: "Users", value: "Developers and technical job seekers managing applications, interviews, documents, job posts, and follow-ups across disconnected tools." },
+  { label: "Constraints", value: "Local-first data, keyboard-first interaction, scriptable automation, human review, portable files, and no hosted database dependency." },
+  { label: "Tools", value: "Go, Bubble Tea, Lip Gloss, JSON, Typst, CLI workflows, Claude Code." },
+  { label: "Outcome", value: "A working AI-assisted workflow prototype that clarified how terminal UX, agent automation, and human approval can share one product model." }
+]} />
 
-Ghosted is a terminal-based job application tracker designed for developers navigating the modern hiring process. Built in collaboration with Claude Code, it provides both an interactive TUI for daily use and a CLI for automation—making it ideal for integration with AI agents that can parse job postings and update statuses automatically.
+## Context
 
-The project is open-sourced under the MIT license.
+Ghosted began as a product-design exercise disguised as a terminal app. I wanted to understand the kind of tooling developers reach for when a workflow is repetitive, private, and spread across too many surfaces: job boards, notes, emails, resumes, cover letters, interviews, and follow-up reminders.
+
+Rather than sketching the concept only in Figma, I built a working prototype in Go. That forced the design decisions to collide with implementation details: state transitions, file formats, keyboard navigation, command naming, error tolerance, and the boundary between what an AI agent should automate and what a person should approve.
 
 <MediaFull
   src="/images/projects/ghosted/ghosted-intro.webm"
-  alt="Ghosted TUI showing the main look and flow of the application"
-  caption="Main application list with status indicators and vim-style navigation"
+  alt="Ghosted TUI showing the main application list with status indicators"
+  caption="Annotated artifact: the main list compresses company, role, status, and next action into a keyboard-scannable surface."
 />
 
-## Dual Interface Design
+## Problem
 
-The project offers two ways to interact: a rich Terminal User Interface for exploration and manual updates, and a CLI for programmatic access. Both share the same JSON data store, so changes sync instantly.
+The modern job search is a high-volume workflow with low tolerance for losing context. A developer may save a posting in one browser tab, tailor a resume in another tool, track a recruiter in email, and remember follow-ups in a notes app. The more applications they manage, the more the real product problem becomes coordination.
 
-The CLI was specifically designed for AI agent integration—commands accept and output JSON, making it trivial to build automation that parses job postings from emails or websites and automatically creates tracked applications.
+I framed the problem around three jobs:
 
-<MediaFull
-  src="/images/projects/ghosted/ghosted-agent.webm"
-  alt="Adding job postings to the postings folder for the AI agent to reference and add to the tracker"
-  caption="AI agent integration: adding postings for automated job tracking"
+- Keep every application in one durable pipeline.
+- Let the user move quickly without leaving the keyboard.
+- Use AI to reduce repetitive document and parsing work without removing human control.
+
+## My Role
+
+I designed and built Ghosted myself. That matters to the story: the goal was not only to ship an app, but to become a better bridge between product design and engineering by feeling the constraints directly.
+
+I owned the workflow model, terminal interaction design, command interface, data structure, document pipeline, and AI-assisted development process. Claude Code acted as a coding collaborator, but I made the product decisions: what state needed to exist, what should stay local, where automation should stop, and how much control the user needed before generated materials became part of the tracker.
+
+## Design Constraints
+
+- **Local-first data**: Job-search data can be private and messy, so the first version uses plain JSON files instead of a hosted account system.
+- **Keyboard-first UX**: The primary user is comfortable in a terminal, so navigation and status changes needed to be fast without feeling cryptic.
+- **Scriptable automation**: The CLI accepts and returns JSON so AI agents and shell scripts can work against the same model as the TUI.
+- **Human review**: AI can parse, draft, and score documents, but the product needed dry-run and approval paths before automation updates the tracker.
+- **Portable documents**: Resume and cover-letter outputs needed predictable naming so files could be reviewed, opened, and attached later.
+
+<FlowDiagram
+  title="Application Lifecycle"
+  items={[
+    { label: "Saved", detail: "A role is captured for later review before the user commits to applying." },
+    { label: "Applied", detail: "The submitted role becomes part of the active pipeline with document links." },
+    { label: "Screening", detail: "The application has moved into initial recruiter or company review." },
+    { label: "Interview", detail: "The detail view tracks interview type, date, contacts, and notes." },
+    { label: "Offer", detail: "The opportunity is separated from ordinary active applications." },
+    { label: "Accepted / closed", detail: "The pipeline preserves final outcomes, including rejected and withdrawn states." }
+  ]}
+  caption="The state model made the product feel more like a recruiting workflow than a to-do list."
 />
 
-## Status Pipeline
+## Key Product Decisions
 
-Applications flow through an 8-stage pipeline reflecting the real recruitment journey:
+**TUI plus CLI, not one interface.** The TUI is for review, browsing, and daily updates. The CLI is for automation, scripts, and AI agents. Both share the same JSON store, which kept the prototype simple while still supporting two very different interaction modes.
 
-1. **Saved** - Bookmarked for later
-2. **Applied** - Application submitted
-3. **Screening** - Initial review
-4. **Interview** - In progress
-5. **Offer** - Received
-6. **Accepted** - Job secured
-7. **Rejected** - Application declined
-8. **Withdrawn** - Candidate withdrew
+**JSON as the product contract.** I chose a plain data format because it made the tool inspectable, version-controllable, and agent-ready. It also helped me reason about the boundary between interface design and underlying product state.
 
-Quick keyboard shortcuts (1-8) let you update status without leaving the list view.
+**Eight pipeline stages.** The model needed enough fidelity to match a real hiring process without becoming a project-management system. The stages are explicit enough for reporting and quick updates, but simple enough to move through with number keys.
+
+**Review before automation.** The agent pipeline supports dry runs and approval flags because document generation is high leverage but easy to get wrong. I wanted AI to accelerate the repetitive parts, not silently alter the user's source of truth.
+
+## Interaction Details
 
 <MediaFull
   src="/images/projects/ghosted/ghosted-end.webm"
   alt="Viewing an agent-added job application and updating its status"
-  caption="Reviewing agent-added applications and changing status with quick shortcuts"
+  caption="Annotated artifact: number keys update status from the list, reducing the application pipeline to one predictable keyboard action."
 />
 
-## Rich Data Tracking
+The interaction model is intentionally small:
+
+- Arrow keys and vim-style movement support quick scanning.
+- Number keys update an application's stage without opening a form.
+- `u` starts from a job posting URL and moves into the fetch/apply workflow.
+- `o` opens the document folder for the selected application.
+- Detail views expose salary, contacts, interviews, document links, notes, and follow-ups without overwhelming the list view.
 
 <MediaFull
   src="/images/projects/ghosted/ghosted-details.webm"
-  alt="Application detail view showing contacts, interviews, and document links"
-  caption="Comprehensive tracking: salary, contacts, interviews, and linked documents"
+  alt="Application detail view showing salary, contacts, interviews, and document links"
+  caption="Annotated artifact: detail screens keep the list compact while preserving the context needed for interviews and follow-ups."
 />
 
-Each application tracks comprehensive details beyond just company and status:
+## AI Workflow
 
-- **Compensation**: Salary range with smart formatting ($150k display)
-- **Contacts**: Recruiter name and email for follow-ups
-- **Documents**: Links to resume version and cover letter used
-- **Interviews**: Multiple interviews with type, date, interviewer, and notes
-- **Follow-ups**: Next action reminders
+<FlowDiagram
+  title="Human And AI Workflow"
+  items={[
+    { label: "Fetch posting", detail: "The user provides a URL or saved posting, then Ghosted stores a local markdown reference." },
+    { label: "Parse role", detail: "An agent extracts company, role, location, compensation, and requirements into structured data." },
+    { label: "Generate drafts", detail: "Resume and cover-letter agents create tailored Typst documents for the selected role." },
+    { label: "Review quality", detail: "A review agent scores outputs and flags weak documents before they are accepted." },
+    { label: "Approve update", detail: "The user can dry-run, revise, or auto-approve before the tracker is changed." },
+    { label: "Compile files", detail: "Typst outputs become predictably named PDFs linked back to the application." }
+  ]}
+  caption="The key design question was not 'can AI do this?' It was 'where should the human stay in control?'"
+/>
 
-## Technical Highlights
+The agent pipeline includes four roles:
 
-- **Bubble Tea Framework**: Elm-inspired architecture with clean state management and a view state machine
-- **Zero Database Overhead**: Plain JSON files make data portable, version-controllable, and human-readable
-- **Smart Partial Matching**: CLI accepts partial UUIDs (`ghosted get abc` finds first match starting with "abc")
-- **Cross-Platform**: Single Go binary compiles for macOS, Linux, and Windows
-- **Sample Data Seeding**: New installations auto-populate with example applications for immediate exploration
-
-## AI Agent Pipeline
+1. **Posting Parser** extracts structured information from job descriptions.
+2. **Resume Agent** drafts a tailored resume based on the role.
+3. **Cover Letter Agent** drafts a targeted cover letter.
+4. **Review Agent** scores the documents and provides feedback before approval.
 
 <MediaFull
   src="/images/projects/ghosted/ghosted-pipeline.webm"
-  alt="Multi-agent pipeline running with resume and cover letter generation"
-  caption="Agent pipeline: parsing, generating, and scoring documents automatically"
+  alt="Multi-agent pipeline running resume and cover letter generation"
+  caption="Annotated artifact: the pipeline treats AI output as draft material that should be reviewed before becoming application history."
 />
 
-One of Ghosted's most powerful features is its multi-agent system for automating the job application process. When you run `ghosted apply` on a job posting, it kicks off a coordinated pipeline:
+## Building With Claude Code
 
-1. **Posting Parser** - Extracts key details from job descriptions
-2. **Resume Agent** - Generates a tailored resume highlighting relevant experience
-3. **Cover Letter Agent** - Crafts a personalized cover letter addressing the role
-4. **Review Agent** - Scores both documents (70+ to pass) and provides feedback
+Claude Code helped accelerate the implementation, but the collaboration worked best when I gave it product constraints instead of vague build requests. The most useful loops were around the data model, Bubble Tea view architecture, CLI command structure, documentation, and agent handoffs.
 
-The pipeline supports `--dry-run` for generating documents without updating the tracker, and `--auto-approve` for fully automated workflows.
+That process changed how I think about AI-assisted design work. The value was not simply speed. It was being able to explore implementation constraints while keeping enough product judgment to reject, simplify, or redirect the generated code.
 
-## Job Board Integration
+## Outcome And Learning
 
-<MediaFull
-  src="/images/projects/ghosted/ghosted-fetch.webm"
-  alt="Fetching a job posting from a career page"
-  caption="Auto-fetch: extracting job details from Lever, Greenhouse, and more"
-/>
+Ghosted shipped as an open-source working prototype. More importantly, it gave me a concrete model for designing AI-assisted tools:
 
-The `ghosted fetch` command automatically extracts job posting details from popular platforms:
+- Shared data contracts matter more than flashy automation.
+- Keyboard UX is only good when the underlying state model is clear.
+- AI workflows need visible review points, failure tolerance, and user control.
+- Building the prototype myself made the design tradeoffs more honest.
 
-- **Lever** - Career pages
-- **Greenhouse** - Application portals
-- **Workday** - Enterprise job listings
-- **LinkedIn** - Job posts
-- **Ashby** - Modern ATS platforms
-
-Fetched postings are converted to markdown and stored locally for reference. From the TUI, press `u` to input a URL and immediately launch the agent pipeline.
-
-## Document Compilation
-
-<MediaFull
-  src="/images/projects/ghosted/ghosted-compile.webm"
-  alt="Compiling Typst documents to PDFs with smart naming"
-  caption="Document compilation: Typst to PDF with automatic naming conventions"
-/>
-
-Ghosted integrates with [Typst](https://typst.app/) for professional document formatting. The `ghosted compile` command converts `.typ` files to PDFs with intelligent auto-naming:
-
-- `{company}-{position}-resume.pdf`
-- `{company}-{position}-cover-letter.pdf`
-
-Press `o` in the TUI to instantly open the document folder for any application.
-
-## Building with Claude Code
-
-This project was developed in collaboration with Claude Code, Anthropic's AI coding assistant. The pairing workflow proved especially effective for:
-
-- Designing the data model and status state machine
-- Implementing the Bubble Tea view architecture
-- Building the CLI command structure with proper flag handling
-- Writing comprehensive documentation
-- Building the multi-agent pipeline with proper handoffs
-
-The experience reinforced how AI-assisted development can accelerate solo projects while maintaining code quality and architectural consistency.
+The next validation step would be testing the workflow with other technical job seekers: where they hesitate, what they trust, what feels too automated, and which parts of the pipeline are worth turning into a more polished product surface.
 
 ## Roadmap
 
-Looking ahead, Ghosted continues to evolve. Here are the remaining planned expansions:
-
-### Proactive Pipeline Assistant
-
-The current agent pipeline generates documents on-demand. The next evolution brings proactive assistance: monitoring your application pipeline for stale entries, suggesting follow-up timing, analyzing job posting patterns to identify best-fit opportunities, and drafting outreach messages—all without leaving the terminal.
-
-### Enhanced Document Management
-
-While the compile command handles PDF generation, future versions will streamline document attachment through clipboard paste or drag-and-drop in the TUI. Each application would link directly to the specific resume and cover letter versions used, building a complete audit trail for interview prep.
+- Add a proactive assistant for stale applications, follow-up timing, and outreach drafts.
+- Improve document attachment and audit trails inside the TUI.
+- Add stronger failure states for missing job-board data, weak generated documents, and ambiguous company metadata.
+- Explore a visual companion surface for users who want the workflow model without living entirely in the terminal.

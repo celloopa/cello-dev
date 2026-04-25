@@ -1,6 +1,6 @@
 ---
 title: Ad Asset Directory
-description: A multi-brand digital asset management system with fuzzy search, dynamic theming, and an admin CMS for organizing marketing assets across brand portfolios.
+description: An internal asset-discovery and admin tool that helped teams find, manage, and preserve brand assets across multiple identities.
 image: /images/projects/ad-assets/hero.webm
 ogImage: /images/projects/ad-assets/ad-assets-thumbnail.png
 techStack:
@@ -10,103 +10,132 @@ techStack:
   - Tailwind CSS
   - Supabase
   - Fuse.js
-role: Full-Stack Developer
+role: Product Designer / Full-Stack
 highlights:
-  - Built a multi-brand portal system with dynamic CSS theming per brand
-  - Implemented client-side fuzzy search with intelligent caching for sub-100ms responses
-  - Created a full admin CMS with CRUD operations and inline editing capabilities
-  - Designed a data architecture with Supabase primary storage and JSON fallback
+  - Designed an internal search and admin tool for marketing and operations teams managing multiple brands
+  - Replaced scattered drive folders, bookmarks, and inconsistent naming with one searchable source of truth
+  - Created multi-brand theming with reusable UI patterns and brand-specific portal surfaces
+  - Built a non-technical admin workflow for managing brands, categories, metadata, tags, and asset links
+  - Reduced asset lookup time from roughly 5-10 minutes to under 30 seconds
 featured: true
-order: 3
+order: 2
 ---
 
+import CaseMeta from '@/components/CaseMeta.astro';
+import FlowDiagram from '@/components/FlowDiagram.astro';
 import MediaFull from '@/components/media/MediaFull.astro';
 import MediaTwo from '@/components/media/MediaTwo.astro';
-import MediaThree from '@/components/media/MediaThree.astro';
 
-## Overview
-
-The Ad Asset Directory is a centralized digital asset management platform designed for teams managing multiple brand identities. It allows users to organize, search, and access marketing assets—graphics, documents, brand guides, and more—across different brands from a single interface.
-
-## The Problem
-
-Managing digital assets across multiple brands was fragmented and inefficient. Team members spent significant time searching through Google Drive folders, Dropbox, and scattered bookmark collections to find the right assets. Each brand had different folder structures, naming conventions, and storage locations.
-
-Key pain points:
-- **Asset discovery**: Finding specific files took 5-10 minutes on average
-- **Brand consistency**: No single source of truth for brand assets
-- **Onboarding friction**: New team members struggled to locate resources
-- **No search**: Existing storage solutions lacked intelligent search across brands
-
-## Solution Architecture
-
-I built a server-rendered Astro application with React for interactive components, backed by Supabase for data persistence.
-
-<MediaFull src="/images/projects/ad-assets/ad-portal.webm" caption="Asheville Dispensary portal with organized asset categories" />
-
-### Multi-Brand Portal System
-
-Each brand gets its own themed portal with customizable colors. The theming system uses CSS custom properties that dynamically update based on the selected brand, allowing unlimited color customization without code changes.
-
-<MediaTwo items={[
-  { src: "/images/projects/ad-assets/plantbar.webm", alt: "Plantbar portal" },
-  { src: "/images/projects/ad-assets/nightshade.webm", alt: "Nightshade portal" }
+<CaseMeta items={[
+  { label: "Role", value: "Product designer and full-stack builder for an internal tool spanning IA, search, admin workflows, theming, and implementation." },
+  { label: "Users", value: "Marketing, operations, brand, and non-technical team members who needed to find and maintain assets without developer help." },
+  { label: "Constraints", value: "Multiple brands, inconsistent storage locations, non-technical admins, small-team maintenance, and a need for fast lookup." },
+  { label: "Tools", value: "Astro, React, TypeScript, Tailwind CSS, Supabase, Fuse.js, CSS custom properties." },
+  { label: "Outcome", value: "Search time dropped from roughly 5-10 minutes to under 30 seconds, with self-service asset management and zero-training onboarding." }
 ]} />
 
-### Fuzzy Search with Intelligent Caching
+## Context
 
-The search system was the core technical challenge. I implemented client-side fuzzy search using Fuse.js with several optimizations:
+The Ad Asset Directory is an internal product system for teams managing marketing assets across multiple brand identities. The work started from a common operational problem: the assets existed, but finding the right file at the right moment depended on memory, folder archaeology, and inconsistent naming.
 
-- **Pre-built search index**: Generated at build time for instant initialization
-- **LRU cache**: 5-minute TTL prevents redundant searches
-- **Debounced queries**: 150ms debounce reduces unnecessary processing
-- **Weighted results**: Title > Description > Brand > Category > Tags
+I designed and built the tool myself so I could connect the product experience to the real implementation constraints: search performance, admin editing, brand theming, data fallback, and the amount of structure non-technical users would actually maintain.
 
-{/* SCREENSHOT: Show the search modal open with a query and results dropdown visible */}
-<MediaFull src="/images/projects/ad-assets/search.png" caption="Fuzzy search with keyboard navigation and filtering" />
+<MediaFull
+  src="/images/projects/ad-assets/ad-portal.webm"
+  alt="Asheville Dispensary portal with organized asset categories"
+  caption="Annotated artifact: each brand portal exposes common categories first, then lets search handle the messy recall problem."
+/>
 
-The search supports keyboard shortcuts (`⌘K` to open, arrow keys to navigate) and special filters (`!brand` to filter by brand, `#` for categories).
+## Users And Stakeholders
 
-### Admin CMS
+The primary users were marketing and operations team members who needed fast access to graphics, documents, brand guides, packaging references, and shared links. Admin users needed to keep the system current without editing code or asking a developer to add links.
 
-Non-technical team members needed to manage assets without developer intervention. I built a complete admin interface with:
+The stakeholder need was broader than storage. The product had to protect brand consistency, reduce onboarding friction, and make the "where is that asset?" question less dependent on one person's memory.
 
-- **Brand management**: Create brands with custom themes
-- **Category organization**: Group assets logically with icons
-- **Link management**: Add/edit asset URLs with metadata and tags
-- **Inline editing**: Edit content directly from brand portals when authenticated
+## Before State
 
-{/* SCREENSHOTS: Show the admin dashboard with stats, and one of the editing forms */}
+Before the directory, assets were spread across Google Drive folders, Dropbox, bookmarks, and team knowledge. Each brand had different folder structures, naming patterns, and levels of documentation.
+
+The pain points were concrete:
+
+- Finding a specific file took roughly 5-10 minutes.
+- New team members did not know which folder or tool to check first.
+- Brand assets did not have one reliable source of truth.
+- Existing storage tools did not provide useful cross-brand search.
+- Updating asset links required too much informal coordination.
+
+<FlowDiagram
+  title="Before And After Information Architecture"
+  items={[
+    { label: "Before", detail: "Assets lived in drive folders, Dropbox, bookmarks, and memory, with different naming rules per brand." },
+    { label: "Normalize", detail: "Brands, categories, links, descriptions, and tags became explicit product objects." },
+    { label: "Find", detail: "Users could browse by portal or search across title, description, brand, category, and tags." },
+    { label: "Maintain", detail: "Admins could edit brands, categories, and links without developer intervention." }
+  ]}
+  caption="The main product decision was to design around recall and maintenance, not only presentation."
+/>
+
+## Product Decisions
+
+**Centralized IA.** I made brands, categories, links, tags, and metadata explicit so assets could be found through structure or search. This turned a storage problem into an information-architecture problem.
+
+**Multi-brand theming.** Each brand needed to feel distinct without requiring a separate codebase. I used CSS custom properties so portals could inherit one reusable UI system while applying brand-specific colors.
+
+**Client-side fuzzy search.** The dataset was small enough to search in the browser, so client-side Fuse.js removed server latency and kept the interaction immediate. Weighted fields prioritized titles first, then descriptions, brand, category, and tags.
+
+**Admin self-service.** The tool needed to stay useful after launch. I built admin CRUD workflows and inline editing so non-technical users could manage the directory without developer handoff.
+
 <MediaTwo items={[
-  { src: "/images/projects/ad-assets/admin.webm", caption: "Admin dashboard overview" },
-  { src: "/images/projects/ad-assets/form.webm", caption: "Asset link editing form" }
+  { src: "/images/projects/ad-assets/plantbar.webm", alt: "Plantbar portal using brand-specific theming", caption: "Annotated artifact: one product shell adapts to multiple brand identities through tokenized theming." },
+  { src: "/images/projects/ad-assets/nightshade.webm", alt: "Nightshade portal using brand-specific theming", caption: "Annotated artifact: brand distinction is handled in the system layer, not by duplicating interface code." }
 ]} />
 
-## Technical Decisions
+## Interaction Details
 
-**Astro + React hybrid**: Astro handles routing and static content while React powers interactive components (search, forms, admin). This gives us fast initial loads with rich interactivity where needed.
+The search experience is the product's center of gravity. It supports both broad recall and focused filtering:
 
-**Supabase with JSON fallback**: Primary data lives in Supabase PostgreSQL, but I implemented a graceful fallback to local JSON files. This ensures the application works even if the database is temporarily unavailable.
+- `Cmd+K` opens search quickly.
+- Arrow keys move through results.
+- Weighted search handles imperfect memory.
+- `!brand` filters by brand.
+- `#category` filters by category.
+- Cached and debounced queries keep results responsive.
 
-**Client-side search**: Rather than server-side search, I opted for client-side Fuse.js. The dataset is small enough to load entirely, and this approach eliminates search latency and reduces server load.
+<MediaFull
+  src="/images/projects/ad-assets/search.png"
+  alt="Search interface showing fuzzy search results and filtering"
+  caption="Annotated artifact: search is designed for team memory, so the query can match titles, metadata, categories, brands, and tags."
+/>
 
-## Results
+The admin workflow is intentionally direct. Admins can create brands, choose theme colors, organize categories, edit asset links, add metadata, and manage tags from the same system users browse.
 
-{/* SCREENSHOT: Optional - show the search in action or a before/after comparison */}
+<MediaTwo items={[
+  { src: "/images/projects/ad-assets/admin.webm", alt: "Admin dashboard with asset-management controls", caption: "Annotated artifact: the admin dashboard turns asset upkeep into a visible product workflow." },
+  { src: "/images/projects/ad-assets/form.webm", alt: "Asset link editing form", caption: "Annotated artifact: structured fields make future search and browsing better, not just the current edit easier." }
+]} />
 
-The system delivered measurable improvements:
+## Design System Angle
 
-- **90% reduction** in time to find assets (from ~5 min to under 30 sec)
-- **Sub-100ms** search response times
-- **Zero-training** onboarding for new team members
-- **Self-service** asset management via admin CMS
-- **Brand consistency** with centralized asset organization
+This project doubled as a practical design-system exercise. The interface needed to support multiple brand surfaces while staying maintainable for a small team. I treated brand colors, portal structure, category organization, and shared components as parts of one product system.
 
-## Key Learnings
+The theming model mattered because brand coherence was one of the user problems. A centralized asset tool would fail if it made every brand feel flattened or generic. The system needed enough consistency for usability and enough variation for brand recognition.
 
-Building this project reinforced several principles:
+## Implementation Constraints
 
-1. **Client-side search scales further than expected** for small-to-medium datasets
-2. **Fallback architectures** (Supabase → JSON) add resilience with minimal complexity
-3. **CSS custom properties** enable powerful runtime theming without JavaScript overhead
-4. **Keyboard accessibility** dramatically improves power user experience
+I used Astro for the routing and static shell, React for interactive search/admin surfaces, Supabase for primary data persistence, and JSON files as a fallback. That fallback was a product decision as much as a technical one: the directory needed to remain usable even if the database was temporarily unavailable.
+
+Search performance stayed under 100ms because the index is prebuilt, cached, debounced, and small enough to run locally. That immediacy is what made the tool feel materially better than digging through folders.
+
+## Outcome
+
+The finished system delivered measurable operational improvements:
+
+- **90% reduction** in asset lookup time, from roughly 5-10 minutes to under 30 seconds.
+- **Sub-100ms** search responses.
+- **Zero-training** onboarding for new team members.
+- **Self-service** admin updates for brands, categories, and links.
+- **Stronger brand consistency** through centralized assets and themed portals.
+
+## What I Learned
+
+Internal tools are product design work when they change how a team operates. The most important design choices were not decorative. They were decisions about information architecture, search behavior, admin responsibility, fallback resilience, and how much structure the team would maintain over time.
