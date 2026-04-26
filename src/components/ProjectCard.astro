@@ -19,7 +19,7 @@ const isVideo = image?.endsWith('.webm') || image?.endsWith('.mp4');
 
 <article class="card has-texture-hover" style={`--i: ${index}`}>
 	<a href={`/projects/${slug}`} class="card-link">
-		{image && (
+		{image ? (
 			<div class="image-box">
 				{isVideo ? (
 					<video src={image} autoplay loop muted playsinline />
@@ -28,6 +28,8 @@ const isVideo = image?.endsWith('.webm') || image?.endsWith('.mp4');
 				)}
 				<div class="image-accent"></div>
 			</div>
+		) : (
+			<div class="image-box placeholder-box" aria-hidden="true"></div>
 		)}
 		<div class="content">
 			<span class="role">{role}</span>
@@ -132,6 +134,38 @@ video {
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   filter: grayscale(20%);
 }
+
+	.placeholder-box {
+		background:
+			linear-gradient(135deg, rgba(var(--color-accent-rgb), 0.16), transparent 55%),
+			repeating-linear-gradient(135deg, rgba(var(--color-text-rgb), 0.12) 0 2px, transparent 2px 16px),
+			rgba(var(--color-text-rgb), 0.04);
+		border-bottom: 2px solid var(--color-text);
+	}
+
+	.placeholder-box::after {
+		content: "Case study in progress";
+		position: absolute;
+		left: 1rem;
+		bottom: 1rem;
+		padding: 0.35rem 0.55rem;
+		border: 2px solid var(--color-accent);
+		color: var(--color-accent);
+		font-size: 0.72rem;
+		font-weight: 800;
+		line-height: 1.2;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+	}
+
+	.card:hover .placeholder-box {
+		border-color: var(--color-background);
+	}
+
+	.card:hover .placeholder-box::after {
+		color: var(--color-background);
+		border-color: var(--color-background);
+	}
 
 	img {
 		width: 100%;

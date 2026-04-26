@@ -34,10 +34,11 @@
       title: "NAVIGATION",
       shortcuts: [
         { key: "h", label: "Home", action: () => navigate("/") },
-        { key: "p", label: "Projects", action: () => navigate("/projects") },
-        // { key: "v", label: "Visuals", action: () => navigate("/visuals") }, // Hidden until content is ready
+        { key: "c", label: "Case Studies", action: () => navigate("/projects") },
+        { key: "x", label: "Lab", action: () => navigate("/lab") },
+        { key: "v", label: "Visuals", action: () => navigate("/visuals") },
         { key: "r", label: "Resume", action: () => navigate("/resume") },
-        // { key: "b", label: "Blog (Coming Soon)", action: () => navigate("/blog") }, // Hidden until content is ready
+        { key: "w", label: "Writing", action: () => navigate("/blog") },
       ],
     },
     {

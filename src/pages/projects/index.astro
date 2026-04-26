@@ -9,15 +9,18 @@ const projects = await getCollection("projects");
 const sortedProjects = projects.sort((a, b) => a.data.order - b.data.order);
 ---
 
-<Layout title="Projects - Marcelo Rondon">
+<Layout
+	title="Case Studies - Marcelo Rondon"
+	description="Product design case studies focused on systems thinking, technical prototyping, workflow design, and design-dev collaboration."
+>
 	<Section>
-		<h1>Projects</h1>
-		<p class="intro">Selected product systems across AI-assisted workflows, internal tools, mission-driven discovery, and complex publishing infrastructure.</p>
+		<h1>Case Studies</h1>
+		<p class="intro">Selected product design work across design systems, technical prototyping, internal tools, AI-assisted workflows, and complex product systems.</p>
 	</Section>
 
 	<Section>
 		<div class="projects-grid">
-			{sortedProjects.map((project) => (
+			{sortedProjects.map((project, i) => (
 				<ProjectCard
 					title={project.data.title}
 					description={project.data.description}
@@ -26,6 +29,7 @@ const sortedProjects = projects.sort((a, b) => a.data.order - b.data.order);
 					techStack={project.data.techStack}
 					role={project.data.role}
 					slug={project.slug}
+					index={i}
 				/>
 			))}
 		</div>

@@ -1,0 +1,55 @@
+---
+title: Figma/Payload Feature Prototype
+description: A product design case study exploring how a Figma-style feature could improve design-dev collaboration by attaching structured implementation notes, accessibility requirements, content rules, and developer-facing context to components and screens.
+techStack:
+  - Product Design
+  - Design Systems
+  - Payload
+  - Figma
+  - Technical Prototyping
+  - Design-Dev Collaboration
+role: In progress
+highlights:
+  - Exploring a Figma-style feature for attaching structured implementation context to components and screens
+  - Framing accessibility requirements, content rules, edge cases, and developer notes as product objects
+  - Prototyping how design-dev collaboration can become clearer before engineering handoff
+  - Planning a Payload-backed model for future demos without starting the CMS migration in this site
+featured: true
+order: 1
+---
+
+import CaseMeta from '@/components/CaseMeta.astro';
+import FlowDiagram from '@/components/FlowDiagram.astro';
+
+<CaseMeta items={[
+  { label: "Status", value: "In progress placeholder for a future flagship case study." },
+  { label: "Product problem", value: "Design artifacts often lose implementation context: accessibility requirements, content rules, edge cases, and component behavior are scattered across comments, tickets, docs, and memory." },
+  { label: "Audience", value: "Designers, developers, PMs, and stakeholders who need clearer alignment before a feature moves from design intent into implementation." },
+  { label: "Planned proof", value: "Product brief, prototype screens, Payload data model, demo video, GitHub repo, and reflection on tradeoffs." }
+]} />
+
+## Direction
+
+This future case study will explore how a Figma-style feature could improve design-dev collaboration by making implementation context part of the design object itself.
+
+The prototype direction is to attach structured notes to components and screens: accessibility requirements, content rules, interaction states, edge cases, acceptance criteria, and developer-facing implementation context.
+
+<FlowDiagram
+  title="Prototype Model"
+  items={[
+    { label: "Design object", detail: "A component, pattern, or screen that needs implementation context." },
+    { label: "Structured context", detail: "Accessibility, content, behavior, constraints, and edge cases become explicit fields instead of loose comments." },
+    { label: "Developer handoff", detail: "The product surface helps teams understand intent, requirements, and tradeoffs before build." },
+    { label: "Payload model", detail: "A future prototype will use Payload to test how the content model could support real authoring and review workflows." }
+  ]}
+  caption="The placeholder is intentionally lightweight until the product brief, data model, and prototype artifacts are ready."
+/>
+
+## What Will Be Added Later
+
+- Product brief and problem framing.
+- Payload data model.
+- Prototype screenshots.
+- Demo video.
+- GitHub repo.
+- Reflection on design and implementation tradeoffs.

@@ -1,0 +1,100 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import "@/styles/colors.css";
+---
+
+<Layout
+	title="Lab - Marcelo Rondon"
+	description="Small prototypes, technical explorations, and design-dev experiments around product ideas, interface patterns, CMS workflows, and frontend implementation details."
+>
+	<Section>
+		<h1>Lab</h1>
+		<p class="intro">Small prototypes, technical explorations, and design-dev experiments where I test product ideas, interface patterns, CMS workflows, and frontend implementation details.</p>
+	</Section>
+
+	<Section>
+		<div class="lab-grid">
+			<a href="/color-scheme" class="lab-card">
+				<span>Prototype</span>
+				<h2>Color Scheme Generator</h2>
+				<p>A focused interface experiment for generating and previewing color systems across usable UI surfaces.</p>
+			</a>
+			<a href="/projects/ghosted" class="lab-card">
+				<span>Technical product artifact</span>
+				<h2>Ghosted</h2>
+				<p>An AI-assisted workflow prototype for exploring keyboard-first UX, local-first data, and agent-ready product handoffs.</p>
+			</a>
+		</div>
+	</Section>
+</Layout>
+
+<style>
+	h1 {
+		font-size: 2.5rem;
+		font-weight: 700;
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+		color: var(--color-accent);
+		margin-bottom: 0;
+	}
+
+	.intro {
+		color: var(--color-text);
+		opacity: 0.82;
+		margin-top: 0.5rem;
+		max-width: 70ch;
+	}
+
+	.lab-grid {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 2rem;
+	}
+
+	.lab-card {
+		display: block;
+		border: 3px solid var(--color-text);
+		padding: 1.25rem;
+		color: var(--color-text);
+		background: rgba(var(--color-text-rgb), 0.035);
+		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.lab-card:hover,
+	.lab-card:focus-visible {
+		border-color: var(--color-accent);
+		transform: translateY(-2px);
+	}
+
+	.lab-card span {
+		display: block;
+		margin: 0 0 0.75rem;
+		color: var(--color-accent);
+		font-size: 0.75rem;
+		font-weight: 800;
+		line-height: 1.2;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+	}
+
+	.lab-card h2 {
+		margin: 0 0 0.75rem;
+		font-size: 1.25rem;
+		line-height: 1.2;
+	}
+
+	.lab-card p {
+		margin: 0;
+		padding: 0;
+		font-size: 0.95rem;
+		line-height: 1.6;
+		opacity: 0.84;
+	}
+
+	@media (width <= 700px) {
+		.lab-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

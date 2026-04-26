@@ -3,8 +3,10 @@ import "@/styles/colors.css";
 import AnimatedLogo from "./AnimatedLogo.astro";
 
 const navItems = [
-	{ label: "Projects", href: "/projects" },
-	// { label: "Visuals", href: "/visuals" }, // Hidden until content is ready
+	{ label: "Case Studies", href: "/projects" },
+	{ label: "Lab", href: "/lab" },
+	{ label: "Writing", href: "/blog" },
+	{ label: "Visuals", href: "/visuals" },
 	{ label: "Resume", href: "/resume" },
 ];
 
@@ -86,7 +88,7 @@ const currentPath = Astro.url.pathname;
 		top: 0;
 		z-index: 100;
 		background: color-mix(in srgb, var(--color-background) 10%, transparent);
-		margin-bottom: 4rem;
+		margin-bottom: 2rem;
 	}
 
 	.site-header::before {
@@ -274,13 +276,13 @@ const currentPath = Astro.url.pathname;
 
 	@media (max-width: 900px) {
 		.site-header {
-			margin-bottom: 2rem;
+			margin-bottom: 1.5rem;
 		}
 	}
 
 		@media (max-width: 700px) {
 		.site-header {
-			margin-bottom: 2rem;
+			margin-bottom: 1rem;
 		}
 
 		.nav-container {

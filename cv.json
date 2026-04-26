@@ -1,12 +1,12 @@
 {
   "basics": {
     "name": "Marcelo Rondon",
-    "label": "Product Designer / Design Engineer",
+    "label": "Product Designer focused on systems, prototypes, and design-dev collaboration",
     "image": "https://avatars.githubusercontent.com/u/72777489?s=400&u=1258e88539c515802c5c603559cd7b63c032814c&v=4",
     "email": "cello@cello.design",
     "phone": "(305) 496-0039",
     "url": "https://cello.design",
-    "summary": "I design and build working product prototypes for complex workflows, AI-assisted tools, and accessible web experiences. I use code to understand engineering constraints, test interaction ideas, and help connect product, design, and engineering.",
+    "summary": "Product designer focused on systems, technical prototypes, and frontend-aware UX. I use code to clarify product behavior, constraints, and handoff details so teams can move from ambiguity to buildable solutions.",
     "location": {
       "address": "",
       "postalCode": "",
@@ -328,7 +328,7 @@
   "projects": [
     {
       "name": "Ghosted",
-      "description": "AI-assisted job application workflow tool with a keyboard-first TUI, scriptable CLI, 8-stage pipeline, interview tracking, and agent-ready document automation.",
+      "description": "Designed and built an AI-assisted workflow product to help technical job seekers manage fragmented applications, documents, interviews, and follow-ups through one local-first product model.",
       "highlights": [
         "Full-featured Terminal User Interface with vim-style navigation and keyboard shortcuts",
         "Scriptable CLI interface designed for AI agent integration with JSON I/O",
