@@ -16,18 +16,20 @@ import type { SocialIcon } from "@/types";
 const { name, profiles, email } = basics;
 
 const SOCIAL_ICONS: SocialIcon = {
-	GitHub,
-	LinkedIn,
-	Bsky,
+  GitHub,
+  LinkedIn,
+  Bsky,
 };
 
 const allProjects = await getCollection("projects");
 const featuredProjects = allProjects
-	.filter((p) => p.data.featured)
-	.sort((a, b) => a.data.order - b.data.order);
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
 
-const homeTitle = "Cello - Product Designer for Systems, Prototypes, and Design-Dev Collaboration";
-const homeDescription = "Product designer focused on design systems, technical prototyping, frontend-aware UX, and design-dev collaboration.";
+const homeTitle =
+  "Cello - Product Designer for Systems, Prototypes, and Design-Dev Collaboration";
+const homeDescription =
+  "Product designer focused on design systems, technical prototyping, frontend-aware UX, and design-dev collaboration.";
 
 // Visuals hidden until content is ready
 // const allVisuals = await getCollection("visuals");
@@ -37,119 +39,203 @@ const homeDescription = "Product designer focused on design systems, technical p
 ---
 
 <Layout title={homeTitle} description={homeDescription}>
-	<section class="hero">
-		<div class="hero-content">
-			<div class="title-block">
-				<h1 class="nickname" id="typewriter-name"><span class="typewriter-text"></span><span class="cursor">|</span></h1>
-				<div class="bar"></div>
-			</div>
-			<p class="label">Product Designer</p>
-			<p class="title-line">Systems, prototypes, and design-dev collaboration.</p>
-			<p class="summary">I design product experiences and build realistic prototypes that help designers, developers, and stakeholders move from ambiguity to buildable solutions.</p>
-			<div class="hero-actions" aria-label="Primary actions">
-				<a href="/projects" class="cta primary">View Case Studies</a>
-				<a href="/lab" class="cta secondary">Explore the Lab</a>
-			</div>
-		</div>
-		<div class="hero-visual">
-			<div class="image-frame">
-				<img src="/images/profile.webp" alt={name} />
-			</div>
-			<div class="socials">
-				{email && (
-					<a href={`mailto:${email}`} title="Email" aria-label="Email Marcelo Rondon" target="_blank" rel="noopener noreferrer">
-						<Mail />
-					</a>
-				)}
-				{profiles.map(({ network, url }) => {
-					const Icon = SOCIAL_ICONS[network];
-					return (
-						<a href={url} title={network} aria-label={network === "Bsky" ? "Bluesky" : network} target="_blank" rel="noopener noreferrer">
-							<Icon />
-						</a>
-					);
-				})}
-				<button onclick="toggleTheme()" aria-label="Toggle theme">
-					<Sun />
-				</button>
-			</div>
-		</div>
-	</section>
+  <section class="hero">
+    <div class="hero-content">
+      <div class="title-block">
+        <h1 class="nickname" id="typewriter-name">
+          <span class="typewriter-text"></span><span class="cursor">|</span>
+        </h1>
+        <div class="hero-bar" aria-hidden="true">
+          <span class="hero-bar-heavy"></span>
+          <span class="hero-bar-thin"></span>
+        </div>
+      </div>
+      <div class="kicker">
+        <span class="kicker-num">01</span>
+        <span class="kicker-text">Product Designer</span>
+      </div>
+      <p class="title-line">
+        Systems, prototypes, and design&#8209;dev collaboration.
+      </p>
+      <p class="summary">
+        I design product experiences and build realistic prototypes that help
+        designers, developers, and stakeholders move from ambiguity to buildable
+        solutions.
+      </p>
+      <div class="hero-actions" aria-label="Primary actions">
+        <a href="/projects" class="cta primary">View Case Studies</a>
+        <a href="/lab" class="cta-link">
+          <span>Explore the Lab</span>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M5 12H19M19 12L12 5M19 12L12 19"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="image-frame">
+        <img src="/images/profile.webp" alt={name} />
+      </div>
+      <div class="socials">
+        {
+          email && (
+            <a
+              href={`mailto:${email}`}
+              title="Email"
+              aria-label="Email Marcelo Rondon"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Mail />
+            </a>
+          )
+        }
+        {
+          profiles.map(({ network, url }) => {
+            const Icon = SOCIAL_ICONS[network];
+            return (
+              <a
+                href={url}
+                title={network}
+                aria-label={network === "Bsky" ? "Bluesky" : network}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Icon />
+              </a>
+            );
+          })
+        }
+        <button onclick="toggleTheme()" aria-label="Toggle theme">
+          <Sun />
+        </button>
+      </div>
+    </div>
+  </section>
 
-	<section class="proof-strip" aria-label="Product design proof points">
-		<div class="proof-item">
-			<span>01</span>
-			<h2>Product Systems</h2>
-			<p>Reusable patterns and workflows that keep product experiences consistent.</p>
-		</div>
-		<div class="proof-item">
-			<span>02</span>
-			<h2>Technical Prototyping</h2>
-			<p>Figma and code prototypes that make product ideas testable before build.</p>
-		</div>
-		<div class="proof-item">
-			<span>03</span>
-			<h2>Design-Dev Collaboration</h2>
-			<p>Clear behavior, constraints, edge cases, and handoff intent.</p>
-		</div>
-	</section>
+  <section class="proof-strip" aria-label="Product design proof points">
+    <div class="proof-item">
+      <span>01</span>
+      <h2>Product Systems</h2>
+      <p>
+        Reusable patterns and workflows that keep product experiences
+        consistent.
+      </p>
+    </div>
+    <div class="proof-item">
+      <span>02</span>
+      <h2>Technical Prototyping</h2>
+      <p>
+        Figma and code prototypes that make product ideas testable before build.
+      </p>
+    </div>
+    <div class="proof-item">
+      <span>03</span>
+      <h2>Design&#8209;Dev Collaboration</h2>
+      <p>Clear behavior, constraints, edge cases, and handoff intent.</p>
+    </div>
+  </section>
 
-	<section id="about" class="about-section" style="max-width: 1100px; margin: clamp(2.5rem, 7vh, 4.5rem) auto 0; padding-inline: clamp(1rem, 4vw, 2rem);">
-		<h2 style="margin: 0 0 0.75rem; color: var(--color-accent); font-size: 1.5rem; font-weight: 700; line-height: 1.1; text-transform: uppercase; letter-spacing: 0.05em;">About</h2>
-		<div class="about-preview">
-			<p>I’m a product designer with the technical fluency to prototype the messy parts, clarify tradeoffs, and help teams ship with less ambiguity.</p>
-		</div>
-	</section>
+  <div class="section-divider" aria-hidden="true"></div>
 
-	<div class="projects-section-wrapper">
-	<Section title="Selected Product Design Work">
-		<div class="bar section-bar"></div>
-		<p class="section-intro">Case studies showing how I approach product problems through systems thinking, prototyping, technical fluency, and cross-functional collaboration.</p>
-	</Section>
-	<div class="featured-carousel">
-		<div class="projects-grid">
-			{featuredProjects.map((project, i) => (
-				<ProjectCard
-					title={project.data.title}
-					description={project.data.description}
-					image={project.data.image}
-					url={project.data.url}
-					techStack={project.data.techStack}
-					role={project.data.role}
-					slug={project.slug}
-					index={i}
-				/>
-			))}
-		</div>
-	</div>
-	<Section>
-		<a href="/projects" class="view-all">
-			<span>All Case Studies</span>
-			<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-				<path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-			</svg>
-		</a>
-	</Section>
-	</div>
+  <section id="about" class="about-section">
+    <h2>About</h2>
+    <div class="about-preview">
+      <p>
+        I’m a product designer with the technical fluency to prototype the messy
+        parts, clarify tradeoffs, and help teams ship with less ambiguity.
+      </p>
+    </div>
+  </section>
 
-	<Section title="More From The Practice">
-		<div class="secondary-paths">
-			<a href="/lab" class="path-card">
-				<span>Lab and Experiments</span>
-				<p>Small prototypes and design-dev experiments for interface patterns, CMS workflows, and frontend implementation details.</p>
-			</a>
-			<a href="/blog" class="path-card">
-				<span>Writing and Process Notes</span>
-				<p>Notes on product design, technical prototyping, systems thinking, and turning rough ideas into buildable experiences.</p>
-			</a>
-			<a href="/visuals" class="path-card visual-path">
-				<span>Visual Archive</span>
-				<p>Selected branding, packaging, campaign, photography, and visual design work that supports my broader craft background.</p>
-			</a>
-		</div>
-	</Section>
+  <div class="section-divider" aria-hidden="true"></div>
 
-	{/* Visuals section hidden until content is ready
+  <div class="projects-section-wrapper">
+    <Section title="Selected Product Design Work" number="01">
+      <div class="bar section-bar"></div>
+      <p class="section-intro">
+        Case studies showing how I approach product problems through systems
+        thinking, prototyping, technical fluency, and cross-functional
+        collaboration.
+      </p>
+    </Section>
+    <div class="carousel-frame">
+      <div class="featured-carousel">
+        <div class="projects-grid">
+          {
+            featuredProjects.map((project, i) => (
+              <ProjectCard
+                title={project.data.title}
+                description={project.data.description}
+                image={project.data.image}
+                url={project.data.url}
+                techStack={project.data.techStack}
+                role={project.data.role}
+                slug={project.slug}
+                index={i}
+              />
+            ))
+          }
+        </div>
+      </div>
+      <span class="carousel-cue" aria-hidden="true">← SCROLL →</span>
+    </div>
+    <Section>
+      <a href="/projects" class="view-all">
+        <span>All Case Studies</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path
+            d="M5 12H19M19 12L12 5M19 12L12 19"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </a>
+    </Section>
+  </div>
+
+  <div class="section-divider" aria-hidden="true"></div>
+
+  <Section title="More From The Practice" number="02">
+    <div class="secondary-paths">
+      <a href="/lab" class="path-card">
+        <span>Lab and Experiments</span>
+        <p>
+          Small prototypes and design-dev experiments for interface patterns,
+          CMS workflows, and frontend implementation details.
+        </p>
+      </a>
+      <a href="/blog" class="path-card">
+        <span>Writing and Process Notes</span>
+        <p>
+          Notes on product design, technical prototyping, systems thinking, and
+          turning rough ideas into buildable experiences.
+        </p>
+      </a>
+      <a href="/visuals" class="path-card visual-path">
+        <span>Visual Archive</span>
+        <p>
+          Selected branding, packaging, campaign, photography, and visual design
+          work that supports my broader craft background.
+        </p>
+      </a>
+    </div>
+  </Section>
+
+  {
+    /* Visuals section hidden until content is ready
 	{featuredVisuals.length > 0 && (
 		<div class="visuals-section-wrapper">
 			<Section title="Visuals">
@@ -180,661 +266,811 @@ const homeDescription = "Product designer focused on design systems, technical p
 			</Section>
 		</div>
 	)}
-	*/}
+	*/
+  }
 </Layout>
 
 <script is:inline>
-	function toggleTheme() {
-		const currentTheme = localStorage.getItem("theme") || "dark";
-		const newTheme = currentTheme === "dark" ? "light" : "dark";
-		document.documentElement.setAttribute("data-theme", newTheme);
-		localStorage.setItem("theme", newTheme);
-	}
+  function toggleTheme() {
+    const currentTheme = localStorage.getItem("theme") || "dark";
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+  }
 
-	function initTypewriter() {
-		const text = "Cello";
-		const element = document.querySelector(".typewriter-text");
-		if (!element) return;
-		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-			element.textContent = text;
-			return;
-		}
+  function initTypewriter() {
+    const text = "Cello";
+    const element = document.querySelector(".typewriter-text");
+    if (!element) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      element.textContent = text;
+      return;
+    }
 
-		const typeSpeed = 150;
-		let charIndex = 0;
+    const typeSpeed = 150;
+    let charIndex = 0;
 
-		function type() {
-			if (charIndex < text.length) {
-				element.textContent = text.substring(0, charIndex + 1);
-				charIndex++;
-				setTimeout(type, typeSpeed);
-			}
-		}
+    function type() {
+      if (charIndex < text.length) {
+        element.textContent = text.substring(0, charIndex + 1);
+        charIndex++;
+        setTimeout(type, typeSpeed);
+      }
+    }
 
-		element.textContent = "";
-		type();
-	}
+    element.textContent = "";
+    type();
+  }
 
-	document.addEventListener("DOMContentLoaded", () => {
-		initTypewriter();
-	});
+  document.addEventListener("DOMContentLoaded", () => {
+    initTypewriter();
+  });
 
-	document.addEventListener("astro:after-swap", () => {
-		initTypewriter();
-	});
+  document.addEventListener("astro:after-swap", () => {
+    initTypewriter();
+  });
 </script>
 
 <style>
-	.hero {
-		display: grid;
-		grid-template-columns: 1fr auto;
-		gap: clamp(2rem, 5vw, 4rem);
-		align-items: center;
-		padding: clamp(0.75rem, 2vh, 1.5rem) 2rem clamp(2rem, 5vh, 3.5rem);
-		max-width: 1100px;
-		margin: 0 auto;
-	}
-
-	.hero-content {
-		animation: slideLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-	}
-
-	.title-block {
-		margin-bottom: 1.5rem;
-	}
-
-	h1.nickname {
-		font-size: 10rem !important;
-		line-height: 1 !important;
-		margin: 0;
-		padding: 0;
-		color: var(--color-accent);
-		display: inline-flex;
-		align-items: baseline;
-		letter-spacing: normal;
-		white-space: nowrap;
-		position: relative;
-	}
-
-	@media (max-width: 900px) {
-		h1.nickname {
-			font-size: 6rem !important;
-			min-height: 6rem;
-		}
-	}
-
-	@media (max-width: 600px) {
-		h1.nickname {
-			font-size: 4rem !important;
-			min-height: 4rem;
-		}
-	}
-
-	.typewriter-text {
-		display: inline-block;
-		min-width: 5ch;
-		font-size: inherit !important;
-	}
-
-	.cursor {
-		display: inline-block;
-		color: var(--color-text);
-		font-weight: 400;
-		font-size: inherit !important;
-		animation: blink 0.7s step-end infinite;
-	}
-
-	@media (max-width: 700px) {
-		.cursor {
-			margin-left: -0.5ch;
-			margin-right: -0.5ch;
-		}
-	}
-
-	@keyframes blink {
-		0%, 100% { opacity: 1; }
-		50% { opacity: 0; }
-	}
-
-	.bar {
-		width: 100px;
-		height: 6px;
-		background: var(--color-accent);
-		margin-top: 1rem;
-		margin-left: 0.8rem;
-		animation: wipeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
-	}
-
-	.section-bar {
-		margin-bottom: 1.5rem;
-	}
-
-	.label {
-		font-size: 1rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		color: var(--color-text);
-		margin-bottom: 0.55rem;
-		animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
-	}
-
-	.title-line {
-		color: var(--color-accent);
-		font-size: clamp(1.3rem, 2.7vw, 2.15rem);
-		font-weight: 900;
-		line-height: 1.12;
-		max-width: 20ch;
-		margin: 0 0 1rem;
-		text-transform: uppercase;
-		animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s backwards;
-	}
-
-	.summary {
-		font-size: 1rem;
-		line-height: 1.7;
-		max-width: 58ch;
-		animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
-	}
-
-	.hero-actions {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.75rem;
-		margin-top: 1.5rem;
-		animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards;
-	}
-
-	.cta {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		min-height: 44px;
-		padding: 0.75rem 1rem;
-		border: 3px solid var(--color-accent);
-		font-size: 0.85rem;
-		font-weight: 800;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-	}
-
-	.cta.primary {
-		background: var(--color-accent);
-		color: var(--color-background);
-	}
-
-	.cta.secondary {
-		background: transparent;
-		color: var(--color-accent);
-	}
-
-	.cta:hover,
-	.cta:focus-visible {
-		transform: translateY(-2px);
-	}
-
-	.cta.primary:hover,
-	.cta.primary:focus-visible {
-		background: transparent;
-		color: var(--color-accent);
-	}
-
-	.cta.secondary:hover,
-	.cta.secondary:focus-visible {
-		background: var(--color-accent);
-		color: var(--color-background);
-	}
-
-	.hero-visual {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 1.5rem;
-		animation: slideRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
-	}
-
-	.image-frame {
-		position: relative;
-		border: 4px solid var(--color-text);
-	}
-
-	.image-frame::before {
-		content: "";
-		position: absolute;
-		top: 10px;
-		left: 10px;
-		right: -10px;
-		bottom: -10px;
-		border: 4px solid var(--color-accent);
-		z-index: -1;
-	}
-
-	img {
-		width: 300px;
-		height: 300px;
-		object-fit: cover;
-		display: block;
-		filter: grayscale(30%);
-		transition: filter 0.3s ease;
-	}
-
-	.image-frame:hover img {
-		filter: grayscale(0%);
-	}
-
-	.socials {
-		display: flex;
-		gap: 0.5rem;
-	}
-
-	.socials a,
-	.socials button {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 44px;
-		height: 44px;
-		border: 2px solid var(--color-text);
-		background: var(--color-background);
-		color: var(--color-text);
-		cursor: pointer;
-		transition:
-			background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-			border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-			color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-			transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-	}
-
-	.socials a:hover,
-	.socials a:focus-visible,
-	.socials button:focus-visible,
-	.socials button:hover {
-		background: var(--color-accent);
-		border-color: var(--color-accent);
-		color: var(--color-background);
-		transform: translateY(-2px);
-	}
-
-	@media (hover: none), (pointer: coarse) {
-		.image-frame:hover img,
-		.socials a:hover,
-		.socials button:hover {
-			transform: none;
-			filter: grayscale(30%);
-		}
-	}
-
-	.proof-strip {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 1rem;
-		max-width: 1100px;
-		margin: 0 auto;
-		padding: 0 2rem;
-		animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.45s backwards;
-	}
-
-	.proof-item {
-		border: 3px solid var(--color-text);
-		background: rgba(var(--color-text-rgb), 0.035);
-		padding: 1rem;
-		min-height: 100%;
-	}
-
-	.proof-item span {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 2rem;
-		height: 2rem;
-		margin-bottom: 0.9rem;
-		border: 2px solid var(--color-accent);
-		color: var(--color-accent);
-		font-size: 0.75rem;
-		font-weight: 900;
-	}
-
-	.proof-item h2 {
-		margin: 0 0 0.65rem;
-		padding: 0;
-		font-size: clamp(1rem, 2vw, 1.2rem);
-		line-height: 1.15;
-		text-transform: uppercase;
-	}
-
-	.proof-item p {
-		margin: 0;
-		padding: 0;
-		font-size: 0.9rem;
-		line-height: 1.55;
-		opacity: 0.86;
-	}
-
-	.about-section {
-		max-width: 1100px;
-		margin: clamp(2.5rem, 7vh, 4.5rem) auto 0;
-		padding-inline: 2rem;
-	}
-
-	.about-section h2 {
-		margin: 0 0 0.75rem;
-		color: var(--color-accent);
-		font-size: 1.5rem;
-		font-weight: 700;
-		line-height: 1.1;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	.about-preview {
-		max-width: 76ch;
-	}
-
-	.about-preview p,
-	.section-intro {
-		font-size: 1rem;
-		line-height: 1.7;
-		opacity: 0.88;
-	}
-
-	.section-intro {
-		max-width: 68ch;
-		margin-top: 0;
-	}
-
-	.featured-carousel {
-		width: 100vw;
-		margin-left: calc(50% - 50vw);
-		padding-inline: max(2rem, calc((100vw - 1500px) / 2));
-		overflow-x: auto;
-		overflow-y: hidden;
-		scroll-snap-type: x mandatory;
-		scroll-behavior: smooth;
-		scrollbar-width: none;
-		-ms-overflow-style: none;
-	}
-
-	.featured-carousel::-webkit-scrollbar {
-		display: none;
-	}
-
-	.projects-grid {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(340px, 1fr));
-		gap: 2rem;
-		scroll-snap-align: start;
-	}
-
-	.projects-grid :global(.card) {
-		animation-name: slideFromRight;
-	}
-
-	.projects-section-wrapper {
-		margin-top: 6rem;
-	}
-
-	.visuals-section-wrapper {
-		margin-top: 8rem;
-	}
-
-	.visuals-section-wrapper :global(.card) {
-		--color-accent: var(--color-treescape);
-	}
-
-	.visuals-grid {
-		display: grid;
-		grid-template-columns: repeat(3, minmax(340px, 1fr));
-		gap: 2rem;
-		scroll-snap-align: start;
-	}
-
-	.visuals-grid :global(.card) {
-		animation-name: slideFromLeft;
-	}
-
-	.view-all {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.75rem;
-		margin-top: 2rem;
-		color: var(--color-accent);
-		font-weight: 700;
-		font-size: 1rem;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		transition: gap 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-	}
-
-	.view-all:hover {
-		gap: 1rem;
-	}
-
-	.secondary-paths {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		gap: 1rem;
-		margin-top: 1rem;
-	}
-
-	.path-card {
-		display: block;
-		border: 3px solid var(--color-text);
-		padding: 1rem;
-		color: var(--color-text);
-		background: rgba(var(--color-text-rgb), 0.035);
-		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-	}
-
-	.path-card:hover,
-	.path-card:focus-visible {
-		border-color: var(--color-accent);
-		transform: translateY(-2px);
-	}
-
-	.path-card span {
-		display: block;
-		margin: 0 0 0.6rem;
-		color: var(--color-accent);
-		font-size: 0.85rem;
-		font-weight: 800;
-		line-height: 1.2;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	.path-card p {
-		margin: 0;
-		padding: 0;
-		font-size: 0.9rem;
-		line-height: 1.55;
-		opacity: 0.82;
-	}
-
-	.visual-path {
-		--color-accent: var(--color-treescape);
-	}
-
-	@keyframes slideLeft {
-		from {
-			opacity: 0;
-			transform: translateX(-60px);
-		}
-		to {
-			opacity: 1;
-			transform: translateX(0);
-		}
-	}
-
-	@keyframes slideRight {
-		from {
-			opacity: 0;
-			transform: translateX(60px);
-		}
-		to {
-			opacity: 1;
-			transform: translateX(0);
-		}
-	}
-
-	@keyframes slideUp {
-		from {
-			opacity: 0;
-			transform: translateY(30px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	@keyframes wipeIn {
-		from {
-			transform: scaleX(0);
-			transform-origin: left;
-		}
-		to {
-			transform: scaleX(1);
-			transform-origin: left;
-		}
-	}
-
-	@keyframes slideFromRight {
-		from {
-			opacity: 0;
-			transform: translateX(60px);
-		}
-		to {
-			opacity: 1;
-			transform: translateX(0);
-		}
-	}
-
-	@keyframes slideFromLeft {
-		from {
-			opacity: 0;
-			transform: translateX(-60px);
-		}
-		to {
-			opacity: 1;
-			transform: translateX(0);
-		}
-	}
-
-	@media (width <= 900px) {
-		.proof-strip {
-			grid-template-columns: 1fr;
-		}
-
-		.secondary-paths {
-			grid-template-columns: 1fr;
-		}
-
-		.visuals-grid {
-			grid-template-columns: repeat(3, minmax(300px, 1fr));
-		}
-	}
-
-	@media (width <= 700px) {
-		.hero {
-			grid-template-columns: 1fr;
-			gap: 2rem;
-			min-height: auto;
-			padding: 1.6rem 1rem 2rem;
-		}
-
-		.hero-visual {
-			order: -1;
-		}
-
-		.hero-content {
-			text-align: center;
-		}
-
-		.title-block {
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-		}
-
-		h1.nickname {
-			display: flex;
-			justify-content: center;
-			min-height: 5rem;
-		}
-
-		.bar {
-			margin-left: 0;
-		}
-
-		.summary {
-			max-width: none;
-			text-align: center;
-		}
-
-		.title-line {
-			max-width: none;
-			text-align: center;
-		}
-
-		.proof-strip {
-			padding: 0 1rem;
-		}
-
-		.about-section {
-			margin-top: 2.5rem;
-			padding-inline: 1rem;
-		}
-
-		.about-section h2,
-		.about-preview p {
-			text-align: center;
-		}
-
-		.label {
-			text-align: center;
-		}
-
-		.hero-actions {
-			justify-content: center;
-		}
-
-		.image-frame::before {
-			top: 8px;
-			left: 8px;
-			right: -8px;
-			bottom: -8px;
-		}
-
-		img {
-			width: 240px;
-			height: 240px;
-		}
-
-		.featured-carousel {
-			width: 100%;
-			margin-left: 0;
-			padding-inline: 1rem;
-			overflow-x: visible;
-			scroll-snap-type: none;
-		}
-
-		.projects-section-wrapper :global(h2),
-		.visuals-section-wrapper :global(h2) {
-			text-align: center;
-		}
-
-		.projects-section-wrapper .section-bar,
-		.visuals-section-wrapper .section-bar {
-			margin-inline: auto;
-		}
-
-		.projects-grid {
-			grid-template-columns: 1fr;
-		}
-
-		.visuals-grid {
-			grid-template-columns: 1fr;
-		}
-	}
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    width: min(100%, 1100px);
+    padding: clamp(0.75rem, 2vh, 1.5rem) 2rem clamp(2rem, 5vh, 3.5rem);
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hero-content {
+    min-width: 0;
+    max-width: 100%;
+    animation: slideLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  }
+
+  .title-block {
+    margin-bottom: 1.5rem;
+  }
+
+  h1.nickname {
+    font-size: 10rem !important;
+    line-height: 1 !important;
+    margin: 0;
+    padding: 0;
+    color: var(--color-accent);
+    display: inline-flex;
+    align-items: baseline;
+    letter-spacing: normal;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  @media (max-width: 900px) {
+    h1.nickname {
+      font-size: 6rem !important;
+      min-height: 6rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    h1.nickname {
+      font-size: 4rem !important;
+      min-height: 4rem;
+    }
+  }
+
+  .typewriter-text {
+    display: inline-block;
+    min-width: 5ch;
+    font-size: inherit !important;
+  }
+
+  .cursor {
+    display: inline-block;
+    color: var(--color-text);
+    font-weight: 400;
+    font-size: inherit !important;
+    animation: blink 0.7s step-end infinite;
+  }
+
+  @media (max-width: 700px) {
+    .cursor {
+      margin-left: -0.5ch;
+      margin-right: -0.5ch;
+    }
+  }
+
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+
+  .bar {
+    width: 100px;
+    height: 6px;
+    background: var(--color-accent);
+    margin-top: 1rem;
+    margin-left: 0.8rem;
+    animation: wipeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+  }
+
+  .section-bar {
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin-top: 1rem;
+    margin-left: 0.8rem;
+    animation: wipeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+    transform-origin: left;
+  }
+
+  .hero-bar-heavy {
+    width: 60px;
+    height: 8px;
+    background: var(--color-accent);
+  }
+
+  .hero-bar-thin {
+    width: 140px;
+    height: 2px;
+    background: var(--color-text);
+    opacity: 0.7;
+  }
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.55rem;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
+  }
+
+  .kicker-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 2px solid var(--color-accent);
+    color: var(--color-accent);
+    font-size: 0.7rem;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .kicker-text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text);
+  }
+
+  .title-line {
+    color: var(--color-accent);
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1.12;
+    max-width: 24ch;
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+    text-wrap: balance;
+    overflow-wrap: normal;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s backwards;
+  }
+
+  .summary {
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 58ch;
+    overflow-wrap: break-word;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.4s backwards;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.75rem 1rem;
+    border: 3px solid var(--color-accent);
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition:
+      background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cta.primary {
+    background: var(--color-accent);
+    color: var(--color-background);
+  }
+
+  .cta:hover,
+  .cta:focus-visible {
+    transform: translateY(-2px);
+  }
+
+  .cta.primary:hover,
+  .cta.primary:focus-visible {
+    background: transparent;
+    color: var(--color-accent);
+  }
+
+  .cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 0.25rem;
+    color: var(--color-accent);
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: gap 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cta-link:hover,
+  .cta-link:focus-visible {
+    gap: 0.75rem;
+  }
+
+  .hero-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 0;
+    gap: 1.5rem;
+    animation: slideRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
+  }
+
+  .image-frame {
+    position: relative;
+    border: 4px solid var(--color-text);
+  }
+
+  .image-frame::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: -10px;
+    bottom: -10px;
+    border: 4px solid var(--color-accent);
+    z-index: -1;
+  }
+
+  .image-frame img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(30%);
+    transition: filter 0.3s ease;
+  }
+
+  .image-frame:hover img {
+    filter: grayscale(0%);
+  }
+
+  .socials {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .socials a,
+  .socials button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 2px solid var(--color-text);
+    background: var(--color-background);
+    color: var(--color-text);
+    cursor: pointer;
+    transition:
+      background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .socials a:hover,
+  .socials a:focus-visible,
+  .socials button:focus-visible,
+  .socials button:hover {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-background);
+    transform: translateY(-2px);
+  }
+
+  @media (hover: none), (pointer: coarse) {
+    .image-frame:hover img,
+    .socials a:hover,
+    .socials button:hover {
+      transform: none;
+      filter: grayscale(30%);
+    }
+  }
+
+  .proof-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.45s backwards;
+  }
+
+  .proof-item {
+    position: relative;
+    border: 3px solid var(--color-text);
+    background: rgba(var(--color-text-rgb), 0.035);
+    padding: 1rem;
+    min-height: 100%;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .proof-item:hover {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .proof-item span {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.75rem;
+    color: var(--color-accent);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 900;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .proof-item h2 {
+    margin: 0 0 0.65rem;
+    padding: 0 3rem 0 0;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  .proof-item p {
+    margin: 0;
+    padding: 0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    opacity: 0.86;
+  }
+
+  .about-section {
+    max-width: 1100px;
+    margin: clamp(2.5rem, 7vh, 4.5rem) auto 0;
+    padding-inline: 2rem;
+  }
+
+  .about-section h2 {
+    margin: 0 0 0.75rem;
+    color: var(--color-accent);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .about-preview {
+    max-width: 76ch;
+  }
+
+  .about-preview p,
+  .section-intro {
+    font-size: 1rem;
+    line-height: 1.7;
+    opacity: 0.88;
+  }
+
+  .section-intro {
+    max-width: 68ch;
+    margin-top: 0;
+  }
+
+  .section-divider {
+    max-width: 1100px;
+    margin: clamp(2.5rem, 6vh, 4rem) auto;
+    padding-inline: 2rem;
+  }
+
+  .section-divider::before {
+    content: "";
+    display: block;
+    height: 2px;
+    background: var(--color-text);
+    opacity: 0.18;
+  }
+
+  .carousel-frame {
+    position: relative;
+  }
+
+  .featured-carousel {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    padding-inline: max(2rem, calc((100vw - 1500px) / 2));
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .featured-carousel::-webkit-scrollbar {
+    display: none;
+  }
+
+  .carousel-cue {
+    display: none;
+    position: absolute;
+    right: 1rem;
+    bottom: -1.75rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+    pointer-events: none;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(340px, 1fr));
+    gap: 2rem;
+    scroll-snap-align: start;
+  }
+
+  .projects-grid :global(.card) {
+    animation-name: slideFromRight;
+  }
+
+  .projects-section-wrapper {
+    margin-top: 0;
+  }
+
+  .visuals-section-wrapper {
+    margin-top: 8rem;
+  }
+
+  .visuals-section-wrapper :global(.card) {
+    --color-accent: var(--color-visual-accent);
+  }
+
+  .visuals-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(340px, 1fr));
+    gap: 2rem;
+    scroll-snap-align: start;
+  }
+
+  .visuals-grid :global(.card) {
+    animation-name: slideFromLeft;
+  }
+
+  .view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 2rem;
+    color: var(--color-accent);
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: gap 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .view-all:hover {
+    gap: 1rem;
+  }
+
+  .secondary-paths {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .path-card {
+    display: block;
+    border: 3px solid var(--color-text);
+    padding: 1rem;
+    color: var(--color-text);
+    background: rgba(var(--color-text-rgb), 0.035);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .path-card:hover,
+  .path-card:focus-visible {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
+
+  .path-card span {
+    display: block;
+    margin: 0 0 0.6rem;
+    color: var(--color-accent);
+    font-size: 0.85rem;
+    font-weight: 800;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .path-card p {
+    margin: 0;
+    padding: 0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    opacity: 0.82;
+  }
+
+  .visual-path {
+    --color-accent: var(--color-visual-accent);
+  }
+
+  @keyframes slideLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideRight {
+    from {
+      opacity: 0;
+      transform: translateX(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes wipeIn {
+    from {
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+    to {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  }
+
+  @keyframes slideFromRight {
+    from {
+      opacity: 0;
+      transform: translateX(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes slideFromLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @media (width <= 900px) {
+    .title-line {
+      font-size: 1.55rem;
+    }
+
+    .proof-strip {
+      grid-template-columns: 1fr;
+    }
+
+    .secondary-paths {
+      grid-template-columns: 1fr;
+    }
+
+    .visuals-grid {
+      grid-template-columns: repeat(3, minmax(300px, 1fr));
+    }
+  }
+
+  @media (width <= 1100px) {
+    .carousel-cue {
+      display: inline-block;
+    }
+  }
+
+  @media (width <= 700px) {
+    .hero {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      min-height: auto;
+      padding: 0.75rem 1rem 2rem;
+    }
+
+    .hero-visual {
+      gap: 1rem;
+    }
+
+    .hero-content {
+      text-align: center;
+      width: 100%;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    h1.nickname {
+      display: flex;
+      justify-content: center;
+      font-size: 3.4rem !important;
+      max-width: 100%;
+      min-height: 4.2rem;
+    }
+
+    .hero-bar {
+      align-items: center;
+      margin-left: 0;
+    }
+
+    .kicker {
+      justify-content: center;
+    }
+
+    .summary {
+      width: min(100%, 21rem);
+      max-width: 100%;
+      margin-inline: auto;
+      line-height: 1.6;
+      text-align: center;
+    }
+
+    .title-line {
+      width: min(100%, 19rem);
+      max-width: 100%;
+      margin-inline: auto;
+      font-size: 1.15rem;
+      text-align: center;
+    }
+
+    .proof-strip {
+      padding: 0 1rem;
+    }
+
+    .section-divider {
+      padding-inline: 1rem;
+    }
+
+    .about-section {
+      margin-top: 2.5rem;
+      padding-inline: 1rem;
+    }
+
+    .about-section h2,
+    .about-preview p {
+      text-align: center;
+    }
+
+    .hero-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      width: min(100%, 20rem);
+      margin-inline: auto;
+    }
+
+    .cta {
+      width: 100%;
+    }
+
+    .cta-link {
+      justify-content: center;
+    }
+
+    .image-frame::before {
+      top: 8px;
+      left: 8px;
+      right: -8px;
+      bottom: -8px;
+    }
+
+    .image-frame img {
+      width: 132px;
+      height: 132px;
+    }
+
+    .socials a,
+    .socials button {
+      width: 36px;
+      height: 36px;
+    }
+
+    .featured-carousel {
+      width: 100%;
+      margin-left: 0;
+      padding-inline: 1rem;
+      overflow-x: visible;
+      scroll-snap-type: none;
+    }
+
+    .carousel-cue {
+      display: none;
+    }
+
+    .projects-section-wrapper :global(h2),
+    .visuals-section-wrapper :global(h2) {
+      text-align: center;
+    }
+
+    .projects-section-wrapper .section-bar,
+    .visuals-section-wrapper .section-bar {
+      margin-inline: auto;
+    }
+
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .visuals-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

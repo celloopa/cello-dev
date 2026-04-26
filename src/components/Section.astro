@@ -1,37 +1,73 @@
 ---
-const { title } = Astro.props;
+interface Props {
+  title?: string;
+  number?: string;
+}
+
+const { title, number } = Astro.props;
 ---
 
 <section>
-	{title && <h2>{title}</h2>}
-	<slot />
+  {
+    title && (
+      <header class="section-head">
+        {number && <span class="section-number">{number}</span>}
+        <h2>{title}</h2>
+      </header>
+    )
+  }
+  <slot />
 </section>
 
 <style>
-	section {
-		max-width: 1100px;
-		margin: 0 auto 32px;
-		padding-inline: 2rem;
-		background: transparent;
-	}
+  section {
+    max-width: 1100px;
+    margin: 0 auto 32px;
+    padding-inline: 2rem;
+    background: transparent;
+  }
 
-	h2 {
-		font-size: 1.5rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: var(--color-accent);
-		margin: 0 0 0.5rem 0;
-	}
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
 
-	@media (width <= 700px) {
-		section {
-			padding-inline: 1rem;
-		}
+  .section-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid var(--color-accent);
+    color: var(--color-accent);
+    font-size: 0.8rem;
+    font-weight: 900;
+    line-height: 1;
+  }
 
-		h2 {
-			font-size: 1.25rem;
-			text-align: center;
-		}
-	}
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-accent);
+    margin: 0 0 0.5rem 0;
+  }
+
+  @media (width <= 700px) {
+    section {
+      padding-inline: 1rem;
+    }
+
+    .section-head {
+      justify-content: center;
+    }
+
+    h2 {
+      font-size: 1.25rem;
+      text-align: center;
+    }
+  }
 </style>
