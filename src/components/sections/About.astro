@@ -1,22 +1,19 @@
 ---
-import Section from "@/components/Section.astro";
 import { basics } from "@cv";
 
 const { summary } = basics;
 ---
 
-<Section title="About">
-	<p>{summary}</p>
-</Section>
+<p>{summary}</p>
 
 <style>
-	p {
-		margin: 1rem 0 0 0;
-	}
+  p {
+    margin: 1rem 0 0 0;
+  }
 
-	@media (width <= 700px) {
-		p {
-			line-height: 1.2;
-		}
-	}
+  @media (width <= 700px) {
+    p {
+      line-height: 1.2;
+    }
+  }
 </style>

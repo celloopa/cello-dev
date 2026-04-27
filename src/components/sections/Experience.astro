@@ -1,185 +1,194 @@
 ---
 import { work } from "@cv";
-import Section from "@/components/Section.astro";
 import "@/styles/colors.css";
 ---
 
-<Section title="Work Experience">
-	<ul>
-		{
-			work.map(
-				({
-					name,
-					startDate,
-					endDate,
-					position,
-					summary,
-					highlights,
-					url,
-				}) => {
-					const startYear = new Date(startDate).getFullYear();
-					const endYear = endDate ? new Date(endDate).getFullYear() : "Present";
-					const isSameYear = startYear === endYear;
+<ul>
+  {
+    work.map(
+      ({ name, startDate, endDate, position, summary, highlights, url }) => {
+        const startYear = new Date(startDate).getFullYear();
+        const endYear = endDate ? new Date(endDate).getFullYear() : "Present";
+        const isSameYear = startYear === endYear;
 
-					return (
-						<li>
-							<article>
-								<header>
-									<div class="job-info">
-										<h3>
-											<a href={url} title={`View ${name}`} target="_blank">
-												{name}
-											</a>
-										</h3>
-										<h4>{position}</h4>
-									</div>
-									<time class="date-range">
-										{isSameYear ? startYear : `${startYear} - ${endYear}`}
-									</time>
-								</header>
-								<footer>
-									<h5>
-										{
-											summary
-										}
-									</h5>
-									<div>
-										{highlights.map(
-											(
-												highlight,
-											) => (
-												<p>
-													{
-														highlight
-													}
-												</p>
-											),
-										)}
-									</div>
-								</footer>
-							</article>
-						</li>
-					);
-				},
-			)
-		}
-	</ul>
-</Section>
+        return (
+          <li>
+            <article>
+              <header>
+                <div class="job-info">
+                  <h3>
+                    {url ? (
+                      <a href={url} title={`View ${name}`} target="_blank">
+                        {name}
+                      </a>
+                    ) : (
+                      name
+                    )}
+                  </h3>
+                  <h4>{position}</h4>
+                </div>
+                <time class="date-range">
+                  {isSameYear ? startYear : `${startYear} - ${endYear}`}
+                </time>
+              </header>
+              <footer>
+                <h5>{summary}</h5>
+                <ul class="highlights">
+                  {highlights.map((highlight) => (
+                    <li>{highlight}</li>
+                  ))}
+                </ul>
+              </footer>
+            </article>
+          </li>
+        );
+      },
+    )
+  }
+</ul>
 
 <style>
-	ul {
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
-		margin: 1rem 0 0 0;
-		padding: 0;
-		list-style: none;
-	}
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 1rem 0 0 0;
+    padding: 0;
+    list-style: none;
+  }
 
-	li {
-		padding-bottom: 1.5rem;
-		border-bottom: 1px solid rgba(var(--color-text-rgb), 0.1);
-	}
+  li {
+    padding-top: 1rem;
+    border-top: 2px solid rgba(var(--color-accent-rgb), 0.5);
+  }
 
-	li:last-child {
-		border-bottom: none;
-		padding-bottom: 0;
-	}
+  li:first-child {
+    padding-top: 0;
+    border-top: none;
+  }
 
-	header {
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
-		gap: 1rem;
-	}
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
 
-	.job-info {
-		flex: 1;
-		margin: 0;
-	}
+  .job-info {
+    flex: 1;
+    margin: 0;
+  }
 
-	article h3 {
-		font-size: 1.1rem;
-		font-weight: 700;
-		line-height: 1.2;
-		margin: 0;
-		padding: 0;
-	}
+  article h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+  }
 
-	article a {
-		color: var(--color-text);
-		transition: color 0.2s ease;
-	}
+  article a {
+    color: var(--color-text);
+    transition: color 0.2s ease;
+  }
 
-	article a:hover {
-		color: var(--color-accent);
-	}
+  article a:hover {
+    color: var(--color-accent);
+  }
 
-	article h4 {
-		font-size: 0.9rem;
-		font-weight: 600;
-		color: var(--color-accent);
-		margin: 0.25rem 0 0 0;
-		padding: 0;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
+  article h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin: 0.25rem 0 0 0;
+    padding: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
 
-	article h5 {
-		font-weight: 500;
-		font-size: 0.9rem;
-		color: var(--color-text);
-		margin: 0.75rem 0 0.5rem 0;
-		padding: 0;
-		line-height: 1.5;
-	}
+  article h5 {
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--color-text);
+    margin: 0.75rem 0 0.5rem 0;
+    padding: 0;
+    line-height: 1.5;
+  }
 
-	article p {
-		font-weight: 400;
-		font-size: 0.85rem;
-		line-height: 1.6;
-		margin: 0.25rem 0;
-		padding: 0;
-		opacity: 0.85;
-	}
+  article p {
+    font-weight: 400;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin: 0.25rem 0;
+    padding: 0;
+    opacity: 0.85;
+  }
 
-	footer {
-		margin-top: 0.5rem;
-	}
+  footer {
+    margin-top: 0.5rem;
+  }
 
-	footer > div {
-		margin-top: 0.5rem;
-	}
+  footer > div {
+    margin-top: 0.5rem;
+  }
 
-	.date-range {
-		color: var(--color-accent);
-		font-size: 0.8rem;
-		font-weight: 600;
-		white-space: nowrap;
-		padding: 0;
-		margin: 0;
-	}
+  .date-range {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-accent);
+    font-size: 0.8rem;
+    font-weight: 900;
+    white-space: nowrap;
+    padding: 0.25rem 0.5rem;
+    margin: 0;
+    border: 2px solid var(--color-accent);
+    line-height: 1.1;
+  }
 
-	@media (width <= 700px) {
-		header {
-			flex-direction: column;
-			gap: 0.25rem;
-		}
+  .highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin: 0.5rem 0 0 0;
+  }
 
-		.job-info {
-			width: 100%;
-		}
+  .highlights li {
+    position: relative;
+    padding: 0 0 0 1.35rem;
+    border: none;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    opacity: 0.85;
+  }
 
-		article h3,
-		article h4 {
-			text-align: center !important;
-		}
+  .highlights li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
 
-		.date-range {
-			font-size: 0.75rem;
-			display: block;
-			width: 100%;
-			text-align: center !important;
-		}
-	}
+  @media (width <= 700px) {
+    header {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .job-info {
+      width: 100%;
+    }
+
+    article h3,
+    article h4 {
+      text-align: center !important;
+    }
+
+    .date-range {
+      font-size: 0.75rem;
+      display: inline-flex;
+      width: 100%;
+    }
+  }
 </style>

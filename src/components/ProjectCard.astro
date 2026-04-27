@@ -36,13 +36,10 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
           ) : (
             <img src={image} alt={title} loading="lazy" />
           )}
-          <span class="card-index">{String(index + 1).padStart(2, "0")}</span>
           <div class="image-accent" />
         </div>
       ) : (
-        <div class="image-box placeholder-box" aria-hidden="true">
-          <span class="card-index">{String(index + 1).padStart(2, "0")}</span>
-        </div>
+        <div class="image-box placeholder-box" aria-hidden="true" />
       )
     }
     <div class="content">
@@ -161,32 +158,6 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
     position: relative;
     overflow: hidden;
     aspect-ratio: 16/10;
-  }
-
-  .card-index {
-    position: absolute;
-    top: 0.75rem;
-    left: 0.75rem;
-    z-index: 2;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 2rem;
-    height: 2rem;
-    padding: 0 0.4rem;
-    background: var(--color-background);
-    border: 2px solid var(--color-accent);
-    color: var(--color-accent);
-    font-size: 0.8rem;
-    font-weight: 900;
-    line-height: 1;
-  }
-
-  .card:hover .card-index,
-  .card:focus-within .card-index {
-    background: var(--color-background);
-    border-color: var(--color-background);
-    color: var(--color-accent);
   }
 
   video {

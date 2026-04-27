@@ -1,91 +1,13 @@
 ---
 import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 import { basics } from "@cv";
-const currentYear = new Date().getFullYear()
 
 const socialProfiles = basics.profiles;
 const email = basics.email;
 ---
 
-<footer class="no-print has-texture">
-	<div class="footer-content">
-		<div class="footer-left">
-			<span class="footer-bar"></span>
-			<p>Designed & Built by Cello</p>
-		</div>
-		<div class="footer-right">
-			<p>{currentYear}</p>
-			<span class="footer-bar"></span>
-		</div>
-	</div>
-</footer>
-
-<KeyboardShortcutsMenu client:only="svelte" socialProfiles={socialProfiles} email={email} />
-
-<style>
-	footer {
-		border-top: 4px solid var(--color-text);
-		background: var(--color-background);
-		margin-top: 2rem;
-		padding: 2rem;
-	}
-
-	.footer-content {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		max-width: 1100px;
-		margin: 0 auto;
-		gap: 2rem;
-	}
-
-	.footer-left,
-	.footer-right {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
-
-	.footer-bar {
-		display: block;
-		width: 40px;
-		height: 4px;
-		background: var(--color-accent);
-	}
-
-	p {
-		color: var(--color-text);
-		font-size: 0.85rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		margin: 0;
-		padding: 0;
-	}
-
-	@media (max-width: 768px) {
-		footer {
-			padding: 1.5rem 1rem;
-		}
-
-		.footer-content {
-			flex-direction: column;
-			gap: 1rem;
-		}
-
-		.footer-left,
-		.footer-right {
-			width: 100%;
-			justify-content: center;
-		}
-
-		.footer-bar {
-			display: none;
-		}
-
-		p {
-			font-size: 0.8rem;
-		}
-	}
-</style>
-
+<KeyboardShortcutsMenu
+  client:only="svelte"
+  socialProfiles={socialProfiles}
+  email={email}
+/>

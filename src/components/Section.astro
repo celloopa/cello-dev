@@ -1,17 +1,15 @@
 ---
 interface Props {
   title?: string;
-  number?: string;
 }
 
-const { title, number } = Astro.props;
+const { title } = Astro.props;
 ---
 
 <section>
   {
     title && (
       <header class="section-head">
-        {number && <span class="section-number">{number}</span>}
         <h2>{title}</h2>
       </header>
     )
@@ -32,19 +30,6 @@ const { title, number } = Astro.props;
     align-items: center;
     gap: 0.75rem;
     margin-bottom: 0.5rem;
-  }
-
-  .section-number {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    border: 2px solid var(--color-accent);
-    color: var(--color-accent);
-    font-size: 0.8rem;
-    font-weight: 900;
-    line-height: 1;
   }
 
   h2 {

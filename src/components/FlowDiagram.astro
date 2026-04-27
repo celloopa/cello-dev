@@ -2,103 +2,103 @@
 import "@/styles/colors.css";
 
 interface FlowItem {
-	label: string;
-	detail: string;
+  label: string;
+  detail: string;
 }
 
 interface Props {
-	title: string;
-	items: FlowItem[];
-	caption?: string;
+  title: string;
+  items: FlowItem[];
+  caption?: string;
 }
 
 const { title, items, caption } = Astro.props;
 ---
 
 <figure class="flow-diagram">
-	<figcaption>{title}</figcaption>
-	<ol>
-		{items.map((item, index) => (
-			<li>
-				<span class="step">{String(index + 1).padStart(2, "0")}</span>
-				<strong>{item.label}</strong>
-				<p>{item.detail}</p>
-			</li>
-		))}
-	</ol>
-	{caption && <p class="caption">{caption}</p>}
+  <figcaption>{title}</figcaption>
+  <ol>
+    {
+      items.map((item, index) => (
+        <li style={`--i: ${index}`}>
+          <strong>{item.label}</strong>
+          <p>{item.detail}</p>
+        </li>
+      ))
+    }
+  </ol>
+  {caption && <p class="caption">{caption}</p>}
 </figure>
 
 <style>
-	.flow-diagram {
-		margin: 2rem 0;
-		padding: 1rem;
-		border: 3px solid var(--color-text);
-		background:
-			linear-gradient(135deg, rgba(var(--color-accent-rgb), 0.12), transparent 42%),
-			rgba(var(--color-text-rgb), 0.035);
-	}
+  .flow-diagram {
+    margin: 2rem 0;
+    padding: 1rem;
+    border: 3px solid var(--color-text);
+    background: linear-gradient(
+        135deg,
+        rgba(var(--color-accent-rgb), 0.12),
+        transparent 42%
+      ),
+      rgba(var(--color-text-rgb), 0.035);
+  }
 
-	figcaption {
-		margin-bottom: 1rem;
-		color: var(--color-accent);
-		font-size: 0.78rem;
-		font-weight: 800;
-		letter-spacing: 0.08em;
-		line-height: 1.3;
-		text-transform: uppercase;
-	}
+  figcaption {
+    margin-bottom: 1rem;
+    color: var(--color-accent);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
 
-	ol {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-		gap: 0.75rem;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
+  ol {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 
-	li {
-		min-height: 100%;
-		padding: 0.9rem;
-		border: 2px solid rgba(var(--color-text-rgb), 0.5);
-		background: var(--color-background);
-	}
+  li {
+    min-height: 100%;
+    padding: 0.9rem;
+    border: 2px solid rgba(var(--color-text-rgb), 0.5);
+    background: var(--color-background);
+  }
 
-	.step {
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: 2.25rem;
-		height: 2.25rem;
-		margin-bottom: 0.75rem;
-		border: 2px solid var(--color-accent);
-		color: var(--color-accent);
-		font-size: 0.78rem;
-		font-weight: 900;
-	}
+  li::before {
+    content: "";
+    display: block;
+    width: 2.5rem;
+    height: 4px;
+    margin-bottom: 0.75rem;
+    background: var(--color-accent);
+  }
 
-	strong {
-		display: block;
-		margin-bottom: 0.35rem;
-		font-size: 0.95rem;
-		line-height: 1.3;
-		text-transform: uppercase;
-	}
+  strong {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.95rem;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
 
-	p {
-		margin: 0;
-		padding: 0;
-		font-size: 0.92rem;
-		line-height: 1.55;
-	}
+  p {
+    margin: 0;
+    padding: 0;
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
 
-	.caption {
-		margin-top: 1rem;
-		padding-top: 1rem;
-		border-top: 1px solid rgba(var(--color-text-rgb), 0.35);
-		font-size: 0.88rem;
-		line-height: 1.6;
-		opacity: 0.85;
-	}
+  .caption {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(var(--color-text-rgb), 0.35);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    opacity: 0.85;
+  }
 </style>

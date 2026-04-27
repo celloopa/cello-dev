@@ -40,18 +40,17 @@ const homeDescription =
 
 <Layout title={homeTitle} description={homeDescription}>
   <section class="hero">
-    <div class="hero-content">
-      <div class="title-block">
-        <h1 class="nickname" id="typewriter-name">
-          <span class="typewriter-text"></span><span class="cursor">|</span>
-        </h1>
-        <div class="hero-bar" aria-hidden="true">
-          <span class="hero-bar-heavy"></span>
-          <span class="hero-bar-thin"></span>
-        </div>
+    <div class="title-block">
+      <h1 class="nickname" id="typewriter-name">
+        <span class="typewriter-text"></span><span class="cursor">|</span>
+      </h1>
+      <div class="hero-bar" aria-hidden="true">
+        <span class="hero-bar-heavy"></span>
+        <span class="hero-bar-thin"></span>
       </div>
+    </div>
+    <div class="hero-copy">
       <div class="kicker">
-        <span class="kicker-num">01</span>
         <span class="kicker-text">Product Designer</span>
       </div>
       <p class="title-line">
@@ -126,7 +125,6 @@ const homeDescription =
 
   <section class="proof-strip" aria-label="Product design proof points">
     <div class="proof-item">
-      <span>01</span>
       <h2>Product Systems</h2>
       <p>
         Reusable patterns and workflows that keep product experiences
@@ -134,14 +132,12 @@ const homeDescription =
       </p>
     </div>
     <div class="proof-item">
-      <span>02</span>
       <h2>Technical Prototyping</h2>
       <p>
         Figma and code prototypes that make product ideas testable before build.
       </p>
     </div>
     <div class="proof-item">
-      <span>03</span>
       <h2>Design&#8209;Dev Collaboration</h2>
       <p>Clear behavior, constraints, edge cases, and handoff intent.</p>
     </div>
@@ -162,7 +158,7 @@ const homeDescription =
   <div class="section-divider" aria-hidden="true"></div>
 
   <div class="projects-section-wrapper">
-    <Section title="Selected Product Design Work" number="01">
+    <Section title="Selected Product Design Work">
       <div class="bar section-bar"></div>
       <p class="section-intro">
         Case studies showing how I approach product problems through systems
@@ -208,7 +204,7 @@ const homeDescription =
 
   <div class="section-divider" aria-hidden="true"></div>
 
-  <Section title="More From The Practice" number="02">
+  <Section title="More From The Practice">
     <div class="secondary-paths">
       <a href="/lab" class="path-card">
         <span>Lab and Experiments</span>
@@ -281,9 +277,23 @@ const homeDescription =
   function initTypewriter() {
     const text = "Cello";
     const element = document.querySelector(".typewriter-text");
+    const titleBlock = document.querySelector(".title-block");
+    const cursor = document.querySelector(".cursor");
     if (!element) return;
+
+    titleBlock?.classList.remove("is-locked");
+    cursor?.classList.remove("is-hidden");
+
+    function lockTitle() {
+      titleBlock?.classList.add("is-locked");
+      window.dispatchEvent(new CustomEvent("typewriter:done"));
+      window.setTimeout(() => cursor?.classList.add("is-hidden"), 600);
+    }
+
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       element.textContent = text;
+      titleBlock?.classList.add("is-locked");
+      cursor?.classList.add("is-hidden");
       return;
     }
 
@@ -295,6 +305,8 @@ const homeDescription =
         element.textContent = text.substring(0, charIndex + 1);
         charIndex++;
         setTimeout(type, typeSpeed);
+      } else {
+        lockTitle();
       }
     }
 
@@ -314,27 +326,33 @@ const homeDescription =
 <style>
   .hero {
     display: grid;
-    grid-template-columns: 1fr auto;
-    gap: clamp(2rem, 5vw, 4rem);
+    grid-template-areas:
+      "title visual"
+      "copy copy";
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
+    column-gap: clamp(2rem, 5vw, 4.5rem);
+    row-gap: clamp(1.5rem, 4vh, 3rem);
     align-items: center;
     width: min(100%, 1100px);
-    padding: clamp(0.75rem, 2vh, 1.5rem) 2rem clamp(2rem, 5vh, 3.5rem);
+    padding: clamp(1rem, 4vh, 3rem) 2rem clamp(2rem, 5vh, 3.5rem);
     max-width: 1100px;
     margin: 0 auto;
   }
 
-  .hero-content {
+  .hero-copy {
+    grid-area: copy;
     min-width: 0;
-    max-width: 100%;
+    max-width: 42rem;
     animation: slideLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
   }
 
   .title-block {
-    margin-bottom: 1.5rem;
+    grid-area: title;
+    margin-bottom: 0;
   }
 
   h1.nickname {
-    font-size: 10rem !important;
+    font-size: clamp(4.5rem, 10vw, 10rem) !important;
     line-height: 1 !important;
     margin: 0;
     padding: 0;
@@ -346,24 +364,14 @@ const homeDescription =
     position: relative;
   }
 
-  @media (max-width: 900px) {
-    h1.nickname {
-      font-size: 6rem !important;
-      min-height: 6rem;
-    }
-  }
-
-  @media (max-width: 600px) {
-    h1.nickname {
-      font-size: 4rem !important;
-      min-height: 4rem;
-    }
-  }
-
   .typewriter-text {
     display: inline-block;
     min-width: 5ch;
     font-size: inherit !important;
+  }
+
+  .title-block.is-locked .typewriter-text {
+    animation: typeSettle 0.24s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .cursor {
@@ -372,6 +380,11 @@ const homeDescription =
     font-weight: 400;
     font-size: inherit !important;
     animation: blink 0.7s step-end infinite;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cursor.is-hidden {
+    opacity: 0;
   }
 
   @media (max-width: 700px) {
@@ -388,6 +401,28 @@ const homeDescription =
     }
     50% {
       opacity: 0;
+    }
+  }
+
+  @keyframes typeSettle {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    55% {
+      transform: scale(1.04);
+    }
+  }
+
+  @keyframes barLockSweep {
+    0% {
+      transform: translateX(-101%);
+    }
+    45% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(101%);
     }
   }
 
@@ -416,9 +451,23 @@ const homeDescription =
   }
 
   .hero-bar-heavy {
+    position: relative;
+    overflow: hidden;
     width: 60px;
     height: 8px;
     background: var(--color-accent);
+  }
+
+  .hero-bar-heavy::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--color-text);
+    transform: translateX(-101%);
+  }
+
+  .title-block.is-locked .hero-bar-heavy::after {
+    animation: barLockSweep 0.42s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .hero-bar-thin {
@@ -434,19 +483,6 @@ const homeDescription =
     gap: 0.6rem;
     margin-bottom: 0.55rem;
     animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
-  }
-
-  .kicker-num {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.75rem;
-    height: 1.75rem;
-    border: 2px solid var(--color-accent);
-    color: var(--color-accent);
-    font-size: 0.7rem;
-    font-weight: 900;
-    line-height: 1;
   }
 
   .kicker-text {
@@ -539,11 +575,13 @@ const homeDescription =
   }
 
   .hero-visual {
+    grid-area: visual;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-self: end;
     min-width: 0;
-    gap: 1.5rem;
+    gap: 1.25rem;
     animation: slideRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
   }
 
@@ -564,8 +602,8 @@ const homeDescription =
   }
 
   .image-frame img {
-    width: 300px;
-    height: 300px;
+    width: clamp(220px, 24vw, 300px);
+    height: clamp(220px, 24vw, 300px);
     object-fit: cover;
     display: block;
     filter: grayscale(30%);
@@ -644,20 +682,9 @@ const homeDescription =
     transform: translateY(-2px);
   }
 
-  .proof-item span {
-    position: absolute;
-    top: 0.6rem;
-    right: 0.75rem;
-    color: var(--color-accent);
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 900;
-    line-height: 1;
-    pointer-events: none;
-  }
-
   .proof-item h2 {
     margin: 0 0 0.65rem;
-    padding: 0 3rem 0 0;
+    padding: 0;
     font-size: clamp(1rem, 2vw, 1.2rem);
     line-height: 1.15;
     text-transform: uppercase;
@@ -912,8 +939,63 @@ const homeDescription =
   }
 
   @media (width <= 900px) {
+    .hero {
+      grid-template-areas:
+        "visual"
+        "title"
+        "copy";
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    h1.nickname {
+      font-size: clamp(4.25rem, 13vw, 7rem) !important;
+      min-height: 1em;
+    }
+
+    .hero-visual {
+      justify-self: center;
+    }
+
+    .hero-copy {
+      text-align: center;
+      width: 100%;
+      max-width: 38rem;
+      margin-inline: auto;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .title-line {
-      font-size: 1.55rem;
+      width: min(100%, 28rem);
+      margin-inline: auto;
+      font-size: 1.45rem;
+      text-align: center;
+    }
+
+    .summary {
+      width: min(100%, 36rem);
+      max-width: 46ch;
+      margin-inline: auto;
+      text-align: center;
+    }
+
+    .hero-bar {
+      align-items: center;
+      margin-left: 0;
+    }
+
+    .kicker {
+      justify-content: center;
+    }
+
+    .hero-actions {
+      justify-content: center;
     }
 
     .proof-strip {
@@ -937,43 +1019,25 @@ const homeDescription =
 
   @media (width <= 700px) {
     .hero {
-      grid-template-columns: 1fr;
-      gap: 1rem;
+      gap: 1.15rem;
       min-height: auto;
       padding: 0.75rem 1rem 2rem;
     }
 
     .hero-visual {
-      gap: 1rem;
-    }
-
-    .hero-content {
-      text-align: center;
-      width: 100%;
+      gap: 0.85rem;
     }
 
     .title-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 1rem;
+      margin-bottom: 0;
     }
 
     h1.nickname {
       display: flex;
       justify-content: center;
-      font-size: 3.4rem !important;
+      font-size: clamp(3.2rem, 18vw, 4.5rem) !important;
       max-width: 100%;
-      min-height: 4.2rem;
-    }
-
-    .hero-bar {
-      align-items: center;
-      margin-left: 0;
-    }
-
-    .kicker {
-      justify-content: center;
+      min-height: 1em;
     }
 
     .summary {
@@ -1033,8 +1097,8 @@ const homeDescription =
     }
 
     .image-frame img {
-      width: 132px;
-      height: 132px;
+      width: clamp(150px, 46vw, 190px);
+      height: clamp(150px, 46vw, 190px);
     }
 
     .socials a,

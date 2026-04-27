@@ -2,99 +2,163 @@
 import Layout from "@/layouts/Layout.astro";
 import Section from "@/components/Section.astro";
 import "@/styles/colors.css";
+
+const labItems = [
+  {
+    label: "Technical product artifact",
+    title: "Ghosted",
+    description:
+      "An AI-assisted workflow prototype for exploring keyboard-first UX, local-first data, and agent-ready product handoffs.",
+    href: "/projects/ghosted",
+    featured: true,
+  },
+  {
+    label: "Prototype",
+    title: "Color Scheme Generator",
+    description:
+      "A focused interface experiment for generating and previewing color systems across usable UI surfaces.",
+    href: "/color-scheme",
+  },
+];
 ---
 
 <Layout
-	title="Lab - Marcelo Rondon"
-	description="Small prototypes, technical explorations, and design-dev experiments around product ideas, interface patterns, CMS workflows, and frontend implementation details."
+  title="Lab - Marcelo Rondon"
+  description="Small prototypes, technical explorations, and design-dev experiments around product ideas, interface patterns, CMS workflows, and frontend implementation details."
 >
-	<Section>
-		<h1>Lab</h1>
-		<p class="intro">Small prototypes, technical explorations, and design-dev experiments where I test product ideas, interface patterns, CMS workflows, and frontend implementation details.</p>
-	</Section>
+  <Section title="Lab">
+    <p class="intro">
+      Small prototypes, technical explorations, and design-dev experiments where
+      I test product ideas, interface patterns, CMS workflows, and frontend
+      implementation details.
+    </p>
+  </Section>
 
-	<Section>
-		<div class="lab-grid">
-			<a href="/color-scheme" class="lab-card">
-				<span>Prototype</span>
-				<h2>Color Scheme Generator</h2>
-				<p>A focused interface experiment for generating and previewing color systems across usable UI surfaces.</p>
-			</a>
-			<a href="/projects/ghosted" class="lab-card">
-				<span>Technical product artifact</span>
-				<h2>Ghosted</h2>
-				<p>An AI-assisted workflow prototype for exploring keyboard-first UX, local-first data, and agent-ready product handoffs.</p>
-			</a>
-		</div>
-	</Section>
+  <Section>
+    <div class="lab-grid">
+      {
+        labItems.map((item, i) => (
+          <a
+            href={item.href}
+            class:list={["lab-card", { "lab-card--featured": item.featured }]}
+            style={`--i: ${i}`}
+          >
+            <span class="lab-label">{item.label}</span>
+            <h2>{item.title}</h2>
+            <p>{item.description}</p>
+          </a>
+        ))
+      }
+    </div>
+  </Section>
 </Layout>
 
 <style>
-	h1 {
-		font-size: 2.5rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: var(--color-accent);
-		margin-bottom: 0;
-	}
+  .intro {
+    color: var(--color-text);
+    opacity: 0.82;
+    margin-top: 0.5rem;
+    max-width: 70ch;
+  }
 
-	.intro {
-		color: var(--color-text);
-		opacity: 0.82;
-		margin-top: 0.5rem;
-		max-width: 70ch;
-	}
+  .lab-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
 
-	.lab-grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 2rem;
-	}
+  .lab-card {
+    position: relative;
+    z-index: 0;
+    display: block;
+    overflow: hidden;
+    border: 3px solid var(--color-text);
+    padding: 1.25rem;
+    color: var(--color-text);
+    background: rgba(var(--color-text-rgb), 0.035);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 
-	.lab-card {
-		display: block;
-		border: 3px solid var(--color-text);
-		padding: 1.25rem;
-		color: var(--color-text);
-		background: rgba(var(--color-text-rgb), 0.035);
-		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-	}
+  .lab-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--color-accent);
+    transform: translateX(-101%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
 
-	.lab-card:hover,
-	.lab-card:focus-visible {
-		border-color: var(--color-accent);
-		transform: translateY(-2px);
-	}
+  .lab-card--featured::after {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: -10px;
+    bottom: -10px;
+    z-index: -1;
+    border: 4px solid var(--color-accent);
+    pointer-events: none;
+  }
 
-	.lab-card span {
-		display: block;
-		margin: 0 0 0.75rem;
-		color: var(--color-accent);
-		font-size: 0.75rem;
-		font-weight: 800;
-		line-height: 1.2;
-		text-transform: uppercase;
-		letter-spacing: 0.08em;
-	}
+  .lab-card--featured {
+    overflow: visible;
+  }
 
-	.lab-card h2 {
-		margin: 0 0 0.75rem;
-		font-size: 1.25rem;
-		line-height: 1.2;
-	}
+  .lab-card:hover,
+  .lab-card:focus-visible {
+    border-color: var(--color-accent);
+    transform: translateY(-2px);
+  }
 
-	.lab-card p {
-		margin: 0;
-		padding: 0;
-		font-size: 0.95rem;
-		line-height: 1.6;
-		opacity: 0.84;
-	}
+  .lab-card:hover::before,
+  .lab-card:focus-visible::before {
+    transform: translateX(0);
+  }
 
-	@media (width <= 700px) {
-		.lab-grid {
-			grid-template-columns: 1fr;
-		}
-	}
+  .lab-card:hover .lab-label,
+  .lab-card:hover h2,
+  .lab-card:hover p,
+  .lab-card:focus-visible .lab-label,
+  .lab-card:focus-visible h2,
+  .lab-card:focus-visible p {
+    color: var(--color-background);
+  }
+
+  .lab-card .lab-label {
+    position: relative;
+    z-index: 1;
+    display: block;
+    margin: 0 0 0.75rem;
+    color: var(--color-accent);
+    font-size: 0.75rem;
+    font-weight: 800;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .lab-card h2 {
+    position: relative;
+    z-index: 1;
+    margin: 0 0 0.75rem;
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+
+  .lab-card p {
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    opacity: 0.84;
+  }
+
+  @media (width <= 700px) {
+    .lab-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

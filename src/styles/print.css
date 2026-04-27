@@ -1,0 +1,59 @@
+@media print {
+  @page {
+    margin: 1.5cm;
+  }
+
+  :root {
+    --color-background: #fff !important;
+    --color-text: #000 !important;
+    --color-accent: #444 !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  body {
+    font-size: 10pt;
+    line-height: 1.4;
+  }
+
+  .site-header,
+  .site-footer,
+  .download-btn,
+  .keyboard-menu,
+  .no-print,
+  [class*="texture"] {
+    display: none !important;
+  }
+
+  .print-header {
+    display: block !important;
+    margin: 0 0 0.6cm;
+    padding-bottom: 0.25cm;
+    border-bottom: 1pt solid #444;
+    color: #000;
+    font-size: 9pt;
+    font-weight: 700;
+  }
+
+  main {
+    padding: 0 !important;
+  }
+
+  article,
+  section,
+  li {
+    break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  p {
+    color: #000 !important;
+  }
+}

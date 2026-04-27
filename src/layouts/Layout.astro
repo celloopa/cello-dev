@@ -1,4 +1,5 @@
 ---
+import { ClientRouter } from "astro:transitions";
 import { basics } from "@cv";
 import "@fontsource/geist-mono/100.css";
 import "@fontsource/geist-mono/200.css";
@@ -11,214 +12,513 @@ import "@fontsource/geist-mono/800.css";
 import "@fontsource/geist-mono/900.css";
 import "@/styles/colors.css";
 import "@/styles/animations.css";
+import "@/styles/print.css";
 import Header from "@/components/Header.astro";
 import KeyboardManager from "@/components/KeyboardManager.astro";
+import AnimatedLogo from "@/components/AnimatedLogo.astro";
+import Mail from "@/icons/Mail.astro";
+import GitHub from "@/icons/GitHub.astro";
+import LinkedIn from "@/icons/LinkedIn.astro";
+import Bsky from "@/icons/Bsky.astro";
+import type { SocialIcon } from "@/types";
 
 interface Props {
-	title?: string;
-	description?: string;
-	image?: string;
+  title?: string;
+  description?: string;
+  image?: string;
 }
 
-const siteName = "Cello - Product Designer for Systems, Prototypes, and Design-Dev Collaboration";
-const siteDescription = "Product designer focused on design systems, technical prototyping, frontend-aware UX, and design-dev collaboration.";
+const siteName =
+  "Cello - Product Designer for Systems, Prototypes, and Design-Dev Collaboration";
+const siteDescription =
+  "Product designer focused on design systems, technical prototyping, frontend-aware UX, and design-dev collaboration.";
 const siteImage = "/images/thumbnail.png";
 
 const { title = siteName, description = siteDescription, image } = Astro.props;
-const { url } = basics;
+const { url, email, profiles } = basics;
 const ogImage = image ? `${url}${image}` : `${url}${siteImage}`;
+const currentYear = new Date().getFullYear();
+
+const SOCIAL_ICONS: SocialIcon = {
+  GitHub,
+  LinkedIn,
+  Bsky,
+};
 ---
 
 <!doctype html>
 <html lang="en" data-theme="dark">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="theme-color" content="#001A11" />
-		<meta name="color-scheme" content="dark light" />
-		<link rel="icon" type="image/svg+xml" href="/images/logos/SVG/full-light.svg" media="(prefers-color-scheme: light)" />
-		<link rel="icon" type="image/svg+xml" href="/images/logos/SVG/full-dark.svg" media="(prefers-color-scheme: dark)" />
-		<script is:inline>
-			(() => {
-				const savedTheme = localStorage.getItem("theme");
-				const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches
-					? "dark"
-					: "light";
-				document.documentElement.setAttribute("data-theme", savedTheme || systemTheme);
-			})();
-		</script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#001A11" />
+    <meta name="color-scheme" content="dark light" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/images/logos/SVG/full-light.svg"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="/images/logos/SVG/full-dark.svg"
+      media="(prefers-color-scheme: dark)"
+    />
+    <script is:inline>
+      (() => {
+        const savedTheme = localStorage.getItem("theme");
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+          .matches
+          ? "dark"
+          : "light";
+        document.documentElement.setAttribute(
+          "data-theme",
+          savedTheme || systemTheme,
+        );
+      })();
+    </script>
 
-		<!-- Open Graph -->
-		<meta property="og:url" content={url} />
-		<meta property="og:type" content="website" />
-		<meta property="og:site_name" content={siteName} />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:image" content={ogImage} />
+    <!-- Open Graph -->
+    <meta property="og:url" content={url} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
 
-		<!-- Twitter -->
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta property="twitter:domain" content={url.split("//")[1] ?? ""} />
-		<meta property="twitter:url" content={url} />
-		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={ogImage} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<div class="texture-layer" aria-hidden="true"></div>
-		<div class="content-layer">
-			<Header />
-			<main>
-				<slot />
-			</main>
-			<KeyboardManager />
-		</div>
-	</body>
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content={url.split("//")[1] ?? ""} />
+    <meta property="twitter:url" content={url} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    <div class="texture-layer" aria-hidden="true"></div>
+    <div class="content-layer">
+      <Header />
+      <main transition:name="page">
+        <slot />
+      </main>
+      <footer class="site-footer no-print">
+        <div class="footer-inner">
+          <div class="footer-row footer-row--top">
+            <a href="/" class="footer-logo" aria-label="Home">
+              <AnimatedLogo />
+            </a>
+            <nav class="footer-nav" aria-label="Footer navigation">
+              <a href="/projects">Case Studies</a>
+              <a href="/lab">Lab</a>
+              <a href="/blog">Writing</a>
+              <a href="/visuals">Visuals</a>
+              <a href="/resume">Resume</a>
+            </nav>
+          </div>
+          <div class="footer-row footer-row--bottom">
+            <ul class="footer-socials" aria-label="Social links">
+              {
+                email && (
+                  <li>
+                    <a
+                      href={`mailto:${email}`}
+                      title="Email"
+                      aria-label="Email Marcelo Rondon"
+                    >
+                      <Mail />
+                    </a>
+                  </li>
+                )
+              }
+              {
+                profiles.map(({ network, url }) => {
+                  const Icon = SOCIAL_ICONS[network];
+                  if (!Icon) return null;
+
+                  return (
+                    <li>
+                      <a
+                        href={url}
+                        title={network}
+                        aria-label={network === "Bsky" ? "Bluesky" : network}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <Icon />
+                      </a>
+                    </li>
+                  );
+                })
+              }
+            </ul>
+            <span class="footer-meta">
+              © {currentYear} Cello Rondon · Built in Astro
+            </span>
+          </div>
+        </div>
+      </footer>
+      <KeyboardManager />
+    </div>
+    <style is:global>
+      html {
+        font-family: "GeistMono", monospace;
+        font-weight: 400;
+        background: var(--color-background);
+        color: var(--color-text);
+        letter-spacing: 0;
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      main {
+        position: relative;
+        z-index: 1;
+        border: none;
+        margin-top: 0;
+        padding-top: 0;
+        padding-bottom: 8rem;
+      }
+
+      figure {
+        margin: 0;
+        padding: 0;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      a,
+      button,
+      [role="button"],
+      summary {
+        cursor: pointer;
+      }
+
+      .card,
+      .lab-card,
+      .path-card,
+      .proof-item {
+        cursor: cell;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      img,
+      video {
+        max-width: 100%;
+      }
+
+      :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+        outline: 3px solid var(--color-accent);
+        outline-offset: 4px;
+      }
+
+      ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .site-footer {
+        position: relative;
+        z-index: 1;
+        border-top: 3px solid var(--color-text);
+        padding: 2rem;
+      }
+
+      .footer-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      .footer-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+      }
+
+      .footer-row--bottom {
+        margin-top: 1.5rem;
+        padding-top: 1.25rem;
+        border-top: 2px solid rgba(var(--color-text-rgb), 0.18);
+      }
+
+      .footer-logo {
+        display: inline-flex;
+        align-items: center;
+        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .footer-logo:hover,
+      .footer-logo:focus-visible {
+        transform: scale(1.06);
+      }
+
+      .footer-nav {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 0.5rem;
+      }
+
+      .footer-nav a {
+        display: block;
+        position: relative;
+        padding: 0.5rem 0.75rem;
+        border: 2px solid transparent;
+        color: var(--color-text);
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        transition:
+          border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+          color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .footer-nav a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: var(--color-accent);
+        transform: translateX(-50%);
+        transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .footer-nav a:hover,
+      .footer-nav a:focus-visible {
+        color: var(--color-accent);
+        transform: translateY(-2px);
+      }
+
+      .footer-nav a:hover::after,
+      .footer-nav a:focus-visible::after {
+        width: 80%;
+      }
+
+      .footer-socials {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .footer-socials a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border: 2px solid var(--color-text);
+        background: var(--color-background);
+        color: var(--color-text);
+        transition:
+          background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+          border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+          color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .footer-socials a:hover,
+      .footer-socials a:focus-visible {
+        background: var(--color-accent);
+        border-color: var(--color-accent);
+        color: var(--color-background);
+        transform: translateY(-2px);
+      }
+
+      .footer-meta {
+        color: var(--color-text);
+        font-size: 0.8rem;
+        font-weight: 700;
+        line-height: 1.4;
+        letter-spacing: 0.05em;
+        margin: 0;
+        text-transform: uppercase;
+        opacity: 0.82;
+      }
+
+      @keyframes wipe-in {
+        from {
+          clip-path: inset(0 100% 0 0);
+        }
+        to {
+          clip-path: inset(0 0 0 0);
+        }
+      }
+
+      @keyframes wipe-out {
+        from {
+          clip-path: inset(0 0 0 0);
+        }
+        to {
+          clip-path: inset(0 0 0 100%);
+        }
+      }
+
+      ::view-transition-new(root) {
+        animation: wipe-in 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      ::view-transition-old(root) {
+        animation: wipe-out 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      ::view-transition-group(root) {
+        background: var(--color-accent);
+      }
+
+      p,
+      span {
+        text-align: start;
+        font-size: 1.1rem;
+        line-height: 1.75;
+        margin-block: 0.5rem;
+        margin-inline: 0;
+        text-wrap: pretty;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      /* Bold Saul Bass typography */
+      h1,
+      h2,
+      h3,
+      h4,
+      h5 {
+        line-height: 1.1;
+        margin-bottom: 0;
+        margin-inline: 0;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        color: var(--color-text);
+        font-size: clamp(3.5rem, 10vw, 6rem);
+        font-weight: 900;
+        line-height: 0.95;
+        margin-top: 1rem;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        color: var(--color-accent);
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+        text-align: start;
+        margin-top: 2rem;
+        text-transform: uppercase;
+      }
+
+      h3 {
+        font-size: 1.6rem;
+        font-weight: 700;
+      }
+
+      h4 {
+        color: var(--color-accent);
+        font-size: 1.2rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      /* Bold selection */
+      ::selection {
+        background: var(--color-accent);
+        color: var(--color-background);
+      }
+
+      .print {
+        display: none !important;
+      }
+
+      @media print {
+        .no-print {
+          display: none !important;
+        }
+
+        .print {
+          display: block !important;
+        }
+
+        astro-dev-toolbar {
+          display: none !important;
+        }
+
+        article {
+          break-inside: avoid;
+        }
+
+        .texture-layer {
+          display: none !important;
+        }
+      }
+
+      @media (width <= 700px) {
+        .site-footer {
+          padding: 1.5rem 1rem;
+        }
+
+        .footer-row {
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+        }
+
+        .footer-nav,
+        .footer-socials {
+          justify-content: center;
+        }
+
+        .footer-meta {
+          text-align: center;
+        }
+      }
+
+      /* Reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+
+        ::view-transition-new(root),
+        ::view-transition-old(root) {
+          animation: none !important;
+        }
+      }
+    </style>
+  </body>
 </html>
-<style is:global>
-	html {
-		font-family: "GeistMono", monospace;
-		font-weight: 400;
-		background: var(--color-background);
-		color: var(--color-text);
-		letter-spacing: -0.02rem;
-		scroll-behavior: smooth;
-	}
-
-	body {
-		margin: 0;
-		padding: 0;
-		min-height: 100vh;
-		position: relative;
-		overflow-x: hidden;
-	}
-
-	main {
-		position: relative;
-		z-index: 1;
-		border: none;
-		margin-top: 0;
-		padding-top: 0;
-		padding-bottom: 8rem;
-	}
-
-	figure {
-		margin: 0;
-		padding: 0;
-	}
-
-	a {
-		text-decoration: none;
-		transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-	}
-
-	ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-	}
-
-	p,
-	span {
-		text-align: start;
-		font-size: 1.1rem;
-		line-height: 1.75;
-		margin-block: 0.5rem;
-		margin-inline: 0;
-		text-wrap: pretty;
-	}
-
-	*,
-	*::before,
-	*::after {
-		box-sizing: border-box;
-	}
-
-	/* Bold Saul Bass typography */
-	h1,
-	h2,
-	h3,
-	h4,
-	h5 {
-		line-height: 1.1;
-		margin-bottom: 0;
-		margin-inline: 0;
-		letter-spacing: -0.03em;
-	}
-
-	h1 {
-		color: var(--color-text);
-		font-size: clamp(3.5rem, 10vw, 6rem);
-		font-weight: 900;
-		line-height: 0.95;
-		margin-top: 1rem;
-		text-transform: uppercase;
-	}
-
-	h2 {
-		color: var(--color-accent);
-		font-size: clamp(2rem, 5vw, 3rem);
-		font-weight: 800;
-		text-align: start;
-		margin-top: 2rem;
-		text-transform: uppercase;
-	}
-
-	h3 {
-		font-size: 1.6rem;
-		font-weight: 700;
-	}
-
-	h4 {
-		color: var(--color-accent);
-		font-size: 1.2rem;
-		font-weight: 600;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	/* Bold selection */
-	::selection {
-		background: var(--color-accent);
-		color: var(--color-background);
-	}
-
-	.print {
-		display: none !important;
-	}
-
-	@media print {
-		.no-print {
-			display: none !important;
-		}
-
-		.print {
-			display: block !important;
-		}
-
-		astro-dev-toolbar {
-			display: none !important;
-		}
-
-		article {
-			break-inside: avoid;
-		}
-
-		.texture-layer {
-			display: none !important;
-		}
-	}
-
-	/* Reduced motion */
-	@media (prefers-reduced-motion: reduce) {
-		*,
-		*::before,
-		*::after {
-			animation-duration: 0.01ms !important;
-			animation-iteration-count: 1 !important;
-			transition-duration: 0.01ms !important;
-		}
-	}
-</style>

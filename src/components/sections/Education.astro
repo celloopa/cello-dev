@@ -1,136 +1,131 @@
 ---
 import { education } from "@cv";
-import Section from "@/components/Section.astro";
 ---
 
-<Section title="Education">
-	<ul>
-		{
-			education.map(
-				({
-					institution,
-					startDate,
-					endDate,
-					area,
-					minorType,
-				}) => {
-					const startYear = new Date(startDate).getFullYear();
-					const endYear = endDate != null ? new Date(endDate).getFullYear() : "Present";
-					const isSameYear = startYear === endYear;
-					const years = isSameYear ? startYear : `${startYear} - ${endYear}`;
+<ul>
+  {
+    education.map(({ institution, startDate, endDate, area, minorType }) => {
+      const startYear = new Date(startDate).getFullYear();
+      const endYear =
+        endDate != null ? new Date(endDate).getFullYear() : "Present";
+      const isSameYear = startYear === endYear;
+      const years = isSameYear ? startYear : `${startYear} - ${endYear}`;
 
-					return (
-						<li>
-							<article>
-								<header>
-									<div class="edu-info">
-										<h3>{institution}</h3>
-										<h4>{area}</h4>
-									</div>
-									<time>{years}</time>
-								</header>
-								{minorType && (
-									<footer>
-										<p>{minorType}</p>
-									</footer>
-								)}
-							</article>
-						</li>
-					);
-				},
-			)
-		}
-	</ul></Section
->
+      return (
+        <li>
+          <article>
+            <header>
+              <div class="edu-info">
+                <h3>{institution}</h3>
+                <h4>{area}</h4>
+              </div>
+              <time>{years}</time>
+            </header>
+            {minorType && (
+              <footer>
+                <p>{minorType}</p>
+              </footer>
+            )}
+          </article>
+        </li>
+      );
+    })
+  }
+</ul>
 <style>
-	ul {
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
-		margin: 1rem 0 0 0;
-		padding: 0;
-		list-style: none;
-	}
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 1rem 0 0 0;
+    padding: 0;
+    list-style: none;
+  }
 
-	li {
-		padding-bottom: 1.5rem;
-		border-bottom: 1px solid rgba(var(--color-text-rgb), 0.1);
-	}
+  li {
+    padding-top: 1rem;
+    border-top: 2px solid rgba(var(--color-accent-rgb), 0.5);
+  }
 
-	li:last-child {
-		border-bottom: none;
-		padding-bottom: 0;
-	}
+  li:first-child {
+    padding-top: 0;
+    border-top: none;
+  }
 
-	header {
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
-		gap: 1rem;
-	}
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
 
-	.edu-info {
-		flex: 1;
-	}
+  .edu-info {
+    flex: 1;
+  }
 
-	article h3 {
-		font-size: 1.1rem;
-		font-weight: 700;
-		color: var(--color-text);
-		line-height: 1.2;
-		margin: 0;
-		padding: 0;
-	}
+  article h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-text);
+    line-height: 1.2;
+    margin: 0;
+    padding: 0;
+  }
 
-	article h4 {
-		font-size: 0.9rem;
-		font-weight: 600;
-		color: var(--color-accent);
-		margin: 0.25rem 0 0 0;
-		padding: 0;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
+  article h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin: 0.25rem 0 0 0;
+    padding: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
 
-	article p {
-		font-weight: 400;
-		font-size: 0.85rem;
-		margin: 0.5rem 0 0 0;
-		padding: 0;
-		opacity: 0.85;
-	}
+  article p {
+    font-weight: 400;
+    font-size: 0.85rem;
+    margin: 0.5rem 0 0 0;
+    padding: 0;
+    opacity: 0.85;
+  }
 
-	footer {
-		margin-top: 0.5rem;
-	}
+  footer {
+    margin-top: 0.5rem;
+  }
 
-	time {
-		color: var(--color-accent);
-		font-size: 0.8rem;
-		font-weight: 600;
-		white-space: nowrap;
-	}
+  time {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-accent);
+    font-size: 0.8rem;
+    font-weight: 900;
+    white-space: nowrap;
+    padding: 0.25rem 0.5rem;
+    border: 2px solid var(--color-accent);
+    line-height: 1.1;
+  }
 
-	@media (width <= 700px) {
-		header {
-			flex-direction: column;
-			gap: 0.25rem;
-		}
+  @media (width <= 700px) {
+    header {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
 
-		.edu-info {
-			width: 100%;
-		}
+    .edu-info {
+      width: 100%;
+    }
 
-		article h3,
-		article h4 {
-			text-align: center !important;
-		}
+    article h3,
+    article h4 {
+      text-align: center !important;
+    }
 
-		time {
-			font-size: 0.75rem;
-			display: block;
-			width: 100%;
-			text-align: center !important;
-		}
-	}
+    time {
+      font-size: 0.75rem;
+      display: inline-flex;
+      width: 100%;
+    }
+  }
 </style>

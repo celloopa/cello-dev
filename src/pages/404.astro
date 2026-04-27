@@ -1,0 +1,132 @@
+---
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout
+  title="404 - Cello Rondon"
+  description="Page not found on Cello Rondon's product design portfolio."
+>
+  <section class="not-found" aria-label="Page not found">
+    <p class="error-code">404</p>
+    <div class="hero-bar" aria-hidden="true">
+      <span class="hero-bar-heavy"></span>
+      <span class="hero-bar-thin"></span>
+    </div>
+    <div class="kicker">
+      <span class="kicker-text">Page Not Found</span>
+    </div>
+    <a href="/" class="cta-link">
+      <span>Back to home</span>
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        aria-hidden="true"
+      >
+        <path
+          d="M5 12H19M19 12L12 5M19 12L12 19"
+          stroke="currentColor"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"></path>
+      </svg>
+    </a>
+  </section>
+</Layout>
+
+<style>
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: min(72vh, 48rem);
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .error-code {
+    color: var(--color-accent);
+    font-size: clamp(8rem, 30vw, 22rem);
+    font-weight: 900;
+    line-height: 0.9;
+    margin: 0;
+    padding: 0;
+  }
+
+  .hero-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin: 1.25rem 0 1.5rem;
+    animation: wipeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    transform-origin: left;
+  }
+
+  .hero-bar-heavy {
+    width: 80px;
+    height: 8px;
+    background: var(--color-accent);
+  }
+
+  .hero-bar-thin {
+    width: 180px;
+    height: 2px;
+    background: var(--color-text);
+    opacity: 0.7;
+  }
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .kicker-text {
+    color: var(--color-text);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 0.25rem;
+    color: var(--color-accent);
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: gap 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .cta-link:hover,
+  .cta-link:focus-visible {
+    gap: 0.75rem;
+  }
+
+  @keyframes wipeIn {
+    from {
+      transform: scaleX(0);
+      transform-origin: left;
+    }
+    to {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+  }
+
+  @media (width <= 700px) {
+    .not-found {
+      min-height: 64vh;
+      padding: 1rem;
+    }
+  }
+</style>

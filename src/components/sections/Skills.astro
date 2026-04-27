@@ -1,6 +1,5 @@
 ---
 import { skills } from "@cv";
-import Section from "../Section.astro";
 import "@/styles/colors.css";
 import AdobeAe from "@/icons/adobe_ae.astro";
 import AdobeIl from "@/icons/adobe_il.astro";
@@ -24,145 +23,143 @@ import Python from "@/icons/python.astro";
 import Tailwind from "@/icons/tailwind.astro";
 
 const SKILLS_ICONS: Record<string, any> = {
-	"Adobe After Effects": AdobeAe,
-	"Adobe Illustrator": AdobeIl,
-	"Adobe InDesign": AdobeIndd,
-	"Adobe Premiere": AdobePr,
-	"Adobe Photoshop": AdobePs,
-	"Adobe XD": AdobeXd,
-	Astro,
-	HTML,
-	CSS,
-	Figma,
-	JavaScript,
-	TypeScript,
-	React,
-	MySQL,
-	Go,
-	Git,
-	GitHub,
-	Php,
-	Python,
-	Tailwind,
+  "Adobe After Effects": AdobeAe,
+  "Adobe Illustrator": AdobeIl,
+  "Adobe InDesign": AdobeIndd,
+  "Adobe Premiere": AdobePr,
+  "Adobe Photoshop": AdobePs,
+  "Adobe XD": AdobeXd,
+  Astro,
+  HTML,
+  CSS,
+  Figma,
+  JavaScript,
+  TypeScript,
+  React,
+  MySQL,
+  Go,
+  Git,
+  GitHub,
+  Php,
+  Python,
+  Tailwind,
 };
 
 const getIconName = (name: string) => {
-	switch (name) {
-		case "Photoshop":
-			return "Adobe Photoshop";
-		case "Illustrator":
-			return "Adobe Illustrator";
-		case "After Effects":
-			return "Adobe After Effects";
-		case "InDesign":
-			return "Adobe InDesign";
-		case "Premiere":
-			return "Adobe Premiere";
-		case "XD":
-			return "Adobe XD";
-		default:
-			return name;
-	}
+  switch (name) {
+    case "Photoshop":
+      return "Adobe Photoshop";
+    case "Illustrator":
+      return "Adobe Illustrator";
+    case "After Effects":
+      return "Adobe After Effects";
+    case "InDesign":
+      return "Adobe InDesign";
+    case "Premiere":
+      return "Adobe Premiere";
+    case "XD":
+      return "Adobe XD";
+    default:
+      return name;
+  }
 };
 ---
 
-<Section title="Skills">
-	<ul>
-		{
-			skills.map(({ name }, i) => {
-				const iconName = getIconName(name);
-				const Icon = SKILLS_ICONS[iconName];
+<ul>
+  {
+    skills.map(({ name }, i) => {
+      const iconName = getIconName(name);
+      const Icon = SKILLS_ICONS[iconName];
 
-				return (
-					<li style={`--i: ${i}`}>
-						{Icon && <Icon />}
-						<span>{name}</span>
-					</li>
-				);
-			})
-		}
-	</ul>
-</Section>
+      return (
+        <li style={`--i: ${i}`}>
+          {Icon && <Icon />}
+          <span>{name}</span>
+        </li>
+      );
+    })
+  }
+</ul>
 
 <style>
-	ul {
-		display: flex;
-		gap: 0.5rem;
-		flex-wrap: wrap;
-		margin: 1rem 0 0 0;
-		padding: 0;
-		list-style: none;
-	}
+  ul {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin: 1rem 0 0 0;
+    padding: 0;
+    list-style: none;
+  }
 
-	li {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		font-size: 0.8rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: var(--color-text);
-		background: transparent;
-		border: 2px solid var(--color-text);
-		padding: 0.4rem 0.75rem;
-		cursor: default;
-		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-		animation: skillSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
-		animation-delay: calc(var(--i) * 0.03s);
-	}
+  li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text);
+    background: transparent;
+    border: 3px solid var(--color-text);
+    padding: 0.4rem 0.75rem;
+    cursor: default;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: skillSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation-delay: calc(var(--i) * 0.03s);
+  }
 
-	li:hover {
-		background: var(--color-text);
-		color: var(--color-background);
-		transform: translateY(-2px);
-	}
+  li:hover {
+    background: var(--color-text);
+    color: var(--color-background);
+    transform: translateY(-2px);
+  }
 
-	li :global(svg) {
-		width: 18px;
-		height: 18px;
-		transition: transform 0.3s ease;
-	}
+  li :global(svg) {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+  }
 
-	li:hover :global(svg) {
-		transform: scale(1.1);
-	}
+  li:hover :global(svg) {
+    transform: scale(1.1);
+  }
 
-	span {
-		font-size: 0.8rem;
-		padding: 0;
-		margin: 0;
-		line-height: 1;
-	}
+  span {
+    font-size: 0.8rem;
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+  }
 
-	@keyframes skillSlideUp {
-		from {
-			opacity: 0;
-			transform: translateY(10px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
+  @keyframes skillSlideUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-	@media (width <= 700px) {
-		ul {
-			justify-content: center;
-		}
+  @media (width <= 700px) {
+    ul {
+      justify-content: center;
+    }
 
-		li {
-			font-size: 0.7rem;
-			padding: 0.35rem 0.6rem;
-		}
+    li {
+      font-size: 0.7rem;
+      padding: 0.35rem 0.6rem;
+    }
 
-		li :global(svg) {
-			width: 14px;
-			height: 14px;
-		}
+    li :global(svg) {
+      width: 14px;
+      height: 14px;
+    }
 
-		span {
-			font-size: 0.7rem;
-		}
-	}
+    span {
+      font-size: 0.7rem;
+    }
+  }
 </style>
