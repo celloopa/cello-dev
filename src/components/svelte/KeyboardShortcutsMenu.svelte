@@ -10,8 +10,8 @@
   let activeShortcut = $state(null);
   let selectedCategoryIndex = $state(0);
   let selectedShortcutIndex = $state(0);
-  let dialogElement;
-  let overlayElement;
+  let dialogElement = $state();
+  let overlayElement = $state();
 
   // Map network names to shortcut keys
   const networkKeyMap = {
@@ -189,8 +189,10 @@
   <div
     bind:this={overlayElement}
     class="overlay"
+    role="presentation"
     transition:fade={{ duration: 150 }}
-    on:click={toggleMenu}
+    onclick={toggleMenu}
+    onkeydown={handleOverlayKeydown}
   >
     <div
       bind:this={dialogElement}
@@ -199,8 +201,8 @@
       role="dialog"
       aria-modal="true"
       aria-labelledby="dialog-title"
-      on:click|stopPropagation
-      on:keydown={handleOverlayKeydown}
+      onclick={(event) => event.stopPropagation()}
+      onkeydown={handleOverlayKeydown}
       tabindex="-1"
     >
       <h2 id="dialog-title" class="sr-only">Keyboard Shortcuts Menu</h2>
@@ -214,8 +216,8 @@
                   class:active={activeShortcut === shortcut.key}
                   class:selected={selectedCategoryIndex === categoryIndex &&
                     selectedShortcutIndex === index}
-                  on:click={() => executeShortcut(shortcut)}
-                  on:keydown={(e) => {
+                  onclick={() => executeShortcut(shortcut)}
+                  onkeydown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
                       executeShortcut(shortcut);

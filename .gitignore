@@ -4,8 +4,16 @@ dist/
 # generated types
 .astro/
 
-# agent shit
+# agent and planning artifacts
 .agents/
+.claude/
+AGENTS.md
+CLAUDE.md
+docs/01-content-rewrite/
+docs/02-current-site-implementation/
+docs/03-payload-cms-migration/
+docs/99-checklists/
+
 # dependencies
 node_modules/
 

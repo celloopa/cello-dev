@@ -9,6 +9,12 @@
 	--color-treescape: #887850;
 	--color-treescape-rgb: 136, 120, 80;
 	/* Earthy treescape */
+	--color-treescape-deep: #6f613e;
+	--color-treescape-deep-rgb: 111, 97, 62;
+	/* Higher-contrast earth for light surfaces */
+	--color-treescape-bright: #a89762;
+	--color-treescape-bright-rgb: 168, 151, 98;
+	/* Higher-contrast earth for dark surfaces */
 	--color-night-shine: #00BC44;
 	--color-night-shine-rgb: 0, 188, 68;
 	/* Vibrant night-shine green */
@@ -22,10 +28,12 @@
 	--color-background-rgb: var(--color-starlight-rgb);
 	--color-text: var(--color-midnight);
 	--color-text-rgb: var(--color-midnight-rgb);
-	--color-accent: var(--color-treescape);
-	--color-accent-rgb: var(--color-treescape-rgb);
+	--color-accent: var(--color-treescape-deep);
+	--color-accent-rgb: var(--color-treescape-deep-rgb);
 	--color-accent-secondary: var(--color-night-shine);
 	--color-accent-secondary-rgb: var(--color-night-shine-rgb);
+	--color-visual-accent: var(--color-treescape-deep);
+	--color-visual-accent-rgb: var(--color-treescape-deep-rgb);
 	--color-background-translucent: rgba(var(--color-starlight-rgb), var(--color-background-opacity));
 }
 
@@ -36,7 +44,9 @@
 	--color-text-rgb: var(--color-starlight-rgb);
 	--color-accent: var(--color-night-shine);
 	--color-accent-rgb: var(--color-night-shine-rgb);
-	--color-accent-secondary: var(--color-treescape);
-	--color-accent-secondary-rgb: var(--color-treescape-rgb);
+	--color-accent-secondary: var(--color-treescape-bright);
+	--color-accent-secondary-rgb: var(--color-treescape-bright-rgb);
+	--color-visual-accent: var(--color-treescape-bright);
+	--color-visual-accent-rgb: var(--color-treescape-bright-rgb);
 	--color-background-translucent: rgba(var(--color-midnight-rgb), var(--color-background-opacity));
 }
