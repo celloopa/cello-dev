@@ -7,7 +7,6 @@
     PriceTier,
     PrinterCandidate,
     Source,
-    UnderThreePosture,
     WasteProfile,
   } from "@/data/printerToySafety";
 
@@ -16,6 +15,7 @@
 
   type SortKey =
     | "overall"
+    | "practicalFit"
     | "underThreeSafety"
     | "ease"
     | "price"
@@ -44,12 +44,6 @@
     reach: "Reach",
     pro: "Pro",
     "industrial-watchlist": "Industrial watchlist",
-  };
-
-  const postureLabels: Record<UnderThreePosture, string> = {
-    "avoid-direct-access": "Avoid direct access",
-    "large-supervised-prints-only": "Large supervised prints only",
-    "not-for-under-three": "Not for under 3",
   };
 
   const enclosureLabels: Record<EnclosureType, string> = {
@@ -112,7 +106,7 @@
     "pro",
   ];
 
-  let sortKey: SortKey = "overall";
+  let sortKey: SortKey = "practicalFit";
   let viewMode: ViewMode = "cards";
   let selectedStatuses = [...defaultStatuses];
   let selectedPriceTiers = [...defaultPriceTiers];
@@ -122,7 +116,6 @@
   let includedColorMin = 0;
   let maxColorMin = 0;
   let wasteFilter = "any";
-  let postureFilter = "any";
   let sizeFilter = "any";
   let confidenceFilter = "hide-low";
   let searchQuery = "";
@@ -163,7 +156,6 @@
             ["low-purge", "near-zero-purge"].includes(
               printer.colorCapability.wasteProfile,
             ))) &&
-        (postureFilter === "any" || printer.underThreePosture === postureFilter) &&
         (sizeFilter === "any" ||
           (sizeFilter === "standard" && (printer.buildVolume.liters ?? 0) < 25) ||
           (sizeFilter === "large" &&
@@ -216,8 +208,22 @@
         return (b.buildVolume.liters ?? 0) - (a.buildVolume.liters ?? 0);
       }
 
+      if (sortKey === "practicalFit") {
+        return practicalFitScore(b) - practicalFitScore(a);
+      }
+
       return b.scores[sortKey] - a.scores[sortKey];
     });
+  }
+
+  function practicalFitScore(printer: PrinterCandidate) {
+    return (
+      printer.scores.ease * 0.34 +
+      printer.scores.buildSize * 0.24 +
+      printer.scores.reliabilityConfidence * 0.22 +
+      printer.scores.colorCapability * 0.12 +
+      printer.scores.lowWasteColor * 0.08
+    );
   }
 
   function getComparablePrice(printer: PrinterCandidate) {
@@ -257,7 +263,7 @@
   }
 
   function resetFilters() {
-    sortKey = "overall";
+    sortKey = "practicalFit";
     viewMode = "cards";
     selectedStatuses = [...defaultStatuses];
     selectedPriceTiers = [...defaultPriceTiers];
@@ -267,7 +273,6 @@
     includedColorMin = 0;
     maxColorMin = 0;
     wasteFilter = "any";
-    postureFilter = "any";
     sizeFilter = "any";
     confidenceFilter = "hide-low";
     searchQuery = "";
@@ -286,11 +291,10 @@
       includedColorMin = 4;
       maxColorMin = 0;
       wasteFilter = "any";
-      postureFilter = "avoid-direct-access";
       sizeFilter = "any";
       confidenceFilter = "hide-low";
-      sortKey = "underThreeSafety";
-      shareStatus = "Showing the safer household shortlist.";
+      sortKey = "practicalFit";
+      shareStatus = "Showing the household shortlist ranked by quality, size, ease, and color workflow.";
       return;
     }
 
@@ -303,7 +307,6 @@
       includedColorMin = 4;
       maxColorMin = 0;
       wasteFilter = "any";
-      postureFilter = "any";
       sizeFilter = "any";
       confidenceFilter = "hide-low";
       sortKey = "toyValue";
@@ -320,7 +323,6 @@
       includedColorMin = 0;
       maxColorMin = 0;
       wasteFilter = "low-first";
-      postureFilter = "any";
       sizeFilter = "any";
       confidenceFilter = "any";
       sortKey = "lowWasteColor";
@@ -336,11 +338,10 @@
     includedColorMin = 0;
     maxColorMin = 0;
     wasteFilter = "any";
-    postureFilter = "any";
     sizeFilter = "any";
     confidenceFilter = "any";
     sortKey = "overall";
-    shareStatus = "Showing the full database, including watchlist and low-confidence entries.";
+    shareStatus = "Showing the full database, including watchlist and thinly sourced entries.";
   }
 
   async function shareView() {
@@ -367,7 +368,7 @@
       .slice(0, 3)
       .map(
         (printer, index) =>
-          `${index + 1}. ${printer.name} - ${printer.priceLabel}; ${printer.colorCapability.includedColorLabel}; ${postureLabels[printer.underThreePosture]}`,
+          `${index + 1}. ${printer.name} - ${printer.priceLabel}; ${printer.buildVolume.label}; ease ${printer.scores.ease}/100; ${printer.colorCapability.includedColorLabel}`,
       )
       .join("\n");
 
@@ -392,7 +393,6 @@
     params.set("maxColors", String(maxColorMin));
     params.set("mechanism", selectedMechanisms.join(","));
     params.set("waste", wasteFilter);
-    params.set("posture", postureFilter);
     params.set("size", sizeFilter);
     params.set("confidence", confidenceFilter);
 
@@ -407,6 +407,7 @@
     const params = new URLSearchParams(window.location.search);
     const validSorts: SortKey[] = [
       "overall",
+      "practicalFit",
       "underThreeSafety",
       "ease",
       "price",
@@ -434,7 +435,6 @@
     includedColorMin = Number(params.get("includedColors") ?? includedColorMin);
     maxColorMin = Number(params.get("maxColors") ?? maxColorMin);
     wasteFilter = params.get("waste") ?? wasteFilter;
-    postureFilter = params.get("posture") ?? postureFilter;
     sizeFilter = params.get("size") ?? sizeFilter;
     confidenceFilter = params.get("confidence") ?? confidenceFilter;
     searchQuery = params.get("q") ?? "";
@@ -456,6 +456,15 @@
     const byId = new Map(sources.map((source) => [source.id, source]));
     return ids.map((id) => byId.get(id)).filter(Boolean) as Source[];
   }
+
+  function kidEnvironmentNote(printer: PrinterCandidate) {
+    if (printer.enclosure === "open") return "Open frame: keep it physically away from kids.";
+    if (printer.colorCapability.wasteProfile === "near-zero-purge") return "Low scrap risk for multicolor prints.";
+    if ((printer.buildVolume.liters ?? 0) >= 35) return "Large bed helps make bigger, harder-to-mouth toys.";
+    if (printer.colorCapability.wasteProfile === "high-purge") return "High purge waste means more tiny scraps.";
+    if (printer.enclosure === "enclosed") return "Enclosure helps with access, heat, and moving parts.";
+    return printer.watchouts[0] ?? printer.strengths[0];
+  }
 </script>
 
 <section class="database-shell" aria-label="3D printer safety database">
@@ -475,12 +484,12 @@
     <p class="share-status" aria-live="polite">{shareStatus}</p>
 
     <div class="preset-panel" aria-label="Quick filter presets">
-      <span>Start with</span>
+      <span>Presets</span>
       <div class="preset-actions">
-        <button type="button" on:click={() => applyPreset("household")}>Safer household shortlist</button>
-        <button type="button" on:click={() => applyPreset("budget")}>Budget color printers</button>
-        <button type="button" on:click={() => applyPreset("lowWaste")}>Lower purge systems</button>
-        <button type="button" on:click={() => applyPreset("all")}>Show everything</button>
+        <button type="button" on:click={() => applyPreset("household")}>Household shortlist</button>
+        <button type="button" on:click={() => applyPreset("budget")}>Budget color</button>
+        <button type="button" on:click={() => applyPreset("lowWaste")}>Low scrap</button>
+        <button type="button" on:click={() => applyPreset("all")}>All</button>
       </div>
     </div>
 
@@ -495,14 +504,15 @@
           Sort
           <select bind:value={sortKey}>
             <option value="overall">Best overall</option>
-            <option value="underThreeSafety">Under-3 safety</option>
+            <option value="practicalFit">Best quality / size / ease</option>
+            <option value="underThreeSafety">Household workflow score</option>
             <option value="ease">Ease of use</option>
             <option value="price">Lowest price</option>
             <option value="buildSize">Largest build volume</option>
             <option value="includedColors">Most included colors</option>
             <option value="maxColors">Most expandable colors</option>
             <option value="lowWasteColor">Lowest purge waste</option>
-            <option value="reliabilityConfidence">Highest confidence</option>
+            <option value="reliabilityConfidence">Best evidence quality</option>
             <option value="toyValue">Best toy value</option>
           </select>
         </label>
@@ -560,16 +570,6 @@
         </label>
 
         <label>
-          Under-3 posture
-          <select bind:value={postureFilter}>
-            <option value="any">Any</option>
-            <option value="avoid-direct-access">Avoid direct access</option>
-            <option value="large-supervised-prints-only">Large supervised prints only</option>
-            <option value="not-for-under-three">Not for under 3</option>
-          </select>
-        </label>
-
-        <label>
           Build size
           <select bind:value={sizeFilter}>
             <option value="any">Any</option>
@@ -580,10 +580,10 @@
         </label>
 
         <label>
-          Confidence
+          Evidence quality
           <select bind:value={confidenceFilter}>
-          <option value="hide-low">Hide unverified entries</option>
-          <option value="any">Show all confidence levels</option>
+          <option value="hide-low">Hide thinly sourced entries</option>
+          <option value="any">Show all source levels</option>
         </select>
         </label>
       </div>
@@ -655,7 +655,7 @@
   {#if filteredPrinters.length === 0}
     <div class="empty-state">
       <h2>No printers match those filters.</h2>
-      <p>Open the status, confidence, or price filters to bring the database back.</p>
+      <p>Open the status, evidence-quality, or price filters to bring the database back.</p>
       <button type="button" on:click={resetFilters}>Reset Filters</button>
     </div>
   {:else if viewMode === "table"}
@@ -672,7 +672,7 @@
             <th>Color system</th>
             <th>Waste</th>
             <th>Enclosure</th>
-            <th>Under-3 posture</th>
+            <th>Kid note</th>
             <th>Watchout</th>
           </tr>
         </thead>
@@ -688,7 +688,7 @@
               <td>{mechanismLabels[printer.colorCapability.mechanism]}</td>
               <td>{wasteLabels[printer.colorCapability.wasteProfile]}</td>
               <td>{enclosureLabels[printer.enclosure]}</td>
-              <td>{postureLabels[printer.underThreePosture]}</td>
+              <td>{kidEnvironmentNote(printer)}</td>
               <td>{printer.watchouts[0]}</td>
             </tr>
           {/each}
@@ -705,7 +705,7 @@
             <div>
               <div class="card-meta">
                 <span class="rank">#{index + 1}</span>
-                <span class="status-pill">{statusLabels[printer.status]}</span>
+                <span class="price-pill">{printer.priceLabel}</span>
               </div>
               <h3>{printer.name}</h3>
               <p>{printer.verdict}</p>
@@ -722,42 +722,36 @@
             <span>{wasteLabels[printer.colorCapability.wasteProfile]}</span>
           </div>
 
-          <div class="score-grid">
-            {@render Score("Overall", printer.scores.overall)}
-            {@render Score("Under-3", printer.scores.underThreeSafety)}
-            {@render Score("Toy value", printer.scores.toyValue)}
-            {@render Score("Confidence", printer.scores.reliabilityConfidence)}
+          <div class="kid-note">
+            <span>Kid-context note</span>
+            <strong>{kidEnvironmentNote(printer)}</strong>
           </div>
 
-          <dl class="spec-list">
-            <div><dt>Status</dt><dd>{statusLabels[printer.status]}</dd></div>
-            <div><dt>Price</dt><dd>{printer.priceLabel}</dd></div>
-            <div><dt>Build volume</dt><dd>{printer.buildVolume.label}</dd></div>
-            <div><dt>Color system</dt><dd>{mechanismLabels[printer.colorCapability.mechanism]}</dd></div>
-            <div><dt>Under-3 posture</dt><dd>{postureLabels[printer.underThreePosture]}</dd></div>
-          </dl>
+          <div class="score-grid">
+            {@render Score("Overall", printer.scores.overall)}
+            {@render Score("Ease", printer.scores.ease)}
+            {@render Score("Build size", printer.scores.buildSize)}
+            {@render Score("Evidence", printer.scores.reliabilityConfidence)}
+          </div>
 
-          <div class="two-column">
+          <div class="quick-read">
             <div>
-              <h4>Reasons to buy</h4>
-              <ul>
-                {#each printer.strengths as item}
-                  <li>{item}</li>
-                {/each}
-              </ul>
+              <span>Best for</span>
+              <strong>{printer.strengths[0]}</strong>
             </div>
             <div>
-              <h4>Watchouts</h4>
-              <ul>
-                {#each printer.watchouts as item}
-                  <li>{item}</li>
-                {/each}
-              </ul>
+              <span>Watch</span>
+              <strong>{printer.watchouts[0]}</strong>
             </div>
           </div>
 
           <details>
-            <summary>Sources</summary>
+            <summary>Sources and evidence</summary>
+            <p class="source-note">
+              Evidence means how much this entry relies on current manufacturer
+              specs, recent reviews, and explicit source links. It is not a
+              child-safety guarantee.
+            </p>
             <ul class="sources">
               {#each sourceLinks(printer.sourceIds) as source}
                 <li><a href={source.url} target="_blank" rel="noreferrer">{source.publisher}: {source.title}</a></li>
@@ -802,7 +796,7 @@
           <tr><th>Color system</th>{#each printers as printer}<td>{mechanismLabels[printer.colorCapability.mechanism]}</td>{/each}</tr>
           <tr><th>Waste profile</th>{#each printers as printer}<td>{wasteLabels[printer.colorCapability.wasteProfile]}</td>{/each}</tr>
           <tr><th>Enclosure</th>{#each printers as printer}<td>{enclosureLabels[printer.enclosure]}</td>{/each}</tr>
-          <tr><th>Under-3 posture</th>{#each printers as printer}<td>{postureLabels[printer.underThreePosture]}</td>{/each}</tr>
+          <tr><th>Kid note</th>{#each printers as printer}<td>{kidEnvironmentNote(printer)}</td>{/each}</tr>
           <tr><th>Buy reason</th>{#each printers as printer}<td>{printer.strengths[0]}</td>{/each}</tr>
           <tr><th>Avoid reason</th>{#each printers as printer}<td>{printer.watchouts[0]}</td>{/each}</tr>
         </tbody>
@@ -870,7 +864,7 @@
   dt,
   h4,
   .rank,
-  .status-pill {
+  .price-pill {
     color: var(--color-accent);
     font-size: 0.78rem;
     font-weight: 900;
@@ -880,8 +874,8 @@
 
   .controls {
     display: grid;
-    gap: clamp(0.75rem, 2vw, 1.25rem);
-    padding: clamp(1rem, 2.5vw, 1.5rem);
+    gap: 0.9rem;
+    padding: clamp(0.85rem, 2vw, 1.15rem);
     border: 3px solid var(--color-text);
     background: color-mix(in srgb, var(--color-background) 96%, var(--color-text));
   }
@@ -903,12 +897,14 @@
   }
 
   .preset-panel {
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
-    gap: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
     align-items: center;
-    padding: 0.75rem;
+    padding: 0;
     border: 2px solid color-mix(in srgb, var(--color-text) 28%, transparent);
+    border-width: 0 0 2px;
+    padding-bottom: 0.75rem;
     background: color-mix(in srgb, var(--color-text) 6%, transparent);
   }
 
@@ -918,6 +914,14 @@
     font-weight: 900;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+  }
+
+  .source-note {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 0.9rem;
+    line-height: 1.45;
+    opacity: 0.82;
   }
 
   .preset-actions button {
@@ -968,15 +972,17 @@
 
   .filter-board {
     display: grid;
-    grid-template-columns: minmax(220px, 0.55fr) minmax(0, 1.45fr);
-    gap: 0.75rem;
-    align-items: end;
+    gap: 0.65rem;
   }
 
   .filter-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(4, minmax(150px, 1fr));
+    gap: 0.65rem;
+  }
+
+  .search-control {
+    max-width: 34rem;
   }
 
   label {
@@ -1058,20 +1064,21 @@
     align-items: center;
   }
 
-  .status-pill {
+  .price-pill {
     display: inline-flex;
     align-items: center;
     min-height: 1.7rem;
-    padding: 0 0.45rem;
-    border: 2px solid currentColor;
-    color: var(--color-text);
+    padding: 0 0.5rem;
+    background: var(--color-accent);
+    color: var(--color-background);
+    font-variant-numeric: tabular-nums;
   }
 
   .card-head h3 {
-    max-width: 15ch;
-    margin: 0.45rem 0 0.55rem;
-    font-size: clamp(1.45rem, 3vw, 2.15rem);
-    line-height: 0.98;
+    max-width: 17ch;
+    margin: 0.65rem 0 0.55rem;
+    font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+    line-height: 0.94;
     text-transform: uppercase;
     text-wrap: balance;
   }
@@ -1101,6 +1108,27 @@
     border-bottom: 0;
   }
 
+  .kid-note {
+    display: grid;
+    gap: 0.3rem;
+    padding: 0.65rem 0.75rem;
+    border: 2px solid color-mix(in srgb, var(--color-accent) 70%, var(--color-text));
+    background: color-mix(in srgb, var(--color-accent) 10%, transparent);
+  }
+
+  .kid-note span {
+    color: var(--color-accent);
+    font-size: 0.74rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .kid-note strong {
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
   .score-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -1128,29 +1156,36 @@
     accent-color: var(--color-accent);
   }
 
-  .spec-list {
-    display: grid;
-    gap: 0;
-    margin: 0;
-    border-top: 2px solid color-mix(in srgb, var(--color-text) 28%, transparent);
-  }
-
-  .spec-list div {
-    display: grid;
-    grid-template-columns: 9rem minmax(0, 1fr);
-    gap: 0.75rem;
-    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 20%, transparent);
-    padding: 0.55rem 0;
-  }
-
   dd {
     margin: 0;
   }
 
-  .two-column {
+  .quick-read {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .quick-read div {
+    display: grid;
+    gap: 0.3rem;
+    min-height: 5rem;
+    padding: 0.7rem;
+    background: color-mix(in srgb, var(--color-text) 7%, transparent);
+  }
+
+  .quick-read span {
+    color: var(--color-accent);
+    font-size: 0.74rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .quick-read strong {
+    align-self: start;
+    font-size: 0.98rem;
+    line-height: 1.22;
   }
 
   h4 {
@@ -1226,7 +1261,7 @@
     .safety-panel,
     .control-topline,
     .filter-board,
-    .two-column {
+    .quick-read {
       grid-template-columns: 1fr;
     }
 
@@ -1234,9 +1269,8 @@
       display: grid;
     }
 
-    .preset-panel {
-      grid-template-columns: 1fr;
-      align-items: start;
+    .filter-grid {
+      grid-template-columns: repeat(2, minmax(150px, 1fr));
     }
   }
 
@@ -1247,7 +1281,8 @@
 
     .metric-strip,
     .score-grid,
-    .spec-list div {
+    .filter-grid,
+    .quick-read {
       grid-template-columns: 1fr;
     }
 

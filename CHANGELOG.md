@@ -10,6 +10,8 @@ All notable changes to this portfolio site should be documented here.
 - Added normalized printer comparison data covering price, build volume, enclosure posture, multicolor capacity, filament guidance, under-3 mouthing risk posture, purge waste, and source confidence.
 - Added filters, presets, sorting, card/table/pinned views, URL state sharing, and shortlist copying for comparing consumer and reach-option multicolor printers.
 - Added canonical URL support to the shared layout metadata and linked the new guide from `/lab`.
+- Refined the printer guide UI so comparison cards emphasize rank, price, ease, build size, evidence quality, color workflow, and one short kid-context note.
+- Removed the large toddler-baseline section and posture-heavy filters in favor of a compact safety disclaimer and actual buying differentiators.
 
 ### Validation
 

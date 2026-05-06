@@ -44,58 +44,21 @@ const productSources = printerToySafetySources.filter(
     />
   </section>
 
-  <section class="baseline" aria-label="Safety baseline">
-    <article class="baseline-lede">
-      <p class="eyebrow">Under-3 baseline</p>
-      <h2>Food-safe is the wrong question.</h2>
-      <p>
-        For toddlers, the practical risks are choking, aspiration, sharp or
-        broken fragments, and unknown additives or coatings. No consumer printer
-        here makes a toy automatically safe to mouth.
-      </p>
-      <a href="tel:18002221222">Poison Control: 1-800-222-1222</a>
-    </article>
-    <article>
-      <h2>Small parts are the hard no.</h2>
-      <p>
-        If it can break off, fit in a toddler's mouth, or become a dropped purge
-        scrap, treat it as a choking and aspiration risk.
-      </p>
-    </article>
-    <article>
-      <h2>Material is not certification.</h2>
-      <p>
-        PLA and PETG are the practical starting points, but pigment, additives,
-        coatings, layer lines, and post-processing still matter.
-      </p>
-    </article>
-    <article>
-      <h2>Supervision beats filament marketing.</h2>
-      <p>
-        The safest household workflow keeps kids away from the printer, scraps,
-        heat, moving parts, and small finished pieces.
-      </p>
-    </article>
-  </section>
-
   <section class="methodology">
     <div>
-      <p class="eyebrow">Methodology</p>
-      <h2>Workflow safety, not toy certification.</h2>
+      <p class="eyebrow">Disclaimer</p>
+      <h2>Not a toy-safety certification.</h2>
       <p>
-        Scores are buying guidance, not medical, legal, or product-safety
-        certification. Enclosures help with household access, hot parts, moving
-        assemblies, and emissions, but they do not make printed toys safe to
-        mouth. Lower purge waste matters because purge scraps are small,
-        colorful, and easy to drop.
+        Scores are buying guidance only. Keep printers, purge scraps, supports,
+        broken parts, hot surfaces, and small finished pieces away from kids who
+        mouth objects. If swallowed, call Poison Control: 1-800-222-1222.
       </p>
     </div>
     <div>
       <p>
-        Independent toolheads and dual nozzles can reduce support cleanup or
-        purge waste, but they cost more and can add maintenance. AMS/CFS/ACE/MMU
-        systems are usually easier to buy and use, but they can create a lot of
-        small waste during color swaps.
+        Compare actual workflow differences: ease of use, enclosure, build
+        size, color capacity, purge waste, and evidence quality. PLA/PETG are
+        practical starting points, not toddler-mouth guarantees.
       </p>
     </div>
   </section>
@@ -134,7 +97,6 @@ const productSources = printerToySafetySources.filter(
 
 <style>
   .hero,
-  .baseline,
   .database-section,
   .methodology,
   .sources {
@@ -196,69 +158,12 @@ const productSources = printerToySafetySources.filter(
     opacity: 0.86;
   }
 
-  .baseline {
-    display: grid;
-    grid-template-columns: 1.25fr 0.85fr 0.85fr;
-    gap: clamp(0.75rem, 2vw, 1.25rem);
-  }
-
-  .baseline article {
-    border: 3px solid var(--color-text);
-    padding: clamp(1rem, 2.5vw, 1.35rem);
-    background: color-mix(in srgb, var(--color-background) 94%, var(--color-text));
-  }
-
-  .baseline-lede {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: minmax(220px, 0.7fr) minmax(280px, 1.3fr) auto;
-    gap: clamp(1rem, 3vw, 2rem);
-    align-items: center;
-    background:
-      repeating-linear-gradient(
-        -45deg,
-        color-mix(in srgb, var(--color-accent) 18%, transparent) 0 10px,
-        transparent 10px 20px
-      ),
-      color-mix(in srgb, var(--color-background) 92%, var(--color-text));
-  }
-
-  .baseline-lede .eyebrow {
-    margin: 0;
-  }
-
-  .baseline-lede h2 {
-    margin: 0;
-  }
-
-  .baseline-lede a {
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--color-accent);
-    padding: 0.75rem 1rem;
-    color: var(--color-accent);
-    font-weight: 800;
-    text-transform: uppercase;
-  }
-
-  .baseline article:nth-child(2) {
-    background: var(--color-accent);
-    color: var(--color-background);
-  }
-
-  .baseline article:nth-child(2) h2 {
-    color: var(--color-background);
-  }
-
   .methodology,
   .sources {
     border-top: 3px solid var(--color-text);
     padding-top: clamp(1rem, 3vw, 2rem);
   }
 
-  .baseline h2,
   .methodology h2,
   .sources h2 {
     margin: 0 0 0.75rem;
@@ -267,7 +172,6 @@ const productSources = printerToySafetySources.filter(
     text-transform: uppercase;
   }
 
-  .baseline p,
   .methodology p {
     margin: 0;
     opacity: 0.86;
@@ -295,8 +199,6 @@ const productSources = printerToySafetySources.filter(
 
   @media (max-width: 900px) {
     .hero-grid,
-    .baseline,
-    .baseline-lede,
     .methodology,
     .sources {
       grid-template-columns: 1fr;
@@ -305,15 +207,11 @@ const productSources = printerToySafetySources.filter(
 
   @media (max-width: 700px) {
     .hero,
-    .baseline,
     .database-section,
     .methodology,
     .sources {
       padding-inline: 1rem;
     }
 
-    .decision {
-      box-shadow: 8px 8px 0 var(--color-text);
-    }
   }
 </style>
