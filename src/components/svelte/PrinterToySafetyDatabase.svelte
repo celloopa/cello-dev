@@ -121,6 +121,7 @@
   let searchQuery = "";
   let pinnedIds: string[] = [];
   let shareStatus = "Filtered views can be copied as a URL.";
+  let activeSourcePrinterId: string | null = null;
   let mounted = false;
 
   $: filteredPrinters = sortPrinters(
@@ -457,6 +458,10 @@
     return ids.map((id) => byId.get(id)).filter(Boolean) as Source[];
   }
 
+  function toggleSourcePanel(printerId: string) {
+    activeSourcePrinterId = activeSourcePrinterId === printerId ? null : printerId;
+  }
+
   function kidEnvironmentNote(printer: PrinterCandidate) {
     if (printer.enclosure === "open") return "Open frame: keep it physically away from kids.";
     if (printer.colorCapability.wasteProfile === "near-zero-purge") return "Low scrap risk for multicolor prints.";
@@ -757,19 +762,36 @@
             </div>
           </div>
 
-          <details>
-            <summary>Sources and evidence</summary>
-            <p class="source-note">
-              Evidence means how much this entry relies on current manufacturer
-              specs, recent reviews, and explicit source links. It is not a
-              child-safety guarantee.
-            </p>
-            <ul class="sources">
-              {#each sourceLinks(printer.sourceIds) as source}
-                <li><a href={source.url} target="_blank" rel="noreferrer">{source.publisher}: {source.title}</a></li>
-              {/each}
-            </ul>
-          </details>
+          <div class="source-dock">
+            <button
+              type="button"
+              class="source-trigger"
+              aria-expanded={activeSourcePrinterId === printer.id}
+              aria-controls={`sources-${printer.id}`}
+              on:click={() => toggleSourcePanel(printer.id)}
+            >
+              Sources and evidence
+            </button>
+
+            {#if activeSourcePrinterId === printer.id}
+              <div class="source-panel" id={`sources-${printer.id}`} role="region" aria-label={`Sources for ${printer.name}`}>
+                <div class="source-panel-head">
+                  <strong>{printer.name}</strong>
+                  <button type="button" on:click={() => (activeSourcePrinterId = null)}>Close</button>
+                </div>
+                <p class="source-note">
+                  Evidence means how much this entry relies on current manufacturer
+                  specs, recent reviews, and explicit source links. It is not a
+                  child-safety guarantee.
+                </p>
+                <ul class="sources">
+                  {#each sourceLinks(printer.sourceIds) as source}
+                    <li><a href={source.url} target="_blank" rel="noreferrer">{source.publisher}: {source.title}</a></li>
+                  {/each}
+                </ul>
+              </div>
+            {/if}
+          </div>
         </article>
       {/each}
     </div>
@@ -1303,43 +1325,75 @@
     list-style: square;
   }
 
-  details {
+  .source-dock {
+    position: relative;
     border-top: 2px solid color-mix(in srgb, var(--color-text) 25%, transparent);
     padding-top: 0.75rem;
   }
 
-  summary {
-    cursor: pointer;
-    list-style: none;
+  .source-trigger {
     min-height: 32px;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.45rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
     color: var(--color-accent);
+    box-shadow: none;
     font-size: 0.74rem;
     font-weight: 900;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
-  summary::-webkit-details-marker {
-    display: none;
-  }
-
-  summary::before {
+  .source-trigger::before {
     content: "+";
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 1rem;
     height: 1rem;
+    margin-right: 0.45rem;
     border: 1.5px solid currentColor;
     font-size: 0.8rem;
     line-height: 1;
   }
 
-  details[open] > summary::before {
+  .source-trigger[aria-expanded="true"]::before {
     content: "−";
+  }
+
+  .source-panel {
+    position: absolute;
+    z-index: 5;
+    right: 0;
+    bottom: calc(100% + 0.65rem);
+    width: min(34rem, calc(100vw - 3rem));
+    max-height: min(24rem, 70vh);
+    overflow: auto;
+    padding: 1rem;
+    border: 2px solid var(--color-text);
+    background: var(--color-background);
+    box-shadow: 8px 8px 0 color-mix(in srgb, var(--color-text) 22%, transparent);
+  }
+
+  .source-panel-head {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .source-panel-head strong {
+    font-size: 0.9rem;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .source-panel-head button {
+    min-height: 28px;
+    padding: 0 0.55rem;
+    border-width: 1.5px;
+    font-size: 0.68rem;
   }
 
   .sources a {
