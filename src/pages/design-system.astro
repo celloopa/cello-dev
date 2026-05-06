@@ -1,0 +1,112 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import "@/styles/colors.css";
+
+const colors = [
+  ["Ink 950", "--ds-color-ink-950"],
+  ["Paper 200", "--ds-color-paper-200"],
+  ["Signal 500", "--ds-color-signal-500"],
+  ["Earth 600", "--ds-color-earth-600"],
+  ["Earth 400", "--ds-color-earth-400"],
+  ["Blueprint", "--ds-color-blueprint-500"],
+  ["Coral", "--ds-color-coral-500"],
+];
+
+const tokens = [
+  ["Display", "--ds-text-hero", "Hero name / campaign moments"],
+  ["Title", "--ds-text-2xl", "Page and section headers"],
+  ["Body", "--ds-text-base", "Case-study narrative copy"],
+  ["Caption", "--ds-text-sm", "Tags, labels, metadata"],
+  ["Stroke", "--ds-stroke-lg", "Primary geometric borders"],
+  ["Ease", "--ds-ease-out", "Shared interaction curve"],
+];
+---
+
+<Layout
+  title="Design System - Cello"
+  description="Design tokens, colors, typography, and component principles for Cello's product design portfolio."
+>
+  <section class="ds-hero">
+    <p class="eyebrow">Cello Design System</p>
+    <h1>Geometric, tactile, and buildable.</h1>
+    <p class="lede">
+      A focused system for a technical product designer: high-contrast mono type,
+      paper-grain texture, hard-edged cards, kinetic bars, and practical tokens
+      that map directly to implementation.
+    </p>
+  </section>
+
+  <section class="ds-section">
+    <h2>Color Tokens</h2>
+    <div class="swatches">
+      {colors.map(([label, token]) => <article class="swatch"><span style={`background: var(${token})`}></span><strong>{label}</strong><code>{token}</code></article>)}
+    </div>
+  </section>
+
+  <section class="ds-section split">
+    <div>
+      <h2>Typography</h2>
+      <div class="type-card">
+        <span class="type-display">Cello</span>
+        <span class="type-title">Product Designer</span>
+        <p>Systems, technical prototypes, design-dev collaboration, and clear product storytelling.</p>
+      </div>
+    </div>
+    <div>
+      <h2>Core Tokens</h2>
+      <dl class="token-list">
+        {tokens.map(([name, token, use]) => <div><dt>{name}</dt><dd><code>{token}</code><span>{use}</span></dd></div>)}
+      </dl>
+    </div>
+  </section>
+
+  <section class="ds-section">
+    <h2>Component Language</h2>
+    <div class="components">
+      <a class="button-demo" href="/projects">View Case Studies</a>
+      <article class="mini-card has-texture-hover">
+        <span>Role Badge</span>
+        <h3>Feature Prototype</h3>
+        <p>Cards use strong borders, direct hierarchy, restrained texture, and a full-surface accent interaction.</p>
+      </article>
+      <article class="principles">
+        <h3>Principles</h3>
+        <ul>
+          <li>Use accent color to signal action or proof, not decoration.</li>
+          <li>Prefer square edges and visible structure over soft generic UI.</li>
+          <li>Keep motion directional: wipe, slide, reveal, settle.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .ds-hero, .ds-section { max-width: var(--ds-container); margin: 0 auto; padding: var(--ds-space-8) var(--ds-page-gutter); }
+  .eyebrow { color: var(--color-accent); font-size: var(--ds-text-sm); font-weight: 800; letter-spacing: var(--ds-letter-wider); text-transform: uppercase; }
+  .ds-hero h1 { max-width: 10ch; margin: 0; font-size: var(--ds-text-display); }
+  .lede { max-width: 66ch; color: var(--text-muted); }
+  .ds-section h2 { margin-bottom: var(--ds-space-5); }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--ds-space-4); }
+  .swatch, .type-card, .mini-card, .principles, .token-list div { border: var(--ds-stroke-lg) solid var(--color-text); background: var(--surface-raised); }
+  .swatch { padding: var(--ds-space-3); }
+  .swatch span { display: block; aspect-ratio: 1.3; margin-bottom: var(--ds-space-3); border: var(--ds-stroke-md) solid var(--color-text); }
+  code { font-size: var(--ds-text-xs); color: var(--color-accent); }
+  .split { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--ds-space-6); }
+  .type-card { padding: var(--ds-space-6); }
+  .type-display { display: block; color: var(--color-accent); font-size: clamp(4rem, 10vw, 8rem); font-weight: 900; line-height: .9; text-transform: uppercase; }
+  .type-title { display: block; margin-top: var(--ds-space-4); color: var(--color-accent); font-size: var(--ds-text-xl); font-weight: 900; text-transform: uppercase; }
+  .token-list { display: grid; gap: var(--ds-space-3); }
+  .token-list div { padding: var(--ds-space-4); }
+  dt { font-weight: 900; text-transform: uppercase; }
+  dd { display: grid; gap: var(--ds-space-1); margin: 0; }
+  dd span { font-size: var(--ds-text-sm); color: var(--text-muted); }
+  .components { display: grid; grid-template-columns: .7fr 1fr 1fr; gap: var(--ds-space-4); align-items: stretch; }
+  .button-demo { display: inline-flex; align-items: center; justify-content: center; min-height: var(--ds-touch-target); padding: var(--ds-space-3) var(--ds-space-4); border: var(--ds-stroke-lg) solid var(--color-accent); background: var(--color-accent); color: var(--color-background); font-weight: 900; text-transform: uppercase; }
+  .mini-card, .principles { padding: var(--ds-space-5); }
+  .mini-card span { display: inline-block; margin: 0 0 var(--ds-space-3); padding: var(--ds-space-1) var(--ds-space-2); border: var(--ds-stroke-md) solid var(--color-accent); color: var(--color-accent); font-size: var(--ds-text-xs); font-weight: 800; text-transform: uppercase; }
+  .mini-card h3, .principles h3 { margin: 0 0 var(--ds-space-3); text-transform: uppercase; }
+  .principles ul { display: grid; gap: var(--ds-space-2); list-style: square; padding-left: var(--ds-space-5); }
+  .principles li { line-height: 1.55; }
+  @media (width <= 900px) { .split, .components { grid-template-columns: 1fr; } }
+</style>

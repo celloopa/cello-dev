@@ -715,22 +715,34 @@
             </button>
           </div>
 
-          <div class="metric-strip">
-            <span>{printer.colorCapability.includedColorLabel}</span>
-            <span>{printer.colorCapability.maxExpandableLabel}</span>
-            <span>{enclosureLabels[printer.enclosure]}</span>
-            <span>{wasteLabels[printer.colorCapability.wasteProfile]}</span>
-          </div>
+          <dl class="metric-strip">
+            <div>
+              <dt>Included colors</dt>
+              <dd>{printer.colorCapability.includedColorLabel}</dd>
+            </div>
+            <div>
+              <dt>Expandable</dt>
+              <dd>{printer.colorCapability.maxExpandableLabel}</dd>
+            </div>
+            <div>
+              <dt>Enclosure</dt>
+              <dd>{enclosureLabels[printer.enclosure]}</dd>
+            </div>
+            <div>
+              <dt>Purge waste</dt>
+              <dd>{wasteLabels[printer.colorCapability.wasteProfile]}</dd>
+            </div>
+          </dl>
 
           <div class="kid-note">
-            <span>Kid-context note</span>
+            <span>For kids</span>
             <strong>{kidEnvironmentNote(printer)}</strong>
           </div>
 
           <div class="score-grid">
             {@render Score("Overall", printer.scores.overall)}
             {@render Score("Ease", printer.scores.ease)}
-            {@render Score("Build size", printer.scores.buildSize)}
+            {@render Score("Build", printer.scores.buildSize)}
             {@render Score("Evidence", printer.scores.reliabilityConfidence)}
           </div>
 
@@ -765,9 +777,9 @@
 </section>
 
 {#snippet Score(label: string, value: number)}
-  <div class="score">
-    <div><span>{label}</span><strong>{value}</strong></div>
-    <meter min="0" max="100" value={value}>{value}</meter>
+  <div class="score" data-tier={value >= 80 ? "high" : value >= 60 ? "mid" : "low"}>
+    <strong>{value}</strong>
+    <span>{label}</span>
   </div>
 {/snippet}
 
@@ -827,8 +839,7 @@
       color-mix(in srgb, var(--color-background) 92%, var(--color-text));
   }
 
-  .safety-panel h2,
-  .controls h2 {
+  .safety-panel h2 {
     margin: 0;
     color: var(--color-accent);
     font-size: clamp(1.6rem, 4vw, 3rem);
@@ -836,14 +847,32 @@
     text-transform: uppercase;
   }
 
+  .controls h2 {
+    margin: 0.15rem 0 0;
+    color: var(--color-text);
+    font-size: clamp(1.1rem, 1.6vw, 1.35rem);
+    font-weight: 800;
+    line-height: 1.15;
+    text-transform: none;
+    letter-spacing: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
   .safety-panel p,
-  .share-status,
   .printer-card p {
     max-width: 68ch;
     color: var(--color-text);
     opacity: 0.86;
     margin: 0;
     line-height: 1.55;
+  }
+
+  .share-status {
+    margin: 0;
+    color: var(--color-text);
+    font-size: 0.85rem;
+    line-height: 1.45;
+    opacity: 0.7;
   }
 
   .safety-panel a {
@@ -901,11 +930,8 @@
     flex-wrap: wrap;
     gap: 0.6rem;
     align-items: center;
-    padding: 0;
-    border: 2px solid color-mix(in srgb, var(--color-text) 28%, transparent);
-    border-width: 0 0 2px;
-    padding-bottom: 0.75rem;
-    background: color-mix(in srgb, var(--color-text) 6%, transparent);
+    padding-bottom: 0.85rem;
+    border-bottom: 2px solid color-mix(in srgb, var(--color-text) 28%, transparent);
   }
 
   .preset-panel > span {
@@ -1006,14 +1032,38 @@
   }
 
   .advanced-filters > summary {
-    min-height: 44px;
+    list-style: none;
+    cursor: pointer;
+    min-height: 40px;
     display: inline-flex;
     align-items: center;
+    gap: 0.45rem;
+    padding: 0 0.2rem;
     color: var(--color-accent);
-    font-size: 0.84rem;
+    font-size: 0.78rem;
     font-weight: 900;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+  }
+
+  .advanced-filters > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .advanced-filters > summary::before {
+    content: "+";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.1rem;
+    height: 1.1rem;
+    border: 2px solid currentColor;
+    font-size: 0.85rem;
+    line-height: 1;
+  }
+
+  .advanced-filters[open] > summary::before {
+    content: "−";
   }
 
   .advanced-grid {
@@ -1024,7 +1074,7 @@
 
   .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
     gap: clamp(0.9rem, 2vw, 1.25rem);
   }
 
@@ -1057,6 +1107,15 @@
     align-items: start;
   }
 
+  .card-head > button {
+    flex-shrink: 0;
+    min-height: 32px;
+    padding: 0 0.7rem;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    border-width: 1.5px;
+  }
+
   .card-meta {
     display: flex;
     flex-wrap: wrap;
@@ -1075,50 +1134,69 @@
   }
 
   .card-head h3 {
-    max-width: 17ch;
-    margin: 0.65rem 0 0.55rem;
-    font-size: clamp(1.65rem, 2.8vw, 2.35rem);
-    line-height: 0.94;
+    max-width: 20ch;
+    margin: 0.55rem 0 0.5rem;
+    font-size: clamp(1.45rem, 2.2vw, 1.9rem);
+    line-height: 1;
     text-transform: uppercase;
     text-wrap: balance;
   }
 
+  .card-head > div:first-child > p {
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+
   .metric-strip {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0;
+    margin: 0;
     border: 2px solid var(--color-text);
   }
 
-  .metric-strip span {
-    min-height: 44px;
-    border: 0;
+  .metric-strip > div {
+    display: grid;
+    gap: 0.25rem;
+    align-content: start;
+    padding: 0.6rem 0.75rem;
     border-bottom: 1px solid color-mix(in srgb, var(--color-text) 30%, transparent);
-    padding: 0.55rem 0.65rem;
-    font-size: 0.88rem;
-    font-weight: 800;
-    line-height: 1.25;
   }
 
-  .metric-strip span:nth-child(odd) {
+  .metric-strip > div:nth-child(odd) {
     border-right: 1px solid color-mix(in srgb, var(--color-text) 30%, transparent);
   }
 
-  .metric-strip span:nth-last-child(-n + 2) {
+  .metric-strip > div:nth-last-child(-n + 2) {
     border-bottom: 0;
+  }
+
+  .metric-strip dt {
+    color: var(--color-accent);
+    font-size: 0.7rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .metric-strip dd {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.25;
   }
 
   .kid-note {
     display: grid;
-    gap: 0.3rem;
-    padding: 0.65rem 0.75rem;
-    border: 2px solid color-mix(in srgb, var(--color-accent) 70%, var(--color-text));
+    gap: 0.35rem;
+    padding: 0.75rem 0.85rem;
+    border-left: 4px solid var(--color-accent);
     background: color-mix(in srgb, var(--color-accent) 10%, transparent);
   }
 
   .kid-note span {
     color: var(--color-accent);
-    font-size: 0.74rem;
+    font-size: 0.7rem;
     font-weight: 900;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -1126,34 +1204,54 @@
 
   .kid-note strong {
     font-size: 1rem;
-    line-height: 1.2;
+    font-weight: 700;
+    line-height: 1.35;
   }
 
   .score-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.65rem;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    border: 2px solid var(--color-text);
   }
 
   .score {
     display: grid;
-    gap: 0.3rem;
-    padding: 0.65rem;
-    background: color-mix(in srgb, var(--color-text) 7%, transparent);
+    gap: 0.15rem;
+    align-content: center;
+    justify-items: center;
+    padding: 0.7rem 0.4rem;
+    text-align: center;
+    border-right: 1px solid color-mix(in srgb, var(--color-text) 25%, transparent);
   }
 
-  .score div {
-    display: flex;
-    justify-content: space-between;
-    gap: 0.5rem;
-    font-size: 0.85rem;
+  .score:last-child {
+    border-right: 0;
+  }
+
+  .score strong {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1;
     font-variant-numeric: tabular-nums;
+    color: var(--color-text);
   }
 
-  meter {
-    width: 100%;
-    height: 0.8rem;
-    accent-color: var(--color-accent);
+  .score[data-tier="high"] strong {
+    color: var(--color-accent);
+  }
+
+  .score[data-tier="low"] strong {
+    opacity: 0.55;
+  }
+
+  .score span {
+    color: var(--color-text);
+    font-size: 0.65rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
   }
 
   dd {
@@ -1163,20 +1261,25 @@
   .quick-read {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.65rem;
+    gap: 0.5rem;
   }
 
   .quick-read div {
     display: grid;
-    gap: 0.3rem;
-    min-height: 5rem;
-    padding: 0.7rem;
+    gap: 0.35rem;
+    align-content: start;
+    padding: 0.7rem 0.8rem;
     background: color-mix(in srgb, var(--color-text) 7%, transparent);
+    border-left: 3px solid color-mix(in srgb, var(--color-text) 35%, transparent);
+  }
+
+  .quick-read div:first-child {
+    border-left-color: var(--color-accent);
   }
 
   .quick-read span {
     color: var(--color-accent);
-    font-size: 0.74rem;
+    font-size: 0.7rem;
     font-weight: 900;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -1184,8 +1287,9 @@
 
   .quick-read strong {
     align-self: start;
-    font-size: 0.98rem;
-    line-height: 1.22;
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.35;
   }
 
   h4 {
@@ -1205,10 +1309,37 @@
   }
 
   summary {
-    min-height: 44px;
+    cursor: pointer;
+    list-style: none;
+    min-height: 32px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
     color: var(--color-accent);
+    font-size: 0.74rem;
     font-weight: 900;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary::before {
+    content: "+";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    border: 1.5px solid currentColor;
+    font-size: 0.8rem;
+    line-height: 1;
+  }
+
+  details[open] > summary::before {
+    content: "−";
   }
 
   .sources a {
@@ -1248,13 +1379,29 @@
   }
 
   .empty-state {
-    padding: 2rem;
+    display: grid;
+    gap: 0.75rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 2px solid var(--color-text);
+    background: color-mix(in srgb, var(--color-background) 96%, var(--color-text));
   }
 
   .empty-state h2 {
-    margin: 0 0 0.5rem;
+    margin: 0;
     color: var(--color-accent);
+    font-size: clamp(1.25rem, 2vw, 1.6rem);
     text-transform: uppercase;
+  }
+
+  .empty-state p {
+    margin: 0;
+    max-width: 60ch;
+    opacity: 0.86;
+  }
+
+  .empty-state button {
+    justify-self: start;
+    padding: 0 1rem;
   }
 
   @media (max-width: 900px) {
@@ -1279,8 +1426,10 @@
       grid-template-columns: 1fr;
     }
 
-    .metric-strip,
-    .score-grid,
+    .score-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .filter-grid,
     .quick-read {
       grid-template-columns: 1fr;
@@ -1290,18 +1439,6 @@
     .view-tabs button,
     .preset-actions button {
       flex: 1 1 100%;
-    }
-
-    .metric-strip span:nth-child(odd) {
-      border-right: 0;
-    }
-
-    .metric-strip span:nth-last-child(-n + 2) {
-      border-bottom: 1px solid color-mix(in srgb, var(--color-text) 30%, transparent);
-    }
-
-    .metric-strip span:last-child {
-      border-bottom: 0;
     }
   }
 </style>

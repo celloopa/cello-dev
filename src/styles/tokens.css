@@ -1,0 +1,106 @@
+/*
+  Cello Design System Tokens
+  Product designer portfolio with technical depth: editorial, geometric, tactile.
+*/
+:root {
+  /* Primitives: color */
+  --ds-color-ink-950: #001a11;
+  --ds-color-ink-900: #05271b;
+  --ds-color-ink-800: #0c3a29;
+  --ds-color-paper-50: #fff8ed;
+  --ds-color-paper-100: #f3ede2;
+  --ds-color-paper-200: #e0e0e0;
+  --ds-color-earth-500: #887850;
+  --ds-color-earth-600: #6f613e;
+  --ds-color-earth-400: #a89762;
+  --ds-color-signal-500: #00bc44;
+  --ds-color-signal-400: #31df70;
+  --ds-color-blueprint-500: #42a5ff;
+  --ds-color-coral-500: #ff6b4a;
+
+  /* Primitives: typography */
+  --ds-font-family-mono: "GeistMono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  --ds-font-weight-regular: 400;
+  --ds-font-weight-medium: 500;
+  --ds-font-weight-semibold: 600;
+  --ds-font-weight-bold: 700;
+  --ds-font-weight-black: 900;
+  --ds-letter-tight: -0.04em;
+  --ds-letter-normal: 0;
+  --ds-letter-wide: 0.05em;
+  --ds-letter-wider: 0.1em;
+  --ds-leading-none: 0.95;
+  --ds-leading-tight: 1.1;
+  --ds-leading-copy: 1.7;
+
+  /* Fluid type scale */
+  --ds-text-xs: 0.7rem;
+  --ds-text-sm: 0.85rem;
+  --ds-text-base: 1rem;
+  --ds-text-md: 1.1rem;
+  --ds-text-lg: clamp(1.2rem, 2vw, 1.5rem);
+  --ds-text-xl: clamp(1.5rem, 3vw, 2rem);
+  --ds-text-2xl: clamp(2rem, 5vw, 3rem);
+  --ds-text-display: clamp(3.5rem, 10vw, 6rem);
+  --ds-text-hero: clamp(4.5rem, 10vw, 10rem);
+
+  /* Space */
+  --ds-space-0: 0;
+  --ds-space-1: 0.25rem;
+  --ds-space-2: 0.5rem;
+  --ds-space-3: 0.75rem;
+  --ds-space-4: 1rem;
+  --ds-space-5: 1.25rem;
+  --ds-space-6: 1.5rem;
+  --ds-space-8: 2rem;
+  --ds-space-10: 2.5rem;
+  --ds-space-12: 3rem;
+  --ds-space-16: 4rem;
+  --ds-space-24: 6rem;
+
+  /* Layout */
+  --ds-container: 1100px;
+  --ds-container-wide: 1500px;
+  --ds-page-gutter: clamp(1rem, 4vw, 2rem);
+  --ds-touch-target: 44px;
+
+  /* Shape + stroke */
+  --ds-radius-none: 0;
+  --ds-stroke-sm: 1px;
+  --ds-stroke-md: 2px;
+  --ds-stroke-lg: 3px;
+  --ds-stroke-xl: 4px;
+  --ds-offset-shadow: 10px;
+
+  /* Motion */
+  --ds-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ds-ease-emphasized: cubic-bezier(0.25, 1, 0.5, 1);
+  --ds-duration-fast: 180ms;
+  --ds-duration-base: 300ms;
+  --ds-duration-slow: 720ms;
+
+  /* Semantic aliases */
+  --surface-base: var(--ds-color-ink-950);
+  --surface-raised: rgba(224, 224, 224, 0.035);
+  --surface-muted: rgba(224, 224, 224, 0.08);
+  --text-primary: var(--ds-color-paper-200);
+  --text-muted: rgba(224, 224, 224, 0.82);
+  --border-strong: var(--text-primary);
+  --border-muted: rgba(224, 224, 224, 0.18);
+  --accent-primary: var(--ds-color-signal-500);
+  --accent-secondary: var(--ds-color-earth-400);
+  --accent-blueprint: var(--ds-color-blueprint-500);
+  --accent-warning: var(--ds-color-coral-500);
+}
+
+:root[data-theme="light"] {
+  --surface-base: var(--ds-color-paper-200);
+  --surface-raised: rgba(0, 26, 17, 0.035);
+  --surface-muted: rgba(0, 26, 17, 0.08);
+  --text-primary: var(--ds-color-ink-950);
+  --text-muted: rgba(0, 26, 17, 0.78);
+  --border-strong: var(--text-primary);
+  --border-muted: rgba(0, 26, 17, 0.18);
+  --accent-primary: var(--ds-color-earth-600);
+  --accent-secondary: var(--ds-color-signal-500);
+}
