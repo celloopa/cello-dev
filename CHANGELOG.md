@@ -12,6 +12,7 @@ All notable changes to this portfolio site should be documented here.
 - Added canonical URL support to the shared layout metadata and linked the new guide from `/lab`.
 - Refined the printer guide UI so comparison cards emphasize rank, price, ease, build size, evidence quality, color workflow, and one short kid-context note.
 - Removed the large toddler-baseline section and posture-heavy filters in favor of a compact safety disclaimer and actual buying differentiators.
+- Refreshed the printer data around the May 2026 Top 30 research ranking, adding newer large-format and multicolor candidates, updated prices, build volumes, color mechanisms, purge-waste posture, and watchlist/excluded states.
 
 ### Validation
 
