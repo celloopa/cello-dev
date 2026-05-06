@@ -26,6 +26,7 @@ interface Props {
   title?: string;
   description?: string;
   image?: string;
+  canonicalPath?: string;
 }
 
 const siteName =
@@ -34,9 +35,17 @@ const siteDescription =
   "Product designer focused on design systems, technical prototyping, frontend-aware UX, and design-dev collaboration.";
 const siteImage = "/images/thumbnail.png";
 
-const { title = siteName, description = siteDescription, image } = Astro.props;
+const {
+  title = siteName,
+  description = siteDescription,
+  image,
+  canonicalPath,
+} = Astro.props;
 const { url, email, profiles } = basics;
-const ogImage = image ? `${url}${image}` : `${url}${siteImage}`;
+const canonicalUrl = canonicalPath ? new URL(canonicalPath, url).toString() : url;
+const ogImage = image
+  ? new URL(image, url).toString()
+  : new URL(siteImage, url).toString();
 const currentYear = new Date().getFullYear();
 
 const SOCIAL_ICONS: SocialIcon = {
@@ -54,6 +63,7 @@ const SOCIAL_ICONS: SocialIcon = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#001A11" />
     <meta name="color-scheme" content="dark light" />
+    <link rel="canonical" href={canonicalUrl} />
     <link
       rel="icon"
       type="image/svg+xml"
@@ -81,7 +91,7 @@ const SOCIAL_ICONS: SocialIcon = {
     </script>
 
     <!-- Open Graph -->
-    <meta property="og:url" content={url} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:title" content={title} />
@@ -91,7 +101,7 @@ const SOCIAL_ICONS: SocialIcon = {
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta property="twitter:domain" content={url.split("//")[1] ?? ""} />
-    <meta property="twitter:url" content={url} />
+    <meta property="twitter:url" content={canonicalUrl} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />

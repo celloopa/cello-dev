@@ -1,0 +1,319 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import PrinterToySafetyDatabase from "@/components/svelte/PrinterToySafetyDatabase.svelte";
+import {
+  printerCandidates,
+  printerToySafetySources,
+  safetySourceIds,
+} from "@/data/printerToySafety";
+import "@/styles/colors.css";
+
+const safetySources = printerToySafetySources.filter((source) =>
+  safetySourceIds.includes(source.id),
+);
+const productSources = printerToySafetySources.filter(
+  (source) => !safetySourceIds.includes(source.id),
+);
+---
+
+<Layout
+  title="3D Printer Toy Safety Database - Cello Lab"
+  description="A parent-focused database of automatic multicolor FDM printers, filtered by under-3 mouth risk, choking risk, enclosure, color count, purge waste, price, and toy-printing value."
+  image="/images/thumbnail.png"
+  canonicalPath="/lab/3d-printer-toy-safety"
+>
+  <section class="hero">
+    <p class="eyebrow">Cello Lab · Buying Decision Tool</p>
+    <div class="hero-grid">
+      <div>
+        <h1>Will this printer make safer toys?</h1>
+        <p class="intro">
+          A comprehensive, filterable database for automatic multicolor FDM
+          printers, weighted around toddlers who might mouth, bite, break, or
+          swallow printed parts.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="database-section">
+    <PrinterToySafetyDatabase
+      client:load
+      printers={printerCandidates}
+      sources={printerToySafetySources}
+    />
+  </section>
+
+  <section class="baseline" aria-label="Safety baseline">
+    <article class="baseline-lede">
+      <p class="eyebrow">Under-3 baseline</p>
+      <h2>Food-safe is the wrong question.</h2>
+      <p>
+        For toddlers, the practical risks are choking, aspiration, sharp or
+        broken fragments, and unknown additives or coatings. No consumer printer
+        here makes a toy automatically safe to mouth.
+      </p>
+      <a href="tel:18002221222">Poison Control: 1-800-222-1222</a>
+    </article>
+    <article>
+      <h2>Small parts are the hard no.</h2>
+      <p>
+        If it can break off, fit in a toddler's mouth, or become a dropped purge
+        scrap, treat it as a choking and aspiration risk.
+      </p>
+    </article>
+    <article>
+      <h2>Material is not certification.</h2>
+      <p>
+        PLA and PETG are the practical starting points, but pigment, additives,
+        coatings, layer lines, and post-processing still matter.
+      </p>
+    </article>
+    <article>
+      <h2>Supervision beats filament marketing.</h2>
+      <p>
+        The safest household workflow keeps kids away from the printer, scraps,
+        heat, moving parts, and small finished pieces.
+      </p>
+    </article>
+  </section>
+
+  <section class="methodology">
+    <div>
+      <p class="eyebrow">Methodology</p>
+      <h2>Workflow safety, not toy certification.</h2>
+      <p>
+        Scores are buying guidance, not medical, legal, or product-safety
+        certification. Enclosures help with household access, hot parts, moving
+        assemblies, and emissions, but they do not make printed toys safe to
+        mouth. Lower purge waste matters because purge scraps are small,
+        colorful, and easy to drop.
+      </p>
+    </div>
+    <div>
+      <p>
+        Independent toolheads and dual nozzles can reduce support cleanup or
+        purge waste, but they cost more and can add maintenance. AMS/CFS/ACE/MMU
+        systems are usually easier to buy and use, but they can create a lot of
+        small waste during color swaps.
+      </p>
+    </div>
+  </section>
+
+  <section class="sources">
+    <div>
+      <h2>Safety Sources</h2>
+      <ul>
+        {
+          safetySources.map((source) => (
+            <li>
+              <a href={source.url} target="_blank" rel="noreferrer">
+                {source.publisher}: {source.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <div>
+      <h2>Printer Sources</h2>
+      <ul>
+        {
+          productSources.map((source) => (
+            <li>
+              <a href={source.url} target="_blank" rel="noreferrer">
+                {source.publisher}: {source.title}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero,
+  .baseline,
+  .database-section,
+  .methodology,
+  .sources {
+    --page-pad: clamp(1rem, 4vw, 2rem);
+    max-width: 1240px;
+    margin: 0 auto clamp(3rem, 7vw, 6rem);
+    padding-inline: var(--page-pad);
+  }
+
+  .hero {
+    position: relative;
+    padding-top: clamp(1.25rem, 4vw, 3.5rem);
+    padding-bottom: clamp(1rem, 3vw, 2rem);
+  }
+
+  .hero::after {
+    content: "";
+    position: absolute;
+    right: var(--page-pad);
+    bottom: 0;
+    width: min(42vw, 520px);
+    height: 12px;
+    background: var(--color-accent);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2rem;
+    margin: 0 0 1.25rem;
+    padding: 0 0.55rem;
+    background: var(--color-accent);
+    color: var(--color-background);
+    border: 2px solid var(--color-accent);
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .hero-grid {
+    display: grid;
+    max-width: 980px;
+  }
+
+  h1 {
+    max-width: 12ch;
+    margin: 0;
+    font-size: clamp(2.6rem, 7.5vw, 6.5rem);
+    line-height: 0.9;
+    text-transform: uppercase;
+  }
+
+  .intro {
+    max-width: 58ch;
+    margin-top: clamp(0.75rem, 2vw, 1.25rem);
+    color: var(--color-text);
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    opacity: 0.86;
+  }
+
+  .baseline {
+    display: grid;
+    grid-template-columns: 1.25fr 0.85fr 0.85fr;
+    gap: clamp(0.75rem, 2vw, 1.25rem);
+  }
+
+  .baseline article {
+    border: 3px solid var(--color-text);
+    padding: clamp(1rem, 2.5vw, 1.35rem);
+    background: color-mix(in srgb, var(--color-background) 94%, var(--color-text));
+  }
+
+  .baseline-lede {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(220px, 0.7fr) minmax(280px, 1.3fr) auto;
+    gap: clamp(1rem, 3vw, 2rem);
+    align-items: center;
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        color-mix(in srgb, var(--color-accent) 18%, transparent) 0 10px,
+        transparent 10px 20px
+      ),
+      color-mix(in srgb, var(--color-background) 92%, var(--color-text));
+  }
+
+  .baseline-lede .eyebrow {
+    margin: 0;
+  }
+
+  .baseline-lede h2 {
+    margin: 0;
+  }
+
+  .baseline-lede a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--color-accent);
+    padding: 0.75rem 1rem;
+    color: var(--color-accent);
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .baseline article:nth-child(2) {
+    background: var(--color-accent);
+    color: var(--color-background);
+  }
+
+  .baseline article:nth-child(2) h2 {
+    color: var(--color-background);
+  }
+
+  .methodology,
+  .sources {
+    border-top: 3px solid var(--color-text);
+    padding-top: clamp(1rem, 3vw, 2rem);
+  }
+
+  .baseline h2,
+  .methodology h2,
+  .sources h2 {
+    margin: 0 0 0.75rem;
+    color: var(--color-accent);
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    text-transform: uppercase;
+  }
+
+  .baseline p,
+  .methodology p {
+    margin: 0;
+    opacity: 0.86;
+  }
+
+  .methodology,
+  .sources {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(1.5rem, 5vw, 4rem);
+  }
+
+  .sources ul {
+    display: grid;
+    gap: 0.65rem;
+    padding-left: 1.1rem;
+    list-style: square;
+  }
+
+  .sources a {
+    color: var(--color-text);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media (max-width: 900px) {
+    .hero-grid,
+    .baseline,
+    .baseline-lede,
+    .methodology,
+    .sources {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .hero,
+    .baseline,
+    .database-section,
+    .methodology,
+    .sources {
+      padding-inline: 1rem;
+    }
+
+    .decision {
+      box-shadow: 8px 8px 0 var(--color-text);
+    }
+  }
+</style>
