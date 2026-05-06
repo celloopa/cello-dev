@@ -111,6 +111,8 @@
   let selectedStatuses = [...defaultStatuses];
   let selectedPriceTiers = [...defaultPriceTiers];
   let selectedMechanisms: ColorMechanism[] = [];
+  let countryFilter = "any";
+  let trustFilter = "any";
   let priceMax = "2500";
   let enclosureFilter = "hide-open";
   let includedColorMin = 0;
@@ -124,6 +126,15 @@
   let activeSourcePrinterId: string | null = null;
   let mounted = false;
 
+  const trustLabels = {
+    "open-repairable": "Open / repairable",
+    "closed-appliance": "Closed appliance",
+    "value-chinese-ecosystem": "Value Chinese ecosystem",
+    "pro-mixed-origin": "Pro / mixed-origin",
+  };
+
+  $: countryOptions = Array.from(new Set(printers.map((printer) => printer.countryOfOrigin))).sort();
+
   $: filteredPrinters = sortPrinters(
     printers.filter((printer) => {
       const maxPrice = getComparablePrice(printer);
@@ -132,6 +143,8 @@
       const searchText = [
         printer.name,
         printer.brand,
+        printer.countryOfOrigin,
+        trustLabels[printer.trustPosture],
         printer.verdict,
         printer.colorCapability.includedColorLabel,
         printer.colorCapability.maxExpandableLabel,
@@ -144,6 +157,8 @@
         selectedPriceTiers.includes(printer.priceTier) &&
         (!selectedMechanisms.length ||
           selectedMechanisms.includes(printer.colorCapability.mechanism)) &&
+        (countryFilter === "any" || printer.countryOfOrigin === countryFilter) &&
+        (trustFilter === "any" || printer.trustPosture === trustFilter) &&
         (priceMax === "any" || (maxPrice !== null && maxPrice <= Number(priceMax))) &&
         (enclosureFilter === "any" ||
           (enclosureFilter === "enclosed" && printer.enclosure === "enclosed") ||
@@ -269,6 +284,8 @@
     selectedStatuses = [...defaultStatuses];
     selectedPriceTiers = [...defaultPriceTiers];
     selectedMechanisms = [];
+    countryFilter = "any";
+    trustFilter = "any";
     priceMax = "2500";
     enclosureFilter = "hide-open";
     includedColorMin = 0;
@@ -287,6 +304,8 @@
       selectedStatuses = ["recommended", "viable", "caution"];
       selectedPriceTiers = ["budget", "mainstream", "stretch", "reach", "pro"];
       selectedMechanisms = [];
+      countryFilter = "any";
+      trustFilter = "any";
       priceMax = "2500";
       enclosureFilter = "hide-open";
       includedColorMin = 4;
@@ -303,6 +322,8 @@
       selectedStatuses = ["recommended", "viable", "caution"];
       selectedPriceTiers = ["budget", "mainstream"];
       selectedMechanisms = [];
+      countryFilter = "any";
+      trustFilter = "any";
       priceMax = "1000";
       enclosureFilter = "any";
       includedColorMin = 4;
@@ -319,6 +340,8 @@
       selectedStatuses = ["recommended", "viable", "watchlist"];
       selectedPriceTiers = ["mainstream", "stretch", "reach", "pro"];
       selectedMechanisms = ["dual-nozzle-plus-filament-switcher", "independent-toolheads", "toolchanger"];
+      countryFilter = "any";
+      trustFilter = "any";
       priceMax = "any";
       enclosureFilter = "any";
       includedColorMin = 0;
@@ -334,6 +357,8 @@
     selectedStatuses = [...statusOptions];
     selectedPriceTiers = [...priceTierOptions];
     selectedMechanisms = [];
+    countryFilter = "any";
+    trustFilter = "any";
     priceMax = "any";
     enclosureFilter = "any";
     includedColorMin = 0;
@@ -388,6 +413,8 @@
     params.set("view", viewMode);
     params.set("status", selectedStatuses.join(","));
     params.set("tier", selectedPriceTiers.join(","));
+    params.set("country", countryFilter);
+    params.set("trust", trustFilter);
     params.set("price", priceMax);
     params.set("enclosure", enclosureFilter);
     params.set("includedColors", String(includedColorMin));
@@ -431,6 +458,10 @@
     selectedPriceTiers = parseList(params.get("tier"), priceTierOptions, defaultPriceTiers);
     selectedMechanisms = parseList(params.get("mechanism"), mechanismOptions, []);
 
+    const paramCountry = params.get("country");
+    countryFilter = paramCountry && (paramCountry === "any" || countryOptions.includes(paramCountry)) ? paramCountry : countryFilter;
+    const paramTrust = params.get("trust");
+    trustFilter = paramTrust && (paramTrust === "any" || Object.keys(trustLabels).includes(paramTrust)) ? paramTrust : trustFilter;
     priceMax = params.get("price") ?? priceMax;
     enclosureFilter = params.get("enclosure") ?? enclosureFilter;
     includedColorMin = Number(params.get("includedColors") ?? includedColorMin);
@@ -519,6 +550,26 @@
             <option value="lowWasteColor">Lowest purge waste</option>
             <option value="reliabilityConfidence">Best evidence quality</option>
             <option value="toyValue">Best toy value</option>
+          </select>
+        </label>
+
+        <label>
+          Country of origin
+          <select bind:value={countryFilter}>
+            <option value="any">Any</option>
+            {#each countryOptions as country}
+              <option value={country}>{country}</option>
+            {/each}
+          </select>
+        </label>
+
+        <label>
+          Trust posture
+          <select bind:value={trustFilter}>
+            <option value="any">Any</option>
+            {#each Object.entries(trustLabels) as [value, label]}
+              <option value={value}>{label}</option>
+            {/each}
           </select>
         </label>
 
@@ -670,6 +721,8 @@
           <tr>
             <th>Printer</th>
             <th>Status</th>
+            <th>Country</th>
+            <th>Trust posture</th>
             <th>Price</th>
             <th>Build volume</th>
             <th>Included colors</th>
@@ -686,6 +739,8 @@
             <tr>
               <td><strong>{printer.name}</strong></td>
               <td>{statusLabels[printer.status]}</td>
+              <td>{printer.countryOfOrigin}</td>
+              <td>{trustLabels[printer.trustPosture]}</td>
               <td>{printer.priceLabel}</td>
               <td>{printer.buildVolume.label}</td>
               <td>{printer.colorCapability.includedColorLabel}</td>
@@ -711,6 +766,8 @@
               <div class="card-meta">
                 <span class="rank">#{index + 1}</span>
                 <span class="price-pill">{printer.priceLabel}</span>
+                <span class="origin-pill">{printer.countryOfOrigin}</span>
+                <span class="trust-pill">{trustLabels[printer.trustPosture]}</span>
               </div>
               <h3>{printer.name}</h3>
               <p>{printer.verdict}</p>
@@ -823,6 +880,8 @@
           </tr>
         </thead>
         <tbody>
+          <tr><th>Country</th>{#each printers as printer}<td>{printer.countryOfOrigin}</td>{/each}</tr>
+          <tr><th>Trust posture</th>{#each printers as printer}<td>{trustLabels[printer.trustPosture]}</td>{/each}</tr>
           <tr><th>Price</th>{#each printers as printer}<td>{printer.priceLabel}</td>{/each}</tr>
           <tr><th>Build volume</th>{#each printers as printer}<td>{printer.buildVolume.label}</td>{/each}</tr>
           <tr><th>Included colors</th>{#each printers as printer}<td>{printer.colorCapability.includedColorLabel}</td>{/each}</tr>
@@ -1145,14 +1204,31 @@
     align-items: center;
   }
 
-  .price-pill {
+  .price-pill,
+  .origin-pill,
+  .trust-pill {
     display: inline-flex;
     align-items: center;
     min-height: 1.7rem;
     padding: 0 0.5rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .price-pill {
     background: var(--color-accent);
     color: var(--color-background);
-    font-variant-numeric: tabular-nums;
+  }
+
+  .origin-pill,
+  .trust-pill {
+    border: 1.5px solid color-mix(in srgb, var(--color-text) 35%, transparent);
+    color: var(--color-text);
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .trust-pill {
+    background: color-mix(in srgb, var(--color-text) 6%, transparent);
   }
 
   .card-head h3 {

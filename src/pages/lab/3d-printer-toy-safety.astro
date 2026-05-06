@@ -44,6 +44,53 @@ const productSources = printerToySafetySources.filter(
     />
   </section>
 
+  <section class="trust-guide" aria-labelledby="trust-guide-title">
+    <div>
+      <p class="eyebrow">Trust Posture</p>
+      <h2 id="trust-guide-title">What these labels mean.</h2>
+      <p>
+        Country alone is too blunt. Trust posture is a practical buying lens for
+        platform risk: repairability, cloud dependence, ecosystem lock-in,
+        support maturity, and how painful ownership might become if policies or
+        parts availability change.
+      </p>
+    </div>
+    <div class="trust-grid">
+      <article>
+        <h3>Open / repairable</h3>
+        <p>
+          More owner-serviceable, documented, and community-repairable. Usually
+          a better fit if long-term parts, firmware transparency, and local
+          control matter more than lowest price or maximum automation.
+        </p>
+      </article>
+      <article>
+        <h3>Closed appliance</h3>
+        <p>
+          Polished, integrated, and easy to use, but more dependent on the
+          vendor's software, hardware ecosystem, cloud/LAN policy, and future
+          product decisions.
+        </p>
+      </article>
+      <article>
+        <h3>Value Chinese ecosystem</h3>
+        <p>
+          Strong price/performance and often the most aggressive specs, with
+          more variance in support, firmware polish, privacy comfort,
+          documentation, and long-term reliability evidence.
+        </p>
+      </article>
+      <article>
+        <h3>Pro / mixed-origin</h3>
+        <p>
+          More professional or globally distributed company footprint. Often
+          stronger support posture, but pricing and workflow may be less
+          attractive for casual household toy printing.
+        </p>
+      </article>
+    </div>
+  </section>
+
   <section class="methodology">
     <div>
       <p class="eyebrow">Disclaimer</p>
@@ -98,6 +145,7 @@ const productSources = printerToySafetySources.filter(
 <style>
   .hero,
   .database-section,
+  .trust-guide,
   .methodology,
   .sources {
     --page-pad: clamp(1rem, 4vw, 2rem);
@@ -106,6 +154,7 @@ const productSources = printerToySafetySources.filter(
   }
 
   .hero,
+  .trust-guide,
   .methodology,
   .sources {
     max-width: 1100px;
@@ -135,7 +184,7 @@ const productSources = printerToySafetySources.filter(
     display: inline-flex;
     align-items: center;
     min-height: 2rem;
-    margin: 0 0 1.25rem;
+    margin: 0 0 clamp(1.35rem, 2.5vw, 2rem);
     padding: 0 0.55rem;
     background: var(--color-accent);
     color: var(--color-background);
@@ -167,20 +216,29 @@ const productSources = printerToySafetySources.filter(
     opacity: 0.86;
   }
 
+  .trust-guide,
   .methodology,
   .sources {
     border-top: 3px solid var(--color-text);
     padding-top: clamp(1rem, 3vw, 2rem);
   }
 
+  .trust-guide h2,
   .methodology h2,
   .sources h2 {
     margin: 0 0 0.75rem;
     color: var(--color-accent);
     font-size: clamp(1.25rem, 3vw, 2rem);
+    line-height: 1;
     text-transform: uppercase;
   }
 
+  .trust-guide h2 {
+    max-width: 16ch;
+    font-size: clamp(2rem, 4.6vw, 4rem);
+  }
+
+  .trust-guide p,
   .methodology p {
     margin: 0;
     opacity: 0.86;
@@ -191,6 +249,74 @@ const productSources = printerToySafetySources.filter(
     display: grid;
     grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
     gap: clamp(1.5rem, 5vw, 4rem);
+  }
+
+  .methodology {
+    align-items: start;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border: 2px solid var(--color-text);
+    border-left: clamp(0.5rem, 1.5vw, 0.9rem) solid var(--color-accent);
+    background: color-mix(in srgb, var(--color-accent) 7%, transparent);
+  }
+
+  .methodology .eyebrow,
+  .trust-guide .eyebrow {
+    margin-bottom: clamp(1.25rem, 2.2vw, 1.75rem);
+  }
+
+  .methodology > div:last-child {
+    align-self: end;
+    max-width: 58ch;
+    padding-top: 2.85rem;
+  }
+
+  .trust-guide {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  .trust-guide > div:first-child {
+    max-width: 72ch;
+  }
+
+  .trust-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+    gap: 0;
+    border: 2px solid var(--color-text);
+    background: color-mix(in srgb, var(--color-background) 94%, var(--color-text));
+  }
+
+  .trust-grid article {
+    display: grid;
+    align-content: start;
+    gap: 0.55rem;
+    min-height: 12rem;
+    padding: clamp(1rem, 2vw, 1.35rem);
+    border-right: 1px solid color-mix(in srgb, var(--color-text) 35%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-text) 35%, transparent);
+  }
+
+  .trust-grid article:nth-child(4n) {
+    border-right: 0;
+  }
+
+  .trust-grid h3 {
+    max-width: 16ch;
+    margin: 0;
+    color: var(--color-accent);
+    font-size: clamp(0.9rem, 1.6vw, 1rem);
+    line-height: 1.05;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .trust-grid p {
+    max-width: 34ch;
+    font-size: clamp(0.92rem, 1.3vw, 1rem);
+    line-height: 1.5;
+    opacity: 0.82;
   }
 
   .sources ul {
@@ -208,6 +334,7 @@ const productSources = printerToySafetySources.filter(
 
   @media (max-width: 900px) {
     .hero-grid,
+    .trust-guide,
     .methodology,
     .sources {
       grid-template-columns: 1fr;
@@ -217,10 +344,18 @@ const productSources = printerToySafetySources.filter(
   @media (max-width: 700px) {
     .hero,
     .database-section,
+    .trust-guide,
     .methodology,
     .sources {
       padding-inline: 1rem;
     }
 
+    .methodology > div:last-child {
+      padding-top: 0;
+    }
+
+    .trust-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
