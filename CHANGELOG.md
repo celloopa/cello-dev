@@ -2,6 +2,15 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-05-08
+
+### Agent Workflow
+
+- Moved Pi/Figma agent workflow helpers out of the portfolio repo and into global Pi extensions so they can be reused across projects.
+- Removed tracked project-local imagegen prompt/result files and the project-local `codex-imagegen` extension from `.pi/`.
+- Ignored future local Pi and generated image artifacts with `.pi/` and `generated/` gitignore entries.
+- Preserved Figma/imagegen workflow guidance globally for reusable bitmap building blocks, named replaceable Figma image layers, clipboard paste fallback, and editable design structure.
+
 ## 2026-05-06
 
 ### Lab
