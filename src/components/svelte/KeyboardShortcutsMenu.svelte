@@ -35,9 +35,7 @@
       shortcuts: [
         { key: "h", label: "Home", action: () => navigate("/") },
         { key: "c", label: "Case Studies", action: () => navigate("/projects") },
-        { key: "v", label: "Visuals", action: () => navigate("/visuals") },
         { key: "r", label: "Resume", action: () => navigate("/resume") },
-        { key: "w", label: "Writing", action: () => navigate("/blog") },
       ],
     },
     {
