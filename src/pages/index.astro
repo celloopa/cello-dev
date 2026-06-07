@@ -3,7 +3,6 @@ import { getCollection } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Section from "@/components/Section.astro";
 import ProjectCard from "@/components/ProjectCard.astro";
-// import VisualsCard from "@/components/VisualsCard.astro"; // Hidden until content is ready
 import { basics } from "@cv";
 import "@/styles/colors.css";
 import Mail from "@/icons/Mail.astro";
@@ -31,11 +30,6 @@ const homeTitle =
 const homeDescription =
   "Product designer focused on design systems, technical prototyping, frontend-aware UX, and design-dev collaboration.";
 
-// Visuals hidden until content is ready
-// const allVisuals = await getCollection("visuals");
-// const featuredVisuals = allVisuals
-// 	.filter((v) => v.data.featured && !v.slug.startsWith("_"))
-// 	.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout title={homeTitle} description={homeDescription}>
@@ -63,8 +57,8 @@ const homeDescription =
       </p>
       <div class="hero-actions" aria-label="Primary actions">
         <a href="/projects" class="cta primary">View Case Studies</a>
-        <a href="/visuals" class="cta-link">
-          <span>Browse Visual Work</span>
+        <a href="/resume" class="cta-link">
+          <span>View Resume</span>
           <svg
             width="20"
             height="20"
@@ -201,63 +195,6 @@ const homeDescription =
       </a>
     </Section>
   </div>
-
-  <div class="section-divider" aria-hidden="true"></div>
-
-  <Section title="More From The Practice">
-    <div class="secondary-paths">
-      <!-- Lab hidden until the implementations feel portfolio-ready. -->
-      <a href="/blog" class="path-card">
-        <span>Writing and Process Notes</span>
-        <p>
-          Notes on product design, technical prototyping, systems thinking, and
-          turning rough ideas into buildable experiences.
-        </p>
-      </a>
-      <a href="/visuals" class="path-card visual-path">
-        <span>Visual Archive</span>
-        <p>
-          Selected branding, packaging, campaign, photography, and visual design
-          work that supports my broader craft background.
-        </p>
-      </a>
-    </div>
-  </Section>
-
-  {
-    /* Visuals section hidden until content is ready
-	{featuredVisuals.length > 0 && (
-		<div class="visuals-section-wrapper">
-			<Section title="Visuals">
-				<div class="bar section-bar"></div>
-			</Section>
-			<div class="featured-carousel">
-				<div class="visuals-grid">
-					{featuredVisuals.map((item, i) => (
-						<VisualsCard
-							title={item.data.title}
-							description={item.data.description}
-							category={item.data.category}
-							image={item.data.image}
-							tags={item.data.tags}
-							slug={item.slug}
-							index={i}
-						/>
-					))}
-				</div>
-			</div>
-			<Section>
-				<a href="/visuals" class="view-all visuals-view-all">
-					<span>All Visuals</span>
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-						<path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-					</svg>
-				</a>
-			</Section>
-		</div>
-	)}
-	*/
-  }
 </Layout>
 
 <script is:inline>
@@ -785,25 +722,6 @@ const homeDescription =
     margin-top: 0;
   }
 
-  .visuals-section-wrapper {
-    margin-top: 8rem;
-  }
-
-  .visuals-section-wrapper :global(.card) {
-    --color-accent: var(--color-visual-accent);
-  }
-
-  .visuals-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(340px, 1fr));
-    gap: 2rem;
-    scroll-snap-align: start;
-  }
-
-  .visuals-grid :global(.card) {
-    animation-name: slideFromLeft;
-  }
-
   .view-all {
     display: inline-flex;
     align-items: center;
@@ -819,51 +737,6 @@ const homeDescription =
 
   .view-all:hover {
     gap: 1rem;
-  }
-
-  .secondary-paths {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    margin-top: 1rem;
-  }
-
-  .path-card {
-    display: block;
-    border: 3px solid var(--color-text);
-    padding: 1rem;
-    color: var(--color-text);
-    background: rgba(var(--color-text-rgb), 0.035);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .path-card:hover,
-  .path-card:focus-visible {
-    border-color: var(--color-accent);
-    transform: translateY(-2px);
-  }
-
-  .path-card span {
-    display: block;
-    margin: 0 0 0.6rem;
-    color: var(--color-accent);
-    font-size: 0.85rem;
-    font-weight: 800;
-    line-height: 1.2;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .path-card p {
-    margin: 0;
-    padding: 0;
-    font-size: 0.9rem;
-    line-height: 1.55;
-    opacity: 0.82;
-  }
-
-  .visual-path {
-    --color-accent: var(--color-visual-accent);
   }
 
   @keyframes slideLeft {
@@ -995,14 +868,6 @@ const homeDescription =
     .proof-strip {
       grid-template-columns: 1fr;
     }
-
-    .secondary-paths {
-      grid-template-columns: 1fr;
-    }
-
-    .visuals-grid {
-      grid-template-columns: repeat(3, minmax(300px, 1fr));
-    }
   }
 
   @media (width <= 1100px) {
@@ -1113,21 +978,15 @@ const homeDescription =
       display: none;
     }
 
-    .projects-section-wrapper :global(h2),
-    .visuals-section-wrapper :global(h2) {
+    .projects-section-wrapper :global(h2) {
       text-align: center;
     }
 
-    .projects-section-wrapper .section-bar,
-    .visuals-section-wrapper .section-bar {
+    .projects-section-wrapper .section-bar {
       margin-inline: auto;
     }
 
     .projects-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .visuals-grid {
       grid-template-columns: 1fr;
     }
   }
