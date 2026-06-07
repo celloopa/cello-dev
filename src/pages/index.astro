@@ -23,7 +23,7 @@ const SOCIAL_ICONS: SocialIcon = {
 
 const allProjects = await getCollection("projects");
 const featuredProjects = allProjects
-  .filter((p) => p.data.featured)
+  .filter((p) => p.data.featured && p.data.complete)
   .sort((a, b) => a.data.order - b.data.order);
 
 const homeTitle =
@@ -63,8 +63,8 @@ const homeDescription =
       </p>
       <div class="hero-actions" aria-label="Primary actions">
         <a href="/projects" class="cta primary">View Case Studies</a>
-        <a href="/lab" class="cta-link">
-          <span>Explore the Lab</span>
+        <a href="/visuals" class="cta-link">
+          <span>Browse Visual Work</span>
           <svg
             width="20"
             height="20"
@@ -206,13 +206,7 @@ const homeDescription =
 
   <Section title="More From The Practice">
     <div class="secondary-paths">
-      <a href="/lab" class="path-card">
-        <span>Lab and Experiments</span>
-        <p>
-          Small prototypes and design-dev experiments for interface patterns,
-          CMS workflows, and frontend implementation details.
-        </p>
-      </a>
+      <!-- Lab hidden until the implementations feel portfolio-ready. -->
       <a href="/blog" class="path-card">
         <span>Writing and Process Notes</span>
         <p>

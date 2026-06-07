@@ -6,7 +6,9 @@ import ProjectCard from "@/components/ProjectCard.astro";
 import "@/styles/colors.css";
 
 const projects = await getCollection("projects");
-const sortedProjects = projects.sort((a, b) => a.data.order - b.data.order);
+const sortedProjects = projects
+	.filter((project) => project.data.complete)
+	.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout

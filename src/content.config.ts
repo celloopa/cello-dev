@@ -26,6 +26,7 @@ const projects = defineCollection({
 		role: z.string(),
 		highlights: z.array(z.string()),
 		featured: z.boolean().default(false),
+		complete: z.boolean().default(false),
 		order: z.number().default(0),
 		// Media galleries - array of gallery sections
 		media: z.array(mediaGallery).optional(),

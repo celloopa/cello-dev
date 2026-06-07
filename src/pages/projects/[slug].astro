@@ -6,10 +6,12 @@ import "@/styles/colors.css";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
-  return projects.map((project) => ({
-    params: { slug: project.slug },
-    props: { project },
-  }));
+  return projects
+    .filter((project) => project.data.complete)
+    .map((project) => ({
+      params: { slug: project.slug },
+      props: { project },
+    }));
 }
 
 const { project } = Astro.props;
@@ -30,9 +32,9 @@ const {
 const isVideo = (src: string) =>
   src?.endsWith(".webm") || src?.endsWith(".mp4");
 const mainIsVideo = isVideo(image || "");
-const allProjects = (await getCollection("projects")).sort(
-  (a, b) => (a.data.order ?? 999) - (b.data.order ?? 999),
-);
+const allProjects = (await getCollection("projects"))
+  .filter((item) => item.data.complete)
+  .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
 const projectIndex = allProjects.findIndex(
   (item) => item.slug === project.slug,
 );
