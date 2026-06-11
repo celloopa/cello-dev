@@ -1,12 +1,14 @@
 @media print {
   @page {
-    margin: 1.5cm;
+    margin: 1cm 1.2cm;
   }
 
   :root {
     --color-background: #fff !important;
     --color-text: #000 !important;
     --color-accent: #444 !important;
+    --color-accent-rgb: 68, 68, 68 !important;
+    --color-text-rgb: 0, 0, 0 !important;
   }
 
   html,
@@ -16,8 +18,8 @@
   }
 
   body {
-    font-size: 10pt;
-    line-height: 1.4;
+    font-size: 9pt;
+    line-height: 1.35;
   }
 
   .site-header,
@@ -31,11 +33,11 @@
 
   .print-header {
     display: block !important;
-    margin: 0 0 0.6cm;
-    padding-bottom: 0.25cm;
+    margin: 0 0 0.3cm;
+    padding-bottom: 0.15cm;
     border-bottom: 1pt solid #444;
     color: #000;
-    font-size: 9pt;
+    font-size: 8pt;
     font-weight: 700;
   }
 
@@ -43,10 +45,34 @@
     padding: 0 !important;
   }
 
-  article,
-  section,
+  /* Compact typography */
+  h1 {
+    font-size: 16pt !important;
+    line-height: 1.1 !important;
+    margin: 0 !important;
+  }
+
+  h2 {
+    font-size: 11pt !important;
+    line-height: 1.2 !important;
+    margin: 0 0 0.1cm !important;
+  }
+
+  h3 {
+    font-size: 10pt !important;
+    line-height: 1.2 !important;
+  }
+
+  h4,
+  h5 {
+    font-size: 9pt !important;
+    margin: 0.05cm 0 !important;
+  }
+
+  p,
   li {
-    break-inside: avoid;
+    font-size: 9pt !important;
+    line-height: 1.35 !important;
   }
 
   h1,
@@ -55,5 +81,87 @@
   h4,
   p {
     color: #000 !important;
+  }
+
+  /* Strip screen spacing */
+  section {
+    margin: 0 auto 0.3cm !important;
+    padding-inline: 0 !important;
+  }
+
+  .section-head {
+    margin-bottom: 0.1cm !important;
+  }
+
+  .section-divider {
+    display: none !important;
+  }
+
+  /* Hide the profile photo and decorative icons in print */
+  .image-frame,
+  figure {
+    display: none !important;
+  }
+
+  /* Entry lists: collapse gaps */
+  section ul {
+    gap: 0.18cm !important;
+    margin: 0.1cm 0 0 !important;
+  }
+
+  section ul li {
+    padding-top: 0.12cm !important;
+  }
+
+  .highlights {
+    gap: 0.04cm !important;
+    margin: 0.08cm 0 0 !important;
+  }
+
+  .highlights li {
+    padding-top: 0 !important;
+  }
+
+  /* Date chips */
+  .date-range,
+  time {
+    border-width: 1pt !important;
+    padding: 0.5pt 3pt !important;
+    font-size: 8pt !important;
+  }
+
+  /* Skill and keyword badges: small text-only chips */
+  section ul li svg {
+    display: none !important;
+  }
+
+  section li[style] {
+    border-width: 1pt !important;
+    padding: 1pt 4pt !important;
+  }
+
+  section li[style] span {
+    font-size: 7.5pt !important;
+  }
+
+  .keywords {
+    gap: 2pt !important;
+    margin: 0.08cm 0 0 !important;
+  }
+
+  .keyword {
+    border-width: 1pt !important;
+    padding: 1pt 4pt !important;
+    font-size: 7.5pt !important;
+  }
+
+  article,
+  li {
+    break-inside: avoid;
+  }
+
+  h2,
+  h3 {
+    break-after: avoid;
   }
 }

@@ -8,7 +8,8 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "sync-projects": "npx tsx scripts/sync-projects.ts"
+    "sync-projects": "npx tsx scripts/sync-projects.ts",
+    "resume:pdf": "node scripts/generate-resume-pdf.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
