@@ -7,8 +7,8 @@ import "@/styles/colors.css";
   {
     work.map(
       ({ name, startDate, endDate, position, summary, highlights, url }) => {
-        const startYear = new Date(startDate).getFullYear();
-        const endYear = endDate ? new Date(endDate).getFullYear() : "Present";
+        const startYear = startDate.slice(0, 4);
+        const endYear = endDate ? endDate.slice(0, 4) : "Present";
         const isSameYear = startYear === endYear;
 
         return (

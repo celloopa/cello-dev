@@ -5,9 +5,8 @@ import { education } from "@cv";
 <ul>
   {
     education.map(({ institution, startDate, endDate, area, minorType }) => {
-      const startYear = new Date(startDate).getFullYear();
-      const endYear =
-        endDate != null ? new Date(endDate).getFullYear() : "Present";
+      const startYear = startDate.slice(0, 4);
+      const endYear = endDate != null ? endDate.slice(0, 4) : "Present";
       const isSameYear = startYear === endYear;
       const years = isSameYear ? startYear : `${startYear} - ${endYear}`;
 
