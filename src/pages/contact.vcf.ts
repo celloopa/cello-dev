@@ -39,7 +39,7 @@ export const GET: APIRoute = () => {
     "N:Rondon;Marcelo;;;",
     `TITLE:${escapeVCardValue(basics.label)}`,
     `EMAIL;TYPE=INTERNET:${escapeVCardValue(basics.email)}`,
-    `TEL;TYPE=CELL:${escapeVCardValue(phone)}`,
+    phone ? `TEL;TYPE=CELL:${escapeVCardValue(phone)}` : "",
     `URL:${escapeVCardValue(basics.url)}`,
     linkedIn ? `URL:${escapeVCardValue(linkedIn)}` : "",
     location ? `ADR;TYPE=WORK:;;;;${escapeVCardValue(location)};;;` : "",

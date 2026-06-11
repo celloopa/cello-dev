@@ -4,15 +4,15 @@
     "label": "Product Designer",
     "image": "https://avatars.githubusercontent.com/u/72777489?s=400&u=1258e88539c515802c5c603559cd7b63c032814c&v=4",
     "email": "cello@cello.design",
-    "phone": "(305) 496-0039",
+    "phone": "",
     "url": "https://cello.design",
-    "summary": "Product designer focused on systems, technical prototypes, and frontend-aware UX. I use code to clarify product behavior, constraints, and handoff details so teams can move from ambiguity to buildable solutions.",
+    "summary": "Product designer focused on design systems, technical prototyping, and frontend-aware UX. I prototype the uncertain parts in code before teams commit to build, so product decisions ship with behavior, constraints, and handoff intent already worked out.",
     "location": {
       "address": "",
       "postalCode": "",
-      "city": "Gainesville",
+      "city": "Portland",
       "countryCode": "US",
-      "region": "Florida"
+      "region": "Oregon"
     },
     "profiles": [
       {
@@ -41,11 +41,10 @@
       "endDate": "",
       "summary": "Asheville, NC (Remote)",
       "highlights": [
-        "Designed and built reusable UI components integrated into WordPress via custom PHP and JavaScript plugins.",
-        "Designed and developed an internal asset-management tool using React, TypeScript, and Tailwind CSS.",
-        "Created a scalable Figma design system to improve brand coherence across web, print, and packaging.",
-        "Collaborated with design, marketing, and operations partners to translate ambiguous needs into shipped product surfaces.",
-        "Used Git workflows with branching, merging, and pull requests to stay close to engineering constraints and delivery practices."
+        "Own product design across web, print, and packaging, anchored by a Figma design system that keeps the brand coherent as the product line grows.",
+        "Designed and built an internal asset-management tool in React, TypeScript, and Tailwind CSS that gives marketing and operations one place to find, manage, and preserve brand assets.",
+        "Design and ship reusable UI components into WordPress through custom PHP and JavaScript plugins, closing the gap between mockups and production.",
+        "Partner with marketing and operations to turn ambiguous requests into scoped, shipped product surfaces."
       ]
     },
     {
@@ -56,44 +55,21 @@
       "endDate": "",
       "summary": "Freelance project",
       "highlights": [
-        "Designed and built a responsive discovery experience with backend-integrated searchable components for VegFests and animal sanctuaries.",
-        "Translated mission, content structure, and UI/UX direction into maintainable React/TypeScript product surfaces."
+        "Designed and built a responsive discovery experience that helps visitors find VegFests and animal sanctuaries through backend-integrated search.",
+        "Translated the organization's mission and content structure into maintainable React and TypeScript product surfaces."
       ]
     },
     {
-      "name": "ADA Compliance Consulting",
-      "position": "Accessibility Designer / Developer",
-      "url": "",
-      "startDate": "2025-12",
-      "endDate": "",
-      "summary": "North Central Florida",
-      "highlights": [
-        "Improved WCAG 2.1 compliance across multiple organizations, with attention to screen-reader behavior, keyboard navigation, and accessible interaction patterns.",
-        "Contracted with River Phoenix Center for Peacebuilding on accessibility and performance improvements."
-      ]
-    },
-    {
-      "name": "Legal Impact For Chickens",
-      "position": "Product Tooling Developer",
-      "url": "",
-      "startDate": "2025-03",
-      "endDate": "2025-04",
-      "summary": "Remote",
-      "highlights": [
-        "Developed secure internal tooling for data-management workflows; handled confidential materials with discretion."
-      ]
-    },
-    {
-      "name": "The Green Phial",
-      "position": "Senior Web Designer / Developer",
-      "url": "https://www.thegreenphial.com",
+      "name": "Cello.Design",
+      "position": "Independent Product Designer",
+      "url": "https://cello.design",
       "startDate": "2022-10",
-      "endDate": "2024-01",
-      "summary": "Remote",
+      "endDate": "",
+      "summary": "Independent product design and accessibility practice. Selected engagements:",
       "highlights": [
-        "Redesigned and maintained a WordPress site using HTML5, CSS3, PHP, and JavaScript.",
-        "Translated UI direction into responsive, accessible front-end implementation; improved performance and SEO.",
-        "Collaborated directly with the brand owner to align site structure, visual direction, and UX goals."
+        "The Green Phial: redesigned and maintained the WordPress storefront, translating brand direction into responsive, accessible front-end implementation with improved performance and SEO.",
+        "Accessibility consulting: improved WCAG 2.1 compliance for multiple organizations, including River Phoenix Center for Peacebuilding, covering screen-reader behavior, keyboard navigation, and performance.",
+        "Legal Impact for Chickens: built secure internal tooling for data-management workflows, handling confidential materials with discretion."
       ]
     },
     {
@@ -104,9 +80,8 @@
       "endDate": "2022-02",
       "summary": "Remote",
       "highlights": [
-        "Collaborated with retail clients to design visually impactful campaign and marketing materials under tight deadlines.",
-        "Incorporated client feedback through fast iteration cycles while preserving quality and delivery timelines.",
-        "Facilitated direct communication with clients to clarify goals, constraints, and final design direction."
+        "Designed campaign and marketing materials for retail clients under tight deadlines.",
+        "Worked directly with clients through fast iteration cycles, clarifying goals and constraints while protecting quality and delivery dates."
       ]
     },
     {
@@ -218,7 +193,7 @@
       ]
     },
     {
-      "name": "Wordpress",
+      "name": "WordPress",
       "level": "Advanced",
       "keywords": [
         "CMS Design",
@@ -227,7 +202,7 @@
       ]
     },
     {
-      "name": "Php",
+      "name": "PHP",
       "level": "Intermediate",
       "keywords": [
         "CMS Integration",

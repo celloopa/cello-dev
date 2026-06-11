@@ -16,8 +16,10 @@ const { name, label, summary, email, phone, url, location, profiles } = basics;
 const cardUrl = new URL("/card", url).toString();
 const vCardUrl = new URL("/contact.vcf", url).toString();
 const siteHost = new URL(url).hostname.replace(/^www\./, "");
-const phoneDigits = phone.replace(/\D/g, "");
-const phoneHref = `tel:${phoneDigits.length === 10 ? `+1${phoneDigits}` : `+${phoneDigits}`}`;
+const phoneDigits = phone ? phone.replace(/\D/g, "") : "";
+const phoneHref = phoneDigits
+  ? `tel:${phoneDigits.length === 10 ? `+1${phoneDigits}` : `+${phoneDigits}`}`
+  : "";
 const locationLabel = [location.city, location.region]
   .filter(Boolean)
   .join(", ");
@@ -123,10 +125,14 @@ const qrCodeSvg = await QRCode.toString(url, {
               <Mail />
               <span>{email}</span>
             </a>
-            <a class="detail-link" href={phoneHref}>
-              <Phone />
-              <span>{phone}</span>
-            </a>
+            {
+              phone && (
+                <a class="detail-link" href={phoneHref}>
+                  <Phone />
+                  <span>{phone}</span>
+                </a>
+              )
+            }
             {
               linkedin && (
                 <a
