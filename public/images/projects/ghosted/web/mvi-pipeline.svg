@@ -1,0 +1,95 @@
+<svg viewBox="0 0 1200 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="mvi-title mvi-desc">
+  <title id="mvi-title">Ghosted generation pipeline</title>
+  <desc id="mvi-desc">Posting, parse, fit score, plan, one model call, parse, validate, triage UI. Every stage is deterministic code except the single amber model call.</desc>
+  <defs>
+    <marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0 L8,4 L0,8 z" fill="#a39a8f"/>
+    </marker>
+  </defs>
+
+  <!-- background -->
+  <rect x="0" y="0" width="1200" height="300" fill="#181614"/>
+
+  <!-- title -->
+  <text x="49" y="52" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="18" fill="#ede6da">ghosted — the generation pipeline</text>
+  <text x="49" y="78" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="13" fill="#a39a8f">code does everything it can · the model only writes prose · code validates the model</text>
+
+  <!-- input: posting (data, not a stage) -->
+  <g>
+    <rect x="49" y="112" width="108" height="88" rx="6" fill="none" stroke="#ede6da" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.75"/>
+    <text x="103" y="150" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="15" font-weight="600" fill="#ede6da">posting</text>
+    <text x="103" y="172" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="11" fill="#a39a8f">url or paste</text>
+  </g>
+
+  <!-- deterministic: parse -->
+  <g>
+    <rect x="185" y="112" width="108" height="88" rx="6" fill="#ede6da"/>
+    <text x="239" y="150" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="15" font-weight="700" fill="#181614">parse</text>
+    <text x="239" y="172" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="11" fill="#6b6258">posting → data</text>
+  </g>
+
+  <!-- deterministic: fit -->
+  <g>
+    <rect x="321" y="112" width="108" height="88" rx="6" fill="#ede6da"/>
+    <text x="375" y="150" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="15" font-weight="700" fill="#181614">fit score</text>
+    <text x="375" y="172" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="11" fill="#6b6258">keyword overlap</text>
+  </g>
+
+  <!-- deterministic: plan -->
+  <g>
+    <rect x="457" y="112" width="108" height="88" rx="6" fill="#ede6da"/>
+    <text x="511" y="150" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="15" font-weight="700" fill="#181614">plan</text>
+    <text x="511" y="172" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="11" fill="#6b6258">resume reorder</text>
+  </g>
+
+  <!-- THE model call -->
+  <g>
+    <rect x="593" y="96" width="150" height="120" rx="6" fill="#d8a657"/>
+    <text x="668" y="146" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="15" font-weight="700" fill="#181614">one model call</text>
+    <text x="668" y="168" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="11" fill="#181614" opacity="0.72">writes prose only</text>
+    <text x="668" y="186" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="11" fill="#181614" opacity="0.72">bounded prompt in</text>
+  </g>
+
+  <!-- deterministic: parse response -->
+  <g>
+    <rect x="771" y="112" width="108" height="88" rx="6" fill="#ede6da"/>
+    <text x="825" y="150" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="15" font-weight="700" fill="#181614">parse</text>
+    <text x="825" y="172" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="11" fill="#6b6258">one json object</text>
+  </g>
+
+  <!-- deterministic: validate -->
+  <g>
+    <rect x="907" y="112" width="108" height="88" rx="6" fill="#ede6da"/>
+    <text x="961" y="146" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="15" font-weight="700" fill="#181614">validate</text>
+    <text x="961" y="166" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="10" fill="#6b6258">cap · banned</text>
+    <text x="961" y="182" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="10" fill="#6b6258">honesty flags</text>
+  </g>
+
+  <!-- deterministic: triage ui -->
+  <g>
+    <rect x="1043" y="112" width="108" height="88" rx="6" fill="#ede6da"/>
+    <text x="1097" y="150" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="15" font-weight="700" fill="#181614">triage ui</text>
+    <text x="1097" y="172" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="10" fill="#6b6258">accept·reject·edit</text>
+  </g>
+
+  <!-- arrows -->
+  <g stroke="#a39a8f" stroke-width="2">
+    <line x1="161" y1="156" x2="179" y2="156" marker-end="url(#arr)"/>
+    <line x1="297" y1="156" x2="315" y2="156" marker-end="url(#arr)"/>
+    <line x1="433" y1="156" x2="451" y2="156" marker-end="url(#arr)"/>
+    <line x1="569" y1="156" x2="587" y2="156" marker-end="url(#arr)"/>
+    <line x1="747" y1="156" x2="765" y2="156" marker-end="url(#arr)"/>
+    <line x1="883" y1="156" x2="901" y2="156" marker-end="url(#arr)"/>
+    <line x1="1019" y1="156" x2="1037" y2="156" marker-end="url(#arr)"/>
+  </g>
+
+  <!-- brackets -->
+  <g stroke="#a39a8f" stroke-width="1.5" opacity="0.9">
+    <path d="M185,236 v6 h380 v-6" fill="none"/>
+    <path d="M593,236 v6 h150 v-6" fill="none"/>
+    <path d="M771,236 v6 h380 v-6" fill="none"/>
+  </g>
+  <text x="375" y="266" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="12" fill="#a39a8f">deterministic code</text>
+  <text x="668" y="266" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="12" fill="#d8a657">the only model call</text>
+  <text x="961" y="266" text-anchor="middle" font-family="ui-monospace, 'SF Mono', Menlo, Consolas, monospace" font-size="12" fill="#a39a8f">deterministic code</text>
+</svg>

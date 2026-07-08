@@ -1,0 +1,106 @@
+---
+title: "Minimum Viable Intelligence"
+description: "My job tracker's own CLI refused its own prompt as a suspected attack. What shipping an AI feature taught me about giving the model as little job as possible."
+publishDate: 2026-07-07
+image: /images/projects/ghosted/web/generation-ticker.png
+tags:
+  - AI
+  - Product Design
+  - Ghosted
+draft: false
+---
+
+import MediaFull from '@/components/media/MediaFull.astro';
+
+The first cover letter Ghosted tried to write in production was refused — not by the model, by the command-line tool in front of it. The server piped a carefully assembled prompt to `claude -p`, the way you would pipe anything to anything. The CLI read the prompt my own code had built — CV, job posting, fit analysis, strict output rules — declined it as a suspected prompt injection, and then sat there loading MCP servers a headless text generator would never use, until the 240-second timeout killed it. Exit code 143.
+
+```
+$ build-prompt | claude -p --model <model>
+  # …loads MCP servers a server-side generator will never use
+  # …declines: the piped prompt reads as a possible injection attempt
+  # 240s timeout → SIGTERM, exit 143
+
+$ build-prompt | codex exec --model gpt-5.5 -
+{"summary":"…","cover_letter":"…","resume_rewrites":[…]}
+  # clean JSON, a few seconds
+```
+
+The refusal was not even wrong, exactly. The prompt does contain a page of untrusted text scraped from a job posting, wrapped in imperative instructions. That is what an injection looks like. It is also what my product looks like. The same prompt piped through `codex exec` returned clean JSON in seconds, and the incident became the clearest lesson of the project: an agent CLI and a text-completion API are different species. The agent has opinions. When you build an AI feature, the parts with opinions should be yours.
+
+This post is about the architecture that position produces. I keep calling it minimum viable intelligence: deterministic code does everything it can, the model only writes prose, and code validates the model.
+
+## The Product, Briefly
+
+Ghosted is a job application tracker with an apply flow attached. Tagline: "Silence, measured." You capture postings, it computes fit, generates application materials, exports an ATS-safe PDF, and then tracks what the silence does — follow-ups, ghosts, response rates. It started life as a Go terminal app, which is [its own case study](/projects/ghosted/): a keyboard-first TUI that proved the workflow model and also proved that nobody but me would ever use it. In June 2026 I rewrote it as a web product and shipped it to real testers.
+
+The rewrite's planning doc had a non-goals list, and the first line was "Resume/cover letter generation, AI agents, or ATS checking." That non-goal lasted days. A tracker alone is a spreadsheet with opinions; the thing that makes it a product is the pair — tracking and applying in one place. I reversed a written plan almost immediately, and I am telling you because the reversal forced the question this post answers: if the AI feature is now the point, how much AI does it actually need?
+
+## The Least Model That Works
+
+Less than I assumed. Early sketches reached for an agent SDK, a headless CMS, a hosted database. All three got cut, and what shipped is a pipeline where the model is one bounded stage rather than the architecture.
+
+<MediaFull
+  src="/images/projects/ghosted/web/mvi-pipeline.svg"
+  alt="Pipeline diagram: posting, parse, fit, plan, one model call, parse, validate, triage UI — every stage deterministic except the single highlighted model call"
+  caption="The generation pipeline. Cream stages are deterministic code; the amber block is the only model call."
+/>
+
+Code parses the posting. Code extracts keywords against a per-field lexicon and scores fit — coverage, role match, logistics — as arithmetic that can be explained back to the user. Code plans the resume reorder. Code builds one prompt, makes one call, and parses one JSON object out of it. The model writes the cover letter, a summary line, bullet rewrites, opportunity angles, and standout suggestions. That is the entire job description.
+
+There is no conversation. Revision is a targeted call, not a redo: "make it warmer" sends a focused prompt that may change only the cover letter and returns only the cover letter. The rest of the draft cannot regress, because nothing else was in the response.
+
+And then code checks the model's work, which is the part I would defend hardest. Three checks run on every draft:
+
+- A hard 180-word cap on the letter, counted by code, not promised by the prompt.
+- A banned-phrase list. This is real production source:
+
+```ts
+export const BANNED_PHRASES = [
+  "i'm excited to",
+  'aligns perfectly',
+  'passionate about',
+  'leverage my skills',
+  'fast-paced environment',
+  'hit the ground running',
+  'i believe i would be a great fit',
+]
+```
+
+- Honesty flags. Every suggested resume rewrite is compared against the CV; numbers and capitalized tool names that appear nowhere in it get flagged as possible fabrications. Flags surface to the user instead of silently filtering — a "source not in CV" chip on the suggestion, and a workspace count of items that "need your judgment — the model could not ground them in your CV." Fabrication handling is a UI state, not a log line.
+
+None of this is clever. That is the point. A word count, a string search, and a token comparison are boring, deterministic, and impossible to argue with — which makes them exactly the right supervisor for a component that can argue with anything.
+
+## Trust Is A UI Problem Too
+
+The same principle shows up in the interface. Generated rewrites arrive as triage — each suggestion gets accepted, rejected, or edited, one decision at a time. Nothing pastes over your resume wholesale. Every generation lands in draft history with preview and restore, so trying again never costs you a draft you liked.
+
+My favorite instance is the loading state. The CLI backing the shared account cannot stream partial output, so a progress bar would be fiction. Instead the status line reports the phases that are actually happening — "assembling the prompt — cv, posting, fit," then "writing with Codex with GPT-5.5 — 23s" with a live timer, then "checking the draft — word cap, banned phrases, honesty flags." The sub-lines under the timer are the closest the product comes to a personality:
+
+```ts
+if (elapsedS < 15) return 'one bounded call. the code already did the deterministic work.'
+if (elapsedS < 40) return 'still writing. letters take longer than chips suggest.'
+if (elapsedS < 75) return 'long one. the model returns everything at once — no partials to show.'
+return 'unusually long. if it errors, the message will say why.'
+```
+
+If you do not know the progress, do not invent it.
+
+The last trust check runs after the model is gone. Exported PDFs compile through Typst, and then the export validates itself: it re-extracts the text with `pdftotext` and asserts that names, headings, dates, and matched keywords survived. The validator's docstring states the premise better than I can: an ATS doesn't read your beautiful PDF, it reads the text it can extract from it.
+
+## The Subscription Saga, Condensed
+
+Shipping this to non-technical testers meant nobody could be asked for an API key, so the server generates on a house account — my own subscription, invite-gated, with a daily cap. Three war stories fit in three paragraphs.
+
+First, the refusal that opened this post. The fix was not prompt engineering; it was choosing a different tool class. The Claude CLI is an agent with an environment, a threat model, and startup work. `codex exec` in this configuration behaved like what the server needed: stdin in, JSON out.
+
+Second, the pivot itself. Claude setup-tokens kept invalidating — re-running `setup-token` kills the old one, which is a reasonable security property and a terrible fit for a long-lived container. The Codex CLI now lives in the Docker image, and its ChatGPT login is seeded from a base64 secret into a persistent volume at container start. Two bugs only existed inside the container: Typst's template packages must be pre-cached at image build (the container cannot fetch at runtime), and codex refuses to run outside a git repository. That last one is a one-flag fix, which felt like the whole saga in miniature: `--skip-git-repo-check`.
+
+Third, the hole we caught before it bit. Once codex existed in the image, the models API cheerfully advertised it to every visitor — and a visitor bringing their own key could have routed generations through my subscription, uncapped. The guard is server-side and blunt: server CLIs are never a bring-your-own-key offer. If you put a subscription-backed CLI inside a web product, audit what your own APIs advertise.
+
+## What No Accounts Bought
+
+Ghosted has no accounts. Storage is per-device localStorage behind repository interfaces, which bought exactly what it was supposed to: testers were applying with it days after the deploy, and no one created a password for an app that might not deserve one yet. The cost is real too — your data does not follow you across devices, and I cannot see aggregate behavior to improve the product. Accounts, a server backend that swaps in behind the existing interfaces, and UX telemetry with an owner annotation mode are all in planning. None of it is shipped, and the current architecture was designed so that shipping it later does not disturb the parts that work.
+
+The web app runs 744 tests — 332 on the pure-TypeScript core, 412 on the app — and the model is not in any of them, because the model is not in any of the logic. That is what minimum viable intelligence buys: a product where the intelligent part is small enough to supervise, and everything around it is just software.
+
+Ghosted is live, invite-gated, at [ghosted.cello.design](https://ghosted.cello.design). If you want in, ask.

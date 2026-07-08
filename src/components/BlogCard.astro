@@ -25,6 +25,7 @@ const formattedDate = publishDate.toLocaleDateString("en-US", {
   year: "numeric",
   month: "short",
   day: "numeric",
+  timeZone: "UTC",
 });
 
 const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
