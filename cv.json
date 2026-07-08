@@ -69,7 +69,8 @@
       "highlights": [
         "The Green Phial: redesigned and maintained the WordPress storefront, translating brand direction into responsive, accessible front-end implementation with improved performance and SEO.",
         "Accessibility consulting: improved WCAG 2.1 compliance for multiple organizations, including River Phoenix Center for Peacebuilding, covering screen-reader behavior, keyboard navigation, and performance.",
-        "Legal Impact for Chickens: built secure internal tooling for data-management workflows, handling confidential materials with discretion."
+        "Legal Impact for Chickens: built secure internal tooling for data-management workflows, handling confidential materials with discretion.",
+        "Ghosted: designed and built an AI-assisted job-application product — a Go terminal prototype rewritten into a shipped Next.js/TypeScript web app, where deterministic code does the work and a single bounded, code-validated model call writes the prose; 744 tests."
       ]
     },
     {
@@ -303,17 +304,17 @@
   "projects": [
     {
       "name": "Ghosted",
-      "description": "Designed and built an AI-assisted workflow product to help technical job seekers manage fragmented applications, documents, interviews, and follow-ups through one local-first product model.",
+      "description": "Designed and built an AI-assisted job-application workspace — from a Go terminal prototype to a shipped web product where deterministic code does the work and one bounded model call writes the prose.",
       "highlights": [
-        "Full-featured Terminal User Interface with vim-style navigation and keyboard shortcuts",
-        "Scriptable CLI interface designed for AI agent integration with JSON I/O",
-        "Multi-agent pipeline for automated document generation and job application workflow",
-        "Document compilation system converting Typst files to PDFs with smart naming",
-        "Job board integration fetching postings from Lever, Greenhouse, Workday, LinkedIn"
+        "Rewrote a Go TUI prototype into a live Next.js/TypeScript web product with posting capture, deterministic fit scoring, and ATS-validated PDF export",
+        "Designed the 'minimum viable intelligence' architecture: code parses, scores, and validates; the model only writes prose, checked against a 180-word cap, a banned-phrase list, and CV-grounded honesty flags",
+        "Built a triage review UI (accept, reject, edit) and targeted revision so generated material is edited from, never pasted over",
+        "Shipped to real testers on an invite-gated shared subscription, folding feedback into a synchronous double-fire guard and tighter layouts",
+        "Backed by 744 tests across a pure-TypeScript core and a Next.js app"
       ],
-      "keywords": ["Product Design", "AI Workflow", "Developer Tools", "Internal Tools", "Design Systems", "Interaction Design", "Accessibility", "Human-in-the-Loop AI"],
+      "keywords": ["Product Design", "AI Product Design", "TypeScript", "Next.js", "React", "Design Systems", "Prototyping", "Human-in-the-Loop AI"],
       "startDate": "2026-01",
-      "url": "https://github.com/celloopa/ghosted",
+      "url": "https://ghosted.cello.design",
       "type": "application"
     }
   ]
