@@ -47,12 +47,10 @@ That second kind of work is where I build. Each system follows the same split. C
 
 Two or three times a week, the ecommerce team announces a flower drop: a few strains going live on the site that morning. Each one needs a branded story card and a short vertical video for social. By hand, that meant pulling each product's photo and video from the site, duplicating last week's card in Figma and swapping the image, strain name, and tier, bringing everything into Premiere to replace the masked clips, exporting, then creating the Asana task, attaching files, and posting for approval in Slack. Seven tools, 3–5 hours a week, usually on mornings when something else was also urgent.
 
-{/*
-  MEDIA PLACEHOLDER — needs Cello's OK to use published drop assets.
-  Suggested: two finished cards and one story video from a recent drop folder
-  (e.g. drops/10-8/drops-10-08-*.png and *-story.mp4, converted to webm), saved to
-  /images/projects/asheville/ and shown with MediaTwo / MediaFull here.
-*/}
+<MediaTwo items={[
+  { src: "/images/projects/asheville/drop-card.webp", alt: "Vertical story card reading 'New online flower drops — White Runtz, Greenhouse ounce sale' over a macro photo of the flower", caption: "The card: the approved Figma component, filled with the strain, tier, sale wording, and product photo." },
+  { src: "/images/projects/asheville/drop-story.webm", alt: "Story video with the same card and the product video playing inside a circular mask", caption: "The story: the product video composed behind the card by ffmpeg. Both came from the scheduled 5:30 a.m. run on October 8, which delivered all five strains in that drop." }
+]} />
 
 Now a scheduled routine does the whole loop:
 
