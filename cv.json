@@ -6,7 +6,7 @@
     "email": "cello@cello.design",
     "phone": "",
     "url": "https://cello.design",
-    "summary": "Product designer and design engineer focused on design systems and human-centered AI tools. I build and run what I design: deterministic code does everything it can, the model gets the smallest trustworthy job, and human approval sits where the consequences are. Recent work includes an in-house AI video pipeline that replaced 3–5 hours of manual work a week, Ghosted, an AI-assisted job-application product now in early testing, and Daybreak, a local-first Mac and iPhone planner with an auditable agent layer.",
+    "summary": "Product designer and design engineer focused on design systems and human-centered AI tools. I build and run what I design: deterministic code does everything it can, the model gets the smallest trustworthy job, and human approval sits where the consequences are. Recent work includes an in-house AI video pipeline that replaced 3–5 hours of manual work a week, Ghosted, an AI-assisted job-application product now in early testing, and a Payload CMS that two non-technical editors run every day.",
     "location": {
       "address": "",
       "postalCode": "",
@@ -295,30 +295,6 @@
       ],
       "startDate": "2026-01",
       "url": "https://ghosted.cello.design",
-      "type": "application"
-    },
-    {
-      "name": "Daybreak",
-      "description": "Designed and built a local-first personal planning product for Mac and iPhone that combines a deterministic planning engine with agent-assisted adjustments while keeping the plan editable and the user in control.",
-      "highlights": [
-        "Shipped a shared SwiftUI and SwiftData app for macOS and iPhone with private CloudKit sync, without a product account or hosted application server",
-        "Separated a pure, testable planning engine from the app layer so generated day plans obey explicit schedule, ownership, and local-day boundary rules",
-        "Defined typed UI-agent parity contracts so agent-accessible actions match the product grammar, emit auditable receipts, and leave destructive or external actions behind explicit safety exclusions",
-        "Kept automated planning inspectable and editable: people can review, move, defer, or remove Daybreak-owned blocks while source-owned calendar meetings remain protected",
-        "Dogfooded the product against real planning and sync failures, turning trust problems into tested product rules across Mac and iPhone"
-      ],
-      "keywords": [
-        "Product Design",
-        "AI Product Design",
-        "SwiftUI",
-        "SwiftData",
-        "CloudKit",
-        "Local-First",
-        "Human-in-the-Loop AI",
-        "Product Prototyping"
-      ],
-      "startDate": "2026-07",
-      "url": "https://cello.design/projects/daybreak",
       "type": "application"
     }
   ]
