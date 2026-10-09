@@ -6,7 +6,7 @@
     "email": "cello@cello.design",
     "phone": "",
     "url": "https://cello.design",
-    "summary": "Product designer building human-centered AI systems that augment creative workflows without replacing human judgment. I bridge design and engineering by turning real workflows into working tools with bounded automation, editable states, validation, accessibility, and clear handoff intent. Recent work includes Ghosted, an AI-assisted job-application product, and Daybreak, a local-first Mac and iPhone planner with a typed, receipt-backed agent layer.",
+    "summary": "Product designer focused on design systems and human-centered AI tools. I build and run what I design: deterministic code does everything it can, the model gets the smallest trustworthy job, and human approval sits where the consequences are. Recent work includes in-house AI automations that replaced 3–5 hours of weekly video editing, Ghosted, an AI-assisted job-application product used by real testers, and Daybreak, a local-first Mac and iPhone planner with an auditable agent layer.",
     "location": {
       "address": "",
       "postalCode": "",
@@ -41,10 +41,12 @@
       "endDate": "",
       "summary": "Asheville, NC (Remote)",
       "highlights": [
-        "Own product design across web, print, and packaging, anchored by a Figma design system that keeps the brand coherent as the product line grows.",
-        "Designed and built an internal asset-management tool in React, TypeScript, and Tailwind CSS that gives marketing and operations one place to find, manage, and preserve brand assets.",
-        "Design and ship reusable UI components into WordPress through custom PHP and JavaScript plugins, closing the gap between mockups and production.",
-        "Partner with marketing and operations to turn ambiguous requests into scoped, shipped product surfaces."
+        "Lead product and brand design for three brands (Asheville Dispensary, Plantbar, Nightshade) across web, print and packaging, anchored by a shared Figma design system.",
+        "Built an automated product-to-social video pipeline that replaced 3–5 hours a week of manual video editing: when a new flower drop is announced in Slack, an AI agent pulls each product's data, generates branded cards and vertical story videos, files them in Asana and queues them for social approval, with duplicate protection, quiet hours and a go-live check so nothing posts early.",
+        "Cut the pipeline's running cost about 60% by redesigning when and how it runs: a lightweight model screens for new drops and hands off to a stronger one only when there's work, measured with a per-run usage report.",
+        "Built several more in-house AI automations and systems that expand our design system and assets: presentations generated from approved templates, packaging checks against compliance checklists, and print coordination from approved artwork to vendor pickup, with people approving every step that matters.",
+        "Designed and built an internal asset-management tool in React, TypeScript and Tailwind CSS that gives marketing and operations one place to find, manage and preserve brand assets.",
+        "Design and ship reusable UI components into WordPress through custom PHP and JavaScript plugins, closing the gap between mockups and production."
       ]
     },
     {
@@ -71,7 +73,7 @@
         "The Green Phial: redesigned and maintained the WordPress storefront, translating brand direction into responsive, accessible front-end implementation with improved performance and SEO.",
         "Accessibility consulting: improved WCAG 2.1 compliance for multiple organizations, including River Phoenix Center for Peacebuilding, covering screen-reader behavior, keyboard navigation, and performance.",
         "Legal Impact for Chickens: built secure internal tooling for data-management workflows, handling confidential materials with discretion.",
-        "Ghosted: designed and built an AI-assisted job-application product — a Go terminal prototype rewritten into a shipped Next.js/TypeScript web app, where deterministic code does the work and a single bounded, code-validated model call writes the prose; 744 tests."
+        "Ghosted: designed and built an AI-assisted job-application product across three versions, now live with real testers."
       ]
     },
     {
@@ -273,13 +275,13 @@
   "projects": [
     {
       "name": "Ghosted",
-      "description": "Designed and built an AI-assisted job-application workspace — from a Go terminal prototype to a shipped web product where deterministic code does the work and one bounded model call writes the prose.",
+      "description": "An AI-assisted job-application workspace, designed and shipped across three versions and now live with real testers.",
       "highlights": [
-        "Rewrote a Go TUI prototype into a live Next.js/TypeScript web product with posting capture, deterministic fit scoring, and ATS-validated PDF export",
-        "Designed the 'minimum viable intelligence' architecture: code parses, scores, and validates; the model only writes prose, checked against a 180-word cap, a banned-phrase list, and CV-grounded honesty flags",
-        "Built a triage review UI (accept, reject, edit) and targeted revision so generated material is edited from, never pasted over",
-        "Shipped to real testers on an invite-gated shared subscription, folding feedback into a synchronous double-fire guard and tighter layouts",
-        "Backed by 744 tests across a pure-TypeScript core and a Next.js app"
+        "Designed and shipped Ghosted through three versions — a Go terminal prototype, a Next.js web app backed by 744 tests, and a 2026 rebuild around a live React + Typst resume canvas — now used by real testers.",
+        "Kept the model's job small and checkable: platform APIs, parsing and validation run in code first; the AI only drafts, and every resume change arrives as a versioned, highlighted edit the person accepts or rejects.",
+        "Designed the agent to interview for evidence instead of inventing it: it asks for specifics, writes bullets only from what the person said, and names gaps against each posting.",
+        "Built job intake across Greenhouse, Lever, Ashby, Workday, Amazon and Microsoft APIs with Firecrawl as a fallback, trimming postings to the role, requirements, pay and benefits.",
+        "Run it in production for testers: personal-code accounts, server sync and backups, an admin console, and in-app feedback with screenshots routed to Discord."
       ],
       "keywords": [
         "Product Design",
