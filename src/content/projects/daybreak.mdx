@@ -1,0 +1,171 @@
+---
+title: Daybreak
+description: Designed and built a local-first Mac and iPhone planner where people and AI use the same typed, receipt-backed operations—keeping generated plans honest, editable, and under human control.
+image: /images/projects/daybreak/today.png
+ogImage: /images/projects/daybreak/today.png
+techStack:
+  - SwiftUI
+  - SwiftData
+  - CloudKit
+  - EventKit
+  - Codex CLI
+role: Product Designer / AI Systems
+highlights:
+  - "Designed a local-first planning product for macOS and iPhone with private CloudKit sync and no hosted account system"
+  - "Made AI a first-class product surface without giving it a privileged write path: UI and agent actions share typed operations"
+  - "Defined validation, idempotency, ownership, and receipt rules so every proposed change can be applied, refused, or explained honestly"
+  - "Kept source-owned Calendar events fixed while allowing editable Daybreak-owned plans to adapt around them"
+  - "Used live dogfooding to turn late starts, carry-over errors, and sync ambiguity into concrete product and trust improvements"
+  - "Verified the current system with 31 core tests and 672 macOS-hosted app tests across 78 suites"
+featured: true
+complete: true
+order: 1
+---
+
+import CaseMeta from "@/components/CaseMeta.astro";
+import FlowDiagram from "@/components/FlowDiagram.astro";
+import MediaFull from "@/components/media/MediaFull.astro";
+import MediaTwo from "@/components/media/MediaTwo.astro";
+
+<CaseMeta
+  items={[
+    {
+      label: "Role",
+      value:
+        "Solo product designer-builder. I defined the product model, interaction rules, safety boundaries, visual direction, and native implementation.",
+    },
+    {
+      label: "User",
+      value:
+        "I am the first user. Daybreak is a working personal product under active dogfooding, not a claim of broad customer validation.",
+    },
+    {
+      label: "Constraints",
+      value:
+        "Local-first privacy, Mac and iPhone parity, private CloudKit sync, Calendar ownership, unreliable AI output, and a plan that must always remain hand-editable.",
+    },
+    {
+      label: "Tools",
+      value:
+        "SwiftUI, SwiftData, CloudKit, EventKit, MapKit, XCTest, Codex CLI.",
+    },
+    {
+      label: "Outcome",
+      value:
+        "Signed Mac and physical-iPhone builds, unattended planning and agent workflows, plus 31 core tests and 672 macOS-hosted app tests across 78 suites.",
+    },
+  ]}
+/>
+
+## Context
+
+Most planning tools ask people to maintain the system before the system becomes useful. Daybreak began with a different premise: the product should compute a credible starting point from what it already knows, bring the plan to the user, and make review lighter than planning from scratch.
+
+The harder design problem appeared when I added an AI agent. A conversational interface is useful only if it can change the same real product state as the UI—and trustworthy only if it cannot silently bypass the UI's constraints. I treated that tension as the core product architecture rather than a layer of chat added at the end.
+
+<MediaFull
+  src="/images/projects/daybreak/today.png"
+  alt="Daybreak Mac Today screen showing an editable daily plan divided into time-of-day sections"
+  caption="A real, sanitized build: the day stays visible as an editable draft with open space, rather than presenting generated output as certainty."
+/>
+
+## Product Principles
+
+**Computed over asked.** Daybreak derives a starting plan from projects, tasks, routines, due work, carry-over, and fixed Calendar constraints. The user reviews and corrects instead of rebuilding the day manually.
+
+**Honest over optimized.** A useful plan can be visibly incomplete. Work that does not fit stays on deck instead of spilling past midnight or being hidden behind a false sense of completion.
+
+**Editable over autonomous.** Generated blocks are ordinary product objects. People can move, remove, defer, or complete them directly, and manual edits remain authoritative.
+
+**One product, two interfaces.** A feature is not complete when only the visual UI can use it. The agent needs a typed path to the same operation—or an explicit, documented reason it should not have one.
+
+## The Shared Operation Model
+
+<FlowDiagram
+  title="From request to trustworthy change"
+  items={[
+    {
+      label: "Ask or act",
+      detail:
+        "A person uses a SwiftUI control or describes an adjustment in natural language.",
+    },
+    {
+      label: "Resolve intent",
+      detail:
+        "The agent may propose only a registered typed operation; it does not write directly to the store.",
+    },
+    {
+      label: "Validate",
+      detail:
+        "Identity, ownership, chronology, ambiguity, and safety rules are checked before mutation.",
+    },
+    {
+      label: "Apply once",
+      detail:
+        "The shared handler performs an idempotent local change or refuses it without inventing success.",
+    },
+    {
+      label: "Return a receipt",
+      detail:
+        "Applied, skipped, and failed results remain visible and auditable in the product.",
+    },
+    {
+      label: "Sync privately",
+      detail:
+        "SwiftData and private CloudKit carry the resulting product state between Mac and iPhone.",
+    },
+  ]}
+  caption="The agent extends the product's tooling; it does not receive a second, more powerful version of the product."
+/>
+
+The current registry contains 42 typed operations. Twenty-seven are available to the conversational agent; fifteen are intentionally excluded where confirmation, privacy, provider-owned data, or destructive behavior still needs a stronger product policy. A separate inventory covers 38 user-facing mutations: 30 map to agent operations and eight carry explicit exclusions.
+
+Those exclusions are part of the design. For example, an agent may complete an eligible task, but destructive deletion stays outside conversational access. It may work around imported meetings, but never rewrite a source-owned Calendar event. A traffic workflow can use a provider result, but the model cannot invent a travel estimate.
+
+## Planning Around Reality
+
+Calendar events enter Daybreak as pinned constraints with their provenance intact. Daybreak-owned work can move around them; source meetings cannot. An absent event is treated as evidence only inside the exact Calendar window and account scope that was scanned.
+
+The same preference for evidence shapes daily planning:
+
+- Unattended imports may relax a due date, but never make work more urgent.
+- Working ahead fills genuinely open capacity; it does not displace due or carried work.
+- Work that cannot fit before the local day boundary stays unscheduled and visible.
+- Completing a blocker restores a dependent task's prior state instead of inventing progress.
+
+<MediaTwo
+  items={[
+    {
+      src: "/images/projects/daybreak/onboard-empty.png",
+      alt: "Daybreak Mac screen inviting the user to review today's draft",
+      caption:
+        "Onboarding is a review ritual: make the draft honest, then commit when it feels right.",
+    },
+    {
+      src: "/images/projects/daybreak/timeline.png",
+      alt: "Daybreak timeline with a current-time marker and generic scheduled blocks",
+      caption:
+        "Timeline exploration made schedule gaps, carry-over, and the current moment legible without hiding open time.",
+    },
+  ]}
+/>
+
+## Designing Through Dogfooding
+
+I use Daybreak to run my actual days, then trace moments of confusion back through interaction, state, and implementation. One live late-start session surfaced twelve prioritized issues: the plan did not acknowledge a delayed start clearly enough, carry-over counts could feel unstable, and cross-device state could undermine trust even when the underlying merge was technically valid.
+
+That session changed the direction of the product. Evening preparation now does more of the heavy lifting, morning review is intended to stay lightweight and phone-friendly, late-start recovery is a first-class state, and sync correctness is treated as a user experience rather than background infrastructure.
+
+<MediaFull
+  src="/images/projects/daybreak/morning-report-concept.png"
+  alt="Daybreak visual exploration for a bold morning report with large date typography and a bright continue action"
+  caption="One of five tracked morning-report explorations. This is design-direction work, not a claim that this exact screen shipped."
+/>
+
+## Outcome And Limits
+
+Daybreak runs as a signed Mac app and on a physical iPhone, with private CloudKit sync, typed task and plan operations, unattended workflows, native agent chat, and receipt-backed changes. Fresh verification passes 31 core tests and 672 macOS-hosted app tests across 78 suites.
+
+The most valuable outcome is the product rule the system made concrete: AI should extend a designer's tools without removing human taste, ownership, or the ability to correct the result. Reliability here is not only model quality. It is how clearly the interface represents uncertainty, who owns each piece of state, and what happened after the user asked for a change.
+
+This remains a personal product in active dogfooding. Multi-Mac distributed claiming and some external-write policies are documented follow-ups, and I would validate the planning model with more users before treating my own workflow as universal.
