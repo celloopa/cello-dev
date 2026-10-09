@@ -1,22 +1,13 @@
 // Regenerates public/files/marcelo_rondon-resume.pdf from the live /resume
 // page so the download can never drift from cv.json. Boots a temporary Astro
 // dev server, prints via headless Chrome, then shuts the server down.
-import { spawn, execFileSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { spawn } from "node:child_process";
+import { findChrome, printResumePdf, OUT_PATH } from "./resume-pdf.mjs";
 
 const PORT = 4399;
 const PAGE_URL = `http://localhost:${PORT}/resume`;
-const OUT_PATH = "public/files/marcelo_rondon-resume.pdf";
 
-const chrome = [
-  process.env.CHROME_PATH,
-  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
-  "/Applications/Chromium.app/Contents/MacOS/Chromium",
-]
-  .filter(Boolean)
-  .find((path) => existsSync(path));
-
-if (!chrome) {
+if (!findChrome()) {
   console.error(
     "Chrome not found. Set CHROME_PATH to a Chrome/Chromium binary.",
   );
@@ -44,14 +35,7 @@ async function waitForServer() {
 
 try {
   await waitForServer();
-  execFileSync(chrome, [
-    "--headless",
-    "--disable-gpu",
-    "--no-pdf-header-footer",
-    "--virtual-time-budget=10000",
-    `--print-to-pdf=${OUT_PATH}`,
-    PAGE_URL,
-  ]);
+  await printResumePdf(PAGE_URL);
   console.log(`Wrote ${OUT_PATH}`);
 } finally {
   server.kill();
