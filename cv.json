@@ -1,12 +1,12 @@
 {
   "basics": {
     "name": "Marcelo Rondon",
-    "label": "Product Designer, Human-Centered AI Systems",
+    "label": "Product Designer, Design Systems & AI Tools",
     "image": "https://avatars.githubusercontent.com/u/72777489?s=400&u=1258e88539c515802c5c603559cd7b63c032814c&v=4",
     "email": "cello@cello.design",
     "phone": "",
     "url": "https://cello.design",
-    "summary": "Product designer focused on design systems and human-centered AI tools. I build and run what I design: deterministic code does everything it can, the model gets the smallest trustworthy job, and human approval sits where the consequences are. Recent work includes in-house AI automations that replaced 3–5 hours of weekly video editing, Ghosted, an AI-assisted job-application product used by real testers, and Daybreak, a local-first Mac and iPhone planner with an auditable agent layer.",
+    "summary": "Product designer focused on design systems and human-centered AI tools. I build and run what I design: deterministic code does everything it can, the model gets the smallest trustworthy job, and human approval sits where the consequences are. Recent work includes an in-house AI video pipeline that replaced 3–5 hours of manual work a week, Ghosted, an AI-assisted job-application product now in early testing, and Daybreak, a local-first Mac and iPhone planner with an auditable agent layer.",
     "location": {
       "address": "",
       "postalCode": "",
@@ -42,9 +42,9 @@
       "summary": "Asheville, NC (Remote)",
       "highlights": [
         "Lead product and brand design for three brands (Asheville Dispensary, Plantbar, Nightshade) across web, print and packaging, anchored by a shared Figma design system.",
-        "Built an automated product-to-social video pipeline that replaced 3–5 hours a week of manual video editing: when a new flower drop is announced in Slack, an AI agent pulls each product's data, generates branded cards and vertical story videos, files them in Asana and queues them for social approval, with duplicate protection, quiet hours and a go-live check so nothing posts early.",
-        "Cut the pipeline's running cost about 60% by redesigning when and how it runs: a lightweight model screens for new drops and hands off to a stronger one only when there's work, measured with a per-run usage report.",
-        "Built several more in-house AI automations and systems that expand our design system and assets: presentations generated from approved templates, packaging checks against compliance checklists, and print coordination from approved artwork to vendor pickup, with people approving every step that matters.",
+        "Built an automated product-to-social video pipeline that replaced 3–5 hours a week of manual design and editing: when a new flower drop is announced in Slack, an AI agent pulls each product's data, generates branded cards and vertical story videos, files them in Asana and queues them for social approval, with duplicate protection, quiet hours and a go-live check so nothing posts early.",
+        "Cut an idle day's running cost from about $12 to $0.30: a script checks for new drops before any model starts, and a stronger model runs only when there's work, measured with a per-run usage report.",
+        "Extending the approach across our design system: a print-coordination prototype with separate artwork, cost and release approvals; template-driven presentations and packaging compliance checks are planned.",
         "Designed and built an internal asset-management tool in React, TypeScript and Tailwind CSS that gives marketing and operations one place to find, manage and preserve brand assets.",
         "Design and ship reusable UI components into WordPress through custom PHP and JavaScript plugins, closing the gap between mockups and production."
       ]
@@ -73,7 +73,7 @@
         "The Green Phial: redesigned and maintained the WordPress storefront, translating brand direction into responsive, accessible front-end implementation with improved performance and SEO.",
         "Accessibility consulting: improved WCAG 2.1 compliance for multiple organizations, including River Phoenix Center for Peacebuilding, covering screen-reader behavior, keyboard navigation, and performance.",
         "Legal Impact for Chickens: built secure internal tooling for data-management workflows, handling confidential materials with discretion.",
-        "Ghosted: designed and built an AI-assisted job-application product across three versions, now live with real testers."
+        "Ghosted: designed and built an AI-assisted job-application product across three versions, now in early testing."
       ]
     },
     {
@@ -275,13 +275,13 @@
   "projects": [
     {
       "name": "Ghosted",
-      "description": "An AI-assisted job-application workspace, designed and shipped across three versions and now live with real testers.",
+      "description": "An AI-assisted job-application workspace, designed and shipped across three versions and now in early testing.",
       "highlights": [
-        "Designed and shipped Ghosted through three versions — a Go terminal prototype, a Next.js web app backed by 744 tests, and a 2026 rebuild around a live React + Typst resume canvas — now used by real testers.",
+        "Designed and shipped Ghosted through three versions — a Go terminal prototype, a Next.js web app backed by 744 tests, and a 2026 rebuild around a live React + Typst resume canvas, built with a coding agent from my spec — now in early testing.",
         "Kept the model's job small and checkable: platform APIs, parsing and validation run in code first; the AI only drafts, and every resume change arrives as a versioned, highlighted edit the person accepts or rejects.",
         "Designed the agent to interview for evidence instead of inventing it: it asks for specifics, writes bullets only from what the person said, and names gaps against each posting.",
-        "Built job intake across Greenhouse, Lever, Ashby, Workday, Amazon and Microsoft APIs with Firecrawl as a fallback, trimming postings to the role, requirements, pay and benefits.",
-        "Run it in production for testers: personal-code accounts, server sync and backups, an admin console, and in-app feedback with screenshots routed to Discord."
+        "Designed job intake to read hiring-platform APIs first (Greenhouse, Lever, Ashby, Workday, Amazon, Microsoft) with Firecrawl only as a fallback, trimming postings to the role, requirements, pay and benefits.",
+        "Run it as a hosted product for testers: personal-code accounts with server sync, an admin console, and in-app feedback with screenshots routed to Discord."
       ],
       "keywords": [
         "Product Design",

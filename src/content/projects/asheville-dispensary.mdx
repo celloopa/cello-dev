@@ -1,0 +1,132 @@
+---
+title: Asheville Dispensary
+description: Leading design for three brands, and building the in-house AI automations that turn approved design work into finished assets — starting with a product-to-social video pipeline that replaced 3–5 hours of manual editing a week.
+image: /images/projects/ad-assets/hero.webm
+ogImage: /images/projects/ad-assets/ad-assets-thumbnail.png
+techStack:
+  - Figma
+  - Claude agents
+  - TypeScript
+  - ffmpeg
+  - Slack and Asana APIs
+  - React
+  - Supabase
+role: Product Design Lead / Design Engineer
+highlights:
+  - Lead product and brand design for Asheville Dispensary, Plantbar, and Nightshade across web, print, and packaging, on a shared Figma design system
+  - Built a pipeline that turns a product-drop announcement into branded cards and vertical story videos, filed for review and queued for social approval
+  - Replaced 3–5 hours a week of manual asset gathering, card design, video editing, and handoff
+  - Put the only step that reaches other people behind quiet hours and a completeness gate, after the one day it sent too early
+  - Cut an idle day's running cost from about $12 to about $0.30 by letting a script decide whether a model needs to run at all
+  - Built the internal asset directory the automations draw from — one searchable, multi-brand home for approved assets
+featured: true
+complete: true
+order: 1
+---
+
+import CaseMeta from '@/components/CaseMeta.astro';
+import FlowDiagram from '@/components/FlowDiagram.astro';
+import MediaFull from '@/components/media/MediaFull.astro';
+import MediaTwo from '@/components/media/MediaTwo.astro';
+
+<CaseMeta items={[
+  { label: "Role", value: "Design lead for three brands. I design the work, then design and build the systems that produce what's derived from it." },
+  { label: "Users", value: "Me first, then the marketing, ecommerce, and operations teammates who review, approve, and post what these systems make." },
+  { label: "Constraints", value: "One designer across three brands, product pages that change until launch morning, drops announced before dawn, and a social channel where a wrong post is public." },
+  { label: "Tools", value: "Figma, Claude agents, TypeScript, zsh, ffmpeg, Slack and Asana APIs, React, Tailwind CSS, Supabase." },
+  { label: "Outcome", value: "A video pipeline in production since July 2026: 37 drops delivered end to end, no failed runs, and 3–5 hours of manual work a week handed back." }
+]} />
+
+## Context
+
+I lead design for three cannabis brands — Asheville Dispensary, Plantbar, and Nightshade — across the web store, print, and packaging. Most of the craft is in the original work: a packaging system, a card template, a brand's type and color. Most of the hours were going somewhere else: turning that approved work into the many small, near-identical assets a retail business needs every week.
+
+That second kind of work is where I build. Each system follows the same split. Code does everything it can do exactly. A model gets the narrowest piece that actually needs judgment. And a person approves anything that reaches other people.
+
+## The Flower Drop Pipeline
+
+Two or three times a week, the ecommerce team announces a flower drop: a few strains going live on the site that morning. Each one needs a branded story card and a short vertical video for social. By hand, that meant pulling each product's photo and video from the site, duplicating last week's card in Figma and swapping the image, strain name, and tier, bringing everything into Premiere to replace the masked clips, exporting, then creating the Asana task, attaching files, and posting for approval in Slack. Seven tools, 3–5 hours a week, usually on mornings when something else was also urgent.
+
+{/*
+  MEDIA PLACEHOLDER — needs Cello's OK to use published drop assets.
+  Suggested: two finished cards and one story video from a recent drop folder
+  (e.g. drops/10-8/drops-10-08-*.png and *-story.mp4, converted to webm), saved to
+  /images/projects/asheville/ and shown with MediaTwo / MediaFull here.
+*/}
+
+Now a scheduled routine does the whole loop:
+
+<FlowDiagram
+  title="From announcement to approval"
+  items={[
+    { label: "Check", detail: "A shell script reads Slack directly and decides — without any model — whether there's a new drop or an unsent delivery." },
+    { label: "Plan", detail: "If there's work, an agent reads the announcement: date, strains, tier, and any sale wording." },
+    { label: "Build", detail: "It finds each product page, pulls the media, and fills the approved Figma card component with the strain, tier, and photo." },
+    { label: "Compose", detail: "ffmpeg places the product video behind the card in a 1080×1920 story. A probe verifies size, length, and that there's no audio." },
+    { label: "File", detail: "Videos attach to the drop's Asana task. Attachments notify no one." },
+    { label: "Send", detail: "Only inside waking hours, and only when every strain in the drop is finished: the review comment and the approval post go out." }
+  ]}
+  caption="Everything up to 'File' is cheap to redo. 'Send' is the only step other people see, so it's the only step with gates in front of it."
+/>
+
+### Code first
+
+The first live run picked the wrong strain. Search returned a lookalike, and a stale sitemap pointed at an old product page. The fix was more code, not a better prompt. The scraper now probes the likely product URLs directly, rejects any page whose title doesn't match the strain, ranks candidates by tier and publish date, and logs why it chose each one. The judgment I used to make silently ("I just know which page is right") became a rule anyone can read.
+
+Premiere went the same way. When I opened the template, it was a card image with a product video masked into a circle: 4.73 seconds, no animation. That's a recipe, not an edit. I recovered the geometry from a frame of an old export and the encoding settings from its metadata, and one ffmpeg command now renders each story in seconds. It also fixed a quiet bug in the old exports, which were set to "no audio" but still carried a stray audio track.
+
+### The day it sent too early
+
+In late July the routine posted a card with the wrong tier. The announcement said one tier. The product page sat under another, because a new page used a URL pattern the scraper didn't know yet. The agent noticed the conflict, logged it politely, trusted the website, and posted anyway.
+
+Undoing it took a deleted attachment, a hand-deleted Slack file, and a correction thread. Everything before the post would have been free to fix. Three rules came out of that day:
+
+- **The announcement is the source of truth for tier.** The site supplies media, never categories. A mismatch is logged loudly and never adopted.
+- **The scraper knows both URL patterns.** That alone would have caught it.
+- **Completeness gate.** If any strain in a drop is unfinished, held, or unresolved, nothing is sent. Finished files attach quietly and the post waits until the drop is whole.
+
+A go-live guard covers the opposite case. If a drop is announced for tomorrow, the task gets created now and the media waits for the pages to actually go live.
+
+### Paying for the model only when there's work
+
+Most scheduled checks find nothing. Drops land between about 3 and 8 a.m. Pacific, and most days have none. Each check was still booting a full agent session just to look at Slack, and at its worst, with the task drifted onto a top-tier model, an idle day cost about $12.10.
+
+I timed every announcement from the first two weeks and redesigned around the data rather than my guess. The schedule went from seven checks a day to three, placed where drops actually land. A zsh script decides whether there's work before any model is involved, and its exit codes are the interface: work, idle, done for today, or error (which fails open, so a broken token can't silently skip a drop). A small model only dispatches. On a drop morning it hands the run book to a stronger model, which does the real work. An idle day now costs about $0.30. A drop day adds one $6–8 pass that takes 10–14 minutes, which is where the money should go.
+
+Cost reporting reads the agents' own transcripts after the fact, so nothing in the pipeline has to report on itself. That report is also how I caught the drift: the scheduled model isn't set in the run book, so it has to be checked, not assumed.
+
+### Record
+
+From July 9 to October 8, 2026: 69 archived runs, 37 drops delivered end to end, and no failed runs. The partial runs are the go-live guard holding media for pages that weren't live yet, which is the guard doing its job.
+
+## The Asset Foundation
+
+Automations are only as good as the approved material they draw from. Before any of this, I designed and built the Ad Asset Directory: one searchable home for brand assets that used to live across Drive folders, bookmarks, and memory.
+
+<MediaFull
+  src="/images/projects/ad-assets/ad-portal.webm"
+  alt="Asheville Dispensary portal with organized asset categories"
+  caption="Each brand portal shows common categories first, and search handles the 'where was that file' problem."
+/>
+
+- **Explicit structure.** Brands, categories, links, and tags became real objects, so assets can be found by browsing or by search.
+- **One shell, three brands.** Portals share one component system and change identity through CSS custom properties rather than duplicated code.
+- **Search built for memory.** Client-side fuzzy search over titles, descriptions, brands, categories, and tags, with `!brand` and `#category` filters and a keyboard-first command palette.
+- **Self-service upkeep.** Non-technical admins manage brands, categories, and links themselves. Data lives in Supabase with a JSON fallback, so the directory stays usable if the database doesn't.
+
+<MediaTwo items={[
+  { src: "/images/projects/ad-assets/plantbar.webm", alt: "Plantbar portal using brand-specific theming", caption: "Plantbar: same product shell, its own identity through tokens." },
+  { src: "/images/projects/ad-assets/admin.webm", alt: "Admin dashboard with asset-management controls", caption: "The admin side makes upkeep a visible workflow instead of a favor." }
+]} />
+
+## What's Next, At Its Real Stage
+
+The same split carries into the rest of the design workload. These are at different stages, and I describe them that way:
+
+- **Print coordination — prototype.** A local intake and status tool for getting approved artwork to a print vendor and picked up. It keeps artwork, cost, and vendor-release approvals separate. A revision invalidates the approvals it touches. "Ready" is never treated as "picked up." It runs on simulated vendor events and isn't connected to anything live yet.
+- **Presentations from approved templates — planned.** An agent fills the content slots of decks I've designed and approved. It never invents a layout, and I review every deck.
+- **Packaging checks against compliance checklists — planned.** Compare new packaging artwork against the team's existing checklists and produce a gap report for the people who own compliance. Read-only.
+
+## What I Learned
+
+The automation itself was rarely the hard part. The hard part was deciding what the system is allowed to believe (the announcement, not the website), what it's allowed to do alone (anything that can be quietly redone), and when it needs to stop and wait (anything other people will see). Write those down as rules, and the model's job gets small enough to trust.

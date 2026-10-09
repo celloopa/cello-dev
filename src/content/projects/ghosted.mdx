@@ -1,30 +1,29 @@
 ---
 title: Ghosted
-description: Designed and built an AI-assisted job application workspace — from a Go terminal prototype to a shipped web product where deterministic code does the work and one bounded model call writes the prose.
+description: An AI-assisted job-application product, designed across three versions — a terminal prototype, a web app where one bounded model call wrote the prose, and a rebuild around a live resume canvas where every AI edit is a change you accept or reject.
 image: /images/projects/ghosted/preview.webm
 ogImage: /images/projects/ghosted/ghosted-thumbnail.png
 url: https://ghosted.cello.design
 github: https://github.com/celloopa/ghosted
 techStack:
-  - Go
-  - Bubble Tea
+  - React
   - TypeScript
-  - Next.js
   - Typst
-  - Lip Gloss
-  - JSON
+  - Codex
+  - Node
+  - Next.js
+  - Go
 role: Product Designer / AI Tools
 highlights:
-  - Designed and built a working prototype for developers managing fragmented job-search workflows
-  - Created a keyboard-first TUI plus scriptable CLI so humans and AI agents could work from the same local data model
-  - Modeled an 8-stage application pipeline with document links, interview details, contacts, and follow-up actions
-  - Built JSON-based agent handoffs for parsing postings, generating documents, reviewing quality, and updating records
-  - Used the project to study how product designers can reason more clearly with engineering constraints
-  - Rewrote the prototype as a shipped web product — posting capture, deterministic fit scoring, one bounded generation call, triage review, and ATS-validated PDF export
-  - Shipped to real testers on an invite-gated shared subscription, backed by 744 tests across a pure-TypeScript core and a Next.js app
+  - Designed Ghosted across three versions, each one settling a question the last one raised
+  - "Version two: deterministic code parsed, scored, and validated; one bounded model call wrote the prose; 744 tests"
+  - "Version three: a live React + Typst resume canvas where every AI edit arrives as a versioned, highlighted change the person accepts or rejects"
+  - Designed the agent to interview for evidence instead of inventing it — bullets come only from what the person said
+  - Job intake reads hiring-platform APIs first and uses page scraping only as a fallback
+  - Built openly with AI — I own the product decisions; coding agents carried out much of the implementation
 featured: true
 complete: true
-order: 2
+order: 3
 ---
 
 import CaseMeta from '@/components/CaseMeta.astro';
@@ -33,289 +32,83 @@ import MediaFull from '@/components/media/MediaFull.astro';
 import MediaTwo from '@/components/media/MediaTwo.astro';
 
 <CaseMeta items={[
-  { label: "Role", value: "Solo product designer-builder. I used code as the design medium so I could test interaction ideas, data constraints, and AI handoffs directly." },
-  { label: "Users", value: "Job seekers managing applications, interviews, documents, and follow-ups — first developers in a terminal, then anyone with a CV in a browser." },
-  { label: "Constraints", value: "Local-first data, keyboard-first interaction, scriptable automation, human review, portable files, and no hosted database dependency." },
-  { label: "Tools", value: "Go, Bubble Tea, Lip Gloss, JSON, TypeScript, Next.js, Typst, Claude Code, Codex CLI." },
-  { label: "Outcome", value: "A terminal prototype that clarified the product model, then a live web product with real testers, bounded AI generation, and 744 passing tests." }
+  { label: "Role", value: "Product designer and owner. I set the flows, the product model, and every call about where the AI stops. I built the first two versions with Claude Code as a collaborator; a coding agent built the third version's first cut from my spec." },
+  { label: "Users", value: "Job seekers tailoring applications — first me in a terminal, then people with a CV in a browser, now early testers on a hosted app." },
+  { label: "Constraints", value: "Model output that can't be trusted blindly, resumes that must stay true to the person, PDFs that have to survive applicant-tracking systems, and testers who've never seen an API key." },
+  { label: "Tools", value: "React, Vite, TypeScript, typst.ts, Node, Hono, SQLite, Codex; earlier Next.js and Go with Bubble Tea." },
+  { label: "Outcome", value: "Live at ghosted.cello.design. Three versions, one consistent rule: the more the model does, the more visible and reversible its work has to be." }
 ]} />
 
 ## Context
 
-Ghosted began as a product-design exercise disguised as a terminal app. I wanted to understand the kind of tooling developers reach for when a workflow is repetitive, private, and spread across too many surfaces: job boards, notes, emails, resumes, cover letters, interviews, and follow-up reminders.
+Job applications are repetitive, high-stakes, and personal: the same tailoring loop dozens of times, where one invented claim can cost you the interview. That makes it a good place to work out how much a model should do, and where the person has to stay in control.
 
-Rather than sketching the concept only in Figma, I built a working prototype in Go. That forced the design decisions to collide with implementation details: state transitions, file formats, keyboard navigation, command naming, error tolerance, and the boundary between what an AI agent should automate and what a person should approve.
+I've designed Ghosted three times. Each version settled a question the previous one raised.
+
+## Version One: Prove The Workflow
+
+The first Ghosted was a Go terminal app. I wanted to feel the product's constraints directly, so I built it rather than only sketching it. Applications moved through an eight-stage pipeline in plain local JSON. A keyboard-first TUI handled daily review, and a JSON CLI let scripts and AI agents work against the same data. Agents could parse postings and draft documents, but nothing touched the tracker without a dry run or approval.
 
 <MediaFull
   src="/images/projects/ghosted/ghosted-intro.webm"
   alt="Ghosted TUI showing the main application list with status indicators"
-  caption="Annotated artifact: the main list compresses company, role, status, and next action into a keyboard-scannable surface."
+  caption="Version one: company, role, status, and next action in one keyboard-scannable list."
 />
 
-## Problem
+It proved the workflow model. It couldn't prove the product, because nobody else could use it.
 
-The modern job search is a high-volume workflow with low tolerance for losing context. A developer may save a posting in one browser tab, tailor a resume in another tool, track a recruiter in email, and remember follow-ups in a notes app. The more applications they manage, the more the real product problem becomes coordination.
+## Version Two: Minimum Viable Intelligence
 
-I framed the problem around three jobs:
-
-- Keep every application in one durable pipeline.
-- Let the user move quickly without leaving the keyboard.
-- Use AI to reduce repetitive document and parsing work without removing human control.
-
-## My Role
-
-I designed and built Ghosted myself. That matters to the story: the goal was not only to ship an app, but to become a better bridge between product design and engineering by feeling the constraints directly.
-
-I owned the workflow model, terminal interaction design, command interface, data structure, document pipeline, and AI-assisted development process. Claude Code acted as a coding collaborator, but I made the product decisions: what state needed to exist, what should stay local, where automation should stop, and how much control the user needed before generated materials became part of the tracker.
-
-## Design Constraints
-
-- **Local-first data**: Job-search data can be private and messy, so the first version uses plain JSON files instead of a hosted account system.
-- **Keyboard-first UX**: The primary user is comfortable in a terminal, so navigation and status changes needed to be fast without feeling cryptic.
-- **Scriptable automation**: The CLI accepts and returns JSON so AI agents and shell scripts can work against the same model as the TUI.
-- **Human review**: AI can parse, draft, and score documents, but the product needed dry-run and approval paths before automation updates the tracker.
-- **Portable documents**: Resume and cover-letter outputs needed predictable naming so files could be reviewed, opened, and attached later.
-
-<FlowDiagram
-  title="Application Lifecycle"
-  items={[
-    { label: "Saved", detail: "A role is captured for later review before the user commits to applying." },
-    { label: "Applied", detail: "The submitted role becomes part of the active pipeline with document links." },
-    { label: "Screening", detail: "The application has moved into initial recruiter or company review." },
-    { label: "Interview", detail: "The detail view tracks interview type, date, contacts, and notes." },
-    { label: "Offer", detail: "The opportunity is separated from ordinary active applications." },
-    { label: "Accepted / closed", detail: "The pipeline preserves final outcomes, including rejected and withdrawn states." }
-  ]}
-  caption="The state model made the product feel more like a recruiting workflow than a to-do list."
-/>
-
-## Key Product Decisions
-
-**TUI plus CLI, not one interface.** The TUI is for review, browsing, and daily updates. The CLI is for automation, scripts, and AI agents. Both share the same JSON store, which kept the prototype simple while still supporting two very different interaction modes.
-
-**JSON as the product contract.** I chose a plain data format because it made the tool inspectable, version-controllable, and agent-ready. It also helped me reason about the boundary between interface design and underlying product state.
-
-**Eight pipeline stages.** The model needed enough fidelity to match a real hiring process without becoming a project-management system. The stages are explicit enough for reporting and quick updates, but simple enough to move through with number keys.
-
-**Review before automation.** The agent pipeline supports dry runs and approval flags because document generation is high leverage but easy to get wrong. I wanted AI to accelerate the repetitive parts, not silently alter the user's source of truth.
-
-## Interaction Details
-
-<MediaFull
-  src="/images/projects/ghosted/ghosted-end.webm"
-  alt="Viewing an agent-added job application and updating its status"
-  caption="Annotated artifact: number keys update status from the list, reducing the application pipeline to one predictable keyboard action."
-/>
-
-The interaction model is intentionally small:
-
-- Arrow keys and vim-style movement support quick scanning.
-- Number keys update an application's stage without opening a form.
-- `u` starts from a job posting URL and moves into the fetch/apply workflow.
-- `o` opens the document folder for the selected application.
-- Detail views expose salary, contacts, interviews, document links, notes, and follow-ups without overwhelming the list view.
-
-<MediaFull
-  src="/images/projects/ghosted/preview.webm"
-  alt="Application detail view showing salary, contacts, interviews, and document links"
-  caption="Annotated artifact: detail screens keep the list compact while preserving the context needed for interviews and follow-ups."
-/>
-
-## AI Workflow
-
-<FlowDiagram
-  title="Human And AI Workflow"
-  items={[
-    { label: "Fetch posting", detail: "The user provides a URL or saved posting, then Ghosted stores a local markdown reference." },
-    { label: "Parse role", detail: "An agent extracts company, role, location, compensation, and requirements into structured data." },
-    { label: "Generate drafts", detail: "Resume and cover-letter agents create tailored Typst documents for the selected role." },
-    { label: "Review quality", detail: "A review agent scores outputs and flags weak documents before they are accepted." },
-    { label: "Approve update", detail: "The user can dry-run, revise, or auto-approve before the tracker is changed." },
-    { label: "Compile files", detail: "Typst outputs become predictably named PDFs linked back to the application." }
-  ]}
-  caption="The key design question was not 'can AI do this?' It was 'where should the human stay in control?'"
-/>
-
-The agent pipeline includes four roles:
-
-1. **Posting Parser** extracts structured information from job descriptions.
-2. **Resume Agent** drafts a tailored resume based on the role.
-3. **Cover Letter Agent** drafts a targeted cover letter.
-4. **Review Agent** scores the documents and provides feedback before approval.
-
-<MediaFull
-  src="/images/projects/ghosted/ghosted-agent.webm"
-  alt="Multi-agent pipeline running resume and cover letter generation"
-  caption="Annotated artifact: the pipeline treats AI output as draft material that should be reviewed before becoming application history."
-/>
-
-## Building With Claude Code
-
-Claude Code helped accelerate the implementation, but the collaboration worked best when I gave it product constraints instead of vague build requests. The most useful loops were around the data model, Bubble Tea view architecture, CLI command structure, documentation, and agent handoffs.
-
-That process changed how I think about AI-assisted design work. The value was not simply speed. It was being able to explore implementation constraints while keeping enough product judgment to reject, simplify, or redirect the generated code.
-
-## Outcome And Learning
-
-Ghosted shipped as an open-source working prototype. More importantly, it gave me a concrete model for designing AI-assisted tools:
-
-- Shared data contracts matter more than flashy automation.
-- Keyboard UX is only good when the underlying state model is clear.
-- AI workflows need visible review points, failure tolerance, and user control.
-- Building the prototype myself made the design tradeoffs more honest.
-
-The next validation step would be testing the workflow with other technical job seekers: where they hesitate, what they trust, what feels too automated, and which parts of the pipeline are worth turning into a more polished product surface.
-
-## Roadmap
-
-- Add a proactive assistant for stale applications, follow-up timing, and outreach drafts.
-- Improve document attachment and audit trails inside the TUI.
-- Add stronger failure states for missing job-board data, weak generated documents, and ambiguous company metadata.
-- Explore a visual companion surface for users who want the workflow model without living entirely in the terminal.
-
-## From Prototype To Product
-
-Everything above is where the terminal prototype stopped, and the last item on that roadmap — a visual surface for people who do not live in the terminal — is where the second act starts. In June 2026 I rewrote Ghosted as a web product. The rewrite began the way the prototype did: with a structured decision interview before any code, this time to settle what deserved to survive the change of medium.
-
-The interview sorted the product into three piles. What stayed: the tracking discipline and the derived statuses — "ghosted" and "needs follow-up" are computed from events, never stored. What died: the TUI itself, and with it the assumption that the user is someone like me. What was genuinely new: the apply flow, the work that happens between "I found a posting" and "I applied."
-
-The plan also recorded a reversal worth being honest about. The v2 plan's non-goals list opened with "Resume/cover letter generation, AI agents, or ATS checking." That non-goal lasted days. A tracker alone is a spreadsheet with opinions; the differentiator turned out to be the pair — tracking and applying in one place, each keeping the other honest. I reversed a written plan and kept the receipt in the repo docs.
-
-The TUI had proved the workflow model. It could not prove the product, because nobody else could use it.
-
-<MediaTwo items={[
-  { src: "/images/projects/ghosted/web/tui-list.png", alt: "The original Ghosted TUI application list in a terminal", caption: "Act one: the Go TUI. Keyboard-first, local JSON, single user." },
-  { src: "/images/projects/ghosted/web/web-list.png", alt: "The Ghosted web application list grouped by status, with derived ghosted and follow-up chips", caption: "Act two: the same product model in a browser anyone can open — ghosts still counted." }
-]} />
-
-## Minimum Viable Intelligence
-
-Early architecture sketches reached for an agent SDK, a headless CMS, and a hosted database. All three got cut — not because those tools are wrong (a headless CMS is exactly the right spine for my content-platform work), but because this product hadn't earned them yet. The principle that replaced them fits in one sentence: deterministic code does everything it can, the model only writes prose, and code validates the model. I started calling it minimum viable intelligence — the least model the product can get away with, not the most it can absorb.
+In mid-2026 I rewrote Ghosted as a Next.js web app. Early sketches reached for an agent SDK, a headless CMS, and a hosted database. All three were cut because the product hadn't earned them yet. What replaced them fits in one sentence: deterministic code does everything it can, the model only writes prose, and code checks the model.
 
 <MediaFull
   src="/images/projects/ghosted/web/mvi-pipeline.svg"
   alt="Pipeline diagram: posting, parse, fit, plan, one model call, parse, validate, triage UI — every stage deterministic except the single highlighted model call"
-  caption="Annotated artifact: the generation pipeline. Cream stages are deterministic code; the single amber block is the only model call."
+  caption="Version two's pipeline. Cream stages are code; the single amber block is the only model call."
 />
 
-Code parses the posting, extracts keywords against a per-field lexicon, scores fit from keyword coverage, role match, and logistics, and plans the resume reorder. Only then does the model get involved, and only once: one bounded prompt in, one JSON object out. The model writes the cover letter, a summary line, bullet rewrites, opportunity angles, standout suggestions, and answers to application questions. Nothing else.
+Code parsed the posting, scored fit from keyword coverage ("/100 fit — computed, not vibes"), and planned the resume changes. Then one bounded call returned the cover letter, rewrites, and answers as JSON. Code checked that output: a 180-word cap on the letter, a banned-phrase list, and honesty flags on any number or tool that didn't appear in the CV. Flagged suggestions weren't deleted. They were marked "source not in CV" for the person to rule on. Export compiled the PDFs with Typst and re-read them the way an applicant-tracking system would, checking that nothing was lost.
 
-Then code checks the model's work. The cover letter has a hard 180-word cap. A banned-phrase list catches the clichés models reach for under pressure — "I'm excited to," "aligns perfectly," "passionate about." Honesty flags compare every suggested rewrite against the CV and catch numbers and tools that appear nowhere in it. A flagged suggestion is not silently deleted; it gets a "source not in CV" chip, and the workspace counts the items that "need your judgment — the model could not ground them in your CV." The user decides.
+<MediaTwo items={[
+  { src: "/images/projects/ghosted/web/fit-card.png", alt: "Fit card showing 85/100, 'computed, not vibes', with matched and missing keyword chips", caption: "The fit card shows its work: a score, matched keywords, missing ones." },
+  { src: "/images/projects/ghosted/web/rewrites-triage.png", alt: "Resume rewrite suggestions with accept, edit, and reject controls and 'source not in CV' honesty flags", caption: "Triage: accept, reject, or edit, plus a flag when code can't find the source." }
+]} />
 
-There is no chat. Revisions are targeted: "make it warmer" sends one focused prompt that may change only the cover letter and returns only the cover letter. Everything else is untouched — not by convention, by construction.
+The core and the app carried 744 tests between them. Shipping it to testers on a shared subscription taught me the most. The Claude CLI refused the app's own prompt as a suspected injection, so generation moved to Codex. I also closed a hole that would have let any visitor route generations through my account. I wrote up the version-two reasoning in [Minimum Viable Intelligence](/blog/minimum-viable-intelligence).
 
-## The Apply Flow
+## Version Three: The Resume Is The Product
+
+Version two had a gap I kept running into. Generated material landed in a separate workspace, while the thing that actually mattered, the resume, sat somewhere else. In October 2026 I rebuilt Ghosted around a single surface: a live resume canvas you can talk to.
 
 {/*
-  VIDEO PLACEHOLDER A — CELLO RECORDS (30–60s screen capture, dark theme):
-  The whole loop: paste a posting URL → fit card appears → Generate (keep ~3 real
-  seconds of the ticker so the honesty reads) → materials land → export the PDF.
-  Cut the waiting time. Save as /images/projects/ghosted/web/apply-loop.webm
-  and uncomment:
-
-<MediaFull
-  src="/images/projects/ghosted/web/apply-loop.webm"
-  alt="The full apply loop: posting URL to fit score to generated materials to PDF export"
-  caption="Annotated artifact: the whole loop — capture, fit, generate, export — with the real generation ticker left in."
-/>
+  MEDIA PLACEHOLDER — version three screenshots (Cello to capture from
+  ghosted.cello.design, dark theme): the canvas with a highlighted AI edit and
+  Accept / Reject; version history; a job intake result; the agent asking for
+  evidence. Save to /images/projects/ghosted/v3/ and add MediaFull / MediaTwo here.
 */}
 
-Capture starts with a posting URL and one question: what happens next — already applied, generate materials, or remind me later. The answer decides the status, the events, and whether the apply workspace opens. The fit card scores the match out of 100 and shows its work: matched keywords as chips, missing ones beside them. The card's own caption states the position: "/100 fit — computed, not vibes."
-
-<MediaTwo items={[
-  { src: "/images/projects/ghosted/web/capture-intent.png", alt: "Capture form with the intent fork asking what happens next, with 'I need materials' selected", caption: "Capture is sacred: facts first, then one fork — what happens next?" },
-  { src: "/images/projects/ghosted/web/fit-card.png", alt: "Fit card showing 85/100, 'computed, not vibes', with matched and missing keyword chips", caption: "The fit card shows its work: 85/100, matched chips, missing chips." }
-]} />
-
-Generate fills the materials workspace: the cover letter, the summary line, resume rewrites, opportunity angles, and standout moves — everything the one call returned, laid out for review rather than pasted anywhere.
-
-<MediaFull
-  src="/images/projects/ghosted/web/materials-workspace.png"
-  alt="The materials workspace: posting context, cover letter, and resume rewrite triage side by side"
-  caption="Annotated artifact: the materials workspace. Generated prose lands as suggestions to act on, not applied changes."
-/>
-
-While that call runs, the status line reports only what is actually true. "assembling the prompt — cv, posting, fit," then "writing with Codex with GPT-5.5 — 23s" with a timer and a dry sub-line ("still writing. letters take longer than chips suggest."), then "checking the draft — word cap, banned phrases, honesty flags." The CLI backing the shared account cannot stream partial output, so there is no percentage to show — and the UI declines to invent one. If you do not know the progress, do not draw a progress bar.
-
-<MediaFull
-  src="/images/projects/ghosted/web/generation-ticker.png"
-  alt="Generation status ticker reading: writing with Codex with GPT-5.5, with elapsed seconds and a dry sub-line"
-  caption="Annotated artifact: the ticker mid-write. Real phases, a real timer, no fake progress."
-/>
-
-Export compiles the resume and letter to PDF through Typst's modern-cv template, then validates its own output: it re-extracts the text with pdftotext and asserts that names, headings, dates, and the matched keywords survived. The premise, straight from the validator's docstring: an ATS doesn't read your beautiful PDF, it reads the text it can extract from it.
-
-<MediaTwo items={[
-  { src: "/images/projects/ghosted/web/resume-pdf.png", alt: "First page of the exported resume PDF in the modern-cv template", caption: "The exported PDF, Typst modern-cv template." },
-  { src: "/images/projects/ghosted/web/ats-report.png", alt: "ATS validation output confirming the extracted text preserved the resume content", caption: "The same PDF re-read by the ATS validator: extraction survives." }
-]} />
+- **A live canvas.** The resume renders in the browser with Typst as you work, and the downloaded PDF is compiled by the same engine, so the preview and the file always match.
+- **An agent, with a visible approval surface.** A Codex agent tailors the resume to a posting and drafts answers to application questions. Every change it makes is highlighted on the canvas and saved as a version (who, when, and why) that you accept or reject. Undo and restore move a pointer; nothing is deleted.
+- **Evidence, not invention.** The base resume is a master copy that's never trimmed. When the agent needs a stronger bullet, it asks for specifics and writes only from what you told it. Job versions are cut to one page from the master.
+- **Intake from the source.** A pasted job link goes to the hiring platform's public API first (Greenhouse, Lever, Ashby, Workday, Amazon, Microsoft, and others), falls back to page scraping only when there's no API, and is trimmed to the role, requirements, pay, and benefits.
+- **Built to be used by others.** Personal-code accounts with server sync, an admin console for issuing and revoking access, early job categories and "archetype" resumes, and an in-app problem report that sends screenshots straight to me.
 
 <FlowDiagram
-  title="The Apply Flow"
+  title="How the model's job changed"
   items={[
-    { label: "Capture", detail: "A posting URL plus one fork — applied already, generate materials, or remind me later." },
-    { label: "Fit", detail: "Deterministic parse and keyword overlap produce a 0–100 score with matched and missing chips." },
-    { label: "Generate", detail: "One bounded model call returns letter, summary, rewrites, angles, and standout moves as JSON." },
-    { label: "Triage", detail: "Each suggestion is accepted, rejected, or edited. Honesty flags mark what the model may have invented." },
-    { label: "Export", detail: "Typst compiles the PDFs; the ATS validator re-extracts the text and asserts nothing was lost." },
-    { label: "Applied", detail: "The tracker takes over: events, follow-ups, and the documents hub." }
+    { label: "Version one", detail: "Agents drafted documents outside the product; a dry run or approval guarded the tracker." },
+    { label: "Version two", detail: "One bounded model call wrote prose. Code validated it, and every suggestion went through triage." },
+    { label: "Version three", detail: "An agent edits the resume directly, so every edit is highlighted, versioned, and accepted or rejected." }
   ]}
-  caption="Every stage is code except one — and that one is bounded on the way in and validated on the way out."
+  caption="As the model's job grew, the approval surface grew with it."
 />
 
-Onboarding earns the flow its inputs: build a CV from a short interview, upload an existing PDF (text extraction first, a vision fallback for image-only files), or paste a JSON Resume. Three doors into the same baseline.
+### How version three was built
 
-## Where The Human Stays In Control
+I'm direct about this part because it's part of the design. The flow, the chat-plus-canvas model, the choice to render with Typst, and the product decisions are mine. They're written down as decisions in the repo before any code. A coding agent built the first working version from that spec in a day. That's useful evidence of how I work with AI tools, and it isn't a claim that I hand-wrote every line. The foundations I'm now taking over by hand are the resume data model, the template, the prompts, and version history.
 
-Act one ended on a question — not "can AI do this?" but "where should the human stay in control?" The web product is the production answer.
+## Outcome And Learning
 
-Rewrites arrive as triage, one decision at a time: accept, reject, or edit. Nothing pastes over the resume wholesale. Honesty flags surface rather than filter — the user sees what tripped the check and rules on it. Revision is targeted instead of regenerative, so approving one paragraph never risks the others. And every generation lands in draft history — a "Previous versions" list with preview and restore — so no draft the user liked is ever the cost of trying again.
+Ghosted is live at [ghosted.cello.design](https://ghosted.cello.design) and in early testing. Version three is new, so it hasn't earned usage claims yet. Measuring how testers actually use it is the next piece of work.
 
-<MediaTwo items={[
-  { src: "/images/projects/ghosted/web/rewrites-triage.png", alt: "Resume rewrite suggestions with accept, edit, and reject controls and 'source not in CV' honesty flags", caption: "Triage, close up: three verbs per suggestion — and the honesty flag when code can't verify a source." },
-  { src: "/images/projects/ghosted/web/draft-history.png", alt: "Draft history open: Previous versions (5), each with preview and restore", caption: "Draft history: previous versions with preview and restore." }
-]} />
-
-{/*
-  VIDEO PLACEHOLDER B — CELLO RECORDS (30–60s screen capture, dark theme):
-  Targeted revise: type "make it warmer" → only the letter changes → history
-  grows → restore an older draft. Save as
-  /images/projects/ghosted/web/targeted-revise.webm and uncomment:
-
-<MediaFull
-  src="/images/projects/ghosted/web/targeted-revise.webm"
-  alt="A targeted revision changing only the cover letter, then restoring a previous draft"
-  caption="Annotated artifact: targeted revision. One instruction, one field changed, history intact."
-/>
-*/}
-
-## Shipping On A Subscription
-
-The testers I wanted include people who have never seen an API key, so the deploy generates on a house account: the server runs the owner's own coding-agent subscription behind an invite gate and a daily cap. Getting there produced the best engineering lessons in the project.
-
-The first attempt piped the generation prompt to the Claude CLI. It failed in a way I did not predict: the CLI is a full agent, and it refused the app's own prompt as a suspected prompt injection — then hung loading MCP servers until the 240-second timeout killed it. The same prompt through `codex exec` returned clean JSON in seconds. An agent CLI and a text-completion API are different species; the agent has opinions.
-
-So the shared account pivoted to Codex. The CLI is installed in the Docker image and its ChatGPT login is seeded from a base64 secret into a persistent volume at container start. Two bugs only existed in the container: Typst package downloads (the template's packages must be pre-cached at image build, because the container cannot fetch at runtime) and codex refusing to run outside a git repository — fixed with one flag, `--skip-git-repo-check`.
-
-One security hole got caught before it bit. Once codex existed in the image, the models API advertised it to every visitor — and a visitor bringing their own key could have routed generations through the owner's subscription, uncapped. The fix is server-side and absolute: server CLIs are never a bring-your-own-key offer.
-
-## Outcome And Feedback
-
-Ghosted is live at [ghosted.cello.design](https://ghosted.cello.design), invite-gated, running real generations for real testers. Storage is per-device localStorage behind repository interfaces — chosen over accounts to get testers in fast, with a server backend able to swap in later without touching product code.
-
-Testing fed the product directly. A partner's double-click silently swallowed her action, and became a synchronous double-fire guard in the shared button component. An overwide layout got dialed in. Regenerate-everything gave way to targeted revision. And a non-designer tester forced the product past its design-and-engineering assumptions: role types are now fifteen presets with per-field keyword lexicons, the fifteenth being "Something else" — type your own.
-
-The numbers are measured, not estimated: a pnpm monorepo where the core logic is pure TypeScript with 332 tests and the Next.js app carries 412 more — 744 total, all passing. The voice stayed deadpan. The tagline is "Silence, measured."
-
-<MediaTwo items={[
-  { src: "/images/projects/ghosted/web/settings-shared-account.png", alt: "Settings page showing the shared account card: generating on the shared account, nothing to set up", caption: "Hosted mode: 'generating on the shared account — nothing to set up.'" },
-  { src: "/images/projects/ghosted/web/stats.png", alt: "Stats page showing response rates by role type and source", caption: "Stats reads the silence: response rates by role type and source." }
-]} />
-
-## Roadmap (Updated)
-
-All three of these are in planning, not shipped:
-
-- Accounts and a server backend, swapping in behind the existing repository interfaces. Per-device storage was the right trade for speed to testers; it is the wrong one for following a job search across devices.
-- UX telemetry with an owner annotation mode, so tester friction becomes data instead of anecdote.
-- Agent-editable UI extensions — act one's scriptable-surface idea, pointed at the web product.
+The lesson across all three versions is the same. Adding AI to a product is easy. The design work is deciding how much the model gets to do, and making sure the person can see, judge, and undo every bit of it.

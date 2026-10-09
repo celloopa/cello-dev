@@ -25,13 +25,13 @@ const featuredProjects = allProjects
   .filter((p) => p.data.featured && p.data.complete)
   .sort((a, b) => a.data.order - b.data.order);
 
-const homeTitle = "Cello — Product Designer, Human-Centered AI Systems";
+const homeTitle = "Cello — Product Designer, Design Systems & AI Tools";
 const homeDescription =
-  "Product designer building human-centered AI systems, creative workflow tools, and dependable products across native apps and the web.";
+  "Product designer focused on design systems and human-centered AI tools. Deterministic code does everything it can, the model gets the smallest trustworthy job, and human approval sits where the consequences are.";
 
 const marqueeWords = [
+  "Design Systems",
   "Human-Centered AI",
-  "Creative Tooling",
   "Design-Engineering",
   "Prototype the Uncertain",
 ];
@@ -68,13 +68,13 @@ const marqueeWords = [
     <div class="hero-copy">
       <p class="kicker">
         <span class="kicker-dot" aria-hidden="true"></span>
-        <span class="kicker-text">Open to product and generative AI roles</span>
+        <span class="kicker-text">Open to product design and AI tool roles</span>
       </p>
-      <p class="title-line">Product Designer / AI Systems</p>
+      <p class="title-line">Product Designer / Design Systems &amp; AI Tools</p>
       <p class="summary">
-        I turn ambiguous creative workflows into trusted, editable tools—then
-        prototype the uncertain parts in code so people can test the decisions,
-        not just the pitch.
+        I design systems and the tools around them, then build and run them.
+        Code does everything it can, the model gets the smallest job it can be
+        trusted with, and a person approves wherever the consequences are.
       </p>
       <div class="hero-actions" aria-label="Primary actions">
         <a href="/projects" class="cta primary" data-magnetic>View Case Studies</a>
@@ -138,19 +138,19 @@ const marqueeWords = [
     </div>
   </section>
 
-  <section class="proof-strip" aria-label="AI and product design proof points">
+  <section class="proof-strip" aria-label="How I build, with proof">
     <a
       class="proof-item"
-      href="/projects/daybreak"
+      href="/projects/asheville-dispensary"
       data-reveal
       style="--reveal-i: 0"
     >
-      <h2>Human-Centered AI</h2>
+      <h2>Code First</h2>
       <p>
-        The UI and agent share typed, receipt-backed operations so generated
-        plans stay editable and under human control.
+        A script checks for new product drops before any model runs. An idle
+        day costs about $0.30 instead of $12.
       </p>
-      <span class="proof-link">Proof: Daybreak →</span>
+      <span class="proof-link">Proof: Asheville automations →</span>
     </a>
     <a
       class="proof-item"
@@ -158,10 +158,10 @@ const marqueeWords = [
       data-reveal
       style="--reveal-i: 1"
     >
-      <h2>Bounded AI Workflows</h2>
+      <h2>A Small, Checkable Job</h2>
       <p>
-        Deterministic scoring and validation do the repeatable work; one bounded
-        model call handles the prose.
+        The agent edits the resume, but every change arrives highlighted and
+        versioned, for the person to accept or reject.
       </p>
       <span class="proof-link">Proof: Ghosted →</span>
     </a>
@@ -171,10 +171,10 @@ const marqueeWords = [
       data-reveal
       style="--reveal-i: 2"
     >
-      <h2>Prototype To Production</h2>
+      <h2>Approval Where It Matters</h2>
       <p>
-        A public prototype became an editor-managed system with live search,
-        verified fallbacks, and bounded content staleness.
+        An AI checker proposes festival updates as ordinary CMS drafts. Editors
+        publish; the AI never does.
       </p>
       <span class="proof-link">Proof: VegAvengers →</span>
     </a>
@@ -212,12 +212,11 @@ const marqueeWords = [
   </div>
 
   <div class="projects-section-wrapper">
-    <Section title="Selected AI & Product Systems">
+    <Section title="Selected Case Studies">
       <div class="bar section-bar"></div>
       <p class="section-intro" data-reveal>
-        Case studies showing how I find the right boundary between human
-        judgment, deterministic systems, and generative AI—then carry the
-        product from concept through working software.
+        Shipped systems where I decided what code does, what the model does,
+        and where a person signs off — then built them and kept them running.
       </p>
     </Section>
     <div class="carousel-frame" data-reveal style="--reveal-i: 1">
@@ -261,7 +260,7 @@ const marqueeWords = [
   <section class="contact-section" aria-label="Contact">
     <h2 data-reveal>Let’s Talk</h2>
     <p data-reveal style="--reveal-i: 1">
-      Open to product design, creative technology, and AI tool-building roles.
+      Open to product design, design systems, and AI tool-building roles.
       The fastest way to reach me is email.
     </p>
     <div class="contact-actions" data-reveal style="--reveal-i: 2">
