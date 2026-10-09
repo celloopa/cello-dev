@@ -9,7 +9,7 @@ All notable changes to this portfolio site should be documented here.
 - Consolidated case studies to four: Asheville Dispensary (new; absorbs Ad Asset Directory), VegAvengers, Ghosted, Daybreak. Archived Ascendant Traders and the Figma/Payload placeholder (`complete: false`, files kept); added Netlify redirects for the retired URLs.
 - New Asheville Dispensary case study: the product-to-social video pipeline (code-first page selection, Premiere replaced by ffmpeg, the premature-broadcast day and completeness gate, the script-gated cost redesign), the asset directory as foundation, and other automations at their real stage.
 - Rewrote Ghosted across three versions, including the October 2026 rebuild and an honest note on agent-built implementation.
-- Homepage, layout metadata, and projects index now lead with "Product Designer, Design Systems & AI Tools"; proof cards map to code first, a small checkable model job, and approval where it matters.
+- Homepage, layout metadata, and projects index now lead with "Product Designer & Design Engineer — Design Systems & AI Tools"; proof cards map to code first, a small checkable model job, and approval where it matters.
 - Lightened Daybreak (dropped July test counts) and reordered: Asheville → VegAvengers → Ghosted → Daybreak.
 - Rewrote the unpublished flower-drop post from the July write-up (still `draft: true`).
 - `cv.json`: new label; concrete idle-day cost figure instead of "~60%"; print coordination described as a prototype and other automations as planned; Ghosted described as in early testing with agent-built v3 credited. Resume PDF regenerated.
