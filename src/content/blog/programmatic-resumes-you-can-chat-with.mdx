@@ -1,0 +1,107 @@
+---
+title: "Programmatic Resumes You Can Chat With"
+description: "A short tour of Ghosted's rebuild: a live Typst resume you edit by chatting, where every AI change is highlighted, versioned, and yours to accept or reject."
+publishDate: 2026-10-08
+image: /images/projects/ghosted/v3/highlights.webp
+tags:
+  - AI
+  - Product Design
+  - Ghosted
+  - Typst
+draft: true
+---
+
+import MediaFull from '@/components/media/MediaFull.astro';
+import MediaTwo from '@/components/media/MediaTwo.astro';
+
+The last version of Ghosted worked, but only for me. Testers found it too complicated. So I went back to the flow, mapped every step from "here's my resume" to "I applied," and rebuilt the product around one surface: a live resume you can chat with.
+
+Here's the tour, with the reasoning behind each piece. The screenshots use my own resume and three real Design Engineer postings.
+
+## 1. Bring your resume, then get interviewed
+
+You upload a PDF, paste text, or import a [JSON Resume](https://jsonresume.org) file. JSON Resume is already structured, so it converts in code with no model involved.
+
+What you import becomes your **base resume**, a master copy with no length limit. The agent never trims it. Instead it interviews you, one or two questions at a time, and writes bullets only from what you tell it.
+
+<MediaFull
+  src="/images/projects/ghosted/v3/interview.webp"
+  alt="Ghosted's base resume screen: the chat asks a specific question about one job's thin bullets while the live resume preview sits on the right"
+  caption="Asked to strengthen my bullets, the agent picks the thinnest job and asks for specifics before writing anything."
+/>
+
+**Why:** honesty has to start at the source. Version 2 flagged invented claims after the model wrote them. This version asks for the evidence first, so there's less to catch afterwards.
+
+## 2. Drop a job link
+
+Paste a link and Ghosted reads the posting from the hiring platform's own data first: Greenhouse, Lever, Ashby, Workday, SmartRecruiters, Amazon and Microsoft. Firecrawl is the fallback for everything else. Legal boilerplate, culture sections and embedded application forms get cut, and you confirm the result before anything else happens.
+
+<MediaFull
+  src="/images/projects/ghosted/v3/intake.webp"
+  alt="New job screen with a Vercel Greenhouse link fetched, showing the trimmed posting text and a note that legal boilerplate and application forms were left out"
+  caption="Read through Greenhouse's own data, trimmed to the job, with one question: does this look right?"
+/>
+
+**Why:** most postings have a fold. Everything that matters sits between the job title and the disclaimers. Keeping only what's above the fold gives every later step a clean, short brief.
+
+## 3. Tailor on the canvas
+
+Ghosted files the job under a category, then cuts a one-page version from your base resume. It tells you plainly what it couldn't back up. From there you chat: "trim it to one page," "lead with design systems." Every change the AI makes is highlighted on the page, and you accept or reject it.
+
+The screenshot at the top of this post shows it: after "trim it to one page," the changed summary and bullets are highlighted, with Accept and Reject above the page.
+
+The preview is Typst compiled in the browser, and the PDF comes from the same compiler, so what you see is what you download. Before writing any code I measured it: an edit re-renders in about 7 milliseconds.
+
+Every change becomes a version that records who made it (AI, you, or an import), why, and when. Undo and Restore only change which version is current. Nothing is ever deleted.
+
+<MediaTwo items={[
+  { src: "/images/projects/ghosted/v3/tailored.webp", alt: "Tailoring notes in the chat listing what was emphasized and the gaps the resume can't support, such as no Vercel AI SDK experience", caption: "The first tailoring pass names its gaps instead of filling them." },
+  { src: "/images/projects/ghosted/v3/history.webp", alt: "History panel listing three versions: imported from the base resume, tailored to Vercel by the AI, and trimmed by the AI on request", caption: "History: every version, who made it, and why." }
+]} />
+
+**Why:** the AI suggests and you decide. That one rule is what makes it feel like writing with the AI instead of being handed a document, and it's what makes trying something risky cheap.
+
+## 4. Edit it yourself
+
+Chat comes first, but you can always take over. **Edit directly** swaps the chat for a plain form: every job, role and bullet, with reorder and remove. **Style** sets the font, margins, header alignment, and the size, weight and color of each text element: name, headings, company, title, dates. The preview updates as you type.
+
+<MediaFull
+  src="/images/projects/ghosted/v3/edit-style.webp"
+  alt="The edit form on the left with header fields and contact items, and the Style panel on the right with per-element size, weight and color controls above a centered resume header"
+  caption="The form and the Style panel: control down to the line, without touching code."
+/>
+
+**Why:** chat is the easy way in, but it shouldn't be the only way. People who care about a specific line or a specific gap between lines get direct control over it.
+
+## 5. Categories and archetypes
+
+Every job gets filed into your own job families. Once a category has three jobs, Ghosted can build an **archetype**: a resume aimed at that kind of role, drafted from what you kept and reworded across those applications. New jobs in that category tailor from the archetype instead of the full base resume.
+
+<MediaTwo items={[
+  { src: "/images/projects/ghosted/v3/category.webp", alt: "Design Engineer category page with three jobs from Ramp, Linear and Vercel, recurring posting terms, and a bullet reused in two of three tailored resumes", caption: "Three Design Engineer jobs, the terms they share, and the bullets I keep reusing." },
+  { src: "/images/projects/ghosted/v3/archetype.webp", alt: "The Design Engineer archetype resume with notes on what it prioritized, what it dropped, and what the evidence doesn't support", caption: "The archetype, with notes on what it dropped and what it can't claim." }
+]} />
+
+**Why:** "everything I've ever done" is too much to tailor from, and "this one job" is too little. Archetypes fill the gap between them. The term list is still noisy (it counts words like "location" and "care"), so that's next on the list.
+
+## 6. Built for testers
+
+Testers sign in with a personal code, and their work syncs to the server. A **Report a problem** button takes a note and screenshots and sends them straight to my Discord. My first tester asked for formatting in her job notes, and it shipped that evening. She planned to have those notes open in her interview the next day.
+
+<MediaFull
+  src="/images/projects/ghosted/v3/report.webp"
+  alt="Report a problem dialog with Bug, Annoying, Weird and Idea options, a note field and screenshot attachments"
+  caption="Bug, annoying, weird or idea: one button, screenshots included, never the resume itself."
+/>
+
+## How it was built
+
+The flow, the product model and every decision in this post are mine. I worked them out in planning a few days earlier, before any code existed. A coding agent built the first working version from that plan in a day, and it went live at ghosted.cello.design that afternoon, replacing version 2. I'm now taking over the foundations by hand: the resume data model, the template, the prompts and version history.
+
+## What's next
+
+- **A real brand identity.** The product works; now it needs to look and sound like itself.
+- **More product, led by testers.** Their reports set the order.
+- **1.0, open source, with plug-in subscriptions.** You'll sign in with the AI subscription you already pay for, and Ghosted wraps it with the canvas and the agent.
+
+Ghosted is invite-only right now. If you're job hunting and want to try it, email me at [cello@cello.design](mailto:cello@cello.design) for a code.

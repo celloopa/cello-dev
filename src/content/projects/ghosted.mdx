@@ -74,24 +74,30 @@ Code parsed the posting, scored fit from keyword coverage ("/100 fit — compute
   { src: "/images/projects/ghosted/web/rewrites-triage.png", alt: "Resume rewrite suggestions with accept, edit, and reject controls and 'source not in CV' honesty flags", caption: "Triage: accept, reject, or edit, plus a flag when code can't find the source." }
 ]} />
 
-The core and the app carried 744 tests between them. Shipping it to testers on a shared subscription taught me the most. The Claude CLI refused the app's own prompt as a suspected injection, so generation moved to Codex. I also closed a hole that would have let any visitor route generations through my account. I wrote up the version-two reasoning in [Minimum Viable Intelligence](/blog/minimum-viable-intelligence).
+The core and the app carried 744 tests between them. Shipping it to testers on a shared subscription taught me the most. The Claude CLI refused the app's own prompt as a suspected injection, so generation moved to Codex. I also closed a hole that would have let any visitor route generations through my account.
 
 ## Version Three: The Resume Is The Product
 
 Version two had a gap I kept running into. Generated material landed in a separate workspace, while the thing that actually mattered, the resume, sat somewhere else. In October 2026 I rebuilt Ghosted around a single surface: a live resume canvas you can talk to.
 
-{/*
-  MEDIA PLACEHOLDER — version three screenshots (Cello to capture from
-  ghosted.cello.design, dark theme): the canvas with a highlighted AI edit and
-  Accept / Reject; version history; a job intake result; the agent asking for
-  evidence. Save to /images/projects/ghosted/v3/ and add MediaFull / MediaTwo here.
-*/}
+<MediaFull
+  src="/images/projects/ghosted/v3/highlights.webp"
+  alt="A tailored resume for a Vercel Design Engineer role with AI-changed text highlighted in yellow and Accept and Reject buttons above the preview"
+  caption="Version three: after a chat request, every AI change is highlighted on the live page and waits for Accept or Reject."
+/>
+
+<MediaTwo items={[
+  { src: "/images/projects/ghosted/v3/interview.webp", alt: "The base resume chat asking a specific question about one job's thin bullets", caption: "The agent asks for evidence before it writes a bullet." },
+  { src: "/images/projects/ghosted/v3/archetype.webp", alt: "A Design Engineer archetype resume with notes on what it prioritized and what the evidence doesn't support", caption: "An archetype built from three Design Engineer applications." }
+]} />
 
 - **A live canvas.** The resume renders in the browser with Typst as you work, and the downloaded PDF is compiled by the same engine, so the preview and the file always match.
 - **An agent, with a visible approval surface.** A Codex agent tailors the resume to a posting and drafts answers to application questions. Every change it makes is highlighted on the canvas and saved as a version (who, when, and why) that you accept or reject. Undo and restore move a pointer; nothing is deleted.
 - **Evidence, not invention.** The base resume is a master copy that's never trimmed. When the agent needs a stronger bullet, it asks for specifics and writes only from what you told it. Job versions are cut to one page from the master.
 - **Intake from the source.** A pasted job link goes to the hiring platform's public API first (Greenhouse, Lever, Ashby, Workday, Amazon, Microsoft, and others), falls back to page scraping only when there's no API, and is trimmed to the role, requirements, pay, and benefits.
 - **Built to be used by others.** Personal-code accounts with server sync, an admin console for issuing and revoking access, early job categories and "archetype" resumes, and an in-app problem report that sends screenshots straight to me.
+
+For a screen-by-screen tour of version three and the reasoning behind each piece, read [Programmatic Resumes You Can Chat With](/blog/programmatic-resumes-you-can-chat-with).
 
 <FlowDiagram
   title="How the model's job changed"
