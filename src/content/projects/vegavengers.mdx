@@ -1,44 +1,68 @@
 ---
-title: VegAvengers Marketing
-description: Designed and built a mission-driven discovery experience to help visitors find vegan festivals, animal sanctuaries, and advocacy organizations through flexible search and responsive interaction design.
+title: VegAvengers
+description: Designed and evolved a mission-driven discovery platform from a responsive front end into a resilient editorial system with live search, a client-managed CMS, and bounded content staleness.
 image: /images/projects/vegHero.webm
 ogImage: /images/projects/veg-avengers-thumbnail.png
 url: https://vegavengers.com
 techStack:
   - Astro
+  - Payload CMS
+  - PostgreSQL
+  - Cloudflare R2
   - React
   - TypeScript
-  - Tailwind CSS
-  - Framer Motion
-role: Product Designer / Front-End
+role: Product Designer / Product Systems
 highlights:
   - Designed and built a discovery experience for people looking for vegan festivals, sanctuaries, and advocacy organizations
   - Created flexible search behavior for month names, dates, regions, locations, and common synonyms
-  - Built an animated resource toggle so users could move between festival and sanctuary discovery modes
-  - Organized results into upcoming, TBD, and past states to match how event information changes over time
-  - Translated mission-driven content into responsive product surfaces with purposeful motion
+  - Evolved a static site into an editor-managed Payload CMS without making the public experience depend on CMS uptime
+  - Paired live Payload-backed search with an Astro DB fallback and proved data parity before cutover
+  - Designed selective rebuild rules plus a nightly backstop to keep editorial pages fast while bounding staleness
+  - Shipped the public site on Netlify and the CMS, PostgreSQL, and media pipeline through Coolify and Cloudflare R2
 featured: true
 complete: true
-order: 5
+order: 4
 ---
 
-import CaseMeta from '@/components/CaseMeta.astro';
-import MediaFull from '@/components/media/MediaFull.astro';
-import MediaTwo from '@/components/media/MediaTwo.astro';
+import CaseMeta from "@/components/CaseMeta.astro";
+import MediaFull from "@/components/media/MediaFull.astro";
+import MediaTwo from "@/components/media/MediaTwo.astro";
 
-<CaseMeta items={[
-  { label: "Role", value: "Product designer and front-end builder for a mission-driven discovery website." },
-  { label: "Users", value: "People looking for vegan festivals, animal sanctuaries, advocacy projects, and community resources." },
-  { label: "Constraints", value: "Changing event dates, incomplete user queries, multiple resource types, responsive layouts, and mission-forward content." },
-  { label: "Tools", value: "Astro, React, TypeScript, Tailwind CSS, Framer Motion, Astro DB." },
-  { label: "Outcome", value: "A responsive discovery surface with flexible search, mode switching, animated feedback, and browsable advocacy project cards." }
-]} />
+<CaseMeta
+  items={[
+    {
+      label: "Role",
+      value:
+        "Product designer and builder across the public experience, search model, editor workflow, CMS architecture, and production cutover.",
+    },
+    {
+      label: "Users",
+      value:
+        "Visitors discovering vegan resources, plus non-technical editors keeping festivals, sanctuaries, articles, images, and credits current.",
+    },
+    {
+      label: "Constraints",
+      value:
+        "Changing dates, incomplete queries, hundreds of resource records, media attribution, CMS outages, rebuild cost, and a live site that could not pause for a rewrite.",
+    },
+    {
+      label: "Tools",
+      value:
+        "Astro, React, TypeScript, Payload CMS, PostgreSQL/PostGIS, Cloudflare R2, Netlify, Coolify.",
+    },
+    {
+      label: "Outcome",
+      value:
+        "A live hybrid platform with client-managed editorial content, Payload-backed search, verified fallback paths, selective rebuilds, and a nightly freshness backstop.",
+    },
+  ]}
+/>
 
 ## Context
 
-VegAvengers is a mission-driven platform for connecting people with vegan festivals, animal sanctuaries, and advocacy organizations. The product-design opportunity was discovery: visitors may not know the exact event name, sanctuary name, country spelling, or month format they need.
+VegAvengers is a mission-driven platform for connecting people with vegan festivals, animal sanctuaries, and advocacy organizations. The first product-design problem was discovery: visitors may not know the exact event name, sanctuary name, country spelling, or month format they need.
 
-I designed and built the front-end experience around flexible searching and lightweight mode switching, so visitors could move between resource types without needing to understand the site's data model.
+The second problem arrived after the public experience shipped. Editors needed to publish articles, update yearly festival data, manage media and credits, and keep hundreds of resources current without touching code. I expanded the product from a front-end project into a two-sided system: a fast public Astro site and a separate Payload workspace built around the editorial workflow.
 
 <MediaFull
   src="/images/projects/veg-approach.webm"
@@ -53,6 +77,8 @@ I designed and built the front-end experience around flexible searching and ligh
 - A traveler wants to find animal sanctuaries by region rather than by exact name.
 - A supporter wants to browse advocacy projects and quickly understand which organizations to visit.
 - An event listing has an uncertain date, so the interface needs to show TBD without burying it.
+- An editor needs to correct a date, publish a story, or credit a photograph without waiting on a developer.
+- The CMS is briefly unavailable, but visitors still need a working public site and search fallback.
 
 ## Product Decisions
 
@@ -64,10 +90,22 @@ I designed and built the front-end experience around flexible searching and ligh
 
 **Motion as feedback.** Framer Motion supports mode changes, staggered cards, and hover states. The goal was not decoration; it was helping the interface feel responsive and alive while users browse.
 
-<MediaTwo items={[
-  { src: "/images/projects/tool-switcher.webm", alt: "ResourceToggle animation showing mode switching", caption: "Annotated artifact: the toggle makes two resource modes feel related without forcing one large combined list." },
-  { src: "/images/projects/vegfests.webm", alt: "VegFest search filtering festivals by city", caption: "Annotated artifact: search is designed for partial knowledge, including dates, locations, and synonyms." }
-]} />
+<MediaTwo
+  items={[
+    {
+      src: "/images/projects/tool-switcher.webm",
+      alt: "ResourceToggle animation showing mode switching",
+      caption:
+        "Annotated artifact: the toggle makes two resource modes feel related without forcing one large combined list.",
+    },
+    {
+      src: "/images/projects/vegfests.webm",
+      alt: "VegFest search filtering festivals by city",
+      caption:
+        "Annotated artifact: search is designed for partial knowledge, including dates, locations, and synonyms.",
+    },
+  ]}
+/>
 
 ## Interaction Details
 
@@ -87,8 +125,24 @@ The featured projects grid gives advocacy organizations a more editorial surface
   caption="Featured projects act as a bridge between discovery and action."
 />
 
+## Evolving The Content System
+
+I kept the public site in Astro and built the editor workspace as a separate Payload application. That preserved the working visual experience while giving editors structured collections for posts, projects, team members, media, festivals, sanctuaries, and site-wide content.
+
+**Static editorial, live resources.** Editorial pages are prerendered for speed and resilience. Search routes read published resource data from Payload with a short cache, then fall back to Astro DB if the CMS URL is missing or a request fails.
+
+**Prove parity before changing the source.** I extracted the existing search behavior into data-source-agnostic functions and built a comparison harness against live Payload data. The route swap happened only after the old and new sources produced equivalent results for representative months, synonyms, regions, and pagination.
+
+**Protect the public experience from CMS downtime.** Build-time editorial getters retain a fixture fallback. A temporary CMS failure can produce an older but working site instead of a failed build or blank page.
+
+**Bound staleness deliberately.** Publishing meaningful content requests a debounced Netlify rebuild. Media rules avoid rebuilding for every upload or credit correction, and a nightly GitHub Action provides an independent backstop so skipped or dropped hooks cannot leave prerendered content stale indefinitely.
+
+**Make media operational, not decorative.** Payload stores required alt text and reusable photo credit with each media item; Cloudflare R2 serves generated image sizes. Blog templates own layout while editors own the story, links, captions, and attribution.
+
 ## Outcome And Learning
 
-VegAvengers is a useful supporting case because it shows product design in a public, mission-driven context. The strongest lesson was that search quality is not only about algorithms. It is about anticipating how people remember places, dates, organizations, and causes when they do not have perfect information.
+VegAvengers now runs as a live hybrid platform: the public Astro site is deployed on Netlify, the Payload workspace and PostgreSQL service run through Coolify, media is stored in Cloudflare R2, and resource search has a verified fallback path.
 
-If I expanded the case study further, I would add usage data around the most common queries, no-result searches, and which resource mode drives the most engagement.
+The strongest lesson was that product reliability spans both sides of the experience. For visitors, it means forgiving search and clear temporal states. For editors, it means understandable content models and safe publishing. For the system, it means defining what may be stale, for how long, and how the product behaves when one service is unavailable.
+
+The remaining opportunity is measurement. I would add privacy-conscious analytics for common queries, no-result searches, resource-mode usage, and editorial publishing time instead of inventing outcome metrics from launch alone.

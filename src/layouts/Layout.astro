@@ -89,6 +89,14 @@ const SOCIAL_ICONS: SocialIcon = {
         );
       })();
     </script>
+    <noscript>
+      <style>
+        [data-reveal] {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      </style>
+    </noscript>
 
     <!-- Open Graph -->
     <meta property="og:url" content={canonicalUrl} />
@@ -110,6 +118,7 @@ const SOCIAL_ICONS: SocialIcon = {
   </head>
   <body>
     <div class="texture-layer" aria-hidden="true"></div>
+    <div class="scroll-progress" aria-hidden="true"><span></span></div>
     <div class="content-layer">
       <Header />
       <main transition:name="page">
@@ -173,6 +182,86 @@ const SOCIAL_ICONS: SocialIcon = {
       </footer>
       <KeyboardManager />
     </div>
+    <script is:inline>
+      (() => {
+        const reducedMotion = window.matchMedia(
+          "(prefers-reduced-motion: reduce)",
+        );
+        let revealObserver;
+
+        function initReveals() {
+          revealObserver?.disconnect();
+          const els = document.querySelectorAll(
+            "[data-reveal]:not(.is-revealed)",
+          );
+          if (!("IntersectionObserver" in window) || reducedMotion.matches) {
+            els.forEach((el) => el.classList.add("is-revealed"));
+            return;
+          }
+          revealObserver = new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("is-revealed");
+                  revealObserver.unobserve(entry.target);
+                }
+              }
+            },
+            { threshold: 0.15, rootMargin: "0px 0px -40px" },
+          );
+          els.forEach((el) => revealObserver.observe(el));
+        }
+
+        let progressTicking = false;
+        function updateProgress() {
+          progressTicking = false;
+          const bar = document.querySelector(".scroll-progress span");
+          if (!bar) return;
+          const doc = document.documentElement;
+          const max = doc.scrollHeight - doc.clientHeight;
+          const progress = max > 0 ? Math.min(1, doc.scrollTop / max) : 0;
+          bar.style.transform = `scaleX(${progress})`;
+        }
+        function onScroll() {
+          if (progressTicking) return;
+          progressTicking = true;
+          requestAnimationFrame(updateProgress);
+        }
+
+        function initMagnetic() {
+          if (
+            reducedMotion.matches ||
+            !window.matchMedia("(pointer: fine)").matches
+          ) {
+            return;
+          }
+          document.querySelectorAll("[data-magnetic]").forEach((el) => {
+            if (el.dataset.magneticBound) return;
+            el.dataset.magneticBound = "true";
+            const strength = 5;
+            el.addEventListener("pointermove", (e) => {
+              const r = el.getBoundingClientRect();
+              const x = ((e.clientX - r.left) / r.width - 0.5) * 2;
+              const y = ((e.clientY - r.top) / r.height - 0.5) * 2;
+              el.style.transform = `translate(${(x * strength).toFixed(1)}px, ${(y * strength).toFixed(1)}px)`;
+            });
+            el.addEventListener("pointerleave", () => {
+              el.style.transform = "";
+            });
+          });
+        }
+
+        function initAll() {
+          initReveals();
+          initMagnetic();
+          updateProgress();
+        }
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        document.addEventListener("DOMContentLoaded", initAll);
+        document.addEventListener("astro:page-load", initAll);
+      })();
+    </script>
     <style is:global>
       html {
         font-family: "GeistMono", monospace;
@@ -464,6 +553,78 @@ const SOCIAL_ICONS: SocialIcon = {
       ::selection {
         background: var(--color-accent);
         color: var(--color-background);
+      }
+
+      /* Scroll progress bar */
+      .scroll-progress {
+        position: fixed;
+        inset: 0 0 auto 0;
+        height: 5px;
+        z-index: 2000;
+        pointer-events: none;
+      }
+
+      .scroll-progress span {
+        display: block;
+        height: 100%;
+        background: var(--color-accent);
+        transform: scaleX(0);
+        transform-origin: left;
+      }
+
+      /* Scroll-triggered reveals */
+      [data-reveal] {
+        opacity: 0;
+        transform: translateY(26px);
+        transition:
+          opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+        transition-delay: calc(var(--reveal-i, 0) * 80ms);
+      }
+
+      [data-reveal="left"] {
+        transform: translateX(-34px);
+      }
+
+      [data-reveal="right"] {
+        transform: translateX(34px);
+      }
+
+      [data-reveal].is-revealed {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* Divider lines draw in instead of sliding */
+      [data-reveal="line"] {
+        opacity: 1;
+        transform: none;
+      }
+
+      [data-reveal="line"]::before {
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      [data-reveal="line"].is-revealed::before {
+        transform: scaleX(1);
+      }
+
+      /* Magnetic elements */
+      [data-magnetic] {
+        will-change: transform;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        [data-reveal] {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+
+        [data-reveal="line"]::before {
+          transform: scaleX(1) !important;
+        }
       }
 
       .print {

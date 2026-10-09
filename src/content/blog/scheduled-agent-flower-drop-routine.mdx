@@ -1,0 +1,138 @@
+---
+title: "I Turned a 7-Tool, 45-Minute Workflow Into a Scheduled Agent"
+description: "A builder's log about automating a twice-weekly flower drop routine, catching the wrong product scrape, fighting an invisible MacWhisper overlay, and removing Premiere from the pipeline."
+publishDate: 2026-07-09
+image: "/images/blog/flower-drop-sent-using-claude.png"
+tags:
+  - Automation
+  - AI Agents
+  - Design Systems
+  - Figma
+  - ffmpeg
+draft: true
+---
+
+![The finished flower drop broadcast in Slack, marked “Sent using Claude.”](/images/blog/flower-drop-sent-using-claude.png)
+
+At 3:48 PM, three finished social videos appeared in Slack. The message linked back to the Asana task, tagged the people who needed to review the work, and included native video previews. Underneath it was a small label: **Sent using Claude**.
+
+That screenshot is the payoff, but it is not the useful part of the story.
+
+The useful part is that the agent sent the wrong strain first. Then a desktop transcription app turned invisible and ate my clicks. Then Figma refused to edit the card text because of a font I had installed locally. Somewhere in the middle of fixing those problems, I realized Premiere did not need to be in the workflow at all.
+
+By the end of the session, a seven-tool, 45 to 60 minute routine had become a scheduled agent with zero hands-on time per drop. The path there was much less clean than the final Slack message.
+
+## The manual routine
+
+About twice a week, someone posts a flower drop announcement in our ecommerce Slack channel. A typical message lists three strains going online that morning and tags me to prepare the social assets.
+
+My routine was spread across seven tools:
+
+1. Read the Slack message and create an Asana task.
+2. Find each product page in the browser.
+3. Download the macro gallery image and product video.
+4. Duplicate the previous card in Figma, replace the image, update the strain and tier, then export a 1080 × 1920 PNG.
+5. Convert the product video from WebM to ProRes in Terminal.
+6. Replace the card and video clips in a Premiere template, then queue H.264 exports in Adobe Media Encoder.
+7. Upload the results to Asana and post them to the approval channel in Slack.
+
+None of these steps was individually difficult. Together, they created 45 to 60 minutes of fragmented work, usually on a drop morning when something else was already urgent.
+
+The test run happened because that failure mode had already occurred. A client deadline landed on the same morning, and the July 9 drop went out late. I had a real task, real assets, and a reason not to accept a demo that only worked on sample data.
+
+## I started with an interview, not code
+
+The previous handoff had ten unresolved questions: how to handle duplicate product pages, who owned the final broadcast, which channel and user IDs were correct, whether Premiere had to stay, and when notifications were allowed.
+
+I worked through those questions with the agent before building the pipeline. When an answer could be discovered, such as a Slack ID, Asana GID, channel ID, or the location of an API key, the agent fetched it and asked me to confirm it. It did not make me search for information it could retrieve itself.
+
+Those decisions were written back into the run book. The goal was to keep rules in a file, not in chat history.
+
+The final scheduled prompt is only eight lines. It tells the agent to read the run book, determine which pass it is based on the clock, delegate the production work to a Sonnet agent, and report the result. The frontier model is for changing the recipe. Routine production runs use the cheaper model.
+
+## The first scrape was confidently wrong
+
+The supervised run caught the most important bug within the first hour.
+
+I asked for High Octane. The scraper returned **Gelato Fuel**.
+
+The search fallback had returned unrelated strains, and the picker accepted the result without validating the slug. Tropical Cookies failed differently. It selected an older greenhouse product page because the WooCommerce sitemap was four months stale. The newer exotic page used a numbered slug and did not appear in the sitemap at all.
+
+This was exactly the kind of failure that makes an automation look complete while quietly making the work worse.
+
+I changed the lookup strategy. Instead of trusting search or sitemap order, the scraper now probes likely product URLs directly. It tests the tier path, strain slug, and numbered suffixes, validates that the returned slug matches the requested strain, then ranks candidates by tier, sitemap modification date, article publication time, and suffix.
+
+The run also logs why it selected a page. That matters because the manual process depended on “I just know which page is right.” If the agent could not make that judgment legible, I would still have to repeat it mentally every time.
+
+While the live run continued, three review agents checked the scaffold against the interview record. They produced 26 findings, including two blockers. One was the wrong-page problem from another angle. The other was more dangerous: the state design could mark a Slack message handled after a partial failure and permanently skip the unfinished drop.
+
+The fix was to write state immediately after every side effect and only advance `lastHandledTs` after a drop fully delivered. The live failure and the adversarial review found different parts of the same problem.
+
+## Then an invisible window broke Figma
+
+The card template uses ITC Kabel Std, installed as a desktop font. Figma's cloud MCP could inspect the component, swap image fills, and export frames, but text edits failed because the font was missing in the cloud context.
+
+I tried desktop UI automation as a detour. That is where the session became funny.
+
+MacWhisper had left an invisible, always-on-top dictation overlay on the screen. It silently intercepted clicks over the Figma canvas. The automation thought it had selected a text layer, but Figma had received nothing.
+
+A missed text-layer click creates another problem: typed letters become Figma tool shortcuts. The word “Illuminati” contains `a`, which activates the frame tool. Every click after that drew a new 1120 × 3900 frame over the artboards.
+
+The canvas filled with giant accidental frames while the script continued behaving as if it were editing a strain name.
+
+The real fix took about two minutes. Figma now allows fonts to be uploaded to an account, and uploaded fonts are available to MCP and agent workflows. I uploaded the TTF files through Settings → Account → Your uploaded fonts. The missing-font flag cleared, and the whole card branch became headless.
+
+The failed desktop route still clarified the boundary: component instances, image fills, and exports were already reliable through the API. Only the font was blocking text edits. Once I fixed the actual constraint, the UI automation could be deleted.
+
+## I deleted Premiere from the pipeline
+
+The next assumption to fall was that a Premiere template was necessary.
+
+When I inspected the sequence, it contained a card PNG plus a product video masked into a circle. The output was 4.73 seconds long, had no animation, and was meant to have no audio.
+
+That is not really an editing problem. It is a composition recipe.
+
+I exported a frame from the previous manual render and compared it with the original card PNG to recover the geometry. The circle was 960 pixels in diameter at `(526, 1062)`. I used `ffprobe` on the old output to recover the encoding settings: H.264 Main at Level 4.1, 30 frames per second, and roughly 5.9 Mbps.
+
+The resulting ffmpeg path converts the WebM to a ProRes intermediate, places it behind the card, applies the circle mask, and exports the final 1080 × 1920 MP4 in seconds. The output is byte-comparable to the reference, but it does not launch Premiere or Media Encoder.
+
+It also fixed a mistake in the old workflow. The manual exports were configured as “audio off,” but the completed files still carried a stray AAC track. The ffmpeg version actually produces a silent file.
+
+Premiere was not automated. It was removed. I kept the old recipe in the documentation as a deprecated fallback, but it is no longer part of a normal run.
+
+## The delivery layer needed its own design
+
+Creating the files was only half the workflow. The agent also needed to deliver them without behaving like a bot that wakes everyone at 3 AM.
+
+Products go live at 6 AM Eastern, which is 3 AM for me. The schedule now has three passes:
+
+- **3:15 AM Pacific:** read Slack, create or adopt the Asana task, scrape assets, build cards, compose videos, verify them, and attach them to the task. No one is pinged.
+- **5:15 AM Pacific:** add the Asana comment, reassign the posting subtask, and send the approval-channel broadcast.
+- **3:15 PM Pacific:** run the full flow for afternoon announcements.
+
+The Slack connector could post messages but could not attach files. A small Slack app with two scopes handles native video uploads through the Web API. It posts as me, so previews render in the channel instead of appearing as download links. Asana attachments use its REST API for the same reason: the connector only handles metadata.
+
+During the supervised run, every notification stayed paused until I had checked the videos attached to the task. The comment to Hanna included my apology for the late drop. The July 9 videos were added quietly beneath the existing broadcast without tagging everyone again.
+
+Knowing when not to send was as important as knowing how to finish the files.
+
+## What runs now
+
+The routine lives in a Markdown run book with small TypeScript and shell scripts in `lib/`. Each run appends a JSON record and regenerates a local HTML dashboard with the drop status, stage checklist, and run history.
+
+Future-dated announcements create their Asana task immediately but wait to scrape media until the drop morning. Product pages are often still being edited before launch, so fetching early would create another stale-data problem.
+
+The measurable change is simple:
+
+| | Before | Now |
+|---|---:|---:|
+| Hands-on time per drop | 45–60 minutes | 0, with verification during the trial period |
+| Tools I touch | 7 | 0 |
+| Render time per strain | Minutes | Seconds |
+| Scheduled runs | None | 3 per day |
+
+It runs locally with Claude agent mode, Sonnet production agents, Slack and Asana APIs, Figma MCP, TypeScript, ffmpeg, cron, file-based state, and an HTML dashboard. Firecrawl remains a search fallback rather than the primary way product pages are selected.
+
+The next step is not adding more autonomy. It is watching the scheduled runs, reviewing the selection logs, and keeping the verification period long enough to catch the failures I have not seen yet.
+
+The “Sent using Claude” screenshot looks like a clean ending. I prefer it as evidence of a messier lesson: useful automation came from keeping the wrong scrape, the invisible overlay, the font wall, and the unnecessary editing software in the story long enough to remove the right things.

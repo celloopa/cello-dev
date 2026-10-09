@@ -2,6 +2,27 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-07-31
+
+### Generative AI Portfolio Sprint
+
+- Repositioned the homepage around human-centered AI systems, creative workflow tooling, bounded automation, and product-design-to-engineering translation.
+- Added Daybreak as the lead case study with sanitized real product screens, an explicit UI/agent operation model, honest dogfood limits, and fresh test evidence from the native Mac and iPhone codebase.
+- Promoted Ghosted behind Daybreak as the clearest bounded-AI workflow and integrated the latest shipped web-product story and assets from upstream.
+- Updated VegAvengers from its original front-end case into the current live product-system story: Payload editorial workflows, PostgreSQL and R2 infrastructure, verified live-search fallbacks, selective rebuilds, and a nightly freshness backstop.
+- Reordered the featured work so the portfolio opens with Daybreak, Ghosted, and the strongest supporting production systems.
+- Updated `cv.json` with the same human-centered AI positioning, truthful Daybreak and VegAvengers evidence, and no unsupported node-based, footwear, 3D, or additive-manufacturing claims.
+- Regenerated the downloadable resume from the live CV and tightened print styles so the tailored document renders cleanly in two letter-size pages.
+- Added canonical metadata for individual project routes.
+- Preserved and validated the homepage construction-line, reveal, scroll-progress, marquee, parallax, and reduced-motion behavior added in the current working tree.
+
+### Validation
+
+- `pnpm build` passed with 0 Astro check errors, warnings, or hints.
+- Production-preview Lighthouse passed at 100 for accessibility, best practices, SEO, and agentic browsing on both mobile and desktop.
+- Visually checked the homepage and Daybreak case in dark and light themes at desktop and 390px mobile widths; no horizontal overflow or broken media was found.
+- Rendered and inspected both pages of `public/files/marcelo_rondon-resume.pdf`; text extraction and visual review found no clipping, overlap, or broken glyphs.
+
 ## 2026-05-08
 
 ### Agent Workflow

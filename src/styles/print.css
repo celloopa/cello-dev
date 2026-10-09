@@ -1,6 +1,6 @@
 @media print {
   @page {
-    margin: 1cm 1.2cm;
+    margin: 0.7cm 1cm;
   }
 
   :root {
@@ -18,8 +18,8 @@
   }
 
   body {
-    font-size: 9pt;
-    line-height: 1.35;
+    font-size: 8.4pt;
+    line-height: 1.24;
   }
 
   .site-header,
@@ -33,11 +33,11 @@
 
   .print-header {
     display: block !important;
-    margin: 0 0 0.3cm;
-    padding-bottom: 0.15cm;
+    margin: 0 0 0.18cm;
+    padding-bottom: 0.1cm;
     border-bottom: 1pt solid #444;
     color: #000;
-    font-size: 8pt;
+    font-size: 7.5pt;
     font-weight: 700;
   }
 
@@ -47,32 +47,32 @@
 
   /* Compact typography */
   h1 {
-    font-size: 16pt !important;
+    font-size: 15pt !important;
     line-height: 1.1 !important;
     margin: 0 !important;
   }
 
   h2 {
-    font-size: 11pt !important;
+    font-size: 10.5pt !important;
     line-height: 1.2 !important;
     margin: 0 0 0.1cm !important;
   }
 
   h3 {
-    font-size: 10pt !important;
+    font-size: 9.5pt !important;
     line-height: 1.2 !important;
   }
 
   h4,
   h5 {
-    font-size: 9pt !important;
+    font-size: 8.4pt !important;
     margin: 0.05cm 0 !important;
   }
 
   p,
   li {
-    font-size: 9pt !important;
-    line-height: 1.35 !important;
+    font-size: 8.4pt !important;
+    line-height: 1.24 !important;
   }
 
   h1,
@@ -85,7 +85,7 @@
 
   /* Strip screen spacing */
   section {
-    margin: 0 auto 0.3cm !important;
+    margin: 0 auto 0.2cm !important;
     padding-inline: 0 !important;
   }
 
@@ -105,17 +105,17 @@
 
   /* Entry lists: collapse gaps */
   section ul {
-    gap: 0.18cm !important;
-    margin: 0.1cm 0 0 !important;
+    gap: 0.1cm !important;
+    margin: 0.06cm 0 0 !important;
   }
 
   section ul li {
-    padding-top: 0.12cm !important;
+    padding-top: 0.08cm !important;
   }
 
   .highlights {
-    gap: 0.04cm !important;
-    margin: 0.08cm 0 0 !important;
+    gap: 0.02cm !important;
+    margin: 0.04cm 0 0 !important;
   }
 
   .highlights li {
@@ -145,8 +145,7 @@
   }
 
   .keywords {
-    gap: 2pt !important;
-    margin: 0.08cm 0 0 !important;
+    display: none !important;
   }
 
   .keyword {

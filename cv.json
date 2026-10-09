@@ -1,12 +1,12 @@
 {
   "basics": {
     "name": "Marcelo Rondon",
-    "label": "Product Designer",
+    "label": "Product Designer, Human-Centered AI Systems",
     "image": "https://avatars.githubusercontent.com/u/72777489?s=400&u=1258e88539c515802c5c603559cd7b63c032814c&v=4",
     "email": "cello@cello.design",
     "phone": "",
     "url": "https://cello.design",
-    "summary": "Product designer focused on design systems, technical prototyping, and frontend-aware UX. I prototype the uncertain parts in code before teams commit to build, so product decisions ship with behavior, constraints, and handoff intent already worked out. Most recently I designed and shipped Ghosted, an AI job-application product built so the model stays bounded and every output is code-validated.",
+    "summary": "Product designer building human-centered AI systems that augment creative workflows without replacing human judgment. I bridge design and engineering by turning real workflows into working tools with bounded automation, editable states, validation, accessibility, and clear handoff intent. Recent work includes Ghosted, an AI-assisted job-application product, and Daybreak, a local-first Mac and iPhone planner with a typed, receipt-backed agent layer.",
     "location": {
       "address": "",
       "postalCode": "",
@@ -55,8 +55,9 @@
       "endDate": "",
       "summary": "Freelance project",
       "highlights": [
-        "Designed and built a responsive discovery experience that helps visitors find VegFests and animal sanctuaries through backend-integrated search.",
-        "Translated the organization's mission and content structure into maintainable React and TypeScript product surfaces."
+        "Designed and shipped a responsive discovery experience with flexible search across VegFests, animal sanctuaries, locations, dates, months, and changing event states.",
+        "Evolved the product into a hybrid Astro and Payload architecture: prerendered editorial pages, live resource-search APIs, and a headless CMS backed by Postgres with media in Cloudflare R2.",
+        "Defined debounced, selective rebuild policies plus fixture and Astro DB fallback paths so content changes avoid unnecessary deploys and the public experience degrades safely if Payload is unavailable."
       ]
     },
     {
@@ -131,11 +132,7 @@
     {
       "name": "HTML",
       "level": "Master",
-      "keywords": [
-        "Semantic Markup",
-        "Accessibility",
-        "Product UI"
-      ]
+      "keywords": ["Semantic Markup", "Accessibility", "Product UI"]
     },
     {
       "name": "CSS",
@@ -160,56 +157,32 @@
     {
       "name": "TypeScript",
       "level": "Advanced",
-      "keywords": [
-        "Typed Interfaces",
-        "Product Systems",
-        "Developer Tooling"
-      ]
+      "keywords": ["Typed Interfaces", "Product Systems", "Developer Tooling"]
     },
     {
       "name": "React",
       "level": "Advanced",
-      "keywords": [
-        "Component Systems",
-        "Interactive UI",
-        "Prototyping"
-      ]
+      "keywords": ["Component Systems", "Interactive UI", "Prototyping"]
     },
     {
       "name": "Tailwind",
       "level": "Advanced",
-      "keywords": [
-        "Design Tokens",
-        "Responsive UI",
-        "Rapid Prototyping"
-      ]
+      "keywords": ["Design Tokens", "Responsive UI", "Rapid Prototyping"]
     },
     {
       "name": "Git",
       "level": "Advanced",
-      "keywords": [
-        "Collaboration",
-        "Version Control",
-        "Design-Dev Handoff"
-      ]
+      "keywords": ["Collaboration", "Version Control", "Design-Dev Handoff"]
     },
     {
       "name": "WordPress",
       "level": "Advanced",
-      "keywords": [
-        "CMS Design",
-        "Content Workflows",
-        "Operator Tools"
-      ]
+      "keywords": ["CMS Design", "Content Workflows", "Operator Tools"]
     },
     {
       "name": "PHP",
       "level": "Intermediate",
-      "keywords": [
-        "CMS Integration",
-        "Backend Constraints",
-        "Workflow Tooling"
-      ]
+      "keywords": ["CMS Integration", "Backend Constraints", "Workflow Tooling"]
     },
     {
       "name": "MySQL",
@@ -231,58 +204,54 @@
       ]
     },
     {
+      "name": "AI Product Design",
+      "level": "Advanced",
+      "keywords": [
+        "Human-in-the-Loop AI",
+        "Agent Workflows",
+        "Bounded Automation",
+        "Product Prototyping"
+      ]
+    },
+    {
+      "name": "SwiftUI / SwiftData",
+      "level": "Intermediate",
+      "keywords": [
+        "Local-First Apps",
+        "macOS and iOS",
+        "CloudKit",
+        "Typed State"
+      ]
+    },
+    {
       "name": "Photoshop",
       "level": "Master",
-      "keywords": [
-        "Visual Design",
-        "Image Systems",
-        "Asset Preparation"
-      ]
+      "keywords": ["Visual Design", "Image Systems", "Asset Preparation"]
     },
     {
       "name": "Illustrator",
       "level": "Master",
-      "keywords": [
-        "Brand Systems",
-        "Vector Design",
-        "Iconography"
-      ]
+      "keywords": ["Brand Systems", "Vector Design", "Iconography"]
     },
     {
       "name": "After Effects",
       "level": "Advanced",
-      "keywords": [
-        "Motion Design",
-        "Interaction Feel",
-        "Prototyping"
-      ]
+      "keywords": ["Motion Design", "Interaction Feel", "Prototyping"]
     },
     {
       "name": "Premiere",
       "level": "Advanced",
-      "keywords": [
-        "Storytelling",
-        "Motion Editing",
-        "Product Communication"
-      ]
+      "keywords": ["Storytelling", "Motion Editing", "Product Communication"]
     },
     {
       "name": "Python",
       "level": "Intermediate",
-      "keywords": [
-        "Automation",
-        "Data Workflows",
-        "Prototyping"
-      ]
+      "keywords": ["Automation", "Data Workflows", "Prototyping"]
     },
     {
       "name": "Go",
       "level": "Intermediate",
-      "keywords": [
-        "CLI Tools",
-        "Developer Tools",
-        "Workflow Systems"
-      ]
+      "keywords": ["CLI Tools", "Developer Tools", "Workflow Systems"]
     }
   ],
   "languages": [
@@ -312,9 +281,42 @@
         "Shipped to real testers on an invite-gated shared subscription, folding feedback into a synchronous double-fire guard and tighter layouts",
         "Backed by 744 tests across a pure-TypeScript core and a Next.js app"
       ],
-      "keywords": ["Product Design", "AI Product Design", "TypeScript", "Next.js", "React", "Design Systems", "Prototyping", "Human-in-the-Loop AI"],
+      "keywords": [
+        "Product Design",
+        "AI Product Design",
+        "TypeScript",
+        "Next.js",
+        "React",
+        "Design Systems",
+        "Prototyping",
+        "Human-in-the-Loop AI"
+      ],
       "startDate": "2026-01",
       "url": "https://ghosted.cello.design",
+      "type": "application"
+    },
+    {
+      "name": "Daybreak",
+      "description": "Designed and built a local-first personal planning product for Mac and iPhone that combines a deterministic planning engine with agent-assisted adjustments while keeping the plan editable and the user in control.",
+      "highlights": [
+        "Shipped a shared SwiftUI and SwiftData app for macOS and iPhone with private CloudKit sync, without a product account or hosted application server",
+        "Separated a pure, testable planning engine from the app layer so generated day plans obey explicit schedule, ownership, and local-day boundary rules",
+        "Defined typed UI-agent parity contracts so agent-accessible actions match the product grammar, emit auditable receipts, and leave destructive or external actions behind explicit safety exclusions",
+        "Kept automated planning inspectable and editable: people can review, move, defer, or remove Daybreak-owned blocks while source-owned calendar meetings remain protected",
+        "Dogfooded the product against real planning and sync failures, turning trust problems into tested product rules across Mac and iPhone"
+      ],
+      "keywords": [
+        "Product Design",
+        "AI Product Design",
+        "SwiftUI",
+        "SwiftData",
+        "CloudKit",
+        "Local-First",
+        "Human-in-the-Loop AI",
+        "Product Prototyping"
+      ],
+      "startDate": "2026-07",
+      "url": "https://cello.design/projects/daybreak",
       "type": "application"
     }
   ]
