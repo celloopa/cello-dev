@@ -1,0 +1,128 @@
+---
+title: "I Deleted Premiere From My Pipeline, Then Taught It When Not to Post"
+description: "A builder's log: turning a 3–5 hour weekly design-and-edit routine into a scheduled agent, the day it posted too early, and why most of its runs now cost thirty cents."
+publishDate: 2026-10-08
+tags:
+  - Automation
+  - AI Agents
+  - Design Systems
+  - Figma
+  - ffmpeg
+draft: true
+---
+
+{/*
+  ARTIFACTS TO ADD (Cello): a finished drop card + story video, the run dashboard,
+  and the cost report (lib/usage.py output) — idle slot vs drop day. Blur any
+  coworker names/avatars in Slack or Asana screenshots.
+*/}
+
+For a couple of days in July, my automation's most expensive job was printing "nothing to do."
+
+It ran every hour from 3 to 9 a.m., booted a full agent session each time, ran one shell script, found no new product drop, and stopped. On one bad day that cost $12.10. The pipeline's whole job is making social videos, and on that day it didn't make one.
+
+That's the funniest number in this project. It's also the most useful one, because fixing it forced me to decide what the model actually needed to do, and the answer was much less than I'd given it.
+
+## The manual routine
+
+I lead design for three cannabis brands. Two or three times a week, the ecommerce team announces a flower drop: a few strains going live on the site that morning, each needing a branded story card and a short vertical video for social.
+
+By hand, every drop went like this:
+
+1. Read the announcement and make an Asana task.
+2. Find each product page and download its photo and product video.
+3. In Figma, duplicate last drop's card, swap the photo, and retype the strain and tier.
+4. Convert the video in a terminal.
+5. In Premiere, replace the card and the masked video for each strain, then queue exports in Media Encoder.
+6. Attach everything to the task and hand off the posting work.
+7. Post it all for approval in Slack.
+
+That's seven tools and 3–5 hours a week. None of it was hard. It was just constant, and it landed on early mornings that were already busy. The drop I used as the test run went out late because a client deadline hit the same morning.
+
+## It started with an interview, not code
+
+The handoff doc for this had ten open questions: who owns the broadcast, what to do with duplicate product pages, whether Premiere had to stay, when anyone may be notified. I worked through them with the agent before it wrote anything. When an answer could be looked up (a channel ID, a project ID, where a key lived), the agent fetched it and asked me to confirm instead of sending me to hunt for it.
+
+Every answer went back into a Markdown run book. The scheduled prompt is tiny: check for work, and if there is some, follow the run book. The rules live in one file, not in chat history.
+
+## The first scrape was confidently wrong
+
+Within the first hour, I asked for High Octane and got Gelato Fuel. A search fallback had returned unrelated strains, and nothing checked the result. Tropical Cookies failed differently. It picked an older product page because the site's sitemap was four months stale and the new page wasn't in it.
+
+The fix wasn't a smarter prompt. It was more code. The scraper now probes the likely product URLs directly, rejects any page whose title doesn't match the strain, ranks candidates by tier and publish date, and logs why it chose each one. "I just know which page is right" became a rule I can read.
+
+While that live run was going, three review agents checked the scaffold against the interview notes. They came back with 26 findings and two blockers. One was the wrong-page problem from another angle. The other was worse: the state file could mark a drop as handled after a partial failure and skip it forever. Now state is written right after every side effect, and a drop only counts as handled once it fully delivers.
+
+## The invisible window and the font wall
+
+The card template uses ITC Kabel, a font installed on my machine. Figma's cloud API could swap images and export frames, but it couldn't edit text without the font.
+
+So I tried desktop automation, and it got silly. A dictation app had left an invisible, always-on-top overlay on screen that quietly ate clicks over the canvas. When a click missed a text layer, the typed letters became Figma tool shortcuts. "Illuminati" contains an `a`, which is the frame tool, so every click after that drew a giant new frame over the artboards. The script kept going as if it were editing a strain name.
+
+The real fix took two minutes. Figma lets you upload fonts to your account, and uploaded fonts are available to its API. I uploaded the font files, and the whole card step became headless. The desktop detour was all deleted.
+
+## I deleted Premiere
+
+Once I actually looked at the Premiere template, it was a card image with the product video masked into a circle: 4.73 seconds, no animation, no audio. That isn't editing. It's a recipe.
+
+I got the circle's size and position from a frame of an old export, and the encoding settings from the file's metadata. One ffmpeg command now builds each story in seconds, with matching output. It also fixed an old mistake: the manual exports were set to "no audio" but still carried a stray audio track.
+
+A few weeks later the conversion step went too. ffmpeg could read the source video directly, and that intermediate step had been quietly piling up more than 5 GB of files in a synced folder.
+
+## Delivery needed its own design
+
+Products go live at 6 a.m. Eastern, which is 3 a.m. for me. So the routine builds before dawn and attaches files to the Asana task quietly, because attachments notify no one. Comments and the approval post wait for waking hours.
+
+The Slack connector couldn't attach files, so a tiny Slack app uploads the videos natively. They post as me and preview inline. During the supervised trial, every notification waited until I'd checked the videos myself.
+
+## The day it posted too early
+
+Two weeks in, it posted a card with the wrong tier.
+
+The announcement said one tier. The product page lived under another, because a new page used a URL pattern the scraper didn't know. The agent spotted the disagreement, checked the page's structured data, logged a polite "tier anomaly", decided the website was right, and posted to the approval channel.
+
+Fixing it meant deleting an attachment, hand-deleting a Slack file, and threading a correction. Everything before the post would have cost nothing to redo. Three rules came out of that morning:
+
+- **The announcement decides the tier.** The website supplies the media, never the category. If they disagree, it gets logged loudly and never adopted.
+- **The scraper knows both URL patterns.** That alone would have caught it.
+- **Completeness gate.** If any strain in a drop is unfinished or uncertain, nothing gets posted. Finished files attach quietly, and the post waits until the drop is whole.
+
+The post is the only step other people see. That's why it's the step with gates in front of it.
+
+## Then the data rewrote the schedule
+
+By late July my instinct was to run less. Before cutting anything, I listed every drop announcement by the minute it arrived. They landed between 3:17 and 8:07 a.m. Pacific, mostly between 5:00 and 7:05. The cut I had in mind would have missed three of eight drops. Worse, I was already the fallback: half the drops were caught by me running it by hand around 8 a.m., because the schedule ended before the drops did.
+
+So the answer wasn't fewer runs. It was cheaper checks.
+
+That's where the $12.10 comes from. Every check booted a full agent session just to run one script, and the task had quietly drifted onto a top-tier model. Most of that boot cost is tool definitions the check never uses.
+
+The redesign:
+
+- **A script decides first.** A zsh script reads Slack directly and exits with a code: work, idle, done for today, or error. Errors fail open, so a broken token can't silently skip a drop.
+- **A small model dispatches.** If there's no work, it prints one line and stops. If there is, it hands the run book to a stronger model, which does the real work, and relays the result. It never retries a failed run. A stalled run I can pick up by hand is cheaper than a half-finished post.
+- **Three checks instead of seven**, placed where drops actually land: 3:30, 5:30, and 7:30 a.m., weekdays only. After that I'm awake.
+
+An idle day went from $12.10 to $0.71 with the split, then to about $0.30 with three checks. A drop day adds one pass of $6–8 that takes 10–14 minutes, which is where the money should go.
+
+I measure all of this from the agents' own transcripts after the fact, so nothing in the pipeline has to report on itself. That report is also how I caught the model drift, which isn't something the run book can lock in.
+
+## What runs now
+
+Since July 9 the routine has archived 69 runs and delivered 37 drops end to end, with no failed runs. The partial runs are the go-live guard doing its job: a drop announced for tomorrow gets its task now, and its media waits until the pages are live.
+
+| | Before | Now |
+|---|---|---|
+| Manual time | 3–5 hours a week | Checking the results |
+| Tools I touch | 7 | 0 |
+| Render time per strain | Minutes | Seconds |
+| Idle-day cost | — | about $0.30 |
+| Drop-day cost | — | $6–8, 10–14 minutes |
+
+It runs on Claude agents, a zsh check, a zero-dependency TypeScript scraper, the Figma API with a component set per tier, ffmpeg, the Slack and Asana APIs, file-based state, and a local HTML dashboard of every run.
+
+## What I'd keep
+
+The pattern I keep reusing came out of this project the hard way. Let code do everything it can do exactly. Give the model the smallest job it can be trusted with. Put a person, or at least a gate, in front of whatever other people will see.
+
+I'm turning this into a video next, with the wrong scrape, the frame-drawing typo, and the $12 "nothing to do" all on screen.
