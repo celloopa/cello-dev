@@ -22,6 +22,8 @@ highlights:
   - Shipped 25 production releases in the first two days, most of them traced to something a named tester said or did
   - Built the brand from the product's one ownable moment, the yellow highlight, and made "the highlight settles into ink" the hero motion
   - "Measured the focus pass: on phones the resume moved from 522 px to 233 px down the first screen; opening Style went from an 880 ms freeze to 30 ms"
+  - Designed a guided walkthrough over the real app, plus a look-don't-touch version for testers who already had work in it
+  - "Kept the AI from typing links: it picks what's worth researching, and the links come only from a search the server runs"
   - Built openly with AI. I own the product decisions; coding agents carried out much of the implementation
 featured: true
 complete: true
@@ -126,7 +128,7 @@ Version three went live on October 8. The first tester used it that day, and her
   - She proposed naming downloads by role, since "it's obviously for the company you're applying to." Downloads are now "First Last — Role.pdf".
 - **Sam asked for templates** after a demo, ones that apply with the live reload. That became Looks: five presets drawn from your own resume, applied live, with "Save as a look" for your own fine-tuning.
 - **I tested it on my phone** and wrote down "we're getting a bit crowded." That became the focus pass (below).
-- **Two of three new testers stopped before their first resume.** They signed in and never saved anything. That might just be timing. I wrote a first-run guide as a proposal and am holding it until I know whether the first step was unclear or they just didn't have time.
+- **Two of three new testers stopped before their first resume.** They signed in and never saved anything. That might just be timing. A small first-run guide went out on October 9, and two days later it became a guided walkthrough (below).
 
 <MediaFull
   src="/images/projects/ghosted/v3/board.webp"
@@ -198,6 +200,31 @@ Speed counts as focus too. The Looks grid renders each look from your own resume
   caption="Style lives on the base resume and applies everywhere. Each look is your own resume, rendered live."
 />
 
+## Showing People Around
+
+On October 11 I asked for the tutorial to be rebuilt so the ghost would "hold your hand and explain things while trusting your intelligence," the way Adobe's hands-on tutorials and Logic's first run do. The tour runs in the real app, not a slideshow. The rest of the screen dims, the control that matters sits in a cutout with a blue ring, and the ghost talks from a card beside it. Every step has Next and Dismiss, and doing the real thing counts as Next.
+
+Two bugs taught me something about overlays. Clicking a line on the resume opened the edit form, and then the tour snapped the view back to the chat, because the tour heard the click before the app did. Toasts sat half-dimmed across the cutout's edge, and making the number bigger didn't fix it, because a layer only stacks against its siblings. While a step shows, the page now knows it: toasts rise above the dim, and anything that would compete steps aside.
+
+Then I asked what the tour would do to Kim, who already had a base resume, three jobs and applications out. The hands-on version asks you to practice an edit on your base resume and start a new job. For her, that edit would have flagged every job with "your base resume changed." So anyone who already has jobs gets a shorter look-don't-touch tour. It opens one of their own jobs, fills in a missing Fit report or research as it goes, and changes nothing else. Its first card says so. A tour left waiting more than a day ends quietly, so a step can't pop up days later out of context.
+
+<MediaFull
+  src="/images/projects/ghosted/v3/tour-look.webp"
+  alt="The base resume with the walkthrough running: the screen is dimmed except the resume, which sits in a cutout with a blue ring. The ghost's card reads 'I'll show you around, 1 of 7: Your resume and jobs stay exactly as they are: I'll only point things out. This is your base resume, the full record. Every job gets a one-page version cut from it.' with Dismiss and Next"
+  caption="The look-don't-touch tour, for people who already have work in the app. (Fictional demo account.)"
+/>
+
+## Fit And Research: Prep You Can Tick Off
+
+Every tailored job now gets a Fit report, written by the same AI call that tailors the resume. The first version was honest and busy: 18 items, all open. I said as much, and we prototyped three directions on a real job. I liked two of them and asked to mix them. Fit now opens with one line that reads the whole report, then the proof (what's already strong, with the resume line that proves it), then what to lead with and the gaps to prepare, each one a box to tick. The ghost keeps score, and the chat can see what you've ticked. On the test job it went from about 4,300 characters to 1,100, and from two screens to one.
+
+Research started with my own application to Nike. I was looking up their design system by hand and wanted Ghosted to do it. The rule I cared about: the AI never types a link. It picks what's worth reading (what the team has built, recent news, tools the posting names that my resume doesn't, how they interview) and writes a search for each. The server runs the searches and keeps only real results. It also strips my name and contact details from every search before it leaves, and the privacy page said so before Research went to everyone. When a link misses, a × hides it and logs it, so I can see which searches need work.
+
+<MediaTwo items={[
+  { src: "/images/projects/ghosted/v3/fit.webp", alt: "The Fit tab: '4 of 10 ready.' with a progress meter and the line 'Strong senior design-system fit; React Native, token-format standards and formal contribution governance are the main stretches.' Left: five Already strong items and the posting's words with checks. Right: Lead with and Gaps to prepare as checklists, four ticked", caption: "Fit: the proof, then the prep, ticked off as you go. (Fictional job.)" },
+  { src: "/images/projects/ghosted/v3/research.webp", alt: "The Research tab: '1 of 5 read. Good start.' Five topics, such as the W3C Design Tokens format and accessible React components in Storybook, each with three links as small cards from w3.org, styledictionary.com, storybook.js.org and others. One topic is ticked as read and one is set aside", caption: "Research: what to read before you apply, with links from a real search. (Fictional job.)" }
+]} />
+
 ## By The Numbers
 
 - **25** production releases on October 8–9, **19** of them on October 9.
@@ -206,11 +233,14 @@ Speed counts as focus too. The Looks grid renders each look from your own resume
 - **880 → 30 ms** to open Style.
 - **~7 ms** to re-render the resume after an edit.
 - **Same evening:** Kim's formatted-notes idea, from request to production.
+- **15** more releases on October 11: the walkthrough, Research, the Fit checklist and the smaller fixes around them.
+- **4,300 → 1,100** characters on the Fit tab of the test job, after the redesign.
+- **~12** search credits per tailored job for Research, against a plan of 5,000 a month.
 - **0** usage claims. Ghosted is days old with a handful of testers, and measuring how they actually use it is the next piece of work.
 
 ## How It Was Built
 
-I'm direct about this part because it's part of the design. The flow, the chat-plus-canvas model, the choice to render with Typst, the brand, and every product decision above are mine, written down before any code. Claude built version three's first working cut in a day from that spec, and most of the releases since, while I tested, decided and reviewed. That's useful evidence of how I work with AI tools. It isn't a claim that I hand-wrote every line. The foundations I'm now taking over by hand are the resume data model, the template, the prompts and version history.
+I'm direct about this part because it's part of the design. The flow, the chat-plus-canvas model, the choice to render with Typst, the brand, and every product decision above are mine, written down before any code. Claude built version three's first working cut in a day from that spec, and most of the releases since, while I tested, decided and reviewed. The product's own AI is OpenAI's GPT, running on my ChatGPT subscription, and Research searches go through Firecrawl. That's useful evidence of how I work with AI tools. It isn't a claim that I hand-wrote every line. The foundations I'm now taking over by hand are the resume data model, the template, the prompts and version history.
 
 ## What's Next
 
@@ -221,12 +251,12 @@ I'm direct about this part because it's part of the design. The flow, the chat-p
 ]} />
 
 - **Pick a layout.** The three layout studies above (AI-generated concepts from the brand lab, still with the retired 3D ghost) are unselected. The identity reskinned the current layout. Phones still stack three rows of tabs on a job, and that's the first thing a new layout has to fix.
-- **A first-run guide**, if those early stalls turn out to be about clarity: four small steps done in the real UI, ending with archetypes once you have a second job of the same kind.
-- **A fit view:** one AI call on request, saved on the job, in one panel.
+- **Tune Research's searches** from the links testers mark as not useful.
+- **Check that Fit is right:** a way to say an item isn't true, and tracking whether "strong" fits actually get interviews.
 - **Archetypes that learn** from what you keep across jobs, instead of only being built on request.
 - **A recognition test for the mark** at 16 px before calling it final.
 - **1.0, open source,** where you sign in with the AI subscription you already pay for.
 
 ## What I Learned
 
-Adding AI to a product is easy. The design work is deciding how much the model gets to do, and making sure the person can see, judge and undo every bit of it. Version three added a second lesson: the fastest way to find out what that means is to put it in front of real people on day one and let what they say set the order of work.
+Adding AI to a product is easy. The design work is deciding how much the model gets to do, and making sure the person can see, judge and undo every bit of it. Version three added a second lesson: the fastest way to find out what that means is to put it in front of real people on day one and let what they say set the order of work. The walkthrough added a third: every first-run decision has to be asked again for the person who already has work in the app.
