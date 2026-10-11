@@ -6,7 +6,7 @@
     "email": "cello@cello.design",
     "phone": "",
     "url": "https://cello.design",
-    "summary": "Product designer and design engineer focused on design systems and human-centered AI tools. I build and run what I design: deterministic code does everything it can, the model gets the smallest trustworthy job, and human approval sits where the consequences are. Recent work includes an in-house AI video pipeline that replaced 3–5 hours of manual work a week, Ghosted, an AI-assisted job-application product now in early testing, and a Payload CMS that two non-technical editors run every day.",
+    "summary": "Product designer and design engineer focused on design systems and human-centered AI tools. I build and run what I design: deterministic code does everything it can, the model gets the smallest trustworthy job, and human approval sits where the consequences are. Recent work includes an in-house AI video pipeline that replaced 3–5 hours of manual work a week, Ghosted, an AI resume-tailoring product in private beta, and a Payload CMS that two non-technical editors run every day.",
     "location": {
       "address": "",
       "postalCode": "",
@@ -73,7 +73,7 @@
         "The Green Phial: redesigned and maintained the WordPress storefront, translating brand direction into responsive, accessible front-end implementation with improved performance and SEO.",
         "Accessibility consulting: improved WCAG 2.1 compliance for multiple organizations, including River Phoenix Center for Peacebuilding, covering screen-reader behavior, keyboard navigation, and performance.",
         "Legal Impact for Chickens: built secure internal tooling for data-management workflows, handling confidential materials with discretion.",
-        "Ghosted: designed and built an AI-assisted job-application product across three versions, now in early testing."
+        "Ghosted: designed and run an AI resume-tailoring product in private beta, shaped by its testers."
       ]
     },
     {
@@ -275,22 +275,22 @@
   "projects": [
     {
       "name": "Ghosted",
-      "description": "An AI-assisted job-application workspace, designed and shipped across three versions and now in early testing.",
+      "description": "An AI resume-tailoring product in private beta: a live resume you edit by chatting, where every AI change is a proposal you keep or reject.",
       "highlights": [
-        "Designed and shipped Ghosted through three versions — a Go terminal prototype, a Next.js web app backed by 744 tests, and a 2026 rebuild around a live React + Typst resume canvas, built with a coding agent from my spec — now in early testing.",
-        "Kept the model's job small and checkable: platform APIs, parsing and validation run in code first; the AI only drafts, and every resume change arrives as a versioned, highlighted edit the person accepts or rejects.",
-        "Designed the agent to interview for evidence instead of inventing it: it asks for specifics, writes bullets only from what the person said, and names gaps against each posting.",
-        "Designed job intake to read hiring-platform APIs first (Greenhouse, Lever, Ashby, Workday, Amazon, Microsoft) with Firecrawl only as a fallback, trimming postings to the role, requirements, pay and benefits.",
-        "Run it as a hosted product for testers: personal-code accounts with server sync, an admin console, and in-app feedback with screenshots routed to Discord."
+        "Designed a live React + Typst resume canvas where every AI edit lands as a highlighted, versioned proposal the person keeps, rejects, or fixes by clicking the line.",
+        "Designed Fit and Research from three prototypes tested on a real job: a one-line read, proof-first checklists, and research links that come only from real searches, never typed by the AI.",
+        "Built the brand and motion system from the product's yellow highlight, which only ever means \"the AI changed this\", and a scroll-driven showcase landing page (Lighthouse mobile 93 → 98, JavaScript 288 → 81 kB).",
+        "Logged 70 production releases in the first four days, most traced to tester feedback; a phone focus pass moved the resume from 522 px to 233 px down the first screen.",
+        "Designed a guided walkthrough over the live app, a first-resume interview for students, and Spanish CVs for Latin America."
       ],
       "keywords": [
         "Product Design",
         "AI Product Design",
-        "TypeScript",
-        "Next.js",
-        "React",
+        "Interaction Design",
+        "Motion Design",
         "Design Systems",
-        "Prototyping",
+        "React",
+        "TypeScript",
         "Human-in-the-Loop AI"
       ],
       "startDate": "2026-01",
