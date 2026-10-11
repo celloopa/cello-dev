@@ -22,6 +22,7 @@ highlights:
   - Shipped 25 production releases in the first two days, most of them traced to something a named tester said or did
   - Built the brand from the product's one ownable moment, the yellow highlight, and made "the highlight settles into ink" the hero motion
   - "Measured the focus pass: on phones the resume moved from 522 px to 233 px down the first screen; opening Style went from an 880 ms freeze to 30 ms"
+  - "Cut the AI's input tokens for a chat edit by 86% (25,470 to 3,621) by replacing a command-line wrapper with a direct request, and made replies stream in"
   - Designed a guided walkthrough over the real app, plus a look-don't-touch version for testers who already had work in it
   - "Kept the AI from typing links: it picks what's worth researching, and the links come only from a search the server runs"
   - Built openly with AI. I own the product decisions; coding agents carried out much of the implementation
@@ -200,6 +201,14 @@ Speed counts as focus too. The Looks grid renders each look from your own resume
   caption="Style lives on the base resume and applies everywhere. Each look is your own resume, rendered live."
 />
 
+## A Leaner, Faster AI
+
+Ghosted's AI runs on my ChatGPT subscription. At first, every request went through the Codex command-line tool. When I added usage counts on October 10, I could finally see what that cost: the tool added about 17,000 tokens of its own instructions to every call, before Ghosted said anything. I asked whether we could cut it, because "every request is crazy."
+
+Now the server calls the same Codex endpoint directly, with Ghosted's own short instructions. A job-chat edit went from 25,470 input tokens to 3,621, 86% less. Chat replies now stream in as they're written, so you see the answer start instead of waiting for all of it. Resume edits still arrive whole at the end, highlighted for review, because a half-written proposal isn't something you can keep or reject.
+
+The same day, testers got an Effort picker next to Send (Low by default, then Medium and High for bigger edits) and their own usage under Your data: requests, tokens, and what it would have cost at API prices, which they aren't charged. The direct request is also the first step toward running Ghosted on a model of its own one day.
+
 ## Showing People Around
 
 On October 11 I asked for the tutorial to be rebuilt so the ghost would "hold your hand and explain things while trusting your intelligence," the way Adobe's hands-on tutorials and Logic's first run do. The tour runs in the real app, not a slideshow. The rest of the screen dims, the control that matters sits in a cutout with a blue ring, and the ghost talks from a card beside it. Every step has Next and Dismiss, and doing the real thing counts as Next.
@@ -208,9 +217,11 @@ Two bugs taught me something about overlays. Clicking a line on the resume opene
 
 Then I asked what the tour would do to Kim, who already had a base resume, three jobs and applications out. The hands-on version asks you to practice an edit on your base resume and start a new job. For her, that edit would have flagged every job with "your base resume changed." So anyone who already has jobs gets a shorter look-don't-touch tour. It opens one of their own jobs, fills in a missing Fit report or research as it goes, and changes nothing else. Its first card says so. A tour left waiting more than a day ends quietly, so a step can't pop up days later out of context.
 
+Later that night I asked whether the steps were as short as they could be. They weren't. Two steps pointed at the same page, one repeated what the page already says, and Fit and Research took two clicks each. The tour is now seven steps, or five if you already have jobs, and it ends where an application does: Download PDF, the cover letter and answers, and marking it Applied.
+
 <MediaFull
   src="/images/projects/ghosted/v3/tour-look.webp"
-  alt="The base resume with the walkthrough running: the screen is dimmed except the resume, which sits in a cutout with a blue ring. The ghost's card reads 'I'll show you around, 1 of 7: Your resume and jobs stay exactly as they are: I'll only point things out. This is your base resume, the full record. Every job gets a one-page version cut from it.' with Dismiss and Next"
+  alt="The base resume with the walkthrough running: the screen is dimmed except the resume, which sits in a cutout with a blue ring. The ghost's card reads 'I'll show you around, 1 of 5: Your resume and jobs stay exactly as they are: I'll only point things out. This is your base resume, the full record. Every job gets a one-page version cut from it, and when something needs fixing, you click that line.' with Dismiss and Next"
   caption="The look-don't-touch tour, for people who already have work in the app. (Fictional demo account.)"
 />
 
@@ -233,6 +244,7 @@ Research started with my own application to Nike. I was looking up their design 
 - **880 → 30 ms** to open Style.
 - **~7 ms** to re-render the resume after an edit.
 - **Same evening:** Kim's formatted-notes idea, from request to production.
+- **25,470 → 3,621** input tokens for a job-chat edit (86% less) after the AI connection rewrite on October 10.
 - **15** more releases on October 11: the walkthrough, Research, the Fit checklist and the smaller fixes around them.
 - **4,300 → 1,100** characters on the Fit tab of the test job, after the redesign.
 - **~12** search credits per tailored job for Research, against a plan of 5,000 a month.
