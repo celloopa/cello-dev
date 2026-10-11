@@ -1,6 +1,6 @@
 ---
 title: Ghosted
-description: An AI-assisted job-application product, designed across three versions. The current one is a live resume you edit by chatting, where every AI change arrives as a yellow proposal you keep or reject. Real testers shaped it in its first two days, and its identity grew out of that highlight.
+description: A live resume you edit by chatting. Every AI change arrives as a yellow proposal you keep or reject, each job gets a Fit report and research with real links, and a first-time job seeker can build a resume in an interview with the ghost. In private beta, shaped by its testers since day one.
 image: /images/projects/ghosted/v3/swipe-keep.webm
 ogImage: /images/projects/ghosted/v3/og.png
 url: https://ghosted.cello.design
@@ -13,18 +13,17 @@ techStack:
   - Node
   - Hono
   - SQLite
-  - Next.js
-  - Go
+  - Firecrawl
 role: Product Designer / AI Tools
 highlights:
-  - Designed Ghosted across three versions, each one settling a question the last one raised
-  - "Version three: a live React + Typst resume canvas where every AI edit is a versioned, highlighted proposal the person keeps or rejects"
-  - Shipped 25 production releases in the first two days, most of them traced to something a named tester said or did
+  - "A live React + Typst resume canvas where every AI edit is a versioned, highlighted proposal the person keeps, rejects or edits themselves"
+  - "Designed Fit and Research as prep you can tick off: the proof first, then what to lead with and the gaps, plus reading picked by the AI with links that only come from a real search"
+  - Designed a first-resume interview with the ghost, one card at a time beside the live page, for a high school student with no resume yet
+  - "Logged 70 production releases in the first four days, most of them traced to something a named tester said or did"
   - Built the brand from the product's one ownable moment, the yellow highlight, and made "the highlight settles into ink" the hero motion
   - "Measured the focus pass: on phones the resume moved from 522 px to 233 px down the first screen; opening Style went from an 880 ms freeze to 30 ms"
   - "Cut the AI's input tokens for a chat edit by 86% (25,470 to 3,621) by replacing a command-line wrapper with a direct request, and made replies stream in"
   - Designed a guided walkthrough over the real app, plus a look-don't-touch version for testers who already had work in it
-  - "Kept the AI from typing links: it picks what's worth researching, and the links come only from a search the server runs"
   - Built openly with AI. I own the product decisions; coding agents carried out much of the implementation
 featured: true
 complete: true
@@ -32,17 +31,16 @@ order: 3
 ---
 
 import CaseMeta from '@/components/CaseMeta.astro';
-import FlowDiagram from '@/components/FlowDiagram.astro';
 import MediaFull from '@/components/media/MediaFull.astro';
 import MediaTwo from '@/components/media/MediaTwo.astro';
 import MediaThree from '@/components/media/MediaThree.astro';
 
 <CaseMeta items={[
-  { label: "Role", value: "Product designer and owner. I set the flows, the product model, the brand, and every call about where the AI stops. Coding agents built most of version three from my specs and decisions." },
-  { label: "Users", value: "Job seekers tailoring applications. First me in a terminal, then people with a CV in a browser, now invited testers on a hosted app." },
+  { label: "Role", value: "Product designer and owner. I set the flows, the product model, the brand, and every call about where the AI stops. Coding agents built most of it from my specs and decisions." },
+  { label: "Users", value: "Invited testers tailoring real applications, including my own application to Nike and a high school student writing his first resume. CVs work in English and Spanish." },
   { label: "Constraints", value: "Model output that can't be trusted blindly, resumes that must stay true to the person, PDFs that have to survive applicant-tracking systems, testers who've never seen an API key, and a phone screen." },
-  { label: "Tools", value: "React, Vite, TypeScript, typst.ts, Node, Hono, SQLite, Codex, Figma. Earlier: Next.js, and Go with Bubble Tea." },
-  { label: "Outcome", value: "Live at ghosted.cello.design in private beta. 25 production releases in its first two days, an identity built from the product's own highlight, and a phone layout that puts the resume 289 px higher on the first screen." }
+  { label: "Tools", value: "React, Vite, TypeScript, typst.ts, Node, Hono, SQLite, Codex (GPT on my ChatGPT subscription), Firecrawl, Figma." },
+  { label: "Outcome", value: "Live at ghosted.cello.design in private beta. 70 production releases logged in its first four days, an identity built from the product's own highlight, and a phone layout that puts the resume 289 px higher on the first screen." }
 ]} />
 
 ## The Problem
@@ -51,31 +49,9 @@ Job applications are repetitive, high-stakes and personal. You run the same tail
 
 That's the question Ghosted keeps answering: how much should the model do, and how does the person stay in control while it does it?
 
-## How I Got Here: Versions One And Two
-
-**Version one** was a Go terminal app. I wanted to feel the product's constraints directly, so I built it instead of only sketching it. Applications moved through an eight-stage pipeline stored in plain JSON. Agents could parse postings and draft documents, but nothing touched the tracker without a dry run or my approval.
-
-<MediaFull
-  src="/images/projects/ghosted/ghosted-intro.webm"
-  alt="Ghosted TUI showing the main application list with status indicators"
-  caption="Version one: company, role, status, and next action in one keyboard-scannable list."
-/>
-
-It proved the workflow. It couldn't prove the product, because nobody else could use it.
-
-**Version two** was a Next.js web app built on one rule: deterministic code does everything it can, the model only writes prose, and code checks the model. Code parsed the posting, scored fit from keyword coverage, and planned the changes. One bounded model call returned the letter, rewrites and answers. Then code checked them: a word cap, a banned-phrase list, and a "source not in CV" flag on any claim it couldn't trace. The core and the app had 744 tests between them.
-
-<MediaFull
-  src="/images/projects/ghosted/web/mvi-pipeline.svg"
-  alt="Pipeline diagram: posting, parse, fit, plan, one model call, parse, validate, triage UI. Every stage is deterministic except the single highlighted model call"
-  caption="Version two's pipeline. Cream stages are code; the single amber block is the only model call."
-/>
-
-It worked, but testers found it too complicated, and it had a gap I kept running into. The generated material lived in one place, while the resume, the thing that actually matters, lived somewhere else.
-
 ## The Product: A Resume You Can Talk To
 
-In October 2026 I rebuilt Ghosted around one surface: a live resume canvas with a chat beside it. You ask for a change, and the change shows up on the page in yellow.
+Ghosted is built around one surface: a live resume canvas with a chat beside it. You ask for a change, and the change shows up on the page in yellow.
 
 <MediaFull
   src="/images/projects/ghosted/v3/proposal.webp"
@@ -84,23 +60,35 @@ In October 2026 I rebuilt Ghosted around one surface: a live resume canvas with 
 />
 
 - **A live canvas.** The resume is drawn in the browser by Typst, and the PDF comes from the same compiler, so what you see is what you download. An edit re-renders in about 7 ms.
-- **Proposals, not edits.** Every change the agent makes is highlighted and saved as a version: who made it, when, and why. Keep it or Reject it. Undo and Restore only move a pointer, so nothing is ever deleted.
-- **Evidence, not invention.** The base resume is a master copy that's never trimmed. When the agent needs a stronger bullet, it asks for specifics and writes only from what you told it. Each job gets a one-page version cut from it.
+- **Proposals, not edits.** Every change the agent makes is highlighted and saved as a version: who made it, when, and why. Keep it, Reject it, or Edit it myself. Undo and Restore only move a pointer, so nothing is ever deleted.
+- **Click any line to fix it yourself.** Clicking a line on the rendered page opens the edit form at that exact field. When the AI misses twice in a row, the chat says so and points there instead of making you argue with it.
+- **Evidence, not invention.** The base resume is a master copy that's never trimmed. When the agent needs a stronger bullet, it asks for specifics and writes only from what you told it. Each job gets a one-page version cut from it, and the page is measured after tailoring: if it spills, the chat trims the least relevant lines and says what it cut.
 - **Three levels: base, archetype, job.** Jobs are filed into your own job families. Once a family has a few jobs, Ghosted can build an archetype resume for it, and new jobs in that family start from there.
 - **Intake from the source.** A pasted job link is read through the hiring platform's own API first (Greenhouse, Lever, Ashby, Workday and others) and trimmed to the job itself.
 - **In Spanish, for Latin America.** A CV follows the posting's language (its headings, dates and A4 paper in Peru), so someone in Lima can apply locally in Spanish and to a US remote job in English. My family in Peru reviews the wording before it opens to everyone.
 
 The [launch post](/blog/programmatic-resumes-you-can-chat-with) walks through the idea screen by screen.
 
-<FlowDiagram
-  title="How the model's job changed"
-  items={[
-    { label: "Version one", detail: "Agents drafted documents outside the product; a dry run or approval guarded the tracker." },
-    { label: "Version two", detail: "One bounded model call wrote prose. Code validated it, and every suggestion went through triage." },
-    { label: "Version three", detail: "An agent edits the resume directly, so every edit is highlighted, versioned, and kept or rejected." }
-  ]}
-  caption="As the model's job grew, the approval surface grew with it."
-/>
+## Before You Apply: Fit And Research
+
+Every tailored job gets a Fit report, written by the same AI call that tailors the resume. The first version was honest and busy: 18 items, all open. I said as much, and we prototyped three directions on a real job. I liked two of them and asked to mix them. Fit now opens with one line that reads the whole report, then the proof (what's already strong, with the resume line that proves it, and the posting's own words with a check where the resume has them), then what to lead with and the gaps to prepare, each one a box to tick. The ghost keeps score, and the chat can see what you've ticked. On the test job it went from about 4,300 characters to 1,100, and from two screens to one.
+
+Fit has to be checkable, too. Every "already strong" point cites a line, and code looks for that line on the job's resume and the base. Anything it can't find is flagged, never hidden.
+
+Research started with my own application to Nike. I was looking up their design system by hand and wanted Ghosted to do it. The rule I cared about: the AI never types a link. It picks what's worth reading (what the team has built, recent news, tools the posting names that my resume doesn't, how they interview) and writes a search for each. The server runs the searches and keeps only real results. It also strips my name and contact details from every search before it leaves, and the privacy page said so before Research went to everyone. On my Nike job, "Podium, Nike's design system" came back first. When a link misses, a × hides it and logs it, so I can see which searches need work.
+
+<MediaTwo items={[
+  { src: "/images/projects/ghosted/v3/fit.webp", alt: "The Fit tab: '4 of 10 ready.' with a progress meter and the line 'Strong senior design-system fit; React Native, token-format standards and formal contribution governance are the main stretches.' Left: five Already strong items and the posting's words with checks. Right: Lead with and Gaps to prepare as checklists, four ticked", caption: "Fit: the proof, then the prep, ticked off as you go. (Fictional job.)" },
+  { src: "/images/projects/ghosted/v3/research.webp", alt: "The Research tab: '1 of 5 read. Good start.' Five topics, such as the W3C Design Tokens format and accessible React components in Storybook, each with three links as small cards from w3.org, styledictionary.com, storybook.js.org and others. One topic is ticked as read and one is set aside", caption: "Research: what to read before you apply, with links from a real search. (Fictional job.)" }
+]} />
+
+## A First Resume, With The Ghost
+
+Everything above assumes you already have a resume. My brother doesn't. He's a high school student applying to college, and I wanted Ghosted to be the place he writes his first one: "like a gamified interview with the ghost."
+
+So a new account with no resume can build one with the ghost instead of importing. It asks one card at a time beside the live page: a quick hello, then six chapters (School, Activities, Work, Helping out, Wins and Skills). Chips and short facts go straight onto the page with no AI. Each typed answer is one small AI call that returns only the new lines, plus at most one follow-up question. New lines swipe in yellow with a Fix chip, and the next answer keeps them, so it's the same proposal model as the rest of the app, without stopping to press Keep every time. Activities ask for hours a week and weeks a year, the numbers college applications use.
+
+The resume itself had to grow for this: activities, honors and school details are now real sections, and education moves first when there's no work on the page yet. The interview ends with "Your first resume is ready", a Download PDF button and the Offer moment's highlighter burst. Tested on a made-up student with two clubs, two jobs and a food pantry, it took 26 cards and produced a one-page resume with nothing invented. I'd planned for 15 to 20 cards and kept the longer version, because someone typing all of that in is clearly engaged.
 
 ## Process And Decisions
 
@@ -117,7 +105,7 @@ A few decisions that show how I think about it:
 
 ## Testing With Real Testers
 
-Version three went live on October 8. The first tester used it that day, and her job notes were open in an interview the next morning. From then on, testers set the order of work. Here's what they said and what changed.
+Ghosted went live to testers on October 8. The first tester used it that day, and her job notes were open in an interview the next morning. From then on, testers set the order of work. Here's what they said and what changed.
 
 - **Jacky couldn't load her resume.** Her PDF had gone from Google Docs through "Microsoft Print to PDF", so the letters were drawn as shapes with no text to extract, and the app failed silently. Picture-only PDFs are now read with OCR (about 4 seconds for three pages), and a failed upload says why, right under the button.
 - **Kim's test call** produced the longest list:
@@ -226,34 +214,36 @@ Later that night I asked whether the steps were as short as they could be. They 
   caption="The look-don't-touch tour, for people who already have work in the app. (Fictional demo account.)"
 />
 
-## Fit And Research: Prep You Can Tick Off
+## The Landing Page: The Loop
 
-Every tailored job now gets a Fit report, written by the same AI call that tailors the resume. The first version was honest and busy: 18 items, all open. I said as much, and we prototyped three directions on a real job. I liked two of them and asked to mix them. Fit now opens with one line that reads the whole report, then the proof (what's already strong, with the resume line that proves it), then what to lead with and the gaps to prepare, each one a box to tick. The ghost keeps score, and the chat can see what you've ticked. On the test job it went from about 4,300 characters to 1,100, and from two screens to one.
+Testers never see the landing page, but everyone else does first, and a page of screenshots can't show what a proposal feels like. I asked for something "stupidly flashy… more of an experience," then reacted to three live prototypes: a scroll loop, a kinetic editorial page and a hands-on playground. I picked the loop and pulled in the playground's Keep and Reject and the editorial page's mouse-following ghost.
 
-Research started with my own application to Nike. I was looking up their design system by hand and wanted Ghosted to do it. The rule I cared about: the AI never types a link. It picks what's worth reading (what the team has built, recent news, tools the posting names that my resume doesn't, how they interview) and writes a search for each. The server runs the searches and keeps only real results. It also strips my name and contact details from every search before it leaves, and the privacy page said so before Research went to everyone. When a link misses, a × hides it and logs it, so I can see which searches need work.
+One fictional resume performs the whole product as you scroll, in five chapters: paste a link, review the proposal as it swipes in, keep or reject it, check fit and research, and track the job on the board. At the end of each chapter it hands you the controls. You can press Tailor, click a line to edit it, burst the highlights into sparks with Keep or break them into shards with Reject, switch Fit and Research, and drag the card to Applied. If you just keep scrolling, each step plays by itself.
 
-<MediaTwo items={[
-  { src: "/images/projects/ghosted/v3/fit.webp", alt: "The Fit tab: '4 of 10 ready.' with a progress meter and the line 'Strong senior design-system fit; React Native, token-format standards and formal contribution governance are the main stretches.' Left: five Already strong items and the posting's words with checks. Right: Lead with and Gaps to prepare as checklists, four ticked", caption: "Fit: the proof, then the prep, ticked off as you go. (Fictional job.)" },
-  { src: "/images/projects/ghosted/v3/research.webp", alt: "The Research tab: '1 of 5 read. Good start.' Five topics, such as the W3C Design Tokens format and accessible React components in Storybook, each with three links as small cards from w3.org, styledictionary.com, storybook.js.org and others. One topic is ticked as read and one is set aside", caption: "Research: what to read before you apply, with links from a real search. (Fictional job.)" }
-]} />
+It's a showcase, so it gets its own motion tier, written down as a decision: no animation library, no scroll hijacking (snap points only catch a fling, so a trackpad can't skip a chapter), a Pause motion toggle for WCAG 2.2.2, and five still panels with reduced motion. Splitting the signed-in app into its own bundle took the landing's JavaScript from 288 kB to 81 kB gzipped. On mobile, Lighthouse performance went from 93 to 98 and page weight from 978 KiB to 349 KiB (the live page against the new build, measured locally). A phone audit afterwards found taps landing on faded layers and scrolling that re-styled about 300 elements every frame. Moving the scrubbed parts onto one scroll timeline cut frames over 33 ms from 21 to 3 on a throttled desktop, and every hands-on moment now works on a phone.
 
 ## By The Numbers
 
-- **25** production releases on October 8–9, **19** of them on October 9.
+- **70** entries in the production release log from October 8 to 11, each with what shipped, why, and who decided.
 - **522 → 233 px:** where the resume starts on a phone, before and after the focus pass.
 - **62%** of the first phone screen was chrome before that pass.
 - **880 → 30 ms** to open Style.
 - **~7 ms** to re-render the resume after an edit.
 - **Same evening:** Kim's formatted-notes idea, from request to production.
 - **25,470 → 3,621** input tokens for a job-chat edit (86% less) after the AI connection rewrite on October 10.
-- **15** more releases on October 11: the walkthrough, Research, the Fit checklist and the smaller fixes around them.
 - **4,300 → 1,100** characters on the Fit tab of the test job, after the redesign.
 - **~12** search credits per tailored job for Research, against a plan of 5,000 a month.
+- **26** cards to a one-page first resume for a made-up student, with nothing invented.
+- **288 → 81 kB** of landing-page JavaScript, gzipped; Lighthouse mobile performance **93 → 98**.
 - **0** usage claims. Ghosted is days old with a handful of testers, and measuring how they actually use it is the next piece of work.
 
 ## How It Was Built
 
-I'm direct about this part because it's part of the design. The flow, the chat-plus-canvas model, the choice to render with Typst, the brand, and every product decision above are mine, written down before any code. Claude built version three's first working cut in a day from that spec, and most of the releases since, while I tested, decided and reviewed. The product's own AI is OpenAI's GPT, running on my ChatGPT subscription, and Research searches go through Firecrawl. That's useful evidence of how I work with AI tools. It isn't a claim that I hand-wrote every line. The foundations I'm now taking over by hand are the resume data model, the template, the prompts and version history.
+I'm direct about this part because it's part of the design. The flow, the chat-plus-canvas model, the choice to render with Typst, the brand, and every product decision above are mine, written down before any code. Claude built the first working cut in a day from that spec, and most of the releases since, while I tested, decided and reviewed. The product's own AI is OpenAI's GPT, running on my ChatGPT subscription, and Research searches go through Firecrawl. That's useful evidence of how I work with AI tools. It isn't a claim that I hand-wrote every line. The foundations I'm now taking over by hand are the resume data model, the template, the prompts and version history.
+
+## Before This
+
+Ghosted is my third pass at the same problem. The first was a Go terminal app with an eight-stage pipeline, where agents drafted documents but nothing touched the tracker without my approval. The second was a Next.js web app where code did everything it could and one bounded model call wrote the prose, checked by 744 tests. The first proved the workflow but only I could use it. The second worked but testers found it too complicated, and its output lived apart from the resume. This version puts the AI on the resume itself, which is why every edit has to be a proposal.
 
 ## What's Next
 
@@ -264,6 +254,8 @@ I'm direct about this part because it's part of the design. The flow, the chat-p
 ]} />
 
 - **Pick a layout.** The three layout studies above (AI-generated concepts from the brand lab, still with the retired 3D ghost) are unselected. The identity reskinned the current layout. Phones still stack three rows of tabs on a job, and that's the first thing a new layout has to fix.
+- **Open Spanish to everyone** once my family in Peru has been through it.
+- **Bring Keep's burst and Reject's break from the landing page into the app**, after testers have seen them.
 - **Tune Research's searches** from the links testers mark as not useful.
 - **Check that Fit is right:** a way to say an item isn't true, and tracking whether "strong" fits actually get interviews.
 - **Archetypes that learn** from what you keep across jobs, instead of only being built on request.
@@ -272,4 +264,4 @@ I'm direct about this part because it's part of the design. The flow, the chat-p
 
 ## What I Learned
 
-Adding AI to a product is easy. The design work is deciding how much the model gets to do, and making sure the person can see, judge and undo every bit of it. Version three added a second lesson: the fastest way to find out what that means is to put it in front of real people on day one and let what they say set the order of work. The walkthrough added a third: every first-run decision has to be asked again for the person who already has work in the app.
+Adding AI to a product is easy. The design work is deciding how much the model gets to do, and making sure the person can see, judge and undo every bit of it. The second lesson: the fastest way to find out what that means is to put it in front of real people on day one and let what they say set the order of work. The walkthrough added a third: every first-run decision has to be asked again for the person who already has work in the app. And the first-resume interview added a fourth: the same proposal model works for someone with nothing on the page yet, as long as the AI only ever writes what they just said.
