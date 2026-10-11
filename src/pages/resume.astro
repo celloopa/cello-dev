@@ -7,6 +7,7 @@ import Education from "@/components/sections/Education.astro";
 import Skills from "@/components/sections/Skills.astro";
 import Projects from "@/components/sections/Projects.astro";
 import Section from "@/components/Section.astro";
+import ResumeSync from "@/components/svelte/ResumeSync.svelte";
 import { basics } from "@cv";
 
 const { name, email, profiles } = basics;
@@ -20,24 +21,49 @@ const github = profiles.find(({ network }) => network === "GitHub")?.url;
   </div>
   <Hero />
   <Section>
-    <a href="/files/marcelo_rondon-resume.pdf" download class="download-btn">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+    <div class="download-row">
+      <a href="/files/marcelo_rondon-resume.pdf" download class="download-btn">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span>Download PDF</span>
+      </a>
+      <a
+        href="/cv.json"
+        download="cv.json"
+        class="download-btn"
+        title="JSON Resume format — imports into Ghosted"
       >
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-        <polyline points="7 10 12 15 17 10"></polyline>
-        <line x1="12" y1="15" x2="12" y2="3"></line>
-      </svg>
-      <span>Download PDF</span>
-    </a>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="16 18 22 12 16 6"></polyline>
+          <polyline points="8 6 2 12 8 18"></polyline>
+        </svg>
+        <span>Export cv.json</span>
+      </a>
+    </div>
+    {import.meta.env.DEV && <ResumeSync client:load />}
   </Section>
   <Section title="About">
     <About />
@@ -63,6 +89,12 @@ const github = profiles.find(({ network }) => network === "GitHub")?.url;
 <style>
   .print-header {
     display: none;
+  }
+
+  .download-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
   }
 
   .download-btn {
