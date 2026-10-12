@@ -344,9 +344,6 @@
   },
   "ban:transition-all": {
    "transition: all": 1
-  },
-  "ban:font-family": {
-   "font-family:": 1
   }
  },
  "src/components/watchlist_project/watchlistHeader.astro": {
@@ -356,9 +353,6 @@
   }
  },
  "src/layouts/Layout.astro": {
-  "ban:font-family": {
-   "font-family:": 1
-  },
   "spacing": {
    "8rem": 1
   },
@@ -447,9 +441,6 @@
   }
  },
  "src/pages/card.astro": {
-  "ban:font-family": {
-   "font-family:": 1
-  },
   "color": {
    "color-mix(in srgb, var(--color-accent) 9%, var(--bg-canvas))": 1,
    "rgba(var(--color-accent-rgb), 0.05)": 1,

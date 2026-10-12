@@ -9,6 +9,8 @@ import "@fontsource/geist-mono/800.css";
 import "@fontsource/geist-mono/900.css";
 import geistMono400 from "@fontsource/geist-mono/files/geist-mono-latin-400-normal.woff2?url";
 import geistMono700 from "@fontsource/geist-mono/files/geist-mono-latin-700-normal.woff2?url";
+import "@fontsource-variable/national-park";
+import nationalParkLatin from "@fontsource-variable/national-park/files/national-park-latin-wght-normal.woff2?url";
 import "@/styles/colors.css";
 import "@/styles/animations.css";
 import "@/styles/print.css";
@@ -63,6 +65,7 @@ const SOCIAL_ICONS: SocialIcon = {
     <meta name="color-scheme" content="dark light" />
     <link rel="preload" href={geistMono400} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={geistMono700} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={nationalParkLatin} as="font" type="font/woff2" crossorigin />
     <link rel="canonical" href={canonicalUrl} />
     <link
       rel="icon"
@@ -506,7 +509,7 @@ const SOCIAL_ICONS: SocialIcon = {
         box-sizing: border-box;
       }
 
-      /* Bold Saul Bass typography */
+      /* Bold Saul Bass typography. Titles (h1, h2) set in National Park (I4). */
       h1,
       h2,
       h3,
@@ -516,6 +519,11 @@ const SOCIAL_ICONS: SocialIcon = {
         margin-bottom: 0;
         margin-inline: 0;
         letter-spacing: 0;
+      }
+
+      h1,
+      h2 {
+        font-family: var(--font-title);
       }
 
       h1 {
