@@ -235,6 +235,8 @@ One stage = one commit series on `claude/design-system-migration` (cut from mast
 | 8 | **Family repo v0.1.0** created and vendored; the family drift guard switched on | no | guard output |
 | 9 | **Figma follows code:** variables (primitives hidden, semantics with modes and descriptions), text styles, the v1 components; existing files compared first if Cello sends links | — | Figma screenshots + read-only drift check |
 
+Rewrite-aware effort (from the rewrite thread's grill, 2026-10-12, exploration-level): a rewrite would retire the marquee and the hero typewriter lock-in and move the hero photo to About. These migrate **at today's values only**, with no polish. Stage 2 preloads only the two most-rendered weights (400 body, 700 headings and labels) and loads 600/800/900 on demand, which matches the rewrite's performance budget.
+
 Coordination: the rewrite-exploration branch (`claude/rewrite-exploration`) reads tokens.json once stage 1 lands. Legacy aliases keep it building. No other open branch touches styles today (checked 2026-10-12).
 
 ## 11. What Cello is approving
