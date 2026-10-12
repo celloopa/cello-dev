@@ -216,3 +216,9 @@ Not family: green as action, earth as human tone, the C-ring/sun/triangle mark, 
 ## 11. Cello's answers
 
 - **Q1 Scope (2026-10-12): full staged migration** of today's site, each stage proved by pixel diff or named as one visible change. A rewrite stays possible later (its own thread) and would start from the migrated system.
+- **Q2 The face (2026-10-12): Geist Mono.** Fix the family name so the intended face loads in every browser; its own visible stage with before/after shots (`shots/faces-compare.jpg` shows Courier, Menlo and Geist Mono side by side).
+- **Q3 Light canvas (2026-10-12): Paper 100 `#f3ede2`.** Earth accent rises from 4.60:1 to 5.22:1. One visible stage, light mode only (`shots/canvas-compare.jpg`).
+- **Q4 Green's job (2026-10-12): green = action in both themes.** Light mode uses a new primitive `signal-700 #007a33` (4.70:1 on Paper 100, paper label on it 4.70:1); earth is grounding/decoration in both themes (`shots/green-compare.jpg`). Visible in light mode only.
+- **Q5 First visit (2026-10-12): follow the system setting.** `/resume` stops forcing dark, the three toggle scripts become one, and the docs change "dark-first" to "dark is the hero scene; both themes are first-class". No visible change except /resume for light-preferring visitors.
+- **Q6 Blueprint and coral (2026-10-12): keep blueprint, drop coral.** Blueprint means construction lines and annotations only, never text, never action. Coral is removed; a future warning/in-progress color is a new token decision.
+- **Q7 Family home (2026-10-12): its own tiny repo**, `~/Documents/code/cello-family` (family.json + README + CHANGELOG, tagged versions). Products vendor a pinned copy; their checks warn, never fail, when the local canonical is newer. Contents go to Cello in the proposal.
