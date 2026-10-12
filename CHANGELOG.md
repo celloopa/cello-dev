@@ -2,6 +2,28 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-10-12
+
+### Design system, stages 0–2a: tokens underneath, and Geist Mono for real
+
+- Stage 0: one token source (`src/tokens/tokens.json`) generates `src/styles/tokens.css`. Guards run first in `pnpm build`: the token CSS is current, no new raw values (a per-file ratchet), and no hand-built keyframes, fonts, transitions, containers or theme storage. `pnpm ui:shots` screenshots 12 pages at 1440 and 390 px in both themes and compares them pixel for pixel.
+- Stages 1a–1b: semantic roles, art and type tokens at today's values, with the old names kept as aliases; 738 literals became tokens (raw values 1,208 → 499). No visible change: 0 px on all 48 screens against the previous live build.
+- Stage 2a: the site now actually renders Geist Mono. The `@font-face` registered "Geist Mono" but every rule asked for "GeistMono", so visitors got Courier or Menlo. `--font-mono` names the right family; the unused 100–300 weights are gone; 400 and 700 are preloaded.
+- Design-system docs (`docs/design-system/`): the audit, the proposal and its amendments, the identity decisions I1–I6, and before/after shots. Private links and local paths were removed before publishing.
+- Restored `@types/node` (pinned 22.15.17), which a lockfile update had dropped, breaking `astro check` on a clean install.
+
+### Design system, stages 2b–2c: National Park titles, Geist Sans for long reading
+
+- Stage 2b: the hero name, page titles (h1), section titles (h2) and the /card name are set in National Park (OFL 1.1, self-hosted from `@fontsource-variable/national-park`, latin file preloaded). Labels, card titles and body stay Geist Mono.
+- Stage 2c: in case studies and blog posts, the article's own paragraphs, lists and quotes are set in Geist Sans (OFL 1.1, `@fontsource-variable/geist`, loaded only on article pages), capped at about 69 characters a line on desktop. Inline code in articles is Geist Mono instead of the browser's Courier. Captions, metadata and embedded components are unchanged.
+- The font guard now accepts `font-family: var(--font-…)` (a token) and still rejects any raw font stack.
+
+### Validation
+
+- A clean `CI=true pnpm install --frozen-lockfile` + `pnpm build`: token guards green, `astro check` 0 errors / 0 warnings / 0 hints, 14 pages.
+- `ui:shots`: 0 px on 48 screens for stages 0–1b; stage 2a changes only the face and the line wraps it causes; 2b–2c change 44 of 48 screens, only at titles and article prose (the 404 page, which has no titles, is unchanged).
+- Live after deploy: 16 public URLs 200, both redirects 301 to the right targets, `/cv.json` label unchanged, resume PDF intact; Chrome loads Geist Mono as a webfont.
+
 ## 2026-10-08
 
 ### Consolidation around the build philosophy
