@@ -104,4 +104,40 @@ Recommended: work first, resume as a utility.
 
 ### Q6. Motion/tech ambition and the performance + accessibility budget
 
+Recommended: native-first (CSS scroll-driven, View Transitions, SVG, no WebGL in v1).
+**Answer (2026-10-12): "i want something truly awesome, i would consider blending 2d elements on
+threejs. use this as my first three project".** three.js is in; this is Cello's first three.js
+project (learning is part of the point).
+
+Budget, amended to keep three.js and the bar together (stated to Cello, not objected to):
+- First paint ≤ 30 KB JS; a static SVG of the same composition renders first and is the LCP
+  element. three.js (r186 current; core ≈150–180 KB gz, `[measure]`) loads after first paint on
+  idle and cross-fades in.
+- Stays a still frame under reduced motion, no WebGL, or Save-Data. Canvas `aria-hidden`; every
+  word and link is real HTML.
+- Pauses offscreen and in hidden tabs; DPR capped at 2; 60 fps on M1, ≥30 fps on a mid phone.
+- Unchanged: LCP ≤ 2.0 s mobile, CLS ≤ 0.05, Lighthouse perf ≥ 95 / a11y 100, AA contrast
+  (blueprint never text), full keyboard, visible focus (3px offset frame), skip link, the
+  family reduced-motion contract (zeroed delays, loops stop, content never waits). Fonts: Geist
+  Mono 400 + 700 preloaded, 600/800/900 on demand (agreed with the audit session).
+- Native scroll always (no scroll hijack).
+
+Side note, not a plan: the 2026-10-09 inbox capture on MIDI music visuals (Blender → glTF →
+three.js) would reuse what this teaches. Left as a capture.
+
+### Q7. Where the 3D lives
+
+Options: A hero only · B one scene behind the whole site · C hero + case-study openers.
+Cello said "b and c"; clarified as the merge.
+**Answer (2026-10-12): the merge.**
+- Homepage = studio wall: scroll moves the camera through one scene, from the mark assembling to
+  the four case-study posters as 2D cut-outs and artifacts in depth, with real HTML text on top.
+- Case studies: clicking a poster flies into that project's scene, which settles into a still
+  header as reading begins; the page body is quiet DOM.
+- Log, About, resume: no 3D (static texture only).
+- Prototypes vary the treatment of this one structure (lighting, flat vs deep, paper vs ink),
+  not the structure.
+
+### Q8. Who writes the three.js code
+
 `[asked 2026-10-12]`

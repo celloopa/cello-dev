@@ -52,7 +52,19 @@ values), and nobody could see the drift, because the site still looked fine in C
    are the contract. 8 URLs already 404 (drafts, plus `/visuals`, `/lab` and `/color-scheme`,
    which CLAUDE.md still lists as live). No sitemap is deployed.
 
-`[more beats as the thread goes: the grill, the directions, the pick, the build]`
+4. **Migrate first, explore in parallel.** In the audit session Cello chose a staged migration
+   of the existing site over a rewrite. A rewrite would start from the migrated system. This
+   thread kept going as throwaway prototypes only, so the migration has a target. The two
+   sessions traded answers instead of asking him the same questions twice.
+5. **Work first, resume second.** "maybe the resume isnt the point of the site anymore" (Cello,
+   2026-10-12). The rewrite moves the resume to a utility link and puts work, demos and a
+   writing/video "Log" at the center.
+6. **The ambition call: first three.js project.** Offered a native-first, no-WebGL stack with a
+   tight budget, Cello said "i want something truly awesome … use this as my first three
+   project". The budget was rewritten to fit three.js rather than dropped: SVG first paint,
+   three.js on idle, still frame under reduced motion.
+
+`[more beats as the thread goes: the directions, the pick, the build]`
 
 ## 5. Numbers
 
