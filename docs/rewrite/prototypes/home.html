@@ -10,7 +10,7 @@
   // Before paint: direction from ?d=, theme only if the visitor chose one (else the system decides).
   (function () {
     var d = new URLSearchParams(location.search).get("d");
-    if (!/^(paper|construction|print|tokens|window)$/.test(d || "")) d = "window";
+    if (!/^(paper|construction|print|tokens|window|landscape)$/.test(d || "")) d = "window";
     var r = document.documentElement;
     r.dataset.direction = d;
     r.classList.add("js");

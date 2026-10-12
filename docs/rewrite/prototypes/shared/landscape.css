@@ -1,0 +1,259 @@
+/*
+ * Direction "landscape": the scene fills the page under the dark bar; the content sits in front
+ * of it (Q21 revises the plate rule: text may sit over scene art, with the ink atmosphere, and
+ * the approved focus dim while reading). Every surface here is the scene, so the dark roles apply
+ * in both themes; the theme picks the scene's grade (Day, or Dusk in WebGL).
+ * State classes from shared/scenery.js: .ls-3d .ls-still-on .ls-gl-on .ls-admire .ls-reading
+ */
+html:root[data-direction="landscape"] {
+  --bg-canvas: var(--ink-950);
+  --text-primary: var(--paper-200);
+  --text-inverse: var(--ink-950);
+  --text-accent: var(--signal-500);
+  --action-primary: var(--signal-500);
+  --focus-ring: var(--signal-500);
+  --accent-ground: var(--earth-400);
+  --mark-c: var(--paper-200);
+  --mark-sun: var(--signal-500);
+  --mark-triangle: var(--earth-500);
+  color-scheme: dark;
+
+  --ls-bar: 4rem;
+  --ls-text: var(--paper-100);
+  --ls-label: color-mix(in oklab, var(--paper-100) 88%, var(--signal-500));
+  --ls-em: color-mix(in oklab, var(--paper-100) 62%, var(--signal-500));
+  /* ink behind the copy itself (the scene's own atmosphere is too light where the copy sits on
+     sky or water); per scene, set from the measured contrast */
+  --ls-scrim: 64%;
+  /* National Park isn't in this repo yet: temporary system sans for display (Geist Mono stays for labels) */
+  --font-display: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* the storyboard's ink atmosphere (arrival / admire / reading), as ink alphas */
+  --ls-atmos-arrive: linear-gradient(0deg, color-mix(in srgb, var(--ink-950) 93%, transparent) 0%, color-mix(in srgb, var(--ink-950) 49%, transparent) 25%, transparent 55%);
+  --ls-atmos-view: linear-gradient(0deg, color-mix(in srgb, var(--ink-950) 62%, transparent), transparent 32%);
+  --ls-atmos-read: color-mix(in srgb, var(--ink-950) 36%, transparent);
+  --ls-read-filter: blur(7px) brightness(0.45) saturate(0.65);
+  --ls-fade: 700ms;
+}
+@media (max-width: 768px) {
+  html:root[data-direction="landscape"] {
+    --ls-atmos-arrive: linear-gradient(0deg, color-mix(in srgb, var(--ink-950) 96%, transparent) 0%, color-mix(in srgb, var(--ink-950) 76%, transparent) 28%, color-mix(in srgb, var(--ink-950) 24%, transparent) 50%, transparent 68%);
+    --ls-read-filter: blur(5px) brightness(0.36) saturate(0.6);
+  }
+}
+
+/* ---------- the bar: always the dark green, carries project context while reading ---------- */
+html[data-direction="landscape"] .site-header {
+  background: var(--ink-950);
+  color: var(--paper-200);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.ls-context { display: none; flex: 1; min-width: 0; align-items: center; gap: var(--space-16); }
+.ls-context-title {
+  margin-inline: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: var(--type-label);
+  font-weight: 700;
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--ls-label);
+}
+.ls-allwork {
+  flex: none;
+  padding-block: var(--space-8);
+  font-size: var(--type-ui);
+  font-weight: 700;
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: var(--stroke-control) solid var(--action-primary);
+}
+html.ls-reading .ls-context { display: flex; animation: ls-in 400ms var(--ease-out); }
+html.ls-reading[data-direction="landscape"] .site-nav,
+html.ls-reading[data-direction="landscape"] .header-actions { display: none; }
+@keyframes ls-in { from { opacity: 0; } }
+
+/* ---------- the scene (fixed, decorative) ---------- */
+.ls-scenery {
+  position: fixed;
+  inset: var(--ls-bar) 0 0 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--ink-950);
+}
+.ls-still {
+  position: absolute;
+  inset: 0;
+  transition: opacity 400ms var(--ease-out), filter var(--ls-fade) var(--ease-out), transform var(--ls-fade) var(--ease-out);
+}
+.ls-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: var(--ax) var(--ay);
+}
+@media (max-width: 768px) { .ls-layer { object-position: var(--mx) var(--my); } }
+html.ls-3d:not(.ls-still-on) .ls-still { opacity: 0; }
+html.ls-reading .ls-still { filter: var(--ls-read-filter); transform: scale(1.025); }
+.ls-gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; opacity: 0; transition: opacity 250ms linear; }
+html.ls-gl-on .ls-gl { opacity: 1; }
+.ls-atmos, .ls-atmos i { position: absolute; inset: 0; }
+.ls-atmos i { transition: opacity var(--ls-fade) var(--ease-out); }
+.ls-atmos-arrive { background: var(--ls-atmos-arrive); }
+.ls-atmos-view { background: var(--ls-atmos-view); opacity: 0; }
+.ls-atmos-read { background: var(--ls-atmos-read); opacity: 0; }
+html.ls-admire .ls-atmos-arrive { opacity: 0; }
+html.ls-admire .ls-atmos-view { opacity: 1; }
+html.ls-reading .ls-atmos-arrive, html.ls-reading .ls-atmos-view { opacity: 0; }
+html.ls-reading .ls-atmos-read { opacity: 1; }
+
+/* location: shown while exploring, gone while reading (and in admire, where the view names it) */
+.ls-place {
+  position: fixed;
+  left: 48px;
+  bottom: 28px;
+  z-index: 1;
+  margin: 0;
+  pointer-events: none;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: var(--track-wide);
+  text-transform: uppercase;
+  color: var(--ls-text);
+  transition: opacity 400ms var(--ease-out);
+}
+html.ls-reading .ls-place, html.ls-admire .ls-place { opacity: 0; }
+
+/* ---------- arrival: identity, role and the route to work, over the scene at once ---------- */
+html[data-direction="landscape"] .reveal { opacity: 1; transform: none; transition: none; }
+html[data-direction="landscape"] .hero { position: relative; overflow-x: clip; } /* the copy scrim must not widen the page */
+html[data-direction="landscape"] .hero .container {
+  width: auto;
+  margin: 0;
+  min-height: calc(100svh - var(--ls-bar));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: end;
+  padding: var(--space-48) 7vw 10vh 43vw;
+}
+html[data-direction="landscape"] .hero-art { display: none; }
+/* (html:root… so these outrank the token block above) */
+html:root[data-place="ecola"] { --ls-scrim: 85%; }
+@media (max-width: 768px) {
+  html:root[data-direction="landscape"] { --ls-scrim: 70%; }
+  html:root[data-place="ecola"] { --ls-scrim: 80%; }
+}
+html[data-direction="landscape"] .hero-copy::before,
+.ls-view::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -46% -22% -26% -20%;
+  pointer-events: none;
+  /* flat ink under every line of copy, feathered to nothing well outside it (a soft box, so the
+     density holds at the top line too) */
+  background: color-mix(in srgb, var(--ink-950) var(--ls-scrim), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 26%, #000 80%, transparent), linear-gradient(to right, transparent, #000 22%, #000 80%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(to bottom, transparent, #000 26%, #000 80%, transparent), linear-gradient(to right, transparent, #000 22%, #000 80%, transparent);
+  mask-composite: intersect;
+}
+html[data-direction="landscape"] .hero-copy {
+  position: relative;
+  isolation: isolate;
+  max-width: 42rem;
+  color: var(--ls-text);
+  transition: opacity 350ms var(--ease-out), visibility 0s linear 0s;
+}
+html[data-direction="landscape"] .hero .eyebrow { color: var(--ls-text); }
+html[data-direction="landscape"] .hero-name {
+  margin: var(--space-12) 0 var(--space-16);
+  font-family: var(--font-display);
+  font-size: clamp(3.25rem, 6.4vw, 6rem);
+  font-weight: 600;
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  text-transform: none;
+}
+html[data-direction="landscape"] .hero-spine {
+  max-width: 24ch;
+  margin: 0 0 var(--space-16);
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 2.4vw, 2.1rem);
+  font-weight: 500;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+}
+html[data-direction="landscape"] .hero-spine em { color: var(--ls-em); }
+html[data-direction="landscape"] .hero-lede {
+  max-width: 45ch;
+  margin: 0 0 var(--space-24);
+  font-family: var(--font-display);
+  font-size: 1.1875rem;
+  line-height: 1.5;
+  color: var(--ls-text);
+}
+html[data-direction="landscape"] .hero .arrow-link,
+.ls-view .arrow-link { color: var(--ls-text); border-bottom-color: var(--action-primary); }
+.ls-admire-btn, .ls-return {
+  min-height: 44px;
+  margin-left: var(--space-24);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ls-text);
+  font: inherit;
+  font-size: var(--type-ui);
+  letter-spacing: var(--track-caps);
+  cursor: pointer;
+  opacity: 0.85;
+}
+.ls-admire-btn:hover, .ls-return:hover { opacity: 1; text-decoration: underline; text-underline-offset: 6px; }
+
+/* admire: the intro yields to the art; a clear way back */
+html.ls-admire[data-direction="landscape"] .hero-copy {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 300ms var(--ease-out), visibility 0s linear 300ms;
+}
+.ls-view {
+  position: absolute;
+  left: 43vw;
+  bottom: 10vh;
+  z-index: 1;
+  isolation: isolate;
+  color: var(--ls-text);
+  animation: ls-in 500ms var(--ease-out) 150ms both;
+}
+.ls-view-place {
+  margin: 0 0 var(--space-16);
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.4rem);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+.ls-view-actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-8) var(--space-24); }
+.ls-view-actions .ls-return { margin-left: 0; order: 0; opacity: 1; font-weight: 700; text-transform: uppercase; border-bottom: var(--stroke-control) solid var(--action-primary); min-height: 0; padding-bottom: 2px; }
+
+/* ---------- reading: the content over the softened scene ---------- */
+html[data-direction="landscape"] .poster-outcome,
+html[data-direction="landscape"] .poster-num { color: color-mix(in srgb, var(--paper-200) 88%, var(--ink-950)); }
+
+/* ---------- mobile ---------- */
+@media (max-width: 768px) {
+  html[data-direction="landscape"] .hero .container { padding: var(--space-32) 1.5rem 92px; }
+  html[data-direction="landscape"] .hero-name { font-size: clamp(2.75rem, 13vw, 3.75rem); }
+  html[data-direction="landscape"] .hero-spine { font-size: 1.35rem; }
+  html[data-direction="landscape"] .hero-lede { font-size: 1rem; margin-bottom: var(--space-16); }
+  .ls-admire-btn { margin-left: var(--space-16); font-size: var(--type-label); }
+  .ls-place { left: 1.5rem; bottom: 24px; font-size: 10px; }
+  .ls-view { left: 1.5rem; right: 1.5rem; bottom: 92px; }
+  .ls-context-title { font-size: 10px; }
+  .ls-allwork { font-size: var(--type-label); }
+}

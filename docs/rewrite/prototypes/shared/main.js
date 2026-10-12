@@ -11,6 +11,7 @@ import "./tokens.css";
 import "./base.css";
 import "./directions.css";
 import "./window.css";
+import "./landscape.css";
 
 const root = document.documentElement;
 const direction = root.dataset.direction;
@@ -62,7 +63,7 @@ if (reduce.matches || !("IntersectionObserver" in window)) {
 const bar = document.createElement("nav");
 bar.className = "proto-bar";
 bar.setAttribute("aria-label", "Prototype direction");
-for (const [key, label] of [["window", "Window"], ["tokens", "Tokens"], ["paper", "Cut paper"]]) {
+for (const [key, label] of [["window", "Window"], ["landscape", "Landscape"], ["tokens", "Tokens"], ["paper", "Cut paper"]]) {
   const a = document.createElement("a");
   const url = new URL(location.href);
   url.searchParams.set("d", key);
@@ -99,6 +100,9 @@ const skip3D =
 if (direction === "window") {
   // The room paints right away (SVG still); it loads three.js itself on idle when allowed.
   import("./room.js").then((m) => m.start({ skip3D }));
+} else if (direction === "landscape") {
+  // The scene's layers as a DOM still right away; three.js on idle when allowed (scenery.js).
+  import("./scenery.js").then((m) => m.start({ skip3D }));
 } else if (!skip3D) {
   const go = () => import("./stage.js").then((m) => m.start(direction)).catch((err) => {
     console.warn("[stage] 3D disabled:", err);
