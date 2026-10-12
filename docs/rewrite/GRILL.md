@@ -195,3 +195,35 @@ on cello@cello.design; links to come):
   cello-brain projects/cello-dev-portfolio.md.)
 Relevance here: an "evolution" thread for the About page and a future visuals section; nothing to
 build until he asks.
+
+### Q10. The PDX apartment idea: what the apartment's job is (2026-10-12)
+
+Cello: "it would be cool if rather than the logo the scene and the microanimations and
+interactions happened on the setting that is pdx. my portland apartment with a (fictional view)
+of some landmarks and mt hood that animate in the background and are like a tour".
+Options: A stage for the tour · B opening scene only · C fully explorable apartment.
+**Answer: A.** Desk by the window at daybreak; a fictional, layered Portland out the window
+(river, bridges, skyline, Mt Hood constant); scroll is the tour (camera drifts, landmarks come
+alive, sky dawn → day → dusk → night across the four case studies); each case study appears on
+the desk monitor with crisp HTML beside it; case-study pages open on the room, then quiet
+reading. Open: whether Tokens folds in (e.g. the monitor image builds from tokens) or the room
+replaces it.
+
+Context Cello asked me to read: channel brief (`cello-dev-vault:Reference/channel-brief.md`,
+LOCKED 2026-07-26): "Portland and the PNW are a character … location-marked"; the location card
+is a kit primitive; motion identity is "a portfolio project on its own track … grafts onto the
+channel around E6"; income and job-application specifics stay off camera. Observation only (not
+promoted): the site's Portland world could become the shared world of site and channel.
+Guardrails from the 2026-07-26 reset: this is close to The World (parked; Phase 0 was a
+"Studio/Desk room parallax test"). The site never waits on the channel or vice versa; no video
+pipeline gets built around it; none of The World's removed premises come back.
+
+### Q11. How the apartment and Portland are drawn (2026-10-12)
+
+Options: A WPA-poster layers in real depth · B low-poly Blender 3D · C painted/generated layers.
+**Answer: "YESSSS 1" → A.** Flat color layers (1930s national-park poster × Saul Bass) placed in
+real depth; three.js gives parallax and camera; time of day is a palette change (the same poster
+reprinted in dawn/noon/dusk/night inks; window light moves across the desk; city windows and the
+White Stag sign light at night). Built in code from shapes; no 3D modeling.
+Cello: "i have some pictures that we could try to recreate as the background scenes." Pending:
+the pictures, and Q12 (literal view vs composed view).
