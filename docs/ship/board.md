@@ -40,6 +40,14 @@ In flight, not handed off:
 - 2026-10-12, Cello (I1–I6, amendment A1): the rewrite inherits Day/Dusk, the seasonal inks,
   National Park + Switchback + Geist Mono and the window frame from the migration's identity
   rather than defining its own. Rewrite thread already builds on it.
+- 2026-10-12, Cello (Daybreak grill-log 27–28, daybreak branch `claude/modest-maxwell-bc1f74`;
+  reported by the Daybreak thread): Daybreak's mark is now "Rail and block" (time rail, sun as
+  the now node, beside the current block; no mountain, no C, no landscape). I1 is honored.
+- 2026-10-12, Cello (same source): Daybreak's `design/tokens.json` carries `family.identifiers`
+  (family 0.2.0-draft): house curve, reduced-motion contract, Geist + Geist Mono for data,
+  Midnight Ink `#001A11` as text and primary action on paper, Paper `#F3EDE2`, the voice.
+  Daybreak keeps its own paper/ink names, no Day/Dusk. **Rule:** if cello.dev changes any of
+  those root values, the conductor sends Daybreak one line to re-sync. Migration thread told.
 - 2026-10-12: ship order: migration stages reach `master` first; the rewrite's build plan
   follows only after the migration ships (rewrite handoff, "Next, ranked").
 
