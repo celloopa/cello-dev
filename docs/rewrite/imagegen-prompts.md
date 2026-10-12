@@ -122,3 +122,63 @@ GPS, date or device metadata). People are never generated.
 >
 > Avoid: any text, lettering, signatures, logos or watermarks; people or animals; more than two
 > inks; photographic realism; borders or window frames.
+
+---
+
+# Layer cuts: Mirror Lake (screenprint A is the master)
+
+Cello picked A (2026-10-12). The master is cut into depth layers by **edits of the same image**,
+so edges line up. Layers on flat `#FF00FF` are keyed to transparency by
+`docs/rewrite/prototypes/tools/key.py`. Then everything goes to the Figma cutting table, and the
+three.js window loads the layers Figma exports. Order matters: 4 first; 6–8 edit 4's result.
+
+## 4. Clean plate (fireweed removed)
+
+`outputPath`: `docs/rewrite/prototypes/public/gen/layers/mirror-lake/clean.png`
+`references`: `docs/rewrite/prototypes/public/gen/style/mirror-lake-a-screenprint.png`
+
+> Edit image 1. Remove the magenta fireweed plants in the left foreground completely. Where they
+> were, continue what is behind them: the lakeshore rocks, the lake with its reflections, and the
+> low shrubs and firs, drawn in exactly the same screenprint style, inks, edges and paper grain.
+> Change nothing else: the mountain, sky, clouds, firs, lake and every edge stay exactly where
+> they are. No text, no people.
+
+## 5. Near layer: fireweed only
+
+`outputPath`: `docs/rewrite/prototypes/public/gen/layers/mirror-lake/near-raw.png`
+`references`: `docs/rewrite/prototypes/public/gen/style/mirror-lake-a-screenprint.png`
+
+> Edit image 1. Keep only the magenta fireweed plants in the left foreground, exactly as drawn:
+> same shapes, inks, position and size. Replace everything else (sky, clouds, mountain, trees,
+> lake, shore) with one perfectly flat, solid #FF00FF color: no texture, no grain, no shading,
+> no gradient. No text.
+
+## 6. Sky layer: sky and clouds only
+
+`outputPath`: `docs/rewrite/prototypes/public/gen/layers/mirror-lake/sky.png`
+`references`: `docs/rewrite/prototypes/public/gen/layers/mirror-lake/clean.png`
+
+> Edit image 1. Keep only the sky and the clouds. Remove the mountain, the trees, the shore and the
+> lake, and continue the sky down to the bottom edge as if the land weren't there: the same blue
+> and the same screenprint grain, a little lighter toward the bottom, with the clouds unchanged
+> where they are. No land, no horizon, no text.
+
+## 7. Far layer: Mt Hood only
+
+`outputPath`: `docs/rewrite/prototypes/public/gen/layers/mirror-lake/far-raw.png`
+`references`: `docs/rewrite/prototypes/public/gen/layers/mirror-lake/clean.png`
+
+> Edit image 1. Keep only Mt Hood, the snow-covered mountain, exactly as drawn: same shape,
+> position, size, inks and grain. Continue its lower slopes downward where the firs hide them,
+> down to about two-thirds of the image height, in the same style. Replace everything else (sky,
+> clouds, trees, lake, shore) with one perfectly flat, solid #FF00FF color. No text.
+
+## 8. Mid layer: firs, shore and lake only
+
+`outputPath`: `docs/rewrite/prototypes/public/gen/layers/mirror-lake/mid-raw.png`
+`references`: `docs/rewrite/prototypes/public/gen/layers/mirror-lake/clean.png`
+
+> Edit image 1. Keep the firs, the shrubs, the shoreline rocks and the lake with its reflections
+> exactly as drawn: same shapes, position, inks and grain. Replace the sky, the clouds and the
+> mountain with one perfectly flat, solid #FF00FF color, keeping the treetops' silhouettes crisp
+> against it. No text.

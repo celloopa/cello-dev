@@ -336,3 +336,20 @@ with my sub". Research: `docs/rewrite/imagegen-research.md`. Recommendation put 
 the Codex Images endpoints directly with his existing login (local script); fallbacks
 `pi-codex-image-gen` or the upgraded CLI; metered gpt-image-2.5-sunburst only if quality falls
 short. Prompt palettes now use the September inks (I3).
+
+### Q16. The look (2026-10-12)
+
+Three Mirror Lake style frames (screenprint, gouache, risograph; September inks; generated with the
+`codex-images` skill). **Answer: A, screenprint** ("how do we accurately recreate that look in the
+first option").
+Method agreed: frame A is the style anchor passed into every generation (photo crop + storyboard +
+frame A) plus a written screenprint spec; each place is generated whole, then cut into layers by
+edits of that same master (so edges line up).
+
+### Q17. Figma as the cutting table (2026-10-12)
+
+**Answer: yes.** A Figma file in Harmonic Convergence: a Process page (every look so far, for the
+story) and a Scenes page (per place: master + named layers sky/far/mid/near). Cello fixes edges
+by hand if needed (pen tool, Figma AI Remove background/Erase); layers are exported from Figma
+into the three.js window. Cello: "document our process and different looks. itll make a great
+story".
