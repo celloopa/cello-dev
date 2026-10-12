@@ -27,6 +27,7 @@ import "@/styles/scene.css";
 import ContextBar from "@/components/scene/ContextBar.astro";
 import Scene from "@/components/scene/Scene.astro";
 import KeyboardManager from "@/components/KeyboardManager.astro";
+import ThemeInit from "@/components/ThemeInit.astro";
 import Mark from "@/components/scene/Mark.astro";
 import Mail from "@/icons/Mail.astro";
 import GitHub from "@/icons/GitHub.astro";
@@ -70,13 +71,10 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/images/logos/SVG/full-light.svg" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/svg+xml" href="/images/logos/SVG/full-dark.svg" media="(prefers-color-scheme: dark)" />
+    <ThemeInit />
     <script is:inline>
       (() => {
         const r = document.documentElement;
-        // theme: the same rule as Layout.astro (saved choice, else the system)
-        const savedTheme = localStorage.getItem("theme");
-        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-        r.setAttribute("data-theme", savedTheme || systemTheme);
         // the bar's menu key (⌘K, Ctrl+K, or a dot on touch screens) and the Admire button,
         // decided before paint so nothing shifts when the modules run
         r.classList.add("js");
@@ -164,6 +162,10 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
       </div>
     </footer>
     <KeyboardManager />
+    <script>
+      import { bindThemeToggles } from "@/utils/themeToggle.js";
+      bindThemeToggles();
+    </script>
     <style is:global>
       *,
       *::before,

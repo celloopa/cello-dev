@@ -4,8 +4,9 @@
  *   exploring  identity + Work, with About and the other utilities kept separate
  *   reading    the project in view + "All work" (scenery.js fills the title and sets
  *              html.scene-reading)
- * The menu button and ⌘K open today's KeyboardShortcutsMenu; the theme button uses today's
- * theme util (it picks the scene's Day or Dusk grade; the bar stays dark either way).
+ * The menu button and ⌘K open today's KeyboardShortcutsMenu. The theme button is a plain
+ * <button data-theme-toggle>, bound and labelled by SceneLayout through src/utils/themeToggle.js
+ * (it picks the scene's Day or Dusk grade; the bar stays dark either way).
  */
 import Mark from "./Mark.astro";
 import Sun from "@/icons/Sun.astro";
@@ -54,7 +55,7 @@ const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page
         <span class="bar-key" data-bar-key></span>
         <span>Menu</span>
       </button>
-      <button class="bar-btn bar-theme" type="button" data-bar-theme aria-label="Toggle theme">
+      <button class="bar-btn bar-theme" type="button" data-theme-toggle aria-label="Switch between Day and Dusk">
         <Sun />
       </button>
     </div>
@@ -62,14 +63,10 @@ const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page
 </header>
 
 <script>
-  import { toggleTheme } from "@/utils/themeToggle.js";
-
   // The key label (⌘K / Ctrl+K, or a dot on touch screens) is set before paint by SceneLayout's
   // head script (html.touch and --bar-kbd), so the bar never shifts when this runs.
   const menu = document.querySelector<HTMLButtonElement>("[data-bar-menu]");
-  menu?.addEventListener("click", () => window.dispatchEvent(new CustomEvent("toggleKeyboardMenu")));
-  document.querySelector("[data-bar-theme]")?.addEventListener("click", () => toggleTheme());
-</script>
+  menu?.addEventListener("click", () => window.dispatchEvent(new CustomEvent("toggleKeyboardMenu")));</script>
 
 <style>
   .bar {
