@@ -62,6 +62,6 @@ sha built locally) matches the reviewed shots.
 | Session | Owns |
 |---|---|
 | Audit and unify the cello.dev design system | Staged design-system migration, branch `claude/design-system-migration` (identity I1–I6, amendment A1). The main source of ships. |
-| Continue the cello.dev rewrite (window scenes) | Rewrite exploration, branch `claude/rewrite-exploration` (took over from "Rewrite cello.dev (old, handed off)"). Hands off nothing until Cello picks a direction. |
+| Rewrite cello.dev | Rewrite exploration, branch `claude/rewrite-exploration` (took over from the session now titled "Rewrite cello.dev (old, handed off)"). Hands off nothing until Cello picks a direction. |
 | Rethink Daybreak from the ground up | Separate repo (`~/Documents/daybreak`). Shares identity roots only; touches this board through cross-thread decisions. |
 | Content one-offs (case studies, posts, resume sync) | Short sessions on `claude/*` branches, one PR each. |

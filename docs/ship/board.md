@@ -28,7 +28,7 @@ In flight, not handed off:
 | Session | Owns | Branch | State |
 |---|---|---|---|
 | Audit and unify the cello.dev design system | Staged migration of today's site; identity I1–I6 + A1 | `claude/design-system-migration` | Stage 0 committed; stage 1 paused for identity; idle |
-| Continue the cello.dev rewrite (window scenes) | Rewrite exploration: window scenes, layer cut, Figma scenes file | `claude/rewrite-exploration` | Exploring; hands off nothing until Cello picks a direction |
+| Rewrite cello.dev | Rewrite exploration: window scenes, layer cut, Figma scenes file | `claude/rewrite-exploration` | Exploring; hands off nothing until Cello picks a direction |
 | Rewrite cello.dev (old, handed off) | Predecessor of the above | — | Handed off; archive candidate (Cello's OK) |
 | Rethink Daybreak from the ground up | Daybreak, separate repo | (daybreak repo) | Cross-thread decisions only |
 
