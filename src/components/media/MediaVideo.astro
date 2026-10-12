@@ -1,0 +1,135 @@
+---
+/*
+ * MediaVideo: a muted, looping demo video (proposal §7 "Media"; used by MediaFull, MediaTwo,
+ * MediaThree and the case-study cover).
+ *   - Sources: `src` (.webm or .mp4) plus an optional `mp4` fallback, as <source> pairs.
+ *   - `poster`: shown before the first frame, and instead of motion under reduced motion.
+ *   - `label`: the video's accessible name (the alt text of a video).
+ *   - Plays only while on screen and only when motion is allowed; never autoplays from markup,
+ *     so reduced motion and no JavaScript keep the poster (or the first frame).
+ *   - A visible Pause / Play button (WCAG 2.2.2): a loop runs longer than 5 s. Once a visitor
+ *     pauses, scrolling never restarts it. The button appears only with JavaScript.
+ */
+interface Props {
+  src: string;
+  mp4?: string;
+  poster?: string;
+  label?: string;
+  class?: string;
+}
+
+const { src, mp4, poster, label, class: className } = Astro.props;
+const type = (s: string) => (s.endsWith(".mp4") ? "video/mp4" : "video/webm");
+---
+
+<div class="media-video" data-media-video>
+  <video
+    class={className}
+    loop
+    muted
+    playsinline
+    preload="metadata"
+    poster={poster}
+    aria-label={label || undefined}
+  >
+    <source src={src} type={type(src)} />
+    {mp4 && mp4 !== src && <source src={mp4} type="video/mp4" />}
+  </video>
+  <button class="media-video-toggle" type="button" data-media-video-toggle hidden>Pause</button>
+</div>
+
+<script>
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+
+  for (const box of document.querySelectorAll<HTMLElement>("[data-media-video]")) {
+    const video = box.querySelector("video")!;
+    const button = box.querySelector<HTMLButtonElement>("[data-media-video-toggle]")!;
+    let userPaused = false;
+    let onScreen = !("IntersectionObserver" in window);
+
+    const sync = () => {
+      const paused = video.paused;
+      button.textContent = paused ? "Play" : "Pause";
+      button.setAttribute("aria-label", paused ? "Play video" : "Pause video");
+    };
+    const play = () => video.play().catch(sync);
+    const settle = () => {
+      if (onScreen && !userPaused && !reduce.matches) play();
+      else if (!video.paused) video.pause();
+    };
+
+    video.addEventListener("play", sync);
+    video.addEventListener("pause", sync);
+    button.addEventListener("click", () => {
+      if (video.paused) {
+        userPaused = false;
+        play();
+      } else {
+        userPaused = true;
+        video.pause();
+      }
+    });
+    reduce.addEventListener("change", () => {
+      // turning reduced motion on stops the loop; turning it off doesn't start one by surprise
+      if (reduce.matches) {
+        userPaused = true;
+        video.pause();
+      }
+    });
+    if (!onScreen) {
+      new IntersectionObserver(
+        ([entry]) => {
+          onScreen = entry.isIntersecting;
+          settle();
+        },
+        { rootMargin: "100px 0px" },
+      ).observe(video);
+    }
+    button.hidden = false;
+    sync();
+    settle();
+  }
+</script>
+
+<style>
+  .media-video {
+    position: relative;
+  }
+
+  .media-video video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .media-video-toggle {
+    position: absolute;
+    right: var(--space-12);
+    bottom: var(--space-12);
+    min-width: var(--touch-target);
+    min-height: var(--touch-target);
+    padding: 0 var(--space-12);
+    border: var(--stroke-control) solid var(--border-strong);
+    background: var(--bg-plate);
+    color: var(--text-primary);
+    font: inherit;
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      background-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
+  }
+
+  .media-video-toggle[hidden] {
+    display: none;
+  }
+
+  .media-video-toggle:hover,
+  .media-video-toggle:focus-visible {
+    background: var(--text-primary);
+    color: var(--bg-plate);
+  }
+</style>
