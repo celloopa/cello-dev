@@ -199,6 +199,10 @@ html.scene-admire .place-label {
 .admire-btn {
   opacity: 0.85;
 }
+/* it needs scenery.js: without JavaScript there's nothing to toggle (html.js is set before paint) */
+html:not(.js) .admire-btn {
+  display: none;
+}
 .admire-btn:hover,
 .admire-btn:focus-visible {
   opacity: 1;

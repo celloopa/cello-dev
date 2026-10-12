@@ -87,14 +87,15 @@ export function start() {
 
   function setAdmire(on, { focusReturn = true } = {}) {
     if (!view || state.admire === on) return;
+    // read before hiding the view: hiding it drops its focus to <body>
+    const focusWasInView = !!document.activeElement && view.contains(document.activeElement);
     state.admire = on;
     view.hidden = !on;
     apply();
     if (on) view.querySelector("[data-admire-close]").focus({ preventScroll: true });
-    else if (focusReturn && document.activeElement && view.contains(document.activeElement)) admireBtn.focus({ preventScroll: true });
+    else if (focusReturn && focusWasInView) admireBtn.focus({ preventScroll: true });
   }
   if (admireBtn && view) {
-    admireBtn.hidden = false; // needs this script; without it there's nothing to toggle
     admireBtn.addEventListener("click", () => setAdmire(true));
     view.querySelector("[data-admire-close]").addEventListener("click", () => setAdmire(false));
     view.querySelector("[data-admire-work]")?.addEventListener("click", () => setAdmire(false, { focusReturn: false }));

@@ -77,6 +77,11 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
         const savedTheme = localStorage.getItem("theme");
         const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         r.setAttribute("data-theme", savedTheme || systemTheme);
+        // the bar's menu key (⌘K, Ctrl+K, or a dot on touch screens) and the Admire button,
+        // decided before paint so nothing shifts when the modules run
+        r.classList.add("js");
+        if ("ontouchstart" in window || navigator.maxTouchPoints > 0) r.classList.add("touch");
+        else r.style.setProperty("--bar-kbd", /mac|iphone|ipad/i.test(navigator.userAgent) ? '"⌘K"' : '"Ctrl+K"');
         // the scene's 3D gate, before paint (scenery.js adds the WebGL check): a renderer is
         // expected, so the still waits under the ink for the arrival; a page that loads hidden
         // keeps the still and its renderer arrives settled
