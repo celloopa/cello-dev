@@ -65,11 +65,21 @@ In flight, not handed off:
   as an amendment, outside 0–1b and 2a). Both threads told.
 - 2026-10-12, Cello: "yes" to archiving "Rewrite cello.dev (old, handed off)". Archived (its
   worktree was clean and its HEAD was on daybreak `main`).
+- 2026-10-12, **reported by the rewrite thread, awaiting Cello's confirmation here**: Cello said
+  "yes, revise it". In the rewrite's landscape direction, text may sit directly over scene art
+  (with the approved focus dim), and the window frame stops being the hero's framing. That would
+  revise I2 (text on surfaces/plates only), I5 (window frame as the framing primitive) and the
+  migration's `bg-plate` rule. Sources: `docs/rewrite/STORYBOARD.md` (uncommitted, "Conflicts
+  surfaced to Cello", item 1); GRILL Q18. Q21 isn't in GRILL.md yet. Not relayed to the migration
+  thread until Cello confirms, and until he says whether it also changes today's site under I6.
 - 2026-10-12: ship order: migration stages reach `master` first; the rewrite's build plan
   follows only after the migration ships (rewrite handoff, "Next, ranked").
 
 ## Open calls for Cello
 
+- Confirm the I2/I5 revision ("yes, revise it", reported by the rewrite thread). Does it apply to
+  the rewrite only, or also change what today's site gets in the migration (window frame,
+  `bg-plate`)?
 - Where cello.dev uses Geist Sans: the migration thread will propose this as an amendment.
 
 ## After deploy, for Cello
