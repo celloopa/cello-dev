@@ -26,9 +26,9 @@
   --text-muted: color-mix(in srgb, var(--paper-200) 82%, transparent); /* Metadata, dates, captions, ledes. Never fainter than this for text. */
   --text-inverse: var(--ink-950); /* Text on --bg-inverse or on --action-primary. */
   --text-accent: var(--signal-500); /* Section titles, eyebrows, the hero name. Never the only cue for a link. */
-  --action-primary: var(--signal-500); /* Buttons, links, current nav item, scroll bar, selection. Day becomes signal-700 in stage 3. */
+  --action-primary: var(--signal-500); /* Buttons, links, current nav item, scroll bar, selection. Green means action in both themes: signal-500 at Dusk, signal-700 at Day (4.70:1 on paper-100). */
   --focus-ring: var(--signal-500); /* Keyboard focus on everything: 3px, offset 3px. */
-  --accent-ground: var(--earth-400); /* Grounding shapes: triangles, sills, decorative bars. Never text or action. Day becomes earth-600 in stage 3. */
+  --accent-ground: var(--earth-400); /* Grounding shapes: triangles, sills, decorative bars. Earth in both themes. Never text or action. */
   --accent-construction: var(--blueprint-500); /* Construction lines and annotations only. Never text or action. */
   --border-strong: var(--text-primary); /* Specimen frames, buttons, tags. */
   --border-muted: color-mix(in srgb, var(--paper-200) 18%, transparent); /* Dividers and rules only, never a control's edge. */
@@ -225,32 +225,32 @@
 
 :root[data-theme="light"] {
   /* Roles: color (Dusk is the :root default; Day applies under [data-theme=light]) */
-  --bg-canvas: var(--paper-200);
+  --bg-canvas: var(--paper-100);
   --bg-raised: color-mix(in srgb, var(--ink-950) 3.5%, transparent);
   --bg-muted: color-mix(in srgb, var(--ink-950) 8%, transparent);
   --bg-inverse: var(--ink-950);
   --bg-plate: var(--bg-canvas);
   --text-primary: var(--ink-950);
   --text-muted: color-mix(in srgb, var(--ink-950) 78%, transparent);
-  --text-inverse: var(--paper-200);
-  --text-accent: var(--earth-600);
-  --action-primary: var(--earth-600);
-  --focus-ring: var(--earth-600);
-  --accent-ground: var(--signal-500);
+  --text-inverse: var(--paper-100);
+  --text-accent: var(--signal-700);
+  --action-primary: var(--signal-700);
+  --focus-ring: var(--signal-700);
+  --accent-ground: var(--earth-600);
   --border-strong: var(--text-primary);
   --border-muted: color-mix(in srgb, var(--ink-950) 18%, transparent);
-  --scrim: color-mix(in srgb, var(--paper-200) 60%, transparent);
+  --scrim: color-mix(in srgb, var(--paper-100) 60%, transparent);
 
   /* Legacy aliases (old names kept so open branches build; removed once nothing uses them) */
   --color-background: var(--bg-canvas);
-  --color-background-rgb: 224, 224, 224;
+  --color-background-rgb: 243, 237, 226;
   --color-text: var(--text-primary);
   --color-text-rgb: 0, 26, 17;
   --color-accent: var(--action-primary);
-  --color-accent-rgb: 111, 97, 62;
+  --color-accent-rgb: 0, 122, 51;
   --color-accent-secondary: var(--accent-ground);
-  --color-accent-secondary-rgb: 0, 188, 68;
+  --color-accent-secondary-rgb: 111, 97, 62;
   --color-visual-accent: var(--earth-600);
   --color-visual-accent-rgb: 111, 97, 62;
-  --color-background-translucent: rgba(224, 224, 224, 0.8);
+  --color-background-translucent: rgba(243, 237, 226, 0.8);
 }

@@ -499,9 +499,6 @@
   }
  },
  "src/pages/index.astro": {
-  "ban:theme-storage": {
-   "localStorage.setItem(\"theme\"": 1
-  },
   "spacing": {
    "clamp(2rem, 5vw, 4.5rem)": 1,
    "clamp(1.5rem, 4vh, 3rem)": 1,

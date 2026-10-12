@@ -133,7 +133,7 @@ const marqueeWords = [
             );
           })
         }
-        <button onclick="toggleTheme()" aria-label="Toggle theme">
+        <button type="button" data-theme-toggle aria-label="Switch between Day and Dusk">
           <Sun />
         </button>
       </div>
@@ -300,13 +300,6 @@ const marqueeWords = [
 </Layout>
 
 <script is:inline>
-  function toggleTheme() {
-    const currentTheme = localStorage.getItem("theme") || "dark";
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
-  }
-
   function initTypewriter() {
     const text = "Cello";
     const element = document.querySelector(".typewriter-text");

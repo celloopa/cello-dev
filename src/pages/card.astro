@@ -6,6 +6,7 @@ import "@fontsource/geist-mono/700.css";
 import "@fontsource/geist-mono/900.css";
 import "@fontsource-variable/national-park";
 import "@/styles/colors.css";
+import ThemeInit from "@/components/ThemeInit.astro";
 import Mail from "@/icons/Mail.astro";
 import Phone from "@/icons/Phone.astro";
 import LinkedIn from "@/icons/LinkedIn.astro";
@@ -50,7 +51,8 @@ const qrCodeSvg = await QRCode.toString(url, {
       name="description"
       content="Conference card for Marcelo Rondon. Scan the QR code for the portfolio, save the contact card, or share via AirDrop."
     />
-    <meta name="theme-color" content="#001A11" />
+    <meta name="theme-color" content="#001A11" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F3EDE2" media="(prefers-color-scheme: light)" />
     <meta name="color-scheme" content="dark light" />
     <link rel="canonical" href={cardUrl} />
     <meta property="og:url" content={cardUrl} />
@@ -62,19 +64,7 @@ const qrCodeSvg = await QRCode.toString(url, {
     />
     <meta property="og:image" content={`${url}/images/thumbnail.png`} />
     <title>{name} | Conference Card</title>
-    <script is:inline>
-      (() => {
-        const savedTheme = localStorage.getItem("theme");
-        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-          .matches
-          ? "dark"
-          : "light";
-        document.documentElement.setAttribute(
-          "data-theme",
-          savedTheme || systemTheme,
-        );
-      })();
-    </script>
+    <ThemeInit />
   </head>
   <body>
     <div class="page-shell">
