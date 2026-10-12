@@ -42,6 +42,11 @@ below the window. The mark was already this scene: a sun rising behind a mountai
   - **Geist Mono** sets everything else.
   - Both faces are self-hosted from the repo (Switchback isn't on npm or Google Fonts), each with a
     real fallback stack.
+- **I5. The window frame replaces the offset frame; location card tiers (2026-10-12).** The window
+  frame is the site's one framing primitive, used for the hero, media and scene masks: frame
+  6 · mullion 4 · sill. Today's hard offset plate becomes the sill. The location card (month ·
+  season, place in Switchback, what's at this stop, the ink strip; never coordinates) is a must
+  component for the rewrite and a later one for today's site, which has no places yet.
 
 ## Seasonal inks (I3, from the photos)
 
@@ -61,5 +66,4 @@ Dusk is one rule rather than a second palette: each ink is mixed 60% toward Midn
 
 ## Still open, one at a time
 
-1. The window frame primitive and the location card (their tier).
-2. How much of this reaches today's site in the migration.
+1. How much of this reaches today's site in the migration.
