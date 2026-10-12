@@ -23,7 +23,7 @@ const isVideo = src?.endsWith('.webm') || src?.endsWith('.mp4');
 <style>
 	.media-gallery {
 		margin: var(--space-32) 0;
-		animation: enter-scale 0.7s var(--ease-out) backwards;
+		animation: enter-scale var(--motion-entry) var(--ease-out) backwards;
 	}
 
 	.media-full {
@@ -49,7 +49,7 @@ const isVideo = src?.endsWith('.webm') || src?.endsWith('.mp4');
 		width: 100%;
 		border: 4px solid var(--text-primary);
 		filter: grayscale(20%);
-		transition: filter var(--motion-ui) ease;
+		transition: filter var(--motion-ui) var(--ease-out);
 	}
 
 	.media-full img.project-media {

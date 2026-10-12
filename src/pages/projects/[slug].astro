@@ -352,7 +352,7 @@ const nextProject =
     margin: 0 0 var(--space-16) 0;
     padding: 0;
     overflow-wrap: anywhere;
-    animation: enter-rise var(--motion-entry) var(--ease-out) 0.1s backwards;
+    animation: enter-rise var(--motion-entry) var(--ease-out) calc(var(--motion-stagger) * 2) backwards;
   }
 
   .bar {
@@ -360,7 +360,7 @@ const nextProject =
     height: 5px;
     background: var(--color-accent);
     margin-bottom: var(--space-24);
-    animation: enter-wipe 0.5s var(--ease-out) 0.2s backwards;
+    animation: enter-wipe var(--motion-entry) var(--ease-out) calc(var(--motion-stagger) * 3) backwards;
   }
 
   .description {
@@ -369,7 +369,7 @@ const nextProject =
     max-width: 60ch;
     margin: 0 0 var(--space-32) 0;
     padding: 0;
-    animation: enter-rise var(--motion-entry) var(--ease-out) 0.3s backwards;
+    animation: enter-rise var(--motion-entry) var(--ease-out) calc(var(--motion-stagger) * 5) backwards;
   }
 
   .tech-stack {
@@ -388,8 +388,8 @@ const nextProject =
     border: 2px solid var(--text-primary);
     padding: 0.4rem 0.8rem;
     transition: all var(--motion-ui) var(--ease-out);
-    animation: enter-rise 0.5s var(--ease-out) backwards;
-    animation-delay: calc(0.4s + var(--i) * 0.05s);
+    animation: enter-rise var(--motion-entry) var(--ease-out) backwards;
+    animation-delay: calc(var(--motion-stagger) * (7 + var(--i)));
   }
 
   .tech-stack li:hover {
@@ -411,7 +411,7 @@ const nextProject =
     display: flex;
     gap: var(--space-16);
     flex-wrap: wrap;
-    animation: enter-rise var(--motion-entry) var(--ease-out) 0.5s backwards;
+    animation: enter-rise var(--motion-entry) var(--ease-out) var(--motion-entry) backwards;
   }
 
   .btn {
@@ -451,7 +451,7 @@ const nextProject =
   .media-gallery {
     position: relative;
     padding-inline: 0.8rem;
-    animation: enter-scale 0.7s var(--ease-out) backwards;
+    animation: enter-scale var(--motion-entry) var(--ease-out) backwards;
   }
 
   .media-full {
@@ -484,8 +484,8 @@ const nextProject =
 
   .media-item {
     margin: 0;
-    animation: enter-rise 0.5s var(--ease-out) backwards;
-    animation-delay: calc(var(--i) * 0.1s);
+    animation: enter-rise var(--motion-entry) var(--ease-out) backwards;
+    animation-delay: calc(var(--i) * var(--motion-stagger));
   }
 
   .media-item figcaption {
@@ -503,7 +503,7 @@ const nextProject =
     width: 100%;
     border: 4px solid var(--text-primary);
     filter: grayscale(20%);
-    transition: filter var(--motion-ui) ease;
+    transition: filter var(--motion-ui) var(--ease-out);
   }
 
   .media-full .project-media {
@@ -566,8 +566,8 @@ const nextProject =
     background: var(--bg-raised);
     font-size: var(--type-body);
     line-height: 1.7;
-    animation: enter-rise 0.5s var(--ease-out) backwards;
-    animation-delay: calc(var(--i) * 0.1s);
+    animation: enter-rise var(--motion-entry) var(--ease-out) backwards;
+    animation-delay: calc(var(--i) * var(--motion-stagger));
     transition: all var(--motion-ui) var(--ease-out);
   }
 

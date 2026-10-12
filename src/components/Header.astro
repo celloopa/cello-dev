@@ -177,7 +177,7 @@ const menuLabel = activeNav?.label ?? "Menu";
 
   .nav-item {
     opacity: 0;
-    animation: headerSlideRight 0.5s var(--ease-out) forwards;
+    animation: headerSlideRight var(--motion-entry) var(--ease-out) forwards;
     animation-delay: var(--delay);
   }
 
@@ -192,10 +192,10 @@ const menuLabel = activeNav?.label ?? "Menu";
     color: var(--text-primary);
     border: 2px solid transparent;
     transition:
-      border-color 0.3s var(--ease-out),
-      background-color 0.3s var(--ease-out),
-      color 0.3s var(--ease-out),
-      transform 0.3s var(--ease-out);
+      border-color var(--motion-ui) var(--ease-out),
+      background-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out),
+      transform var(--motion-ui) var(--ease-out);
     text-shadow: 0 2px 8px var(--scrim);
   }
 
@@ -251,11 +251,11 @@ const menuLabel = activeNav?.label ?? "Menu";
     border: 3px solid var(--text-primary);
     cursor: pointer;
     opacity: 0;
-    animation: headerSlideRight 0.5s var(--ease-out) 0.2s forwards;
+    animation: headerSlideRight var(--motion-entry) var(--ease-out) calc(var(--motion-stagger) * 3) forwards;
     transition:
-      background-color 0.3s var(--ease-out),
-      border-color 0.3s var(--ease-out),
-      transform 0.3s var(--ease-out);
+      background-color var(--motion-ui) var(--ease-out),
+      border-color var(--motion-ui) var(--ease-out),
+      transform var(--motion-ui) var(--ease-out);
     box-shadow: 0 2px 8px var(--scrim);
   }
 
@@ -309,8 +309,8 @@ const menuLabel = activeNav?.label ?? "Menu";
     padding: 0.15rem 0.35rem;
     letter-spacing: 0.03em;
     transition:
-      background-color 0.3s ease,
-      color 0.3s ease;
+      background-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
   }
 
   .menu-key--dot {
@@ -334,7 +334,7 @@ const menuLabel = activeNav?.label ?? "Menu";
     text-transform: uppercase;
     letter-spacing: var(--track-wide);
     color: var(--text-primary);
-    transition: color var(--motion-ui) ease;
+    transition: color var(--motion-ui) var(--ease-out);
     text-shadow: 0 2px 8px var(--scrim);
   }
 

@@ -29,7 +29,7 @@ const isVideo = (src: string) => src?.endsWith('.webm') || src?.endsWith('.mp4')
 <style>
 	.media-gallery {
 		margin: var(--space-32) 0;
-		animation: enter-scale 0.7s var(--ease-out) backwards;
+		animation: enter-scale var(--motion-entry) var(--ease-out) backwards;
 	}
 
 	.media-two {
@@ -40,8 +40,8 @@ const isVideo = (src: string) => src?.endsWith('.webm') || src?.endsWith('.mp4')
 
 	.media-item {
 		margin: 0;
-		animation: enter-rise 0.5s var(--ease-out) backwards;
-		animation-delay: calc(var(--i) * 0.1s);
+		animation: enter-rise var(--motion-entry) var(--ease-out) backwards;
+		animation-delay: calc(var(--i) * var(--motion-stagger));
 	}
 
 	.media-item figcaption {
@@ -59,7 +59,7 @@ const isVideo = (src: string) => src?.endsWith('.webm') || src?.endsWith('.mp4')
 		width: 100%;
 		border: 4px solid var(--text-primary);
 		filter: grayscale(20%);
-		transition: filter var(--motion-ui) ease;
+		transition: filter var(--motion-ui) var(--ease-out);
 		aspect-ratio: 16/10;
 		object-fit: cover;
 	}

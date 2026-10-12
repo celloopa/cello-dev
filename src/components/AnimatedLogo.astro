@@ -61,20 +61,20 @@
 	/* Animation keyframes */
 
 	.logo-c {
-		animation: logoSlideFromLeft 12s var(--ease-out) infinite;
+		animation: logoSlideFromLeft var(--motion-logo-loop) var(--ease-out) infinite;
 		transform-origin: center center;
 		will-change: transform, opacity;
 	}
 
 	.logo-sun {
-		animation: logoSlideFromTopRight 12s var(--ease-out) infinite;
+		animation: logoSlideFromTopRight var(--motion-logo-loop) var(--ease-out) infinite;
 		animation-delay: 0.18s;
 		transform-origin: center center;
 		will-change: transform, opacity;
 	}
 
 	.logo-triangle {
-		animation: logoSlideFromBottom 12s var(--ease-out) infinite;
+		animation: logoSlideFromBottom var(--motion-logo-loop) var(--ease-out) infinite;
 		animation-delay: 0.34s;
 		transform-origin: center center;
 		will-change: transform, opacity;
@@ -82,16 +82,16 @@
 
 	/* On hover, break apart with bounce animation */
 	.animated-logo:hover .logo-c {
-		animation: breakC 0.7s var(--ease-out) forwards;
+		animation: breakC var(--motion-logo-break) var(--ease-out) forwards;
 	}
 
 	.animated-logo:hover .logo-sun {
-		animation: breakSun 0.7s var(--ease-out) forwards;
+		animation: breakSun var(--motion-logo-break) var(--ease-out) forwards;
 		animation-delay: 0.05s;
 	}
 
 	.animated-logo:hover .logo-triangle {
-		animation: breakTriangle 0.7s var(--ease-out) forwards;
+		animation: breakTriangle var(--motion-logo-break) var(--ease-out) forwards;
 		animation-delay: 0.1s;
 	}
 

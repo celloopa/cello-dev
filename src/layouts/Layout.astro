@@ -384,9 +384,9 @@ const SOCIAL_ICONS: SocialIcon = {
         letter-spacing: var(--track-wide);
         text-transform: uppercase;
         transition:
-          border-color 0.3s var(--ease-out),
-          color 0.3s var(--ease-out),
-          transform 0.3s var(--ease-out);
+          border-color var(--motion-ui) var(--ease-out),
+          color var(--motion-ui) var(--ease-out),
+          transform var(--motion-ui) var(--ease-out);
       }
 
       .footer-nav a::after {
@@ -428,10 +428,10 @@ const SOCIAL_ICONS: SocialIcon = {
         background: var(--bg-canvas);
         color: var(--text-primary);
         transition:
-          background-color 0.3s var(--ease-out),
-          border-color 0.3s var(--ease-out),
-          color 0.3s var(--ease-out),
-          transform 0.3s var(--ease-out);
+          background-color var(--motion-ui) var(--ease-out),
+          border-color var(--motion-ui) var(--ease-out),
+          color var(--motion-ui) var(--ease-out),
+          transform var(--motion-ui) var(--ease-out);
       }
 
       .footer-socials a:hover,
@@ -454,11 +454,11 @@ const SOCIAL_ICONS: SocialIcon = {
       }
 
       ::view-transition-new(root) {
-        animation: wipe-in 0.45s var(--ease-out);
+        animation: wipe-in var(--motion-page-wipe) var(--ease-out);
       }
 
       ::view-transition-old(root) {
-        animation: wipe-out 0.45s var(--ease-out);
+        animation: wipe-out var(--motion-page-wipe) var(--ease-out);
       }
 
       ::view-transition-group(root) {
@@ -557,9 +557,9 @@ const SOCIAL_ICONS: SocialIcon = {
         opacity: 0;
         transform: translateY(26px);
         transition:
-          opacity 0.7s var(--ease-out),
-          transform 0.7s var(--ease-out);
-        transition-delay: calc(var(--reveal-i, 0) * 80ms);
+          opacity var(--motion-entry) var(--ease-out),
+          transform var(--motion-entry) var(--ease-out);
+        transition-delay: calc(var(--reveal-i, 0) * var(--motion-stagger));
       }
 
       [data-reveal="left"] {
@@ -584,7 +584,7 @@ const SOCIAL_ICONS: SocialIcon = {
       [data-reveal="line"]::before {
         transform: scaleX(0);
         transform-origin: left;
-        transition: transform 0.9s var(--ease-out);
+        transition: transform var(--motion-entry) var(--ease-out);
       }
 
       [data-reveal="line"].is-revealed::before {

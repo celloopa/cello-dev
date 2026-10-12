@@ -128,6 +128,10 @@
   --motion-ui: 300ms; /* Hover, color, press, menu. */
   --motion-entry: 600ms; /* Reveal, slide, wipe, scale. */
   --motion-stagger: 60ms; /* Per item in a staggered entry. */
+  --motion-stagger-dense: 30ms; /* Per item in a long staggered list (more than about ten items, e.g. skill chips). */
+  --motion-page-wipe: 450ms; /* Signature: the page-to-page wipe (view transitions). */
+  --motion-logo-loop: 12s; /* Signature: the logo's assemble-and-break loop. */
+  --motion-logo-break: 700ms; /* Signature: the logo breaking apart on hover. */
   --motion-none: 0s; /* No wait. The reduced-motion contract zeroes every delay with it, so content never waits on motion. */
 
   /* Legacy aliases (old names kept so open branches build; removed once nothing uses them) */

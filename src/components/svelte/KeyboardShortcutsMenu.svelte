@@ -395,7 +395,7 @@
     cursor: pointer;
     color: inherit;
     font: inherit;
-    transition: all 0.2s var(--ease-out);
+    transition: all var(--motion-ui) var(--ease-out);
   }
 
   button:hover,
@@ -418,7 +418,7 @@
     margin-right: var(--space-12);
     text-transform: uppercase;
     letter-spacing: var(--track-caps);
-    transition: all 0.2s ease;
+    transition: all var(--motion-ui) var(--ease-out);
   }
 
   .label {
@@ -427,7 +427,7 @@
     font-weight: var(--weight-semibold);
     text-transform: uppercase;
     letter-spacing: 0.03em;
-    transition: color 0.2s ease;
+    transition: color var(--motion-ui) var(--ease-out);
   }
 
   button:hover .key,

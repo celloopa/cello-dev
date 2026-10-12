@@ -1,23 +1,13 @@
 {
  "src/components/AnimatedLogo.astro": {
   "duration": {
-   "12s": 3,
    "0.18s": 1,
    "0.34s": 1,
-   "0.7s": 3,
    "0.05s": 1,
    "0.1s": 1
   }
  },
  "src/components/BlogCard.astro": {
-  "duration": {
-   "0.7s": 1,
-   "0.1s": 1,
-   "0.4s": 1
-  },
-  "easing": {
-   "ease": 5
-  },
   "ban:transition-all": {
    "transition: all": 2
   },
@@ -76,10 +66,6 @@
   "ban:container-literal": {
    "max-width: 1100px": 1
   },
-  "duration": {
-   "0.5s": 2,
-   "0.2s": 1
-  },
   "spacing": {
    "0.4rem": 1,
    "0.15rem": 1,
@@ -95,17 +81,9 @@
   },
   "letter-spacing": {
    "0.03em": 1
-  },
-  "easing": {
-   "ease": 1
   }
  },
  "src/components/ProjectCard.astro": {
-  "duration": {
-   "0.7s": 1,
-   "0.1s": 1,
-   "0.4s": 1
-  },
   "color": {
    "rgba(var(--color-accent-rgb), 0.16)": 1,
    "rgba(var(--color-text-rgb), 0.12)": 1,
@@ -124,9 +102,6 @@
   "letter-spacing": {
    "0.08em": 1
   },
-  "easing": {
-   "ease": 6
-  },
   "ban:transition-all": {
    "transition: all": 3
   },
@@ -143,34 +118,6 @@
    "32px": 1
   }
  },
- "src/components/media/MediaFull.astro": {
-  "duration": {
-   "0.7s": 1
-  },
-  "easing": {
-   "ease": 1
-  }
- },
- "src/components/media/MediaThree.astro": {
-  "duration": {
-   "0.7s": 1,
-   "0.5s": 1,
-   "0.1s": 1
-  },
-  "easing": {
-   "ease": 1
-  }
- },
- "src/components/media/MediaTwo.astro": {
-  "duration": {
-   "0.7s": 1,
-   "0.5s": 1,
-   "0.1s": 1
-  },
-  "easing": {
-   "ease": 1
-  }
- },
  "src/components/sections/Education.astro": {
   "color": {
    "rgba(var(--color-accent-rgb), 0.5)": 1
@@ -182,12 +129,6 @@
  "src/components/sections/Experience.astro": {
   "color": {
    "rgba(var(--color-accent-rgb), 0.5)": 1
-  },
-  "duration": {
-   "0.2s": 1
-  },
-  "easing": {
-   "ease": 1
   },
   "line-height": {
    "1.5": 1,
@@ -210,9 +151,6 @@
    "clamp(2rem, 6vw, 3rem)": 1,
    "clamp(0.9rem, 2.5vw, 1.1rem)": 1
   },
-  "easing": {
-   "ease": 1
-  },
   "letter-spacing": {
    "-0.05rem": 1
   },
@@ -223,12 +161,6 @@
  "src/components/sections/Projects.astro": {
   "color": {
    "rgba(var(--color-accent-rgb), 0.5)": 1
-  },
-  "duration": {
-   "0.2s": 1
-  },
-  "easing": {
-   "ease": 1
   },
   "line-height": {
    "1.5": 1,
@@ -255,13 +187,6 @@
   },
   "ban:transition-all": {
    "transition: all": 1
-  },
-  "duration": {
-   "0.5s": 1,
-   "0.03s": 1
-  },
-  "easing": {
-   "ease": 1
   },
   "line-height": {
    "1": 1
@@ -291,12 +216,6 @@
   },
   "ban:transition-all": {
    "transition: all": 2
-  },
-  "duration": {
-   "0.2s": 3
-  },
-  "easing": {
-   "ease": 2
   }
  },
  "src/components/svelte/ResumeSync.svelte": {
@@ -332,11 +251,6 @@
    "clamp(3.5rem, 10vw, 6rem)": 1,
    "1.6rem": 1,
    "1.2rem": 1
-  },
-  "duration": {
-   "0.45s": 2,
-   "80ms": 1,
-   "0.9s": 1
   }
  },
  "src/pages/404.astro": {
@@ -349,9 +263,6 @@
   "spacing": {
    "4px": 1,
    "0.6rem": 1
-  },
-  "duration": {
-   "0.5s": 1
   }
  },
  "src/pages/blog.astro": {
@@ -373,21 +284,9 @@
    "0.9em": 1,
    "clamp(2rem, 10vw, 3rem)": 1
   },
-  "duration": {
-   "0.1s": 1,
-   "0.5s": 2,
-   "0.2s": 2,
-   "0.3s": 1,
-   "0.4s": 1,
-   "0.05s": 1,
-   "0.7s": 1
-  },
   "line-height": {
    "1.8": 2,
    "1.7": 1
-  },
-  "easing": {
-   "ease": 2
   },
   "color": {
    "rgba(var(--color-accent-rgb), 0.1)": 1,
@@ -416,9 +315,6 @@
    "0.9rem": 2,
    "0.4rem": 2,
    "0.85rem": 3
-  },
-  "duration": {
-   "0.8s": 2
   },
   "font-size": {
    "0.8rem": 1,
@@ -486,11 +382,11 @@
    "0.24s": 1,
    "0.7s": 1,
    "0.5s": 2,
-   "0.3s": 3,
+   "0.3s": 12,
    "0.42s": 1,
    "0.2s": 2,
    "2.4s": 1,
-   "0.45s": 1,
+   "0.45s": 2,
    "32s": 1
   },
   "ban:keyframes-outside-animations": {
@@ -530,7 +426,8 @@
    "1.6": 1
   },
   "easing": {
-   "ease-in-out": 1
+   "ease-in-out": 1,
+   "ease": 1
   },
   "ban:transition-all": {
    "transition: all": 1
@@ -559,21 +456,9 @@
    "0.9em": 1,
    "clamp(2rem, 10vw, 3rem)": 1
   },
-  "duration": {
-   "0.1s": 3,
-   "0.5s": 5,
-   "0.2s": 1,
-   "0.3s": 1,
-   "0.4s": 1,
-   "0.05s": 1,
-   "0.7s": 1
-  },
   "line-height": {
    "1.8": 2,
    "1.7": 3
-  },
-  "easing": {
-   "ease": 1
   },
   "letter-spacing": {
    "0.08em": 1

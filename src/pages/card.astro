@@ -316,7 +316,7 @@ const qrCodeSvg = await QRCode.toString(url, {
 
   .identity-panel {
     padding: 0;
-    animation: enter-from-left 0.8s var(--ease-out) backwards;
+    animation: enter-from-left var(--motion-entry) var(--ease-out) backwards;
     --enter-distance: 48px;
     contain: layout paint;
   }
@@ -327,7 +327,7 @@ const qrCodeSvg = await QRCode.toString(url, {
     align-items: flex-start;
     width: 100%;
     max-width: 18rem;
-    animation: enter-from-right 0.8s var(--ease-out) backwards;
+    animation: enter-from-right var(--motion-entry) var(--ease-out) backwards;
     --enter-distance: 48px;
     contain: layout paint;
     content-visibility: auto;
@@ -430,10 +430,10 @@ const qrCodeSvg = await QRCode.toString(url, {
     text-decoration: none;
     cursor: pointer;
     transition:
-      transform 0.3s var(--ease-out),
-      border-color 0.3s var(--ease-out),
-      background 0.3s var(--ease-out),
-      color 0.3s var(--ease-out);
+      transform var(--motion-ui) var(--ease-out),
+      border-color var(--motion-ui) var(--ease-out),
+      background var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
   }
 
   .action:hover,
