@@ -1,4 +1,6 @@
 ---
+import "@fontsource-variable/geist";
+import "@fontsource-variable/geist/wght-italic.css";
 import { getCollection, render } from "astro:content";
 import Layout from "@/layouts/Layout.astro";
 import Section from "@/components/Section.astro";
@@ -656,6 +658,15 @@ const nextProject =
     animation: slideUp var(--motion-entry) var(--ease-out) backwards;
   }
 
+  /* Long reading (A2): the article's own paragraphs, lists and quotes set in Geist Sans.
+     Embedded components (CaseMeta, FlowDiagram, media captions) keep Geist Mono. */
+  .content > :global(p),
+  .content > :global(ul),
+  .content > :global(ol),
+  .content > :global(blockquote) {
+    font-family: var(--font-read);
+  }
+
   .content :global(h2) {
     font-size: var(--type-heading);
     line-height: var(--leading-heading);
@@ -709,6 +720,7 @@ const nextProject =
   }
 
   .content :global(code) {
+    font-family: var(--font-mono); /* Was the browser's monospace (Courier); code stays Geist Mono inside Geist Sans prose. */
     background: rgba(var(--color-accent-rgb), 0.1);
     border: 1px solid rgba(var(--color-accent-rgb), 0.2);
     padding: 0.2rem 0.4rem;
