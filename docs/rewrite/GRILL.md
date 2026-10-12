@@ -227,3 +227,27 @@ reprinted in dawn/noon/dusk/night inks; window light moves across the desk; city
 White Stag sign light at night). Built in code from shapes; no 3D modeling.
 Cello: "i have some pictures that we could try to recreate as the background scenes." Pending:
 the pictures, and Q12 (literal view vs composed view).
+
+### Q12. Real view or composed (2026-10-12)
+
+**Answer: composed** (real landmarks from Cello's photos, rearranged into a view no single window
+has). Brief, in Cello's words: "it should feel like me taking you on a journey through my
+favorite places and the work ive created while being inspired".
+
+### Q13. How each place relates to the work beside it (2026-10-12)
+
+Options: 1 literal only where true · 2 mood pairings.
+**Answer: 2, mood pairings.** Mood lines are Cello's to write (house rule from the channel brief:
+agents never write the take); drafts carry `[Cello's words]` placeholders, never invented
+claims about where work was made.
+Structure refinement from Cello: "keep elements in the screen persistently like as if the view
+was behind the window and parts of the work and flow of the story of the site are in front and
+below. the window will be like a train window showing the places."
+→ The desk and window frame stay fixed (foreground). Scroll moves the "train": places pass
+outside with train-window parallax (near layers fast, far slow, Mt Hood slowest). Work and story
+live in front of and below the window. This replaces "step through the window".
+Photos incoming: the desk window and the landscapes. Metadata handling: see below.
+
+Photo handling rule (agreed in this thread): GPS/EXIF from originals on disk is read only to
+name a place; coordinates are never written to the repo, Brain or the site; the home/desk photo's
+location is not read at all; photos stay out of the repo (only traced shapes are committed).
