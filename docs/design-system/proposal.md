@@ -295,3 +295,17 @@ OffsetFrame (visible: the frames). The art tokens, `bg-plate`, `place-name` and 
 defined but stay unused until the rewrite.
 
 **Family layer.** No change. The display faces belong to cello.dev, not to the family layer.
+
+
+## Amendment A2: Geist Sans for long reading (2026-10-12)
+
+Cello made Geist Sans a Cello family root and placed it on cello.dev: **long reading only.**
+
+| Family | Roles | License |
+|---|---|---|
+| Geist (Sans) | `body` inside Prose, which is case-study and blog body text | OFL 1.1 (family layer) |
+
+Geist Mono stays the voice for UI, labels, nav, metadata, data and code, and for every other
+paragraph on the site. New token: `--font-read`, used by the Prose component only. It's its own
+visible stage, **2c**, after 2b, covering articles only. That shows best once Prose exists, so if
+2c lands before stage 6 it styles the two article templates' `.content` directly.

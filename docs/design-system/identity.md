@@ -71,6 +71,14 @@ a WPA print simplifies a view (saturation ×1.35).
 Dusk is one rule rather than a second palette: each ink is mixed 60% toward Midnight Ink
 (`color-mix(in oklab, <ink> 40%, #001a11)`, the snow at 55%).
 
+## Later revisions
+
+- **I2 and I5 revised for the rewrite only (Cello, 2026-10-12; rewrite GRILL Q21 at `1dddfda` on
+  `claude/rewrite-exploration`).** In the rewrite's landscape direction, text may sit over scene art
+  with the approved focus dim, and the window frame no longer frames the hero. For today's site, I2,
+  I5, `bg-plate` and I6 stand as written until Cello says otherwise. The question is with him.
+- **Geist Sans for long reading (Cello, 2026-10-12): proposal amendment A2.**
+
 ## Status
 
 All six decided on 2026-10-12. `proposal.md` carries them as amendment A1.
