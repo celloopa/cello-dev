@@ -82,23 +82,3 @@ Dusk is one rule rather than a second palette: each ink is mixed 60% toward Midn
 ## Status
 
 All six decided on 2026-10-12. `proposal.md` carries them as amendment A1.
-
-## Seasonal inks (I3, from the photos)
-
-Pixel colors from Cello's ten landscape photos, read without metadata, then flattened the way
-a WPA print simplifies a view (saturation ×1.35).
-
-| Season | sky | far | snow | forest | ground |
-|---|---|---|---|---|---|
-| June · Meadow | `#6a9de8` | `#365ea0` | `#e6eef6` | `#1c2c1d` | `#737741` |
-| July · Coast fog | `#bed4e3` | `#9aa7ab` | `#e2ecf1` | `#202118` | `#656b61` |
-| August · Dry gold | `#93c7fa` | `#8e9dad` | `#dae6f1` | `#2b3026` | `#9a7d47` |
-| September · High light | `#4885e3` | `#38618c` | `#d4dce4` | `#323f44` | `#7c6145` |
-| October · Storm sky | `#a1abbf` | `#717172` | `#c0cee4` | `#3c3c2c` | `#8b7b66` |
-
-Dusk is one rule rather than a second palette: each ink is mixed 60% toward Midnight Ink
-(`color-mix(in oklab, <ink> 40%, #001a11)`, the snow at 55%).
-
-## Still open, one at a time
-
-1. How much of this reaches today's site in the migration.
