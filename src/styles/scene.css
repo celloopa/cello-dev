@@ -209,15 +209,14 @@ html:not(.js) .admire-btn {
   text-decoration: underline;
   text-underline-offset: var(--space-8);
 }
-/* visibility stays visible for the whole fade either way, so the intro hides only once faded */
+/* In Admire the intro fades out; scenery.js makes it inert (out of the tab order and the
+   accessibility tree), so focus can return to "Take in the view" the moment it comes back. */
 [data-scene-intro] {
-  transition:
-    opacity var(--motion-ui) var(--ease-out),
-    visibility var(--motion-ui) linear;
+  transition: opacity var(--motion-ui) var(--ease-out);
 }
 html.scene-admire [data-scene-intro] {
   opacity: 0;
-  visibility: hidden;
+  pointer-events: none;
 }
 .admire-view {
   position: absolute;

@@ -72,6 +72,7 @@ export function start() {
   const hero = document.querySelector("[data-scene-hero]");
   const admireBtn = document.querySelector("[data-admire-open]");
   const view = document.querySelector("[data-admire-view]");
+  const intro = document.querySelector("[data-scene-intro]");
   const context = document.querySelector("[data-scene-context]");
   const title = context?.querySelector("[data-scene-context-title]");
 
@@ -91,6 +92,7 @@ export function start() {
     const focusWasInView = !!document.activeElement && view.contains(document.activeElement);
     state.admire = on;
     view.hidden = !on;
+    if (intro) intro.inert = on; // faded out in Admire: out of the tab order and the a11y tree
     apply();
     if (on) view.querySelector("[data-admire-close]").focus({ preventScroll: true });
     else if (focusReturn && focusWasInView) admireBtn.focus({ preventScroll: true });
