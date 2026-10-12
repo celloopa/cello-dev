@@ -1,78 +1,84 @@
 ---
+/*
+ * /blog in the landscape (landscape build S3): today's published posts, newest first, with
+ * today's card content, each with the swatch of the place it opens over (the post rotation in
+ * src/data/scene-pairings.json). Drafts stay off, as today. The covers are left to the posts.
+ */
 import { getCollection } from "astro:content";
-import Layout from "@/layouts/Layout.astro";
-import Section from "@/components/Section.astro";
-import BlogCard from "@/components/BlogCard.astro";
-import "@/styles/colors.css";
+import SceneLayout from "@/layouts/SceneLayout.astro";
+import SceneSelector from "@/components/scene/SceneSelector.astro";
+import { sceneArt } from "@/lib/scene/catalog";
+import { homeScene, sceneForPost } from "@/lib/scene/pairing";
 
 const allPosts = await getCollection("blog");
-const publishedPosts = allPosts
-	.filter((post) => !post.data.draft)
-	.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+const items = allPosts
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf())
+  .map((post) => ({
+    href: `/blog/${post.slug}`,
+    title: post.data.title,
+    eyebrow: post.data.publishDate.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      timeZone: "UTC",
+    }),
+    description: post.data.description,
+    tags: post.data.tags,
+    scene: sceneArt(sceneForPost(post.slug)),
+  }));
 ---
 
-<Layout
-	title="Writing - Marcelo Rondon"
-	description="Writing and process notes on product design, technical prototyping, frontend-aware UX, and design systems."
+<SceneLayout
+  title="Writing - Marcelo Rondon"
+  description="Writing and process notes on product design, technical prototyping, frontend-aware UX, and design systems."
+  canonicalPath="/blog"
+  place={homeScene()}
+  focus
 >
-	<Section>
-		<h1>Writing</h1>
-		<p class="intro">Notes on product design, technical prototyping, design systems, frontend-aware UX, and the process of turning rough ideas into buildable product experiences.</p>
-	</Section>
-
-	<Section>
-		{publishedPosts.length > 0 ? (
-			<div class="blog-grid">
-				{publishedPosts.map((post, i) => (
-					<BlogCard
-						title={post.data.title}
-						description={post.data.description}
-						publishDate={post.data.publishDate}
-						image={post.data.image}
-						tags={post.data.tags}
-						slug={post.slug}
-						index={i}
-					/>
-				))}
-			</div>
-		) : (
-			<p class="empty">No posts yet. Check back soon!</p>
-		)}
-	</Section>
-</Layout>
+  <div class="index container">
+    <header class="index-head">
+      <h1 class="index-title">Writing</h1>
+      <p class="index-intro">
+        Notes on product design, technical prototyping, design systems, frontend-aware UX, and the
+        process of turning rough ideas into buildable product experiences.
+      </p>
+    </header>
+    {
+      items.length > 0 ? (
+        <SceneSelector items={items} label="Posts" />
+      ) : (
+        <p class="index-intro">No posts yet. Check back soon!</p>
+      )
+    }
+  </div>
+</SceneLayout>
 
 <style>
-	h1 {
-		font-size: 2.5rem;
-		font-weight: var(--weight-bold);
-		text-transform: uppercase;
-		letter-spacing: var(--track-caps);
-		color: var(--color-accent);
-		margin-bottom: 0;
-	}
+  .index {
+    padding-block: var(--space-64) var(--space-96);
+  }
 
-	.intro {
-		color: var(--text-primary);
-		opacity: 0.8;
-		margin-top: var(--space-8);
-	}
+  .index-head {
+    margin-bottom: var(--space-48);
+  }
 
-	.blog-grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: var(--space-32);
-	}
+  .index-title {
+    margin: 0 0 var(--space-16);
+    color: var(--text-accent);
+    font-family: var(--font-title);
+    font-size: var(--type-page-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
 
-	.empty {
-		text-align: center;
-		color: var(--text-primary);
-		opacity: 0.6;
-		font-size: var(--type-body-lg);
-	}
-
-	@media (width <= 700px) {
-		.blog-grid {
-			grid-template-columns: 1fr;
-		}
-	}
+  .index-intro {
+    max-width: var(--layout-measure);
+    margin: 0;
+    color: var(--text-on-art);
+    font-size: var(--type-body-lg);
+    line-height: var(--leading-read);
+  }
 </style>

@@ -1,68 +1,76 @@
 ---
+/*
+ * /projects as the scene selector (landscape build S3; A3 item 7). Today's list, copy and
+ * order: every complete case study by `order`, with today's card content. Each one carries the
+ * swatch of the place it opens over (src/data/scene-pairings.json); pointing at one brings its
+ * place in behind the list. Archived and retired case studies (complete: false) stay off the
+ * list, as today.
+ */
 import { getCollection } from "astro:content";
-import Layout from "@/layouts/Layout.astro";
-import Section from "@/components/Section.astro";
-import ProjectCard from "@/components/ProjectCard.astro";
-import "@/styles/colors.css";
+import SceneLayout from "@/layouts/SceneLayout.astro";
+import SceneSelector from "@/components/scene/SceneSelector.astro";
+import { sceneArt } from "@/lib/scene/catalog";
+import { homeScene, sceneForProject } from "@/lib/scene/pairing";
 
 const projects = await getCollection("projects");
-const sortedProjects = projects
-	.filter((project) => project.data.complete)
-	.sort((a, b) => a.data.order - b.data.order);
+const items = projects
+  .filter((project) => project.data.complete)
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((project) => ({
+    href: `/projects/${project.slug}`,
+    title: project.data.title,
+    eyebrow: project.data.role,
+    description: project.data.description,
+    tags: project.data.techStack,
+    live: project.data.url,
+    scene: sceneArt(sceneForProject(project.slug)),
+  }));
 ---
 
-<Layout
-	title="Work - Marcelo Rondon"
-	description="Product design case studies on design systems and human-centered AI tools: what code does, what the model does, and where people approve."
+<SceneLayout
+  title="Work - Marcelo Rondon"
+  description="Product design case studies on design systems and human-centered AI tools: what code does, what the model does, and where people approve."
+  canonicalPath="/projects"
+  place={homeScene()}
+  focus
 >
-	<Section>
-		<h1>My Work</h1>
-		<p class="intro">Four case studies. In each one, code does everything it can, the model gets the smallest job it can be trusted with, and a person approves wherever the consequences are.</p>
-	</Section>
-
-	<Section>
-		<div class="projects-grid">
-			{sortedProjects.map((project, i) => (
-				<ProjectCard
-					title={project.data.title}
-					description={project.data.description}
-					image={project.data.image}
-					url={project.data.url}
-					techStack={project.data.techStack}
-					role={project.data.role}
-					slug={project.slug}
-					index={i}
-				/>
-			))}
-		</div>
-	</Section>
-</Layout>
+  <div class="index container">
+    <header class="index-head">
+      <h1 class="index-title">My Work</h1>
+      <p class="index-intro">
+        Four case studies. In each one, code does everything it can, the model gets the smallest
+        job it can be trusted with, and a person approves wherever the consequences are.
+      </p>
+    </header>
+    <SceneSelector items={items} label="Case studies" preview />
+  </div>
+</SceneLayout>
 
 <style>
-	h1 {
-		font-size: 2.5rem;
-		font-weight: var(--weight-bold);
-		text-transform: uppercase;
-		letter-spacing: var(--track-caps);
-		color: var(--color-accent);
-		margin-bottom: 0;
-	}
+  .index {
+    padding-block: var(--space-64) var(--space-96);
+  }
 
-	.intro {
-		color: var(--text-primary);
-		opacity: 0.8;
-		margin-top: var(--space-8);
-	}
+  .index-head {
+    margin-bottom: var(--space-48);
+  }
 
-	.projects-grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: var(--space-32);
-	}
+  .index-title {
+    margin: 0 0 var(--space-16);
+    color: var(--text-accent);
+    font-family: var(--font-title);
+    font-size: var(--type-page-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
 
-	@media (width <= 700px) {
-		.projects-grid {
-			grid-template-columns: 1fr;
-		}
-	}
+  .index-intro {
+    max-width: var(--layout-measure);
+    margin: 0;
+    color: var(--text-on-art);
+    font-size: var(--type-body-lg);
+    line-height: var(--leading-read);
+  }
 </style>

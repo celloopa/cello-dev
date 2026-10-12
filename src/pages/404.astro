@@ -1,132 +1,62 @@
 ---
-import Layout from "@/layouts/Layout.astro";
+/*
+ * 404 in the landscape (landscape build S3): today's words over home's scene, arriving the way
+ * home does (readable at first paint; the scene assembles behind the words).
+ */
+import SceneLayout from "@/layouts/SceneLayout.astro";
+import { homeScene } from "@/lib/scene/pairing";
 ---
 
-<Layout
+<SceneLayout
   title="404 - Cello Rondon"
   description="Page not found on Cello Rondon's product design portfolio."
+  place={homeScene()}
 >
-  <section class="not-found" aria-label="Page not found">
-    <p class="error-code">404</p>
-    <div class="hero-bar" aria-hidden="true">
-      <span class="hero-bar-heavy"></span>
-      <span class="hero-bar-thin"></span>
+  <section class="not-found" aria-label="Page not found" data-scene-hero>
+    <div class="not-found-copy copy-scrim" data-scene-intro>
+      <p class="not-found-code">404</p>
+      <h1 class="not-found-title">Page Not Found</h1>
+      <a href="/" class="scene-arrow">Back to home <span aria-hidden="true">→</span></a>
     </div>
-    <div class="kicker">
-      <span class="kicker-text">Page Not Found</span>
-    </div>
-    <a href="/" class="cta-link">
-      <span>Back to home</span>
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        aria-hidden="true"
-      >
-        <path
-          d="M5 12H19M19 12L12 5M19 12L12 19"
-          stroke="currentColor"
-          stroke-width="3"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
-      </svg>
-    </a>
   </section>
-</Layout>
+</SceneLayout>
 
 <style>
   .not-found {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: min(72vh, 48rem);
-    padding: var(--space-32);
-    text-align: center;
+    position: relative;
+    overflow-x: clip; /* the copy scrim must not widen the page */
+    display: grid;
+    align-items: end;
+    min-height: calc(100svh - var(--scene-bar));
+    padding: var(--space-48) var(--scene-copy-end) var(--scene-copy-bottom) var(--scene-copy-start);
   }
 
-  .error-code {
-    color: var(--color-accent);
-    font-size: clamp(8rem, 30vw, 22rem);
-    font-weight: var(--weight-black);
-    line-height: 0.9;
+  .not-found-copy {
+    color: var(--text-on-art);
+  }
+
+  .not-found-code {
     margin: 0;
-    padding: 0;
+    color: var(--text-on-art);
+    font-family: var(--font-title);
+    font-size: var(--type-display-hero);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-display);
+    letter-spacing: var(--track-tight);
   }
 
-  .hero-bar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    margin: var(--space-20) 0 var(--space-24);
-    animation: wipeIn 0.5s var(--ease-out) backwards;
-    transform-origin: left;
-  }
-
-  .hero-bar-heavy {
-    width: 80px;
-    height: 8px;
-    background: var(--color-accent);
-  }
-
-  .hero-bar-thin {
-    width: 180px;
-    height: 2px;
-    background: var(--text-primary);
-    opacity: 0.7;
-  }
-
-  .kicker {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
-    margin-bottom: var(--space-16);
-  }
-
-  .kicker-text {
-    color: var(--text-primary);
+  .not-found-title {
+    margin: var(--space-16) 0 var(--space-24);
     font-size: var(--type-ui);
     font-weight: var(--weight-bold);
+    line-height: var(--leading-ui);
     letter-spacing: var(--track-wide);
     text-transform: uppercase;
   }
 
-  .cta-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-8);
-    padding: var(--space-12) var(--space-4);
-    color: var(--color-accent);
-    font-size: var(--type-small);
-    font-weight: var(--weight-extrabold);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
-    transition: gap var(--motion-ui) var(--ease-out);
-  }
-
-  .cta-link:hover,
-  .cta-link:focus-visible {
-    gap: var(--space-12);
-  }
-
-  @keyframes wipeIn {
-    from {
-      transform: scaleX(0);
-      transform-origin: left;
-    }
-    to {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-  }
-
-  @media (width <= 700px) {
+  @media (max-width: 768px) {
     .not-found {
-      min-height: 64vh;
-      padding: var(--space-16);
+      padding: var(--space-32) var(--space-24) var(--space-96);
     }
   }
 </style>

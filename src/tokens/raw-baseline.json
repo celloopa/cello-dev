@@ -17,33 +17,6 @@
    "0.1s": 1
   }
  },
- "src/components/BlogCard.astro": {
-  "duration": {
-   "0.7s": 1,
-   "0.1s": 1,
-   "0.4s": 1
-  },
-  "easing": {
-   "ease": 5
-  },
-  "ban:transition-all": {
-   "transition: all": 2
-  },
-  "line-height": {
-   "1": 1,
-   "1.5": 1
-  },
-  "spacing": {
-   "0.4rem": 2,
-   "0.2rem": 1
-  },
-  "font-size": {
-   "0.7rem": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes slideUp": 1
-  }
- },
  "src/components/Header.astro": {
   "color": {
    "color-mix(in srgb, var(--bg-canvas) 58%, transparent)": 1,
@@ -78,44 +51,6 @@
   "ban:keyframes-outside-animations": {
    "@keyframes headerSlideLeft": 1,
    "@keyframes headerSlideRight": 1
-  }
- },
- "src/components/ProjectCard.astro": {
-  "duration": {
-   "0.7s": 1,
-   "0.1s": 1,
-   "0.4s": 1
-  },
-  "color": {
-   "rgba(var(--color-accent-rgb), 0.16)": 1,
-   "rgba(var(--color-text-rgb), 0.12)": 1,
-   "rgba(var(--color-text-rgb), 0.04)": 1
-  },
-  "spacing": {
-   "0.35rem": 1,
-   "0.55rem": 1,
-   "0.4rem": 2,
-   "0.2rem": 1
-  },
-  "font-size": {
-   "0.72rem": 1,
-   "0.7rem": 1
-  },
-  "letter-spacing": {
-   "0.08em": 1
-  },
-  "easing": {
-   "ease": 6
-  },
-  "ban:transition-all": {
-   "transition: all": 3
-  },
-  "line-height": {
-   "1": 1,
-   "1.5": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes slideUp": 1
   }
  },
  "src/components/Section.astro": {
@@ -302,90 +237,12 @@
    "0.01ms": 2
   }
  },
- "src/pages/404.astro": {
-  "font-size": {
-   "clamp(8rem, 30vw, 22rem)": 1
-  },
-  "line-height": {
-   "0.9": 1
-  },
-  "spacing": {
-   "4px": 1,
-   "0.6rem": 1
-  },
-  "duration": {
-   "0.5s": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes wipeIn": 1
-  }
- },
- "src/pages/blog.astro": {
-  "font-size": {
-   "2.5rem": 1
-  }
- },
- "src/pages/card.astro": {
-  "color": {
-   "color-mix(in srgb, var(--color-accent) 9%, var(--bg-canvas))": 1,
-   "rgba(var(--color-accent-rgb), 0.05)": 1,
-   "rgba(var(--color-text-rgb), 0.03)": 2,
-   "rgba(var(--color-text-rgb), 0.02)": 2,
-   "rgba(var(--color-text-rgb), 0.72)": 3,
-   "rgba(var(--color-text-rgb), 0.88)": 1,
-   "rgba(var(--color-text-rgb), 0.8)": 1,
-   "rgba(var(--color-text-rgb), 0.7)": 1
-  },
-  "spacing": {
-   "max(1.5rem,": 1,
-   "env(safe-area-inset-top))": 1,
-   "0.65rem": 1,
-   "0.45rem": 1,
-   "0.3rem": 1,
-   "0.95rem": 1,
-   "0.9rem": 2,
-   "0.4rem": 2,
-   "0.85rem": 3
-  },
-  "duration": {
-   "0.8s": 2
-  },
-  "font-size": {
-   "0.8rem": 1,
-   "clamp(2.6rem, 9vw, 5.5rem)": 1,
-   "0.95rem": 1,
-   "0.88rem": 4,
-   "0.84rem": 2,
-   "clamp(2.8rem, 10vw, 4.8rem)": 1,
-   "clamp(2.6rem, 14vw, 4rem)": 1
-  },
-  "letter-spacing": {
-   "0.18em": 1,
-   "-0.08em": 1,
-   "0.04em": 1,
-   "0.08em": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes slideLeft": 1,
-   "@keyframes slideRight": 1
-  },
-  "line-height": {
-   "0.92": 1,
-   "1.5": 1,
-   "1.7": 1
-  }
- },
  "src/pages/design-system.astro": {
   "font-size": {
    "clamp(4rem, 10vw, 8rem)": 1
   },
   "line-height": {
    ".9": 1
-  }
- },
- "src/pages/projects/index.astro": {
-  "font-size": {
-   "2.5rem": 1
   }
  },
  "src/pages/resume.astro": {
