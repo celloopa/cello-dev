@@ -44,10 +44,6 @@ label current, PDF is a PDF.
 - Fonts: after 2a, Geist Mono should render (no Courier/Menlo fallback).
 - Netlify's `pnpm build` now runs the token guards first.
 
-## Scratch worktrees to clean up
+## Scratch worktrees
 
-These were made by this session for review, under its scratchpad:
-- `rev-03daa69`
-- `rev-live`
-
-`git worktree prune` after the scratchpad is cleared.
+None left. This session removed its review worktrees (`rev-03daa69`, `rev-live`).
