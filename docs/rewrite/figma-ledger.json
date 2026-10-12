@@ -1,0 +1,20 @@
+{
+  "file": "cello.dev — window scenes",
+  "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+  "url": "https://www.figma.com/design/BHwjRNFmaMra4MUhsSwUXC",
+  "team": "Harmonic Convergence",
+  "created": "2026-10-12",
+  "pages": {
+    "Process": { "id": "0:1", "root": "1:2" },
+    "Scenes": { "id": "1:48" }
+  },
+  "scenes": {
+    "mirror-lake": {
+      "section": "1:49",
+      "master": "1:53",
+      "layersFrame": "1:54",
+      "layers": { "sky": "1:55", "far": "1:56", "mid": "1:57", "near": "1:58" },
+      "exportTo": "docs/rewrite/prototypes/public/gen/layers/mirror-lake/figma/<name>.png"
+    }
+  }
+}

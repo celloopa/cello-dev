@@ -353,3 +353,25 @@ story) and a Scenes page (per place: master + named layers sky/far/mid/near). Ce
 by hand if needed (pen tool, Figma AI Remove background/Erase); layers are exported from Figma
 into the three.js window. Cello: "document our process and different looks. itll make a great
 story".
+
+### Layer test: Mirror Lake as depth (2026-10-12)
+
+Ran prompts 6–8 (sky, far, mid) on the subscription; keyed with `prototypes/tools/key.py` (PIL
+only) and cut with `tools/cut.py`: the edits are used as mattes and the color comes from the
+master wherever it was visible, because the model redraws what it keeps (clouds moved, the mid
+edit dropped the lake's reflection of Mt Hood). Details and the per-place pipeline:
+`imagegen-prompts.md`, "Layer test result".
+Figma file **"cello.dev — window scenes"** (Harmonic Convergence):
+https://www.figma.com/design/BHwjRNFmaMra4MUhsSwUXC. Process page: 01 Cut paper, 02 Tokens,
+03 Window storyboard, 04 Style frames A/B/C, 05 Layer cut, captioned in build order (Cut paper was
+built before Tokens). Scenes page: section `mirror-lake · September` with `master` and a `layers`
+frame (sky, far, mid, near, back to front). The window loads the layers exported from Figma
+(`gen/layers/mirror-lake/*.webp`, ~570 KB for all four). Node IDs: `figma-ledger.json`.
+Open for Cello: the fireweed edit is brighter and a bit larger than in frame A (keep, tone down in
+Figma, or regenerate).
+
+Cello (2026-10-12): "once you make a couple document the best way to do it and create a skill to
+keep reusing globally", then "once a few scenes work correctly, cutting pieces can be its own
+skill." → The method is documented per run in `imagegen-prompts.md`; the global scene-cutting
+skill gets written once a few places cut cleanly, not before (Mirror Lake is the first).
+Cello on the Process page (2026-10-12): "layer cut is definitely the coolest".

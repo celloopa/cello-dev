@@ -95,7 +95,25 @@ values), and nobody could see the drift, because the site still looked fine in C
     reference photo turned out to have two tiny figures and a tent at full size; they were
     blurred out first.
 
-`[more beats: Cello's style pick, the layer test, the build]`
+13. **The pick.** Three Mirror Lake frames (screenprint, gouache, risograph). Cello picked the
+    screenprint and asked how to recreate that look accurately. The answer: frame A becomes the
+    style anchor for every place, and each place is generated whole, then cut into layers by
+    editing that same image, so the edges line up.
+14. **The model redraws what it keeps.** Asked for "only the sky" or "only the trees" on flat
+    magenta, the edits came back on the master's pixel grid, but redrawn: the clouds moved, Mt
+    Hood's snowfields shifted, and the trees-and-lake edit quietly dropped the mountain's
+    reflection. The fix was to stop trusting the edits as art and use them as mattes: a
+    100-line PIL key (no numpy) turns each magenta edit into an alpha mask, and the color comes
+    from the master wherever it was visible. Only what the master never showed (sky behind the
+    mountain, slopes behind the firs) comes from the edits. Same lesson as the font: measure,
+    don't eyeball (the restack check is a pixel diff against the master).
+15. **Figma as the cutting table.** A file in Harmonic Convergence holds the story (a Process
+    page with every look, in build order) and the scenes (master + named layers). The window
+    loads what Figma exports, so Cello can fix an edge by hand without touching code. The round
+    trip is lossless on visible pixels (max 3/255). Small snags: Figma's uploader rejects WebP
+    without an explicit content type, and its renderer showed uploaded WebP blank, so JPEG/PNG go in.
+
+`[more beats: the layers in the three.js window, the next places, the scene-cutting skill]`
 
 ## 5. Numbers
 

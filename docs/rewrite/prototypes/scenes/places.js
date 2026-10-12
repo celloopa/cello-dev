@@ -17,6 +17,22 @@ const BASE = {
 };
 const P = (o) => ({ ...BASE, ...o });
 
+/*
+ * Generated art layers. A place with `layers` is drawn by the window from these textures
+ * (back → front) instead of its kit shapes; the kit stays its fallback (still, no WebGL, reduced
+ * motion, or a texture that fails to load). All layers of a place share one frame (same size,
+ * pixel-aligned). Files live at public/gen/layers/<place id>/<file>.webp and are re-exported from
+ * Figma under the same names, so this is the only place the paths are built.
+ *
+ *   depth  : 0 = nearest … 1 = farthest, like kit items (sets pointer parallax)
+ *   motion : shader micro-motion: "drift" (sky) · "shimmer" (water below `shore`) · "sway" (plants)
+ *   shore  : for "shimmer", the shoreline as a fraction of the image height from the top
+ * `layersAnchor` is the cover-fit anchor (like CSS object-position, 0…1) that keeps the subject in
+ * view when the window crops the art.
+ */
+const LAYER_DIR = `${import.meta.env.BASE_URL}gen/layers`;
+const layers = (id, list) => list.map((l) => ({ ...l, src: `${LAYER_DIR}/${id}/${l.file ?? l.name}.webp` }));
+
 export const PLACES = [
   {
     id: "moss-falls", place: "Forest falls, Cottage Grove", month: "June",
@@ -159,6 +175,14 @@ export const PLACES = [
   {
     id: "mirror-lake", place: "Mirror Lake", month: "September",
     palette: P({ sky0: "#4b85d2", sky1: "#dde7ef", far: "#968a86", snow: "#f4f1ec", rock: "#6c6361", trees: "#21402c", trees2: "#173123", water: "#3c5e69", waterLight: "#a8c3cb", ground: "#5f5236", accent: "#d0468f", cloud: "#f7f7f5" }),
+    // 1536×1024. Mt Hood's summit sits at about (0.47, 0.2); the shoreline rocks end at ~0.745.
+    layersAnchor: [0.46, 0.34],
+    layers: layers("mirror-lake", [
+      { name: "sky", depth: 0.97, motion: "drift" },
+      { name: "far", depth: 0.85 },
+      { name: "mid", depth: 0.55, motion: "shimmer", shore: 0.745 },
+      { name: "near", depth: 0.05, motion: "sway" },
+    ]),
     build() {
       const mountain = K.hood({ x: -40, base: 300, height: 360, width: 680, snowline: 0.45, seed: 14, depth: 0.95 });
       return [

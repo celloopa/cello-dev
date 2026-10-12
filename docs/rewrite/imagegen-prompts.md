@@ -155,7 +155,7 @@ three.js window loads the layers Figma exports. Order matters: 4 first; 6–8 ed
 
 ## 6. Sky layer: sky and clouds only
 
-`outputPath`: `docs/rewrite/prototypes/public/gen/layers/mirror-lake/sky.png`
+`outputPath`: `docs/rewrite/prototypes/public/gen/layers/mirror-lake/sky-raw.png`
 `references`: `docs/rewrite/prototypes/public/gen/layers/mirror-lake/clean.png`
 
 > Edit image 1. Keep only the sky and the clouds. Remove the mountain, the trees, the shore and the
@@ -182,3 +182,31 @@ three.js window loads the layers Figma exports. Order matters: 4 first; 6–8 ed
 > exactly as drawn: same shapes, position, inks and grain. Replace the sky, the clouds and the
 > mountain with one perfectly flat, solid #FF00FF color, keeping the treetops' silhouettes crisp
 > against it. No text.
+
+## Layer test result (2026-10-12)
+
+Runs 6–8: ~18–21 s each, one daily-limit call each (`imagegen_premium`). Edits come back on the
+master's pixel grid (mid-layer treeline differs from the clean plate by ~4/255 on average), but
+**the model redraws what it keeps**: the sky edit moved and shrank the clouds, the far edit
+redrew Mt Hood's snowfields a little (and stopped its slopes at ~55% height, not two-thirds), and
+the mid edit **dropped the mountain's reflection** from the lake. The near (fireweed) edit came
+back brighter and slightly larger than in the master.
+
+So the edits are used as **mattes**, not as art (`prototypes/tools/cut.py`):
+`key.py` keys each `*-raw.png` to alpha, and wherever a layer was visible in the master its color
+comes from the master; only what the master never showed (sky behind the mountain, slopes behind
+the firs) comes from the edits. The fireweed stays the edit's own drawing (Cello can tone it down
+in Figma). Restacked layers vs the master: mean difference ~10/255, almost all of it the fireweed.
+
+Pipeline, per place:
+
+1. Master (style frame) → clean plate (#4) and near (#5), then sky/far/mid (#6–8) from the clean plate.
+2. `python3 docs/rewrite/prototypes/tools/cut.py <layers dir>` → `sky/far/mid/near.png` + `restack.png` check.
+3. Figma "cello.dev — window scenes" → Scenes page → the place's `layers` frame: place each layer
+   (named exactly sky/far/mid/near), fix edges by hand if needed.
+4. Export each layer from Figma (PNG, 1×) into `<layers dir>/figma/`, then
+   `python3 docs/rewrite/prototypes/tools/webp.py <layers dir>` → `<name>.webp` (what the window loads).
+   The Figma round trip is lossless on visible pixels (max 3/255; Figma zeroes RGB under alpha 0).
+
+Prompt fixes for the next place: ask the mid edit to "keep the mountain's reflection in the lake";
+ask the far edit to continue the slopes "to the bottom of the trees, wider than the visible part".
