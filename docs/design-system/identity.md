@@ -1,7 +1,8 @@
 # cello.dev identity revision
 
 Started 2026-10-12, when Cello paused the migration after stage 0 to fold the rewrite's window
-concept into the identity before the system is built. Concept source: `docs/rewrite/GRILL.md` Q10–Q14
+concept into the identity before the system is built. The decision board is private. Concept
+source: `docs/rewrite/GRILL.md` Q10–Q14
 and the window correction, on `claude/rewrite-exploration`.
 
 **The idea:** the site is the view from Cello's desk window at daybreak. His favorite Pacific

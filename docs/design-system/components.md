@@ -1,6 +1,6 @@
 # Component inventory: cello-dev (design-system audit)
 
-Branch `claude/design-system-audit` (clean). Read-only audit; every file:line below was read, not inferred. All paths are relative to `src/`.
+Repo: this one (branch `claude/design-system-audit`, clean). Read-only audit; every file:line below was read, not inferred. All paths are relative to `src/`.
 
 ## Scope
 
