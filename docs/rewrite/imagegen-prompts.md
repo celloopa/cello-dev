@@ -1,6 +1,7 @@
 # Image generation prompts: the window scenes
 
-For Pi's `codex_imagegen`, run from the worktree root
+Run with the `codex-images` skill (`node ~/.agents/skills/codex-images/scripts/codex-images.mjs --from docs/rewrite/imagegen-prompts.md#N`)
+from the worktree root
 (`/Users/cello_r/Documents/code/astro/cello-dev/.claude/worktrees/rewrite-exploration`).
 Selection belongs to Cello; generation runs never judge results.
 
@@ -30,7 +31,7 @@ GPS, date or device metadata). People are never generated.
 ## 1. Mirror Lake: screenprint
 
 `outputPath`: `docs/rewrite/prototypes/public/gen/style/mirror-lake-a-screenprint.png`
-`references`: `docs/rewrite/private/refs/mirror-lake-photo.jpg`, `docs/rewrite/private/refs/mirror-lake-storyboard.jpg`
+`references`: `docs/rewrite/private/refs/mirror-lake-photo-3x2.jpg`, `docs/rewrite/private/refs/mirror-lake-storyboard.jpg`
 `variants`: 2
 
 > Intended use: background art seen through a window on a personal portfolio website. It will be
@@ -42,7 +43,7 @@ GPS, date or device metadata). People are never generated.
 > dark firs; the mountain is mirrored in a calm lake; magenta fireweed stands in the near
 > foreground on the left; a few large white cumulus clouds.
 >
-> References: image 1 is a photo of this exact place. Follow its landscape (the mountain's
+> References: image 1 is a photo of this exact place (ignore the two blurred patches on the shore). Follow its landscape (the mountain's
 > shape and snowfields, the tree lines, the lake, the fireweed), not its exact framing. Image 2 is
 > a flat storyboard of the intended composition and depth (sky, far mountain, mid trees, lake,
 > near foreground). Follow its composition, not its style.
@@ -63,10 +64,22 @@ GPS, date or device metadata). People are never generated.
 ## 2. Mirror Lake: gouache
 
 `outputPath`: `docs/rewrite/prototypes/public/gen/style/mirror-lake-b-gouache.png`
-`references`: same as section 1
+`references`: `docs/rewrite/private/refs/mirror-lake-photo-3x2.jpg`, `docs/rewrite/private/refs/mirror-lake-storyboard.jpg`
 `variants`: 2
 
-> Intended use, subject and references: exactly as in section 1.
+> Intended use: background art seen through a window on a personal portfolio website. It will be
+> composited in a 3D web scene behind an illustrated window frame. A desk monitor will cover part
+> of the lower-right third and a small label sits in the lower-left corner, so keep the key
+> subject (Mt Hood and its reflection) in the upper-middle and left-center.
+>
+> Subject: Mirror Lake, Oregon, on a clear early-autumn afternoon. Mt Hood rises behind a line of
+> dark firs; the mountain is mirrored in a calm lake; magenta fireweed stands in the near
+> foreground on the left; a few large white cumulus clouds.
+>
+> References: image 1 is a photo of this exact place (ignore the two blurred patches on the shore). Follow its landscape (the mountain's
+> shape and snowfields, the tree lines, the lake, the fireweed), not its exact framing. Image 2 is
+> a flat storyboard of the intended composition and depth (sky, far mountain, mid trees, lake,
+> near foreground). Follow its composition, not its style.
 >
 > Style: a matte gouache illustration on paper. Flat painted shapes with visible brush texture and
 > dry-brush edges; soft hand-painted gradients in the sky and the lake; warm late-afternoon light
@@ -83,10 +96,22 @@ GPS, date or device metadata). People are never generated.
 ## 3. Mirror Lake: risograph
 
 `outputPath`: `docs/rewrite/prototypes/public/gen/style/mirror-lake-c-riso.png`
-`references`: same as section 1
+`references`: `docs/rewrite/private/refs/mirror-lake-photo-3x2.jpg`, `docs/rewrite/private/refs/mirror-lake-storyboard.jpg`
 `variants`: 2
 
-> Intended use, subject and references: exactly as in section 1.
+> Intended use: background art seen through a window on a personal portfolio website. It will be
+> composited in a 3D web scene behind an illustrated window frame. A desk monitor will cover part
+> of the lower-right third and a small label sits in the lower-left corner, so keep the key
+> subject (Mt Hood and its reflection) in the upper-middle and left-center.
+>
+> Subject: Mirror Lake, Oregon, on a clear early-autumn afternoon. Mt Hood rises behind a line of
+> dark firs; the mountain is mirrored in a calm lake; magenta fireweed stands in the near
+> foreground on the left; a few large white cumulus clouds.
+>
+> References: image 1 is a photo of this exact place (ignore the two blurred patches on the shore). Follow its landscape (the mountain's
+> shape and snowfields, the tree lines, the lake, the fireweed), not its exact framing. Image 2 is
+> a flat storyboard of the intended composition and depth (sky, far mountain, mid trees, lake,
+> near foreground). Follow its composition, not its style.
 >
 > Style: a risograph print in two inks, lake blue (#38618c) and earth (#7c6145) (this place's
 > September inks), on cream paper (#f3ede2). Shading made with halftone dots; where the two inks overlap they make a dark

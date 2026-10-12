@@ -78,7 +78,24 @@ values), and nobody could see the drift, because the site still looked fine in C
    (`docs/rewrite/prototypes/shoot.mjs`). It also checks the reduced-motion page really drops
    the 3D.
 
-`[more beats: Cello's pick, the build]`
+10. **From logo to place.** Cello moved the stage from the mark to his Portland desk window, with
+    his favorite places showing through it as WPA-style posters, built from 11 of his own photos
+    (Mt Hood is in 7 of the 10 landscapes; no city landmarks). Twice the agent took an analogy
+    literally ("like a train window" became a scrolling train ride) and had to back out: the same
+    latching his channel brief warns about. The fix was to play the model back before building.
+11. **Shapes as storyboards.** Procedural "scene kit" posters (firs, ridges, a traced Mt Hood) gave
+    every place a composition and depth plan in an afternoon. Cello didn't love the look, but
+    kept them as storyboards. The identity session folded the concept into the system the same
+    day (Day/Dusk themes, seasonal inks from the photos, National Park + Switchback faces, the
+    window frame as the framing primitive).
+12. **Finding the current image path.** Pi's image tool shelled out to an old Codex CLI (0.154 vs
+    0.162). Research showed Codex itself had moved to dedicated Images endpoints that accept the
+    ChatGPT login. A 200-line script (now the shared `codex-images` skill) produced three style
+    frames of Mirror Lake in about 22 s each on the subscription. Before upload, the "no people"
+    reference photo turned out to have two tiny figures and a tent at full size; they were
+    blurred out first.
+
+`[more beats: Cello's style pick, the layer test, the build]`
 
 ## 5. Numbers
 

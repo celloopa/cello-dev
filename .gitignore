@@ -39,3 +39,5 @@ generated/
 
 # rewrite exploration: private references (Cello's photos), never committed
 docs/rewrite/private/
+# generated image masters (PNG) stay local; web copies (.webp) are committed
+docs/rewrite/prototypes/public/gen/**/*.png
