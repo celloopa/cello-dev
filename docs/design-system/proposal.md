@@ -309,3 +309,41 @@ Geist Mono stays the voice for UI, labels, nav, metadata, data and code, and for
 paragraph on the site. New token: `--font-read`, used by the Prose component only. It's its own
 visible stage, **2c**, after 2b, covering articles only. That shows best once Prose exists, so if
 2c lands before stage 6 it styles the two article templates' `.content` directly.
+
+
+## Amendment A3 (proposed, pending Cello): what the rewrite's landscape build adds
+
+Source: `docs/rewrite/DS-HANDOFF.md` at `7a96777` and the prototype at `f1b1e66`, both on
+`claude/rewrite-exploration`. The decisions behind it are D1–D6 in `identity.md`. **None of this is
+approved.** It applies only to the rewrite and stays off today's site until Cello picks the build.
+
+1. **Scene component.** Replaces the earlier SceneStop/scene-kit idea.
+   - Built from one manifest per place: layers back to front, depth, tested motion caps per layer,
+     desktop anchor, mobile center, Figma IDs.
+   - Renders as WebGL planes. The same layers stacked in the DOM are the still, used for reduced
+     motion, no WebGL, a texture failure or a hidden tab.
+2. **A signature motion tier**, beside the tiers in §6:
+   - arrival: sky → far → mid → near with a 0.12 s stagger and spring overshoot by depth, half the
+     drop on mobile, and text never waits;
+   - pointer depth, clamped to each scene's tested caps;
+   - a 0.55 s focus transition;
+   - a still under reduced motion, and the loop stops when idle or hidden.
+3. **Focus-recipe tokens.** Desktop: blur 7px, brightness 0.45, saturate 0.65. Mobile: blur 5px,
+   brightness 0.36, saturate 0.6. Art scale 1.025. These are the storyboard v2 levels Cello approved (D4).
+4. **Copy scrim + contrast rule.**
+   - Scrim: a feathered ink layer behind copy over art, 64% by default, 70–80% on mobile, 85% on
+     Ecola desktop.
+   - Rule: text over art passes 4.5:1 (3:1 for large text) against the 99th-percentile brightest
+     pixel under it.
+   - **Conflict for Cello:** this replaces A1/I3's "art is exempt from text contrast because text
+     never sits on it", which stops being true once D1 lets text sit on art. Two options: keep I3
+     for today's site and use this rule in the rewrite, or adopt this rule everywhere.
+5. **Contextual top bar.** While exploring it shows identity + Work, with utilities kept separate.
+   While reading it shows the project in view + "All work" (D5).
+6. **Place label** (the `place-name` role in Switchback) and the **Admire** control.
+7. **Scene selector**: storyboarded, not built.
+
+What the migration owes the rewrite:
+- National Park self-hosted (stage 2b).
+- Switchback self-hosted, which can land with 2b as a defined but unused face.
+- Geist Sans `--font-read` (stage 2c). The rewrite's landscape copy becomes its second consumer.

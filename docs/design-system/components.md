@@ -331,6 +331,20 @@ There is no `outline: none` / `outline: 0` anywhere in live files, so the global
 | **Keyboard menu a11y pass** | Let Tab work, return focus to the trigger, use `:focus-visible` instead of `.selected`. Real, but it's a power-user feature |
 | **Retokenize FlowDiagram / CaseMeta / card.astro** | Keep them as page-specific components; just point them at tokens and Eyebrow / Panel |
 
+### Rewrite (must for the rewrite only; proposal amendment A3, pending Cello)
+
+Kept off today's site until Cello picks the rewrite build. They're listed here so the inventory
+stays the one place for components.
+
+| Component | What it is |
+|---|---|
+| **Scene** | Layered art planes from one manifest per place. WebGL, with a DOM still for reduced motion and fallbacks. Owns the focus recipe (blur, brightness, saturate, scale tokens) and the signature motion tier |
+| **CopyScrim** | A feathered ink layer behind text over art, plus the contrast rule against the 99th-percentile pixel |
+| **ContextBar** | The dark green top bar: identity + Work while exploring; the project + "All work" while reading |
+| **PlaceLabel** + **Admire** | The place name in Switchback (`place-name`) and the control that shows the scene ("Take in the view" / "Back to Cello") |
+| **LocationCard** | Already in A1: later for today's site, must for the rewrite |
+| **SceneSelector** | Storyboard only |
+
 ### Never
 
 | Item | Why |

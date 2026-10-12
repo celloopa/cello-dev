@@ -79,6 +79,23 @@ Dusk is one rule rather than a second palette: each ink is mixed 60% toward Midn
   I5, `bg-plate` and I6 stand as written until Cello says otherwise. The question is with him.
 - **Geist Sans for long reading (Cello, 2026-10-12): proposal amendment A2.**
 
+### Rewrite-scoped decisions D1–D6 (Cello, 2026-10-12)
+
+Logged from the rewrite's `docs/rewrite/DS-HANDOFF.md` (`7a96777` on `claude/rewrite-exploration`;
+sources GRILL Q18–Q21). They hold for the rewrite's landscape direction. Today's site changes only
+if Cello says so (I6).
+
+| # | Decision |
+|---|---|
+| D1 | Text may sit over scene art with the approved focus dim, and the window frame no longer frames the hero (the I2/I5 revision above). |
+| D2 | People never appear in scene art. |
+| D3 | Case-study product artifacts use Ghosted's demo personas (Rowan Ellis and the set), never a real resume or tester data. |
+| D4 | Reading state: the scene softens and dims to the approved level, and location and sound labels disappear. A changed place may be named briefly, then it clears. |
+| D5 | The dark green top bar stays. Work navigation stays separate from About and the other utilities. |
+| D6 | Sound comes in a later pass and is opt-in: silent by default, the preference is remembered, and its settings live with the utilities. |
+
+The components and tokens the rewrite built for these are proposal amendment A3, pending Cello.
+
 ## Status
 
 All six decided on 2026-10-12. `proposal.md` carries them as amendment A1.
