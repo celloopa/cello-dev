@@ -1,0 +1,21 @@
+{
+  "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+  "page": "1:48",
+  "section": "24:13",
+  "root": "24:14",
+  "master": "24:15",
+  "layersFrame": "24:16",
+  "layers": {
+    "sky": "24:17",
+    "far": "24:18",
+    "near": "24:19"
+  },
+  "portrait": "24:20",
+  "allFillsVerified": true,
+  "sourceLayerSize": [
+    2172,
+    1448
+  ],
+  "upload": "Raw PNG image/png; two initially closed connections retried successfully with fresh URLs",
+  "roundtrip": "Parent native isolated PNG verification pending"
+}

@@ -1,0 +1,20 @@
+{
+  "source_size": [
+    1086,
+    1448
+  ],
+  "expanded_size": [
+    2172,
+    1448
+  ],
+  "restored_bounds": [
+    543,
+    0,
+    1629,
+    1448
+  ],
+  "center_max_difference": 0,
+  "side_max_difference_vs_previous_wide": 0,
+  "sides": "AI invented extension outside original photo-derived frame; unchanged from the previous wide master",
+  "people_removed": "Portrait center replaced with the people-removed portrait on 2026-10-12; outpainted sides are byte-identical to the previous wide master"
+}

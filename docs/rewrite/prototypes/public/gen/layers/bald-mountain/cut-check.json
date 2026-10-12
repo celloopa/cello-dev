@@ -1,0 +1,64 @@
+{
+  "status": "candidate; people removed 2026-10-12; local isolated/shifted/crop review complete; aesthetic approval pending",
+  "source_size": [
+    2172,
+    1448
+  ],
+  "web_size": [
+    1536,
+    1024
+  ],
+  "restack_max_difference": 0,
+  "restack_mean_difference": 0.0,
+  "motion_test_source_px": {
+    "sky": 0,
+    "far": 1,
+    "near": 4
+  },
+  "layers": [
+    {
+      "name": "sky",
+      "sha256": "0845ea144c581d6eed34d83e4aa673ca0b5f9e2dcf367ffd8514bc97fe804747"
+    },
+    {
+      "name": "far",
+      "sha256": "6c15eae8da140d4b07957a0fe781d9131e8323a5be67a1354b450600aed6c5c7"
+    },
+    {
+      "name": "near",
+      "sha256": "ee1e70409a2ef80ddc6acdfbf9e02bb4f286d35bda887b8bb0e2feeba505f6fc"
+    }
+  ],
+  "limitations": [
+    "Three planes: forested valley remains with mountain; people removed from the art (2026-10-12), near matte regenerated from the people-free master",
+    "Small four-pixel relative ground travel only; larger occlusion reveal unproven",
+    "AI expansion outside restored portrait invents geography",
+    "AI terrain matte simplifies fine skyline; inspect before increasing mountain travel"
+  ],
+  "reviewed": [
+    "sky/far/near isolated images",
+    "left/right shifted extremes (far 1, near 4 source px)",
+    "desktop 1440x900 and mobile 390x844 crops",
+    "people-removed-review.jpg (before | after portrait)"
+  ],
+  "peopleRemoval": {
+    "edit_mask_bbox_portrait": [
+      94,
+      819,
+      635,
+      1347
+    ],
+    "edit_mask_area_fraction_of_portrait": 0.07565270697882645,
+    "portrait_max_diff_outside_mask": 0,
+    "portrait_changed_px_outside_mask": 0,
+    "wide_master_changed_px_total": 102445,
+    "wide_master_changed_bbox": [
+      644,
+      823,
+      1174,
+      1343
+    ],
+    "center_crop_max_diff_vs_new_portrait": 0,
+    "sides_max_diff_vs_previous_wide": 0
+  }
+}

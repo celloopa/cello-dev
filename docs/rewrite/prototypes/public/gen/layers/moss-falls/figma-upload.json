@@ -1,0 +1,63 @@
+[
+  {
+    "name": "master-wide",
+    "nodeId": "22:22",
+    "status": 200,
+    "response": {
+      "success": true,
+      "imageHash": "b5ad0ba1fb70056d4ab8e57329980da34b3642d3",
+      "sizeBytes": 6373205,
+      "contentType": "image/png",
+      "placedOnNodeId": "22:22"
+    }
+  },
+  {
+    "name": "sky",
+    "nodeId": "22:23",
+    "status": 200,
+    "response": {
+      "success": true,
+      "imageHash": "a33162367766dbb8efd941cfb825afa62e91c031",
+      "sizeBytes": 1763636,
+      "contentType": "image/png",
+      "placedOnNodeId": "22:23"
+    },
+    "note": "unchanged (sky art identical after people removal)"
+  },
+  {
+    "name": "mid",
+    "nodeId": "22:24",
+    "status": 200,
+    "response": {
+      "success": true,
+      "imageHash": "827dd8d7d19125332df33a7ea028531171a0fa6e",
+      "sizeBytes": 6895488,
+      "contentType": "image/png",
+      "placedOnNodeId": "22:24"
+    }
+  },
+  {
+    "name": "near",
+    "nodeId": "22:25",
+    "status": 200,
+    "response": {
+      "success": true,
+      "imageHash": "fd14842d57cb5ef6da51e7b327e753b9c7c2a446",
+      "sizeBytes": 7010421,
+      "contentType": "image/png",
+      "placedOnNodeId": "22:25"
+    }
+  },
+  {
+    "name": "master",
+    "nodeId": "22:26",
+    "status": 200,
+    "response": {
+      "success": true,
+      "imageHash": "33afd2f6fcb84129dc662f0c7edc6383552a7ff3",
+      "sizeBytes": 3395435,
+      "contentType": "image/png",
+      "placedOnNodeId": "22:26"
+    }
+  }
+]

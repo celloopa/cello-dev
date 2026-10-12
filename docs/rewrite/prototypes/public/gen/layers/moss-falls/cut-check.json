@@ -1,0 +1,52 @@
+{
+  "status": "candidate; visual review pending",
+  "source_size": [
+    2172,
+    1448
+  ],
+  "web_size": [
+    1536,
+    1024
+  ],
+  "restack_max_difference": 0,
+  "restack_mean_difference": 0.0,
+  "motion_test_source_px": {
+    "sky": 0,
+    "mid": 2,
+    "near": 4
+  },
+  "layers": [
+    {
+      "name": "sky",
+      "sha256": "b8f2839d12e9e5cd85e44e79f3967bb651479ecf8e6378af5627c41cea43e33d"
+    },
+    {
+      "name": "mid",
+      "sha256": "a83ae2bc7289c92a17237ea74dc821cf909900b3d2391f63bd0abc91940ce0d4"
+    },
+    {
+      "name": "near",
+      "sha256": "26c6465387a1b4770f478bac26198692aca4fedbff5ae02897480780c9a68c1f"
+    }
+  ],
+  "limitations": [
+    "Three coherent planes; waterfall and middle forest remain together",
+    "People removed from the art (Cello, 2026-10-12); near matte regenerated from the people-removed master",
+    "AI matte boundary and hidden fill need visual review; larger motion unproven",
+    "Exact restack validates color/coverage only"
+  ],
+  "people_removal": {
+    "center_diff_vs_new_portrait": 0,
+    "sides_diff_vs_previous_wide": 0,
+    "changed_bounds_portrait_px": [
+      271,
+      748,
+      703,
+      1386
+    ],
+    "changed_pixel_fraction": 0.1113,
+    "near_matte": "near-raw-v2.png (regenerated)",
+    "forest_matte_and_clean_plate": "reused",
+    "sky_plane": "byte-identical to previous"
+  }
+}

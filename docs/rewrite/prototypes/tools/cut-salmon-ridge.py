@@ -1,16 +1,61 @@
 #!/usr/bin/env python3
-"""Salmon ridge candidate: source RGB plus AI near matte and hidden forest fill."""
+"""Salmon ridge candidate: source RGB plus AI near matte and hidden forest fill.
+
+Usage: uv run --with pillow --with numpy --with scipy python tools/cut-salmon-ridge.py <scene-dir> [--rebuild-master]
+
+--rebuild-master (figure-removal step, 2026-10-12): the raw image edit
+before-figure-removal/nofigure-raw-v1.png (whole-frame re-render, figure removed) is blended into the
+locked portrait only inside a feathered patch around the former figure; everything outside the patch
+stays pixel-identical to before-figure-removal/master.png. The result is saved as master.png, then
+pasted into the SAME center bounds of the previous wide master (outpainted sides untouched) as
+master-wide.png. Without the flag the script cuts planes from the current master-wide.png using the
+AI near matte (near-raw.png, with near-raw-v2.png from the figure-free wide inside the former figure zone) and clean.png.
+"""
 from PIL import Image,ImageChops,ImageFilter,ImageOps,ImageStat
 from pathlib import Path
 import json,sys,hashlib
-p=Path(sys.argv[1]);m=Image.open(p/'master-wide.png').convert('RGB');size=m.size;w,h=size
+p=Path(sys.argv[1])
+BOUNDS=(543,0,1629,1448)
+
+if '--rebuild-master' in sys.argv:
+ import numpy as np
+ from scipy import ndimage as ndi
+ b4=p/'before-figure-removal'
+ A=Image.open(b4/'master.png').convert('RGB');B=Image.open(b4/'nofigure-raw-v1.png').convert('RGB');OW=Image.open(b4/'master-wide.png').convert('RGB')
+ assert A.size==B.size==(1086,1448)
+ assert np.abs(np.array(OW.crop(BOUNDS)).astype(int)-np.array(A).astype(int)).max()==0
+ a=np.array(A).astype(float);b=np.array(B).astype(float);d=np.abs(a-b).mean(2)
+ m=ndi.binary_opening(ndi.uniform_filter(d,25)>22,iterations=3)
+ lab,n=ndi.label(m);sizes=ndi.sum(m,lab,range(1,n+1));m=lab==(1+int(np.argmax(sizes)))
+ m=ndi.binary_fill_holes(ndi.binary_dilation(m,iterations=45));mf=ndi.gaussian_filter(m.astype(float),14)
+ out=np.clip(a*(1-mf[...,None])+b*mf[...,None]+.5,0,255).astype('uint8')
+ new=Image.fromarray(out);new.save(p/'master.png',optimize=True)
+ W=OW.copy();W.paste(new,BOUNDS[:2]);W.save(p/'master-wide.png',optimize=True)
+ Wn=np.array(W).astype(int);On=np.array(OW).astype(int)
+ exp={'sourceSize':[1086,1448],'expandedSize':[2172,1448],'originalPortraitBounds':list(BOUNDS),
+  'centerMaxDiff':int(np.abs(Wn[:,543:1629]-out.astype(int)).max()),
+  'outsideMaxDiffVsPreviousWide':int(max(np.abs(Wn[:,:543]-On[:,:543]).max(),np.abs(Wn[:,1629:]-On[:,1629:]).max())),
+  'portraitOutsidePatchMaxDiffVsPreviousPortrait':int(np.abs(out.astype(int)-np.array(A).astype(int))[mf==0].max()),
+  'patchPixels':int((mf>0).sum()),
+  'outsideBounds':'invented AI outpaint, unchanged from the pre-removal wide master',
+  'note':'portrait edited to remove the anonymous seated figure (patch region only); wide master rebuilt by pasting it into the same bounds'}
+ (p/'expansion.json').write_text(json.dumps(exp,indent=2));print(exp);assert exp['centerMaxDiff']==0 and exp['outsideMaxDiffVsPreviousWide']==0
+ new.resize((1086,1448)).save(p/'master.webp',quality=92,method=6);W.resize((1536,1024),Image.Resampling.LANCZOS).save(p/'master-wide.webp',quality=92,method=6)
+ sys.exit(0)
+
+m=Image.open(p/'master-wide.png').convert('RGB');size=m.size;w,h=size
 
 def align(n):
  im=Image.open(p/n).convert('RGB')
  assert abs(im.width/im.height-w/h)<.01
  return im.resize(size,Image.Resampling.LANCZOS)
-raw=align('near-raw.png');clean=align('clean.png')
-near=Image.new('L',size);near.putdata([0 if r>180 and b>150 and g<100 else 255 for r,g,b in raw.getdata()])
+clean=align('clean.png')
+def matte(n):
+ raw=align(n);mm=Image.new('L',size);mm.putdata([0 if r>180 and b>150 and g<100 else 255 for r,g,b in raw.getdata()]);return mm
+# Previously validated matte (near-raw.png, made from the pre-removal wide) everywhere except the former figure
+# zone, where the matte regenerated from the figure-free wide (near-raw-v2.png) is used. A full regenerated matte
+# drifted on the invented right-hand trees, so it is not used outside the zone.
+near=matte('near-raw.png');ZONE=(632,800,1242,1448);near.paste(matte('near-raw-v2.png').crop(ZONE),ZONE[:2])
 # This scene has a clear blue sky, unlike olive inks and cream grasses.
 def nonsky(im):
  mask=Image.new('L',size);mask.putdata([0 if b>g+24 and g>r+15 else 255 for r,g,b in im.getdata()]);return mask

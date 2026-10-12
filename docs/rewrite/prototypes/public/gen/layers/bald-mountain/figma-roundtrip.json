@@ -1,0 +1,64 @@
+{
+  "status": "native isolated PNG round trip verified",
+  "method": "get_screenshot contentsOnly true, source long-edge maxDimension; image URL download worked on 2026-10-12 re-run (raw PNG bytes, no resize)",
+  "layers": {
+    "sky": {
+      "size": [
+        2172,
+        1448
+      ],
+      "alphaMaxDiff": 0,
+      "visibleRgbMaxDiff": 0,
+      "pngSha256": "2ddc79b72bae79714fca96749a5b00651e033987df7e61434ac8de81bf84373f"
+    },
+    "far": {
+      "size": [
+        2172,
+        1448
+      ],
+      "alphaMaxDiff": 0,
+      "visibleRgbMaxDiff": 0,
+      "pngSha256": "dc07589c17d416e41cd67407bcf5a6b649bff00f1d26993dfdadadca77c9ff1a"
+    },
+    "near": {
+      "size": [
+        2172,
+        1448
+      ],
+      "alphaMaxDiff": 0,
+      "visibleRgbMaxDiff": 0,
+      "pngSha256": "1718e53da81f6c0057e5c7074eafe2fd144cb16853847f43ad36a2d35596244e"
+    }
+  },
+  "restackRgbMaxDiff": 0,
+  "restackRgbMeanDiff": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "fills": {
+    "master-wide": {
+      "node": "22:27",
+      "size": [
+        2172,
+        1448
+      ],
+      "alphaMin": 255,
+      "rgbMaxDiff": 0,
+      "rgbMeanDiff": 0.0,
+      "note": "native render vs local master-wide.png, RGB max diff"
+    },
+    "portrait": {
+      "node": "22:31",
+      "size": [
+        1086,
+        1448
+      ],
+      "alphaMin": 255,
+      "rgbMaxDiff": 0,
+      "rgbMeanDiff": 0.0,
+      "note": "native render vs local master.png, RGB max diff"
+    }
+  },
+  "refreshed": "2026-10-12 after people removal"
+}

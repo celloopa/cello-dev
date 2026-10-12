@@ -1,0 +1,60 @@
+{
+  "status": "native isolated PNG round trip verified",
+  "method": "get_screenshot contentsOnly true, source long-edge maxDimension, enableBase64Response true; URL endpoint failed",
+  "layers": {
+    "sky": {
+      "size": [
+        2172,
+        1448
+      ],
+      "alphaMaxDiff": 0,
+      "visibleRgbMaxDiff": 0,
+      "pngSha256": "853a567415d2841fb3af35263141a7b64df27464ab9a71172f2d4b0d9870ca7e"
+    },
+    "mid": {
+      "size": [
+        2172,
+        1448
+      ],
+      "alphaMaxDiff": 0,
+      "visibleRgbMaxDiff": 0,
+      "pngSha256": "bc30844dcb74c85932aaed62ee2cddf1f82f5262f5bdd586937ec50e6e48ddbc"
+    },
+    "near": {
+      "size": [
+        2172,
+        1448
+      ],
+      "alphaMaxDiff": 0,
+      "visibleRgbMaxDiff": 0,
+      "pngSha256": "378188e27d1700127b4be828df7a77a2e083e79b6ba0b29667f4a0047391f950"
+    }
+  },
+  "restackRgbMaxDiff": 0,
+  "restackRgbMeanDiff": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "masters": {
+    "master-wide": {
+      "size": [
+        2172,
+        1448
+      ],
+      "alphaMaxDiff": 0,
+      "rgbMaxDiff": 0,
+      "rgbMeanDiff": 0.0
+    },
+    "portrait": {
+      "size": [
+        1086,
+        1448
+      ],
+      "alphaMaxDiff": 0,
+      "rgbMaxDiff": 0,
+      "rgbMeanDiff": 0.0
+    }
+  },
+  "note": "re-verified 2026-10-12 after the people removal; native renders fetched by asset URL, full resolution, no tiling needed"
+}

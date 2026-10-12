@@ -6,7 +6,7 @@
       "name": "Cottage Grove waterfall",
       "exactPlaceName": "uncertain; Cello to confirm",
       "month": "June",
-      "status": "candidate; aesthetic approval pending",
+      "status": "candidate; aesthetic approval pending; people removed from the art 2026-10-12",
       "method": "Photo composition \u2192 screenprint treatment \u2192 locked-center outpaint \u2192 source RGB registered cuts",
       "sourceSize": [
         2172,
@@ -58,7 +58,7 @@
         ],
         "originalCenterMaxDiff": 0,
         "sides": "invented outpaint",
-        "figures": "anonymous back-facing adult and dog preserved together on near plane"
+        "figures": "none: an anonymous figure and a dog were removed from the art (Cello, 2026-10-12)"
       },
       "figma": {
         "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
@@ -84,11 +84,11 @@
           "desktop1440x900crop",
           "mobile390x844crop",
           "Figma screenshot and shared-origin rectangle dimensions"
-        ]
+        ],
+        "peopleRemoval": "full-size inspection of the whole portrait and native crops around the former positions and both seams: no people, no animals, no ghost silhouettes, no text"
       },
       "limitations": [
-        "AI treatment changes fine branches, rivulets, rock detail and figure illustration",
-        "Corrective edit restored figures after initial mistaken removal",
+        "People removed from the art by an image edit; the edited region (about 11% of the portrait) is newly drawn rock/log/trail continuation, not photographed",
         "Hidden foreground boundary has soft halos/doubled-edge regions: larger parallax unsafe",
         "Three coherent planes; waterfall/forest not individually separable",
         "No actual runtime motion or device test"
@@ -96,7 +96,22 @@
       "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
       "place": "Cottage Grove waterfall",
       "mobileCenter": 50.0,
-      "motionReadiness": "Still preferred: hidden foreground edges need cleanup."
+      "motionReadiness": "Still preferred: hidden foreground edges need cleanup.",
+      "peopleRemoval": {
+        "decision": "removed (not shrunk); the fallen log, rocks and trail continue with no composition break",
+        "method": "one image edit of the locked treated portrait; only the changed region (mask built from the diff map, x290-700 y740-1400, feathered 7px) taken from the edit, everything else is the original locked pixels; wide master rebuilt by pasting the new portrait into [543,0,1629,1448]",
+        "changedBoundsPortraitPx": [
+          271,
+          748,
+          703,
+          1386
+        ],
+        "changedPixelFraction": 0.1113,
+        "centerDiffVsNewPortrait": 0,
+        "sidesDiffVsPreviousWide": 0,
+        "nearMatte": "regenerated (near-raw-v2.png); forest matte and clean plate reused",
+        "imageCalls": "1 removal edit + near matte (1 invocation produced no file)"
+      }
     },
     {
       "id": "meadows",
@@ -357,7 +372,7 @@
       "id": "salmon-ridge",
       "place": "Salmon ridge (exact location unconfirmed)",
       "month": "Unconfirmed",
-      "status": "photo treatment and cut candidate; still-first until expansion seam and hidden-fill cleanup",
+      "status": "photo treatment and cut candidate; anonymous figure removed 2026-10-12; still-first until expansion seam and hidden-fill cleanup",
       "sourcePhoto": "IMG_2918.HEIC (private original, not served)",
       "sourceSize": [
         2172,
@@ -429,18 +444,27 @@
         "crops": [
           "crop-desktop.jpg",
           "crop-mobile.jpg"
-        ]
+        ],
+        "peopleRemovedReview": "people-removed-review.jpg"
       },
       "mobileCenter": 40.0,
       "limitations": [
         "Exact location and month unconfirmed; no project-place claim.",
-        "AI treatment alters fine grass/branch/tree detail; anonymous seated adult pose and broad photographic viewpoint retained, aesthetic approval pending.",
+        "AI treatment alters fine grass/branch/tree detail; the portrait was re-edited 2026-10-12 to remove the anonymous figure (no people in the scene); aesthetic approval pending.",
         "Wide outpaint has a noticeable left vertical join beside deadwood; center diff0 does not prove seamless extension. Prefer original portrait/mobile crop or still until corrected.",
         "Near matte dilation removes most fringe ghosts but small edge residuals and sky continuation outlines remain; tiny far\u00b11/near\u00b13 source-pixel extremes inspected, no production motion clearance.",
-        "Three planes: near slope, seated adult and framing trees stay connected. Do not animate the person independently.",
-        "Mobile .40 center keeps seated person and ridge; centered desktop clips near trail base. Actual responsive canvas arrangement pending."
+        "Three planes: near slope and framing trees stay connected. Near plane RGB/alpha changed only in the former figure zone (x 603-1252, y 795-1447); sky unchanged.",
+        "Centered desktop clips near trail base; mobile .40 center keeps the empty trail and ridge. Actual responsive canvas arrangement pending."
       ],
-      "motionReadiness": "Still preferred: outpaint seam and near edges need cleanup."
+      "motionReadiness": "Still preferred: outpaint seam and near edges need cleanup.",
+      "peopleRemoval": {
+        "date": "2026-10-12",
+        "decision": "Cello: \"Make them tiny or remove\"",
+        "action": "removed (not shrunk)",
+        "method": "image edit of locked portrait master, blended only inside a feathered patch around the former figure; wide master rebuilt by pasting into the same bounds; near matte regenerated in the former figure zone only",
+        "raw": "before-figure-removal/nofigure-raw-v1.png (local, ignored)",
+        "previousMasters": "before-figure-removal/ (local, ignored)"
+      }
     },
     {
       "id": "ramona",
@@ -620,7 +644,7 @@
       "id": "bald-mountain",
       "place": "Bald Mountain",
       "month": "September",
-      "status": "photo treatment and cut candidate; aesthetic approval pending; exact trail identification unconfirmed",
+      "status": "photo treatment and cut candidate; people removed from the art 2026-10-12; aesthetic approval pending; exact trail identification unconfirmed",
       "sourceSize": [
         2172,
         1448
@@ -687,13 +711,21 @@
         ]
       },
       "limitations": [
-        "Mountain and forested valley share one plane; hikers stay attached to trail",
+        "Mountain and forested valley share one plane; no people in the art (the prominent anonymous figure and the small distant group were removed 2026-10-12)",
         "Fine skyline cleanup needed before increasing mountain travel; motion bounds are source pixels",
         "AI treatment changes fine trees/rocks/snow, side expansion invents geography",
         "Still/reduced-motion is reliable baseline; no runtime or physical-device test claimed"
       ],
       "mobileCenter": 50.0,
-      "motionReadiness": "Only the small source-pixel shifts documented in the run log have been inspected."
+      "motionReadiness": "Only the small source-pixel shifts documented in the run log have been inspected.",
+      "peopleRemoved": {
+        "date": "2026-10-12",
+        "decision": "Cello: make them tiny or remove; public repo keeps people subtle",
+        "prominentFigure": "removed",
+        "distantGroup": "removed",
+        "method": "image edit of the locked portrait master; result composited only inside a feathered mask around the former figures, every other portrait pixel byte-identical to the previous master; wide master rebuilt by pasting the portrait into the same center bounds",
+        "nearMatte": "regenerated from the people-free wide master (near-raw-v2.png); sky/far reuse the terrain matte and clean plate"
+      }
     },
     {
       "id": "mirror-lake",

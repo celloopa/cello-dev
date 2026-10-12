@@ -119,7 +119,7 @@
         "near": "22:25"
       },
       "status": "Uploaded and native isolated PNG round trip verified",
-      "exportStatus": "native isolated PNG roundtrip verified",
+      "exportStatus": "native isolated PNG roundtrip verified (re-verified 2026-10-12 after people removal; node IDs unchanged)",
       "exportTo": "docs/rewrite/prototypes/public/gen/layers/moss-falls/figma/<name>.png"
     },
     "meadows-lift": {
@@ -150,7 +150,7 @@
         "far": "22:29",
         "near": "22:30"
       },
-      "exportStatus": "native isolated PNG roundtrip verified",
+      "exportStatus": "native isolated PNG roundtrip verified (re-verified 2026-10-12 after people removal; node IDs unchanged)",
       "exportTo": "docs/rewrite/prototypes/public/gen/layers/bald-mountain/figma/<name>.png"
     },
     "salmon-ridge": {
@@ -166,7 +166,7 @@
         "far": "24:18",
         "near": "24:19"
       },
-      "exportStatus": "native isolated PNG roundtrip verified",
+      "exportStatus": "native isolated PNG roundtrip verified (re-verified 2026-10-12 after people removal; node IDs unchanged)",
       "exportTo": "docs/rewrite/prototypes/public/gen/layers/salmon-ridge/figma/<name>.png"
     }
   }

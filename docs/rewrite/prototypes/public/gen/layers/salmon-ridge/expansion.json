@@ -1,0 +1,22 @@
+{
+  "sourceSize": [
+    1086,
+    1448
+  ],
+  "expandedSize": [
+    2172,
+    1448
+  ],
+  "originalPortraitBounds": [
+    543,
+    0,
+    1629,
+    1448
+  ],
+  "centerMaxDiff": 0,
+  "outsideMaxDiffVsPreviousWide": 0,
+  "portraitOutsidePatchMaxDiffVsPreviousPortrait": 0,
+  "patchPixels": 323988,
+  "outsideBounds": "invented AI outpaint, unchanged from the pre-removal wide master",
+  "note": "portrait edited to remove the anonymous seated figure (patch region only); wide master rebuilt by pasting it into the same bounds"
+}

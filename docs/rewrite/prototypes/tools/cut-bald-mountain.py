@@ -5,7 +5,7 @@ from PIL import Image, ImageChops, ImageFilter, ImageOps, ImageStat
 import json, subprocess, sys, hashlib
 
 d = Path(sys.argv[1]); master = Image.open(d/'master-wide.png').convert('RGB'); w,h=master.size
-subprocess.run([sys.executable,str(Path(__file__).with_name('key.py')),str(d/'near-raw.png'),str(d/'near-key.png'),'--erode','0'],check=True)
+subprocess.run([sys.executable,str(Path(__file__).with_name('key.py')),str(d/'near-raw-v2.png'),str(d/'near-key.png'),'--erode','0'],check=True)
 near = Image.open(d/'near-key.png').getchannel('A').resize((w,h),Image.Resampling.LANCZOS).point(lambda x:255 if x>=128 else 0)
 clean = Image.open(d/'clean.png').convert('RGB')
 assert abs(clean.width/clean.height-w/h)<.01
@@ -40,14 +40,14 @@ for name,im in layers:
     check=Image.new('RGBA',(w,h),(225,220,210,255));check=Image.alpha_composite(check,im);check.convert('RGB').resize((1086,724)).save(d/(name+'-isolated.jpg'),quality=94)
 rest.convert('RGB').save(d/'restack.png')
 diff=ImageChops.difference(rest.convert('RGB'),master)
-result={'status':'candidate; aesthetic and motion review pending','source_size':[w,h],'web_size':[1536,1024],'restack_max_difference':max(c[1] for c in diff.getextrema()),'restack_mean_difference':sum(ImageStat.Stat(diff).mean)/3,'motion_test_source_px':{'sky':0,'far':1,'near':4},'layers':[{'name':n,'sha256':hashlib.sha256((d/(n+'.png')).read_bytes()).hexdigest()} for n,_ in layers],'limitations':['Three planes: forested valley remains with mountain; hikers remain attached to trail','Small four-pixel relative ground travel only; larger occlusion reveal unproven','AI expansion outside restored portrait invents geography','AI terrain matte simplifies fine skyline; inspect before increasing mountain travel']}
+result={'status':'candidate; aesthetic and motion review pending','source_size':[w,h],'web_size':[1536,1024],'restack_max_difference':max(c[1] for c in diff.getextrema()),'restack_mean_difference':sum(ImageStat.Stat(diff).mean)/3,'motion_test_source_px':{'sky':0,'far':1,'near':4},'layers':[{'name':n,'sha256':hashlib.sha256((d/(n+'.png')).read_bytes()).hexdigest()} for n,_ in layers],'limitations':['Three planes: forested valley remains with mountain; people removed from the art (2026-10-12), near matte regenerated from the people-free master','Small four-pixel relative ground travel only; larger occlusion reveal unproven','AI expansion outside restored portrait invents geography','AI terrain matte simplifies fine skyline; inspect before increasing mountain travel']}
 for sign,label in [(-1,'left'),(1,'right')]:
     preview=sky.copy()
     for layer,dx in [(mountain,1),(ground,4)]:
         shifted=Image.new('RGBA',(w,h));shifted.paste(layer,(sign*dx,0));preview=Image.alpha_composite(preview,shifted)
     preview.convert('RGB').save(d/('motion-'+label+'.jpg'),quality=95)
 ImageOps.fit(master,(1440,900),centering=(.5,.5)).save(d/'crop-desktop.jpg',quality=94)
-# Center mobile composition preserves the original mountain and walking hiker.
+# Center mobile composition keeps the mountain and the trail.
 ImageOps.fit(master,(390,844),centering=(.46,.5)).save(d/'crop-mobile.jpg',quality=94)
 (d/'cut-check.json').write_text(json.dumps(result,indent=2)+'\n')
 print(json.dumps(result))

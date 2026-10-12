@@ -418,9 +418,10 @@ audio-related is implemented yet. Detailed intent is in `STORYBOARD.md`.
 
 Claude acknowledged the storyboard (`STORYBOARD.md`, "Continuation and process-report gate") and
 asked four things before building. Cello's answers:
-- **People in scenes: make them tiny or remove.** Moss Falls (adult + dog), Bald Mountain (hiker)
-  and Salmon Ridge (seated adult) are re-treated before anything showing them is committed or
-  shown publicly. Sauvie's distant figures already fit the "subtle, behind-the-scenes" rule.
+- **People in scenes: make them tiny or remove.** Moss Falls, Bald Mountain and Salmon Ridge are
+  re-treated before anything showing people is committed or shown publicly (done 2026-10-12:
+  removed outright, not shrunk). Sauvie's distant figures already fit the "subtle,
+  behind-the-scenes" rule.
 - **Lean commit.** Docs, manifests, tools and the WebP layers are committed; per-scene QA JPEGs and
   full-size storyboard PNGs stay local (git-ignored), with compressed JPG sheets committed.
 - **Plate rule: yes, revise it.** Text may sit over scene art (with the approved focus dim) and

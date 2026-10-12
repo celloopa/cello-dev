@@ -1,0 +1,42 @@
+{
+  "sourceSize": [
+    2172,
+    1448
+  ],
+  "webSize": [
+    1536,
+    1024
+  ],
+  "restackMaxDiff": 0,
+  "restackMeanDiff": 0.0,
+  "testedHorizontalSourcePx": {
+    "sky": 0,
+    "far": 1,
+    "near": 3
+  },
+  "planes": [
+    {
+      "name": "sky",
+      "sha256": "79d8319284f70c4564db04a666a5a2cf5059dec4efedcb4b08aeada73d5794c1"
+    },
+    {
+      "name": "far",
+      "sha256": "49b30486c941e8603224697757879f7b868ebc35dda576c0fe55adac6616ce94"
+    },
+    {
+      "name": "near",
+      "sha256": "eb15d50a9676160a7164e4b4e00405acf0ea8c33f8801f2f0b8fe10047c4c70e"
+    }
+  ],
+  "figureRemoval": {
+    "centerMaxDiff": 0,
+    "outsideMaxDiffVsPreviousWide": 0,
+    "portraitOutsidePatchMaxDiffVsPreviousPortrait": 0,
+    "skyAlphaRgbChangedPx": 0,
+    "farVisibleRgbChangedPx": 7594,
+    "nearAlphaChangedPx": 1968,
+    "nearVisibleRgbChangedPx": 224008,
+    "changedRegion": "x603-1252,y790-1447 (wide px)",
+    "nearMatte": "near-raw.png outside zone [632,800,1242,1448]; near-raw-v2.png (figure-free wide) inside"
+  }
+}
