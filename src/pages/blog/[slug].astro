@@ -334,8 +334,8 @@ const mainIsVideo = isVideo(image || "");
 
   .content :global(code) {
     font-family: var(--font-mono); /* Was the browser's monospace (Courier); code stays Geist Mono inside Geist Sans prose. */
-    background: rgba(var(--color-accent-rgb), 0.1);
-    border: 1px solid rgba(var(--color-accent-rgb), 0.2);
+    background: var(--bg-muted);
+    border: 1px solid var(--border-muted);
     padding: 0.2rem 0.4rem;
     font-size: 0.9em;
   }
@@ -357,7 +357,7 @@ const mainIsVideo = isVideo(image || "");
 
   .content :global(blockquote) {
     border: 2px solid var(--color-accent);
-    background: rgba(var(--color-accent-rgb), 0.08);
+    background: var(--bg-muted);
     padding: var(--space-16) var(--space-20);
     margin: var(--space-24) 0;
     font-style: italic;

@@ -117,7 +117,7 @@
     gap: var(--space-16);
     margin-top: var(--space-20);
     padding: var(--space-16);
-    border: 2px dashed rgba(var(--color-text-rgb), 0.35);
+    border: 2px dashed var(--border-muted);
     font-size: var(--type-small);
   }
 
