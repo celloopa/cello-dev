@@ -12,7 +12,7 @@ Kept by the "Ship cello.dev" session (`ship-conductor` skill). Profile: `docs/sh
 
 | Part | Thread | Commits | Checks | Cello's go | Waits on |
 |---|---|---|---|---|---|
-| Design-system stages 0–1b (one 0 px part) | Audit and unify the cello.dev design system | `756f5b3`..1b end sha (pending) | Pending hand-off: `pnpm build` + `ui:shots --compare b0,b1` 0 px | **Yes**: "ship" (2026-10-12, answering "stages 0–1b as one 0 px part, or wait for 2a?") | 1b committed + hand-off, then conductor review |
+| Design-system stages 0–1b (one 0 px part) | Audit and unify the cello.dev design system | 0–1a ready: `756f5b3`..`e3cb897` (identity docs `d4a64ec..54bd1e6` inside the range). 1b **not committed** | Thread: 1a 0 px vs two baselines. **Conductor review 2026-10-12: `e3cb897` FAILS `pnpm build`.** A clean `CI=true pnpm install --frozen-lockfile` gives `astro check` 31 errors (missing Node types in `scripts/sync-projects.ts`, `src/integrations/resumeSync.ts`). Cause: stage 0 `756f5b3` lockfile dropped `@types/node` (29 → 4 refs). The fix is the thread's uncommitted `@types/node` 22.15.17 pin; it must be committed before any of 0–1b can ship (Netlify would fail the build) | **Yes**: "ship" (2026-10-12, answering "stages 0–1b as one 0 px part, or wait for 2a?") | Thread stopped (usage limit). 1b blocked on the 1 px phone menu-button flicker in `ui:shots` |
 
 In flight, not handed off:
 
@@ -30,7 +30,7 @@ In flight, not handed off:
 
 | Session | Owns | Branch | State |
 |---|---|---|---|
-| Audit and unify the cello.dev design system | Staged migration of today's site; identity I1–I6 + A1 | `claude/design-system-migration` | Stages 0 + 1a committed; 1b then 2a next; stops at 2a for Cello's look |
+| Audit and unify the cello.dev design system | Staged migration of today's site; identity I1–I6 + A1 | `claude/design-system-migration` | **Stopped (usage limit).** Committed through 1a `e3cb897`. Uncommitted in its worktree: 1b codemod (raw values 1208 → 499), lowered ratchet baseline, `@types/node` 22.15.17 pin (its install had dropped it: `astro check` 31 errors → 0). Next session: stabilize the shots harness, re-shoot b0/b1 from `756f5b3`, prove 1b at 0 px, commit, hand off; remove `.claude/worktrees/ds-stage0-baseline`; propose the Geist Sans amendment |
 | Rewrite cello.dev | Rewrite exploration: window scenes, layer cut, Figma scenes file | `claude/rewrite-exploration` | Exploring; hands off nothing until Cello picks a direction |
 | Rethink Daybreak from the ground up | Daybreak, separate repo | (daybreak repo) | Cross-thread decisions only |
 
