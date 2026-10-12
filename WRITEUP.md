@@ -64,7 +64,21 @@ values), and nobody could see the drift, because the site still looked fine in C
    project". The budget was rewritten to fit three.js rather than dropped: SVG first paint,
    three.js on idle, still frame under reduced motion.
 
-`[more beats as the thread goes: the directions, the pick, the build]`
+7. **First look, then a reset.** The first direction built was Cut paper: the mark as matte
+   paper cut-outs with pre-blurred shadows. On first sight Cello said "I don't love the current
+   look" and asked what makes three.js sites good. The answer that reset the work: on the best
+   ones, take the 3D away and the idea is gone. Cut paper failed that test; it was a nicer logo.
+8. **Tokens: a design system, literally.** The fresh pass maps three.js's strength (thousands
+   of particles, image pixels dissolving and re-forming) to the site's spine. The mark is built
+   from ~13k square "tokens" that stream out and rebuild each case study's image, then hand
+   off to the crisp image. One draw call. Kaptain Kristian's match cuts (Cello's reference) are
+   the grammar: the same tokens flow from shot to shot.
+9. **The screenshot detour.** The devtools browser could only write files inside its own
+   workspace, so the 22-shot set moved to a small Playwright script driving the installed Chrome
+   (`docs/rewrite/prototypes/shoot.mjs`). It also checks the reduced-motion page really drops
+   the 3D.
+
+`[more beats: Cello's pick, the build]`
 
 ## 5. Numbers
 
@@ -76,8 +90,9 @@ values), and nobody could see the drift, because the site still looked fine in C
 | Spacing through a token | 22 of 714 (3%) | `[pending]` |
 | Case-study/blog duplicated selectors | 26 | `[pending]` |
 | Pages built | 14 | `[pending]` |
-| Lighthouse perf / a11y (mobile) | `[measure]` | `[pending]` |
-| JS shipped on home | `[measure]` | `[pending]` |
+| Lighthouse perf / a11y (mobile) | `[measure live site]` | prototype: a11y 100, LCP 1.51 s, CLS 0 (Fast 4G, 4× CPU) |
+| JS before first paint (home) | `[measure live site]` | prototype: 2.0 KB gz; three.js 143 KB gz after paint |
+| Draw calls for the 3D layer | n/a | prototype (Tokens): 1 |
 
 ## 6. Stack
 

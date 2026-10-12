@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cello: design systems, from brand to build</title>
+<meta name="description" content="Cello is a product designer and design engineer. He leads design across three brands on one shared system, then builds the tools and products that run on it.">
+<meta name="color-scheme" content="dark light">
+<script>
+  // Before paint: direction from ?d=, theme only if the visitor chose one (else the system decides).
+  (function () {
+    var d = new URLSearchParams(location.search).get("d");
+    if (!/^(paper|construction|print|tokens)$/.test(d || "")) d = "tokens";
+    var r = document.documentElement;
+    r.dataset.direction = d;
+    r.classList.add("js");
+    try { var t = localStorage.getItem("theme"); if (t === "dark" || t === "light") r.dataset.theme = t; } catch (e) {}
+  })();
+</script>
+<script type="module" src="/shared/main.js"></script>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="mark" viewBox="0 0 465 492"><path d="M464.64 239.93C464.64 300.03 447.43 353.92 420.2 390.5L410.79 378.82L388.59 351.24L364.46 321.25L360.75 316.66L325.94 273.4C313.67 258.15 284.06 257.25 269.74 270.7C270.12 270.47 270.49 270.24 270.87 270.01C270.33 270.42 269.77 270.83 269.19 271.23H269.18C268.49 271.92 267.84 272.65 267.22 273.4L231.92 317.26L230.42 319.12L220.5 331.45C218.89 326.65 217.41 321.74 216.05 316.72C209.66 293.09 206.13 267.15 206.13 239.93C206.13 129.72 264.01 40.37 335.39 40.37C406.77 40.37 464.64 129.72 464.64 239.93Z" fill="var(--mark-sun)"/><path d="M453.54 471.52C456.7 464.56 455.55 456.71 450.73 450.52L419.95 410.09C413.75 401.93 394.82 377.09 388.34 368.56C386.08 365.58 361.98 333.91 360.5 331.99C337.12 304.1 314.1 249.64 269.49 283.38C269.87 283.14 270.24 282.89 270.62 282.65C270.08 283.09 269.51 283.52 268.93 283.95C237.41 324.54 201.42 372.66 170.31 413.24C164.51 420.86 154.04 434.61 148.27 442.18C141.44 450.33 133.62 460.81 139.13 471.51C139.64 470.56 140.25 469.63 140.93 468.7C326.23 220.48 269.38 227.1 453.54 471.52Z" fill="var(--mark-triangle)"/><path d="M453.54 471.52C443.76 491.08 192.02 476.82 171.29 480.92C156.04 480.51 145.76 478.24 139.13 471.51C129.54 480.73 145.58 491.42 170.48 491.42H422.18C447.07 491.42 463.12 480.73 453.54 471.52Z" fill="var(--mark-triangle)"/><path d="M235.95 122.27C173.17 122.27 122.27 173.17 122.27 235.95C122.27 289.29 159.01 334.05 208.56 346.3L218.13 334.39L230.42 319.12C186.96 316.28 152.59 280.13 152.59 235.95C152.59 191.77 189.91 152.59 235.95 152.59C254.85 152.59 272.29 158.88 286.27 169.49L313.23 152.59C292.95 133.76 265.8 122.27 235.95 122.27ZM285.37 303.08C285.22 303.25 285.07 303.42 284.93 303.59C285.39 303.21 285.84 302.81 286.27 302.41C285.97 302.64 285.67 302.86 285.37 303.08ZM235.95 65.43C141.78 65.43 65.43 141.78 65.43 235.95C65.43 306.96 108.83 367.83 170.56 393.48L184.02 376.76L190.56 368.64C135.41 349.78 95.75 297.5 95.75 235.95C95.75 158.52 158.52 95.75 235.95 95.75C275.31 95.75 310.89 111.97 336.35 138.09L362.53 121.69C331.32 87.14 286.17 65.43 235.95 65.43ZM235.95 0C105.64 0 0 105.64 0 235.95C0 327.55 52.21 406.98 128.5 446.05L129.55 444.74L139.06 432.93L140.42 431.24C140.93 430.39 141.52 429.56 142.18 428.73L148.52 420.85C79.32 388.08 31.46 317.61 31.46 235.95C31.46 123.01 123.01 31.46 235.95 31.46C298.32 31.46 354.17 59.38 391.68 103.41L418.58 86.55C375.32 33.71 309.57 0 235.95 0Z" fill="var(--mark-c)"/></symbol></svg>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand keep-d" href="home.html" aria-label="Cello, home">
+      <svg viewBox="0 0 465 492" aria-hidden="true"><use href="#mark"/></svg>
+      <span>Cello</span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#log">Log</a></li>
+        <li><a href="https://cello.design/resume/">About</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-button" type="button" data-menu-open aria-haspopup="dialog" aria-keyshortcuts="Meta+K Control+K">⌘K</button>
+      <button class="icon-button" type="button" data-theme-toggle aria-label="Switch color theme">◐</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-name">
+    <div class="container">
+      <div class="hero-copy">
+        <p class="eyebrow reveal" style="--i:0">Product Designer &amp; Design Engineer</p>
+        <h1 class="hero-name reveal" id="hero-name" style="--i:1">Cello</h1>
+        <p class="hero-spine reveal" style="--i:2">Design systems, carried from <em>brand</em> to <em>build</em>.</p>
+        <p class="hero-lede reveal" style="--i:3">I lead design across three brands on one shared system, then build the tools and products that run on it.</p>
+        <a class="arrow-link reveal" style="--i:4" href="#work">See the work <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="hero-art" data-gl="mark" aria-hidden="true">
+        <svg viewBox="0 0 465 492"><use href="#mark"/></svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="work" id="work" aria-labelledby="work-title">
+    <div class="container">
+      <h2 class="section-title reveal" id="work-title">Work</h2>
+
+      <article class="poster">
+        <a class="poster-art keep-d" href="asheville.html" data-gl="poster" tabindex="-1" aria-hidden="true" style="view-transition-name: case-art">
+          <img src="/images/projects/ad-assets/ad-assets-thumbnail.png" width="1200" height="630" alt="" decoding="async">
+        </a>
+        <div class="poster-copy">
+          <p class="poster-num reveal">01 · Product Design Lead / Design Engineer</p>
+          <h3 class="reveal" style="--i:1; view-transition-name: case-title"><a class="keep-d" href="asheville.html">Asheville Dispensary</a></h3>
+          <p class="poster-outcome reveal" style="--i:2">One shared system, three distinct brands, and a pipeline built on it that replaced 3–5 hours of manual editing a week.</p>
+          <p class="poster-meta reveal" style="--i:3"><span class="tag">In production</span> <span class="tag">Since 2022</span></p>
+        </div>
+      </article>
+
+      <article class="poster">
+        <a class="poster-art" href="https://cello.design/projects/ghosted/" data-gl="poster" tabindex="-1" aria-hidden="true">
+          <img src="/images/projects/ghosted/v3/og.png" width="1200" height="630" alt="" loading="lazy" decoding="async">
+        </a>
+        <div class="poster-copy">
+          <p class="poster-num reveal">02 · Product Designer / AI Tools</p>
+          <h3 class="reveal" style="--i:1"><a href="https://cello.design/projects/ghosted/">Ghosted</a></h3>
+          <p class="poster-outcome reveal" style="--i:2">Tokens and component guidance that keep AI coding agents inside the system, in a live resume you edit by chatting. Every AI change arrives as a yellow proposal you keep or reject.</p>
+          <p class="poster-meta reveal" style="--i:3"><span class="tag">Private beta</span> <a class="arrow-link" href="https://ghosted.cello.design">Live site <span aria-hidden="true">↗</span></a></p>
+        </div>
+      </article>
+
+      <article class="poster">
+        <a class="poster-art" href="https://cello.design/projects/vegavengers/" data-gl="poster" tabindex="-1" aria-hidden="true">
+          <img src="/images/projects/veg-avengers-thumbnail.png" width="1200" height="630" alt="" loading="lazy" decoding="async">
+        </a>
+        <div class="poster-copy">
+          <p class="poster-num reveal">03 · Product Designer / Design Engineer</p>
+          <h3 class="reveal" style="--i:1"><a href="https://cello.design/projects/vegavengers/">VegAvengers</a></h3>
+          <p class="poster-outcome reveal" style="--i:2">The content platform behind vegavengers.com: a Payload CMS two non-technical editors run every day, with an AI freshness checker whose every proposal waits for an editor.</p>
+          <p class="poster-meta reveal" style="--i:3"><span class="tag">In production</span> <a class="arrow-link" href="https://vegavengers.com">Live site <span aria-hidden="true">↗</span></a></p>
+        </div>
+      </article>
+
+      <article class="poster">
+        <a class="poster-art" href="https://cello.design/projects/daybreak/" data-gl="poster" tabindex="-1" aria-hidden="true">
+          <img src="/images/projects/daybreak/today.png" width="1820" height="1519" alt="" loading="lazy" decoding="async">
+        </a>
+        <div class="poster-copy">
+          <p class="poster-num reveal">04 · Product Designer / AI Systems</p>
+          <h3 class="reveal" style="--i:1"><a href="https://cello.design/projects/daybreak/">Daybreak</a></h3>
+          <p class="poster-outcome reveal" style="--i:2">A local-first Mac and iPhone planner where people and AI use the same typed, receipt-backed operations, so generated plans stay honest and editable.</p>
+          <p class="poster-meta reveal" style="--i:3"><span class="tag">Personal dogfooding</span></p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="log" id="log" aria-labelledby="log-title">
+    <div class="container">
+      <h2 class="section-title reveal" id="log-title">Log</h2>
+      <ul>
+        <li><a href="https://cello.design/blog/designing-for-the-second-user/"><time datetime="2026-10-11">Oct 11, 2026</time><span class="log-title">Designing for the Second User</span><span aria-hidden="true">→</span></a></li>
+        <li><a href="https://cello.design/blog/programmatic-resumes-you-can-chat-with/"><time datetime="2026-10-08">Oct 8, 2026</time><span class="log-title">Programmatic Resumes You Can Chat With</span><span aria-hidden="true">→</span></a></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <ul>
+      <li><a href="mailto:cello@cello.design">Email</a></li>
+      <li><a href="https://github.com/celloopa">GitHub</a></li>
+      <li><a href="https://linkedin.com/in/marcelorondon">LinkedIn</a></li>
+      <li><a href="https://bsky.app/profile/cello.design">Bluesky</a></li>
+      <li><a href="/files/marcelo_rondon-resume.pdf">Resume (PDF)</a></li>
+    </ul>
+    <small>Prototype · rewrite exploration · not the live site</small>
+  </div>
+</footer>
+
+<dialog class="menu" aria-labelledby="menu-title">
+  <h2 id="menu-title">Go to</h2>
+  <ul>
+    <li><a href="#work" data-menu-close>Work <kbd>W</kbd></a></li>
+    <li><a href="#log" data-menu-close>Log <kbd>L</kbd></a></li>
+    <li><a href="https://cello.design/resume/">Resume</a></li>
+    <li><a href="/files/marcelo_rondon-resume.pdf">Resume (PDF)</a></li>
+    <li><a href="https://cello.design/cv.json">cv.json</a></li>
+    <li><button class="menu-item" type="button" data-theme-toggle>Switch theme <kbd>T</kbd></button></li>
+  </ul>
+</dialog>
+</body>
+</html>

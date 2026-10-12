@@ -153,3 +153,45 @@ Brief added with the go: "keep it prudent yet impressive and allow mobile to wor
 we're trying to make a good impression and get hired."
 
 Shared understanding reached; prototypes are being built in `docs/rewrite/prototypes/`.
+
+### Reference added during the build (2026-10-12)
+
+Cello: "i like how kaptain kristian on yt transitions between info, text, imagery and scene."
+Applied to all three prototypes as a shared transition grammar (match cuts: one element carries
+from one shot into the next), not as a fourth direction:
+- hero → work: the mark's sun leaves the mark and becomes poster 01's reveal circle;
+- poster → poster: each poster arrives through that circle and hands off in depth;
+- poster → case study: View Transitions morph title and art; Asheville's one image fans out into
+  three brand planes ("one system, three brands").
+
+### Feedback after the first look (2026-10-12)
+
+Cello, having seen Cut paper's hero: "What makes three sites good and how can we apply the needs
+of my site to the things three is good at doing, at an awwward level. I don't love the current
+look would love one new fresh pass."
+- Answer given: the best three.js sites make the 3D the idea (remove it and the concept is gone),
+  use what only the GPU does well (many particles, image pixels that dissolve and re-form,
+  light/material, the cursor as a force), keep one continuous world (no hard cuts), and hide the
+  craft (60 fps, seamless DOM/GL, crisp text).
+- Fresh pass: **"Tokens"**. The mark is built from thousands of square particles (tokens) that
+  assemble, react to the cursor, then stream into each case study's image and rebuild it pixel by
+  pixel, handing off to the crisp image once settled; Asheville splits into three brands. One
+  draw call; ~12k particles desktop, ~6k phone.
+- Cut paper's hero is built but parked; Construction and Print run are on hold (not built)
+  until Cello sees Tokens.
+
+### Inputs relayed from the audit session (2026-10-12, not decisions)
+
+From Cello's Figma cleanup (files in Harmonic Convergence › "Triage — from Marcelo (2026-10-12)"
+on cello@cello.design; links to come):
+- Showcase/evolution material: **Cello.Design** (direct ancestor of today's identity: dark-green
+  forest hero, a "dark mountain" color style, full type ramp, components; contains personal
+  photos, keep those out of public work), **Vegavengers** (brand origin), **PlanIT** (early UX
+  process).
+- Revisit: **Pan** (accessible AI navigator) and the **Metroid Prime 2 UI Remaster**, possible
+  Lab or visuals pieces.
+- Held, not started: hunting down his photography and selectively reviewing his two YouTube
+  channels, "trying to learn from all my work to try again with a new perspective". (Record in
+  cello-brain projects/cello-dev-portfolio.md.)
+Relevance here: an "evolution" thread for the About page and a future visuals section; nothing to
+build until he asks.

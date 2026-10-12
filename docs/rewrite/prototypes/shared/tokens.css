@@ -1,0 +1,124 @@
+/*
+ * Tokens for the rewrite prototypes.
+ * Names and values come from the audit session's proposal
+ * (docs/design-system/proposal.md §2–§6 on claude/design-system-audit @ 51fdb3d).
+ * Proposed, not approved: if Cello changes a role there, it changes here.
+ */
+
+:root {
+  color-scheme: dark light;
+
+  /* primitives (never used directly in components) */
+  --ink-950: #001a11;
+  --paper-100: #f3ede2;
+  --paper-200: #e0e0e0;
+  --earth-400: #a89762;
+  --earth-500: #887850;
+  --earth-600: #6f613e;
+  --signal-500: #00bc44;
+  --signal-700: #007a33;
+  --blueprint-500: #42a5ff;
+
+  /* type */
+  --font-mono: "Geist Mono", ui-monospace, Menlo, monospace;
+  --type-display-hero: clamp(4.5rem, 16vw, 12rem);
+  --type-page-title: clamp(2.5rem, 8vw, 4.5rem);
+  --type-section-title: clamp(2rem, 5vw, 3rem);
+  --type-heading: 1.5rem;
+  --type-title: 1.25rem;
+  --type-body-lg: 1.1rem;
+  --type-body: 1rem;
+  --type-ui: 0.9rem;
+  --type-small: 0.85rem;
+  --type-label: 0.75rem;
+  --track-tight: -0.04em;
+  --track-caps: 0.05em;
+  --track-wide: 0.1em;
+
+  /* space (named by px) */
+  --space-4: 0.25rem;
+  --space-8: 0.5rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-24: 1.5rem;
+  --space-32: 2rem;
+  --space-48: 3rem;
+  --space-64: 4rem;
+  --space-96: 6rem;
+
+  /* layout */
+  --layout-container: 1100px;
+  --layout-gutter: 2rem;
+  --layout-measure: 68ch;
+  --layout-measure-narrow: 46ch;
+
+  /* stroke */
+  --stroke-rule: 1px;
+  --stroke-control: 2px;
+  --stroke-frame: 3px;
+  --stroke-bar: 4px;
+
+  /* motion (family: the house curve) */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ui: 300ms;
+  --motion-entry: 600ms;
+  --motion-stagger: 60ms;
+}
+
+@media (width <= 700px) {
+  :root { --layout-gutter: 1rem; }
+}
+
+/* ---- semantic roles: dark (the hero scene) ---- */
+:root,
+:root[data-theme="dark"] {
+  --bg-canvas: var(--ink-950);
+  --text-primary: var(--paper-200);
+  --text-inverse: var(--ink-950);
+  --text-accent: var(--signal-500);
+  --action-primary: var(--signal-500);
+  --focus-ring: var(--signal-500);
+  --accent-ground: var(--earth-400);
+  --accent-construction: var(--blueprint-500);
+  --mark-c: var(--paper-200);
+  --mark-sun: var(--signal-500);
+  --mark-triangle: var(--earth-500);
+}
+
+/* ---- semantic roles: light (first-class, follows the system unless toggled) ---- */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg-canvas: var(--paper-100);
+    --text-primary: var(--ink-950);
+    --text-inverse: var(--paper-100);
+    --text-accent: var(--signal-700);
+    --action-primary: var(--signal-700);
+    --focus-ring: var(--signal-700);
+    --accent-ground: var(--earth-600);
+    --mark-c: var(--ink-950);
+    --mark-sun: var(--signal-500);
+    --mark-triangle: var(--earth-500);
+  }
+}
+:root[data-theme="light"] {
+  --bg-canvas: var(--paper-100);
+  --text-primary: var(--ink-950);
+  --text-inverse: var(--paper-100);
+  --text-accent: var(--signal-700);
+  --action-primary: var(--signal-700);
+  --focus-ring: var(--signal-700);
+  --accent-ground: var(--earth-600);
+  --mark-c: var(--ink-950);
+  --mark-sun: var(--signal-500);
+  --mark-triangle: var(--earth-500);
+}
+
+/* roles built from the ones above (color-mix, never typed rgba) */
+:root {
+  --text-muted: color-mix(in srgb, var(--text-primary) 80%, var(--bg-canvas));
+  --bg-raised: color-mix(in srgb, var(--text-primary) 3.5%, var(--bg-canvas));
+  --bg-muted: color-mix(in srgb, var(--text-primary) 8%, var(--bg-canvas));
+  --border-strong: var(--text-primary);
+  --border-muted: color-mix(in srgb, var(--text-primary) 18%, var(--bg-canvas));
+  --scrim: color-mix(in srgb, var(--bg-canvas) 60%, transparent);
+}

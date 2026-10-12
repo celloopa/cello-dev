@@ -1,0 +1,21 @@
+/* Per-direction DOM treatment. The 3D layer carries most of the difference; this only sets
+   the page surface each direction sits on. */
+
+/* Construction: a faint drafting grid in the construction (blueprint) role. Decorative. */
+html[data-direction="construction"] body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0.12;
+  background-image:
+    linear-gradient(var(--accent-construction) 1px, transparent 1px),
+    linear-gradient(90deg, var(--accent-construction) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse at 50% 30%, #000 30%, transparent 85%);
+}
+html[data-direction="construction"] .poster-art::after { background: none; border: var(--stroke-rule) dashed var(--accent-construction); transform: translate(10px, 10px); }
+
+/* Print run: the shader paints the paper; the DOM grain gets a touch stronger. */
+html[data-direction="print"] body::before { opacity: 0.1; }

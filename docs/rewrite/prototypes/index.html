@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cello.dev rewrite prototypes</title>
+<meta name="color-scheme" content="dark light">
+<script>document.documentElement.classList.add("js");</script>
+<style>
+  :root { color-scheme: dark light; --bg:#001a11; --fg:#e0e0e0; --accent:#00bc44; }
+  @media (prefers-color-scheme: light) { :root { --bg:#f3ede2; --fg:#001a11; --accent:#007a33; } }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.7 ui-monospace, Menlo, monospace; }
+  main { width:min(100% - 2rem, 1100px); margin:0 auto; padding:4rem 0; }
+  h1 { font-size:clamp(2rem,6vw,3.5rem); line-height:1; text-transform:uppercase; margin:0 0 1rem; }
+  p { max-width:68ch; }
+  ol { list-style:none; padding:0; display:grid; gap:1.5rem; grid-template-columns:repeat(auto-fit,minmax(16rem,1fr)); margin:3rem 0; }
+  li { border:3px solid var(--fg); padding:1.5rem; }
+  h2 { margin:0 0 .5rem; text-transform:uppercase; font-size:1.25rem; }
+  a { color:var(--accent); font-weight:700; }
+  small { opacity:.8; }
+</style>
+</head>
+<body>
+<main>
+  <p><small>cello.dev rewrite · exploration · 2026-10-12 · throwaway prototypes</small></p>
+  <h1>Three directions</h1>
+  <p>Same structure, same content, same moves (the mark assembles; the sun hands off to the first case study; posters arrive from depth; Asheville fans into three brands). Only the treatment changes. Add <code>?stats</code> for a frame meter, <code>?gl=0</code> for the no-WebGL page.</p>
+  <ol>
+    <li><h2>1 · Cut paper</h2><p>Matte paper cut-outs in real depth, soft shadows, printed sheets on the offset plate.</p><a href="home.html?d=paper">Home</a> · <a href="asheville.html?d=paper">Asheville</a></li>
+    <li><h2>2 · Construction</h2><p>The system being drawn: blueprint outlines and dimension marks that fill solid as you scroll.</p><a href="home.html?d=construction">Home</a> · <a href="asheville.html?d=construction">Asheville</a></li>
+    <li><h2>3 · Print run</h2><p>The 3D scene printed in two overprinted inks with halftone and misregistration that settles.</p><a href="home.html?d=print">Home</a> · <a href="asheville.html?d=print">Asheville</a></li>
+  </ol>
+</main>
+</body>
+</html>
