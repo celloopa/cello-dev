@@ -48,17 +48,19 @@ In flight, not handed off:
   the now node, beside the current block; no mountain, no C, no landscape). I1 is honored.
 - 2026-10-12, Cello (same source): Daybreak's `design/tokens.json` carries `family.identifiers`
   (family 0.2.0-draft): house curve, reduced-motion contract, Geist + Geist Mono for data,
-  Midnight Ink `#001A11` as text and primary action on paper, Paper `#F3EDE2`, the voice.
+  Midnight Ink `#001A11` as text on paper, Paper `#F3EDE2`, the voice (correction from the
+  Daybreak thread: primary action color is *not* in the identifiers; it's product-level in
+  Daybreak too).
   Daybreak keeps its own paper/ink names, no Day/Dusk. **Rule:** if cello.dev changes any of
   those root values, the conductor sends Daybreak one line to re-sync. Migration thread told.
 - 2026-10-12, migration thread's family-root deltas (cello.dev vs Daybreak's 0.2.0-draft),
   relayed to Daybreak: text on paper **same** (Midnight Ink `#001a11`); house curve **same**;
   Paper `#f3ede2` **same value**, but on cello.dev only from stage 3 (live Day canvas is
   `#e0e0e0` today); primary action **differs** (cello.dev Day action is green signal-700
-  `#007a33`, Cello's Q4); type **differs** (cello.dev uses Geist Mono only, no Geist Sans;
+  `#007a33`, Cello's Q4), which is fine, because action is product-level in both; type **differs** (cello.dev uses Geist Mono only, no Geist Sans;
   National Park/Switchback are product-level); reduced-motion contract text **same**, but
-  cello.dev's code only meets it from stage 4 (delays not zeroed today). Two of these are open
-  calls below.
+  cello.dev's code only meets it from stage 4 (delays not zeroed today). Only Geist Sans is a
+  real difference (open call below).
 - 2026-10-12: ship order: migration stages reach `master` first; the rewrite's build plan
   follows only after the migration ships (rewrite handoff, "Next, ranked").
 
@@ -68,11 +70,10 @@ In flight, not handed off:
   migration thread hands it off with a 0 px `ui:shots` compare? It puts the token guard into
   `pnpm build` for every later part.
 - Archive "Rewrite cello.dev (old, handed off)"?
-- Family roots (Daybreak's `family.identifiers` 0.2.0-draft vs cello.dev): is **primary action
-  color** a family root (Daybreak: Midnight Ink) or product-level (cello.dev: green
-  `#007a33`, per your Q4)? And is **Geist Sans** a family root when cello.dev uses Geist Mono
-  only? Either answer is fine; it decides whether Daybreak's family file drops those two or
-  cello.dev changes.
+- Family roots: is **Geist Sans** a family root (Daybreak's `family.identifiers` 0.2.0-draft
+  lists Geist + Geist Mono) when cello.dev uses Geist Mono only? Either answer works: Daybreak's
+  family file drops Geist Sans to "Daybreak's own", or cello.dev adds it. Daybreak is holding
+  0.2.0-draft until you answer.
 
 ## After deploy, for Cello
 
