@@ -4,6 +4,7 @@ import QRCode from "qrcode";
 import "@fontsource/geist-mono/400.css";
 import "@fontsource/geist-mono/700.css";
 import "@fontsource/geist-mono/900.css";
+import "@fontsource-variable/national-park";
 import "@/styles/colors.css";
 import Mail from "@/icons/Mail.astro";
 import Phone from "@/icons/Phone.astro";
@@ -397,6 +398,7 @@ const qrCodeSvg = await QRCode.toString(url, {
 
   h1 {
     margin: 0;
+    font-family: var(--font-title);
     font-size: clamp(2.6rem, 9vw, 5.5rem);
     line-height: 0.92;
     letter-spacing: -0.08em;

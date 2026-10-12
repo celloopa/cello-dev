@@ -63,7 +63,7 @@
 
   /* Type */
   --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; /* Body and UI face, Geist Mono (Cello family layer). 400 and 700 are preloaded; 500/600/800/900 load on demand. */
-  --font-title: var(--font-mono); /* Titles. Becomes National Park in stage 2b (I4). */
+  --font-title: "National Park Variable", "National Park", var(--font-mono); /* Page and section titles and the hero name (display-hero, page-title, section-title), National Park (I4; OFL 1.1, bundled from @fontsource-variable/national-park, weights 200-800). Never body, labels or UI. */
   --font-place: "Switchback", var(--font-mono); /* Place names only (I4). Unused until the rewrite. */
   --type-display-hero: clamp(4.5rem, 10vw, 10rem); /* The hero name only. */
   --type-page-title: clamp(2.5rem, 8vw, 4rem); /* h1 of every page. */

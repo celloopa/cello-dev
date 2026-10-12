@@ -86,7 +86,7 @@ const RULES = {
 };
 const BANS = {
   "keyframes-outside-animations": { re: /@keyframes\s+[\w-]+/g, skip: (f) => f.endsWith("styles/animations.css"), why: "Define keyframes once in src/styles/animations.css: Astro doesn't scope @keyframes, so a second definition with the same name overrides the first site-wide." },
-  "font-family": { re: /font-family\s*:/g, why: "Fonts come from the type tokens only." },
+  "font-family": { re: /font-family\s*:(?!\s*var\(--font-[\w-]+\)\s*(?:[;}"'`]|$))/g, why: "Fonts come from the type tokens only: font-family: var(--font-…)." },
   "transition-all": { re: /transition\s*:\s*all\b/g, why: "Name the properties that animate (transform, opacity, color...)." },
   "container-literal": { re: /max-width\s*:\s*1100px/g, why: "Use var(--ds-container) or the page container." },
   "theme-storage": { re: /localStorage\.setItem\(\s*['"]theme['"]/g, ctxAll: true, why: "Theme switching belongs to one ThemeToggle." },
