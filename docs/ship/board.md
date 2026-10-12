@@ -12,7 +12,7 @@ Kept by the "Ship cello.dev" session (`ship-conductor` skill). Profile: `docs/sh
 
 | Part | Thread | Commits | Checks | Cello's go | Waits on |
 |---|---|---|---|---|---|
-| (none handed off yet) | | | | | |
+| Design-system stages 0–1b (one 0 px part) | Audit and unify the cello.dev design system | `756f5b3`..1b end sha (pending) | Pending hand-off: `pnpm build` + `ui:shots --compare b0,b1` 0 px | **Yes**: "ship" (2026-10-12, answering "stages 0–1b as one 0 px part, or wait for 2a?") | 1b committed + hand-off, then conductor review |
 
 In flight, not handed off:
 
@@ -32,7 +32,6 @@ In flight, not handed off:
 |---|---|---|---|
 | Audit and unify the cello.dev design system | Staged migration of today's site; identity I1–I6 + A1 | `claude/design-system-migration` | Stages 0 + 1a committed; 1b then 2a next; stops at 2a for Cello's look |
 | Rewrite cello.dev | Rewrite exploration: window scenes, layer cut, Figma scenes file | `claude/rewrite-exploration` | Exploring; hands off nothing until Cello picks a direction |
-| Rewrite cello.dev (old, handed off) | Predecessor of the above | — | Handed off; archive candidate (Cello's OK) |
 | Rethink Daybreak from the ground up | Daybreak, separate repo | (daybreak repo) | Cross-thread decisions only |
 
 ## Decisions that affect several threads
@@ -61,19 +60,17 @@ In flight, not handed off:
   National Park/Switchback are product-level); reduced-motion contract text **same**, but
   cello.dev's code only meets it from stage 4 (delays not zeroed today). Only Geist Sans is a
   real difference (open call below).
+- 2026-10-12, Cello: "yes", Geist Sans **is** a family root. Daybreak keeps 0.2.0-draft as is;
+  cello.dev adds Geist Sans (where it's used is new scope, so the migration thread proposes it
+  as an amendment, outside 0–1b and 2a). Both threads told.
+- 2026-10-12, Cello: "yes" to archiving "Rewrite cello.dev (old, handed off)". Archived (its
+  worktree was clean and its HEAD was on daybreak `main`).
 - 2026-10-12: ship order: migration stages reach `master` first; the rewrite's build plan
   follows only after the migration ships (rewrite handoff, "Next, ranked").
 
 ## Open calls for Cello
 
-- Is stage 0 (`756f5b3`, no visual change intended) a part to ship on its own, once the
-  migration thread hands it off with a 0 px `ui:shots` compare? It puts the token guard into
-  `pnpm build` for every later part.
-- Archive "Rewrite cello.dev (old, handed off)"?
-- Family roots: is **Geist Sans** a family root (Daybreak's `family.identifiers` 0.2.0-draft
-  lists Geist + Geist Mono) when cello.dev uses Geist Mono only? Either answer works: Daybreak's
-  family file drops Geist Sans to "Daybreak's own", or cello.dev adds it. Daybreak is holding
-  0.2.0-draft until you answer.
+- Where cello.dev uses Geist Sans: the migration thread will propose this as an amendment.
 
 ## After deploy, for Cello
 
