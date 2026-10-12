@@ -1,0 +1,12 @@
+{
+  "$description": "Which scene each reading page opens over (docs/landscape/PLAN.md, 'Scene pairings'; mood only, no claims about where the work was made). Ids are scenes in src/data/scene-library.json. Read by src/lib/scene/pairing.ts. A case study missing from `projects` rotates with the posts.",
+  "home": "mirror-lake",
+  "projects": {
+    "asheville-dispensary": "over-hood",
+    "ghosted": "ecola",
+    "vegavengers": "sauvie",
+    "daybreak": "meadows"
+  },
+  "$postsDescription": "Posts rotate through these, stable per slug: a hash of the slug picks one, so a post keeps its scene when other posts are added or removed.",
+  "posts": ["bald-mountain", "ramona", "moss-falls", "meadows-lift", "salmon-ridge"]
+}

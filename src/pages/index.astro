@@ -11,9 +11,10 @@ import { getCollection } from "astro:content";
 import SceneLayout from "@/layouts/SceneLayout.astro";
 import WorkItem from "@/components/scene/WorkItem.astro";
 import { loadScene } from "@/lib/scene/catalog";
+import { homeScene } from "@/lib/scene/pairing";
 import { basics } from "@cv";
 
-const PLACE = "mirror-lake";
+const PLACE = homeScene(); // Mirror Lake (src/data/scene-pairings.json)
 const scene = loadScene(PLACE);
 const { email } = basics;
 
