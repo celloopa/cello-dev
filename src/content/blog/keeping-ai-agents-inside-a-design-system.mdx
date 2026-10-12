@@ -1,0 +1,169 @@
+---
+title: "Components, tokens, guidance, and the tooling that keeps AI agents inside them"
+description: "Part 1 of 2. Agents built Ghosted fast, and in three days it drifted to 18 font sizes, 19 radius spellings and five left edges on one page. I counted the drift, fixed it in a day with pixel-proven stages, and made it impossible to repeat."
+publishDate: 2026-10-11
+image: /images/projects/ghosted/design-system/fit-five-edges.webp
+tags:
+  - Design Systems
+  - Ghosted
+  - AI
+  - Product Design
+draft: true
+---
+
+import MediaFull from '@/components/media/MediaFull.astro';
+
+*Part 1 of 2.*
+
+Three days into rebuilding Ghosted, the app had 18 font sizes, three of them half steps: 11.5, 12.5 and 13.5 px. It had 19 ways of writing a border radius, including 99px and 999px for the same pill. It had 26 different shadows. One page, Fit, had five different left edges. And a single CSS rule, a global button hover with a specificity of (0,8,1), quietly broke the hover state of every button that tried to look different.
+
+Nobody wrote any of that on purpose. Coding agents wrote most of it, one reasonable edit at a time, and I approved each edit because it looked fine on its own.
+
+This post is about what came next. I didn't build a foundation first. I let the app drift, counted the drift, fixed it in one day, and then made it impossible to repeat. When agents do most of the building, I now think that last step matters more than the first.
+
+## How three days of shipping drifted
+
+Ghosted is a job-application app I'm building with Claude Code. You paste a posting, and it tailors your resume on a live canvas, checks your fit, researches the company and tracks the application. v0 shipped on October 8. By the early hours of October 11 there were 241 commits and 80 release notes, many of them from agent sessions running in parallel.
+
+Only color, type and motion were tokens. That was deliberate: the design brief said spacing and components would wait until a layout settled. So every padding, radius and shadow was a raw value in an `app.css` that had grown to 1,298 lines, and dark mode was written out twice.
+
+When agents do the building, this is how drift happens. Ask one to "make this card cleaner" and it picks a padding, a gray and a radius. Each pick is reasonable. The next session doesn't remember those picks, and the session running beside it never knew about them. People drift too, but they remember last week. Agents can ship a week's worth of drift in an afternoon.
+
+I felt it before I could name it. I sent Claude a screenshot: "spacing and indentation is weird here hopefully should be fix with system rewrite". At 02:50 I banked the landing page's videos ("can we bank the videos until we got the system set up"), because filming an interface that was about to change made no sense.
+
+How the project works: I decide, and Claude writes and builds. Every product or design call comes to me as options with a recommendation.
+
+## Count it
+
+I asked for an app-wide and landing-wide audit that would "wrangle all these assets, interactions and things into a design system". It counted everything, with line numbers:
+
+| | Found |
+|---|---|
+| Font sizes | 18 in the app, 29 on the landing |
+| Line heights | 10 in the app, 13 on the landing |
+| Radius spellings | 19 |
+| Shadows | 26 |
+| Padding, margin and gap values | 25 in the app, 35 on the landing |
+| z-index values | 14 |
+| Button class combinations | about 48, plus about 70 state rules |
+| Chip implementations | 14 |
+
+It also took 68 screenshots: 14 screens at 1440 and 390 px, in light and dark.
+
+The finding that matched my complaint came from drawing a guide at every left edge. Fit had five of them, at 0, 16, 24, 54 and 58 px. A tab panel added its own 24 px of padding, and a header's text column set the indent for everything under it.
+
+<MediaFull
+  src="/images/projects/ghosted/design-system/fit-five-edges.webp"
+  alt="Ghosted's Fit page with dashed guide lines at each of its five left edges, labelled 0 px tabs, 16 px start-here row, 24 px header, 54 px item text and 58 px line"
+  caption="Fit before the system: five left edges in one column. (Fictional sample job.)"
+/>
+
+Counting is what turns a feeling into a decision. "It feels messy" can't be decided. "18 sizes, and here's where each one is used" can.
+
+## Decide it in one sitting
+
+The audit fed a proposal: ten decisions, each one a table of options with a recommendation, under one rule: the first code stage changes nothing anyone can see. A few of them:
+
+- **Spacing.** A strict 4 px scale covered 54% of the values in use and would have moved 195 of them. A 2-then-4 scale covered 85%. Recommended, and picked.
+- **Text size.** The app's Text size setting worked as a multiplier, which made fractional pixels. Figma can't multiply, so it became three modes of whole pixels: Smaller, Default and Larger.
+- **Yellow.** In Ghosted, yellow means "the AI changed this". The audit found four places where it meant something else. Streaks are a celebration, so they kept it ("yes keep yellow on streaks"). The "New" badge and a yellow fix button lost it.
+- **Layout.** One left edge per container, with the ghost icon inline. A hanging icon would need a 34 px gutter that phones don't have.
+
+My answer was "Take all recommendations". Then I added one goal of my own: "if we can consolidate and optimize elements where possible, that is the goal too". The neutral ramp had 21 grays because light and dark had each picked their own. Four pairs sat at ΔE ≈ 1, a difference nobody can see, and those merged, leaving 17.
+
+## Fix it in a day, with proof
+
+The system lives in one file, `web/src/tokens/tokens.json`, in the W3C design tokens format:
+
+- **Primitives:** 59 raw colors. Nothing uses them directly.
+- **Semantics:** 43 color tokens that alias primitives, in Light and Dark.
+- **Modes:** Light and Dark for color, and Smaller, Default and Larger for type.
+
+Each semantic token carries a usage line, and that line is the guidance. Here's `ai/highlight`:
+
+> Only 'the AI changed this' (plus the logo and the celebration highlighter). Always a background under ink; same in both themes.
+
+`pnpm tokens` writes everything else from that file: the CSS (with dark mode written once), the motion values for the TypeScript that animates, and the token tables in the brand guide. Figma is synced from the same file, written by Claude through Figma's MCP server: six variable collections, 14 text styles and 5 effect styles. The check after that build found 0 unbound fills or strokes across 306 nodes. The direction never changes: edit the JSON, run the generator, then sync Figma. What Figma can't hold (motion behavior, reduced motion, `color-mix` tints, the focus ring's offset, z-index and breakpoints) is written on a Foundations frame instead, so the gap is visible.
+
+"Changes nothing visible" had to be checked, not assumed, so the first stage added `pnpm ui:shots`. It starts its own server on a throwaway database with no AI, seeds a fictional person and three jobs, and shoots every screen at 1440 and 390 px, in light and dark, with reduced motion. Chrome renders in software with a seeded random, so two runs of the same code match pixel for pixel. Take shots before a change and after, and a single changed pixel fails the screen.
+
+All on October 11:
+
+| Time | What moved | Result |
+|---|---|---|
+| 03:50 | tokens.json becomes the source; dark mode written once | no visible change, 56 screens |
+| 04:03 | raw colors and motion timings onto tokens | pixel-identical |
+| 04:08 | 827 spacing, radius and shadow values as tokens | pixel-identical |
+| 04:21 | Fit, Research and the ghost check on one left edge | changed on purpose |
+| 04:30 | 200 font-size declarations onto eight steps (18 sizes → 8) | changed on purpose |
+| 04:53 | duplicates onto the component specs | changed on purpose |
+| 11:26 | 163 buttons onto `<Button>`, `<LinkButton>` and `<IconButton>`; every pill onto `<Chip>` | pixel-identical, 58 screens |
+| 12:41 | to production | live |
+
+There were no commits between 04:54 and 10:44. To be fair to the numbers, stage 0 wasn't strictly identical: merging the grays moved some color channels by up to 3/255, so it ran with a tolerance of 3. And the proof tool needed two fixes of its own (waiting for the resume preview, and keeping the product tour's toast out of the shots). A screenshot check you can't trust is worse than none.
+
+After the ship, the rest split into threads, each in its own git worktree. One wired a `<Field>` component into five forms. One moved the landing page onto the app's tokens. Others merged every pill onto one CSS base, gave empty tabs one `<EmptyState>`, put three dialogs on one `<Dialog>`, and replaced the browser's `confirm()`, `alert()` and `prompt()` boxes with `confirmDialog`, `alertDialog` and `promptDialog`. `ui:shots` grew to 80 screens, and the later invisible changes were checked on all of them. By the end of the day `web/src/ui` held eight components: `Button`, `ButtonLink`, `LinkButton`, `IconButton`, `Chip`, `Field`, `EmptyState` and `Dialog`.
+
+<MediaFull
+  src="/images/projects/ghosted/design-system/fit-one-edge.webp"
+  alt="The same Fit page after the system: the header, its line, the callout and all three columns start on one left edge"
+  caption="Fit after: one left edge."
+/>
+
+## Make it impossible to repeat
+
+Everything so far pays the debt down. This part stops it coming back, and it's the part I'd build first next time.
+
+`pnpm check` now fails when:
+
+- a generated token file is stale;
+- a new raw hex color appears anywhere in `web/src`;
+- a `<button>` is styled with a button class instead of going through `web/src/ui`;
+- a pill is drawn without `<Chip>`, or a link is styled as a button without `<ButtonLink>`;
+- code calls the browser's `confirm()`, `alert()` or `prompt()`;
+- a modal is built without `<Dialog>`.
+
+Here's what an agent sees when it hand-writes a button. This is real output, from a scratch edit I made to test it:
+
+```
+web/src/App.tsx:407: use <Button>, <LinkButton> or <IconButton> from web/src/ui, not a classed <button>
+```
+
+The message names the fix, because the reader is usually an agent, and an agent told which component to use will use it. Colors that predate the system sit in a baseline file and leave it one by one. Only new ones fail.
+
+None of this is clever. It's a script of 144 lines. What matters is where it sits: every session runs `pnpm check` before it pushes, and nothing ships to production until it passes. It isn't a git hook. It's part of how the project works, written in the instructions every agent session reads.
+
+`ui:shots` is the other half. "Pixel-identical on 58 screens" in a commit message is a claim anyone can rerun. Refactors stop being acts of faith, so they get smaller and more frequent.
+
+## What changed in how I build
+
+**Tokens and components are a vocabulary.** An agent can still make a bad choice, but only from a set I approved. A value from outside the set doesn't get past the check.
+
+**Guidance is written for people and agents.** The sentence about what yellow means lives in the JSON, in Figma's variable description and in the guide. A designer in Figma and an agent in code read the same rule, and the rule travels with the value.
+
+**Design and code come from one file.** The decisions I made before dawn were in Figma and in production by 12:41 the same day.
+
+**Decisions are the scarce part.** I made about a dozen calls that day. Agents made the hundreds of edits. When I said "take it all" so the rollout could finish, Claude made the remaining calls, and each one is written in a decision record, marked open for 1.0. A decision I delegated is still a decision I can see.
+
+**I'm honest about who uses it.** This system's users are coding agents and Ghosted's testers. No partner teams adopt it, and nobody has usability-tested it. It tests the method, not adoption at scale.
+
+## Foundation first?
+
+My own note from that day: "especially when building an ai-coded project you need to have a strong foundation or design debt/drift will take hold." Drift did take hold. I watched it happen in three days. But on day one I didn't know the layout, and tokens chosen before the screens existed would have been guesses.
+
+What I'd do again: ship fast, count early, decide in one sitting, and add the guards on the same day you pay the debt down. The guard is the part of the foundation that holds, because it's the part an agent can't forget.
+
+## What it ran on
+
+- Claude Code with Claude Opus 5.5 for the audit, the docs, the token generator and every code change.
+- Figma's MCP server for the library.
+- Chrome, driven over the DevTools Protocol, for the screenshots.
+- DM Sans, React and Vite.
+
+No new runtime dependencies: the token generator and the screenshot script are plain TypeScript. The audit started after 02:50, and the system reached production at 12:41.
+
+## What's still open
+
+Three motion questions wait for 1.0. Code Connect, which would link the Figma components to `web/src/ui`, needs a Figma plan I don't have. The landing videos I banked at 02:50 came back at 13:46 the same day, and this time they film an interface that holds still.
+
+**Part 2** takes the same method (count it, decide it, fix it, guard it) to an audit of a multi-brand system and its sub-brands, print included: packaging and signs.
