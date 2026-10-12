@@ -395,7 +395,9 @@
     cursor: pointer;
     color: inherit;
     font: inherit;
-    transition: all var(--motion-ui) var(--ease-out);
+    transition:
+      background-color var(--motion-ui) var(--ease-out),
+      border-color var(--motion-ui) var(--ease-out);
   }
 
   button:hover,
@@ -418,7 +420,9 @@
     margin-right: var(--space-12);
     text-transform: uppercase;
     letter-spacing: var(--track-caps);
-    transition: all var(--motion-ui) var(--ease-out);
+    transition:
+      background-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
   }
 
   .label {

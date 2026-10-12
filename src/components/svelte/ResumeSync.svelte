@@ -148,7 +148,10 @@
     text-transform: uppercase;
     letter-spacing: var(--track-caps);
     cursor: pointer;
-    transition: all var(--motion-ui) var(--ease-out);
+    transition:
+      background-color var(--motion-ui) var(--ease-out),
+      border-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
   }
 
   button:hover:not(:disabled),

@@ -200,7 +200,9 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
     border: 2px solid var(--color-accent);
     padding: var(--space-4) var(--space-8);
     margin-bottom: var(--space-12);
-    transition: all var(--motion-ui) var(--ease-out);
+    transition:
+      border-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
   }
 
   h3 {
@@ -264,7 +266,9 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
     letter-spacing: var(--track-caps);
     padding: 0.2rem 0.4rem;
     border: 1px solid var(--text-primary);
-    transition: all var(--motion-ui) var(--ease-out);
+    transition:
+      border-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
   }
 
   .tags .tag-more {

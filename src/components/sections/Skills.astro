@@ -104,7 +104,10 @@ const getIconName = (name: string) => {
     border: 3px solid var(--text-primary);
     padding: 0.4rem var(--space-12);
     cursor: default;
-    transition: all var(--motion-ui) var(--ease-out);
+    transition:
+      background-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out),
+      transform var(--motion-ui) var(--ease-out);
     animation: skillSlideUp var(--motion-entry) var(--ease-out) backwards;
     animation-delay: calc(var(--i) * var(--motion-stagger-dense));
   }

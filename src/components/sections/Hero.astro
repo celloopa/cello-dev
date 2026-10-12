@@ -183,7 +183,10 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		height: 36px;
 		width: 36px;
 		cursor: pointer;
-		transition: all var(--motion-ui) var(--ease-out);
+		transition:
+			background-color var(--motion-ui) var(--ease-out),
+			border-color var(--motion-ui) var(--ease-out),
+			color var(--motion-ui) var(--ease-out);
 	}
 
 	button:hover {
@@ -209,7 +212,10 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		padding: 0;
 		height: 36px;
 		width: 36px;
-		transition: all var(--motion-ui) var(--ease-out);
+		transition:
+			background-color var(--motion-ui) var(--ease-out),
+			border-color var(--motion-ui) var(--ease-out),
+			color var(--motion-ui) var(--ease-out);
 	}
 
 	footer a:hover {

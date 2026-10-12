@@ -8,9 +8,6 @@
   }
  },
  "src/components/BlogCard.astro": {
-  "ban:transition-all": {
-   "transition: all": 2
-  },
   "line-height": {
    "1": 1,
    "1.5": 1
@@ -72,9 +69,6 @@
    "0.35rem": 1,
    "0.65rem": 1
   },
-  "ban:transition-all": {
-   "transition: all": 1
-  },
   "font-size": {
    "0.7rem": 1,
    "0.8rem": 1
@@ -101,9 +95,6 @@
   },
   "letter-spacing": {
    "0.08em": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 3
   },
   "line-height": {
    "1": 1,
@@ -153,9 +144,6 @@
   },
   "letter-spacing": {
    "-0.05rem": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 2
   }
  },
  "src/components/sections/Projects.astro": {
@@ -185,9 +173,6 @@
    "0.35rem": 1,
    "0.6rem": 1
   },
-  "ban:transition-all": {
-   "transition: all": 1
-  },
   "line-height": {
    "1": 1
   }
@@ -213,9 +198,6 @@
   "letter-spacing": {
    "0.15em": 1,
    "0.03em": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 2
   }
  },
  "src/components/svelte/ResumeSync.svelte": {
@@ -228,9 +210,6 @@
   "font-size": {
    "0.7rem": 1,
    "0.8rem": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 1
   }
  },
  "src/components/watchlist_project/watchlistHeader.astro": {
@@ -275,9 +254,6 @@
    "0.8rem": 8,
    "0.4rem": 3,
    "0.2rem": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 3
   },
   "font-size": {
    "0.8rem": 1,
@@ -446,9 +422,6 @@
    "0.65rem": 1,
    "0.2rem": 1
   },
-  "ban:transition-all": {
-   "transition: all": 5
-  },
   "font-size": {
    "0.8rem": 2,
    "clamp(1.5rem, 4vw, 2rem)": 1,
@@ -477,9 +450,6 @@
   "spacing": {
    "0.8rem": 1,
    "clamp(2rem, 5vh, 3.5rem)": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 2
   },
   "ban:container-literal": {
    "max-width: 1100px": 1
