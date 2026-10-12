@@ -2,6 +2,11 @@
 
 Kept by the "Ship cello.dev" session (`ship-conductor` skill). Profile: `docs/ship/PROFILE.md`.
 
+**2026-10-12 handover (Cello's choice in chat):** the newer "Ship cello.dev" session
+(`local_ea55c94c…`) keeps cello.dev. The first conductor becomes "Ship Daybreak". See
+`docs/ship/handoff.md`. The 0–1b review below was done by the first conductor at `03daa69`;
+the new conductor holds `df9693e` (docs-only on top) and 2a.
+
 ## Live
 
 | Sha | Date | Parts | Verified |
