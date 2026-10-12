@@ -23,6 +23,9 @@ In flight, not handed off:
   actually loads (first visible stage); the thread stops there for Cello's look. 0 px proof at
   hand-off: `ui:shots --compare b0,b1` against two stage-0 baseline runs (one phone screen has
   a documented 1 px two-state flicker; see `docs/design-system/audit.md`).
+- **Ghosted case study: live landing Loop recording** (rewrite thread; Cello: "Both"). Expected
+  as a real part, with files, the exact MDX change and go status. It also fixes the stale "five
+  chapters" line (the live landing has six). Review against D3: demo personas only.
 - **Rewrite exploration** (`claude/rewrite-exploration` at `6f16df3`, local): exploration only;
   not a part.
 
@@ -73,6 +76,23 @@ In flight, not handed off:
   `bg-plate` are revised accordingly. **Still open:** whether today's site changes too under I6
   (window frame replacing the offset frame, `bg-plate`). Relayed to the migration thread with
   that caveat.
+- 2026-10-12, Cello, via the rewrite thread's `docs/rewrite/DS-HANDOFF.md` (`7a96777` on
+  `claude/rewrite-exploration`; his ask: "ensure the new changes to our brand and design system
+  are being logged and taken into components"). The audit thread has the doc. Decided, with
+  sources in GRILL Q18–Q21:
+  - D1: text over art in the rewrite (= the I2/I5 entry above; today's-site scope still open).
+  - D2: no people in scene art (all ten scenes cleaned).
+  - D3: case-study product artifacts use Ghosted demo personas only, never real resumes or
+    tester data. **Applies to every content part I review.**
+  - D4: reading dims the scene to the approved level, with no location or sound labels.
+  - D5: dark top bar kept; work nav separate from utilities.
+  - D6: sound later, opt-in, silent by default.
+  Proposed, pending Cello as an amendment: Scene component, Signature motion tier, focus-recipe
+  tokens, copy scrim + 4.5:1 contrast rule over art (conflicts with I3's art contrast exemption),
+  contextual top bar, place label + Admire, scene selector. Gaps the migration closes: self-host
+  National Park + Switchback (I4); Geist Sans for long reading (A2).
+- 2026-10-12, Cello: Geist Sans goes to long reading only (case-study and blog body), recorded
+  as migration amendment A2, a visible stage after 2b (reported by the audit thread).
 - 2026-10-12: ship order: migration stages reach `master` first; the rewrite's build plan
   follows only after the migration ships (rewrite handoff, "Next, ranked").
 
