@@ -37,4 +37,23 @@ Source: `audit.md` §11 on `claude/design-system-audit` @ `c418c5f`.
 
 ### Q1. When this thread does its work, given migration first
 
+Recommended: explore now as throwaway prototypes (standalone, outside `src/`), consuming the
+audit's token proposal once it exists; the build plan waits for the migration.
+**Answer (2026-10-12): explore now, prototypes only.** Prototypes live in
+`docs/rewrite/prototypes/`; no `src/` changes in this thread until a direction is picked AND the
+migration has shipped.
+
+### Q2. Which identity the rewrite leads with
+
+Fact: the live homepage (changed 2026-10-11 for the Nike Podium application) says "Digital
+Designer — Brand & Design Systems"; `cv.json` says "Product Designer & Design Engineer — Design
+Systems & AI Tools" (Brain decision 2026-10-08).
+Recommended: design systems as the spine; brand, product/AI tools and front-end build as the
+three kinds of evidence; per-application tuning stays in cover letters and tailored resumes.
+**Answer (2026-10-12): design systems as the spine.** Working concept to test in prototypes:
+"one system, carried from brand to build" (exploration, not a decision). This does not change
+the live homepage or `cv.json`; that's for whenever a direction ships.
+
+### Q3. References
+
 `[asked 2026-10-12]`
