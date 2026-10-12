@@ -1,0 +1,211 @@
+/*
+ * Scene, the DOM half (no three.js). Ported from the rewrite prototype (shared/scenery.js on
+ * claude/rewrite-exploration, verified there); behavior unchanged. What changed in the port: the
+ * still, the atmosphere, the place label, the Admire controls and the bar's reading context are
+ * server-rendered by Scene.astro / ContextBar.astro (so the still is in the HTML and works with no
+ * JavaScript), the scene data is embedded by the build (catalog.ts), and the focus and motion
+ * values come from the A3 tokens.
+ *
+ * - The scene's cut layers as a stacked-<img> still. It IS the page when there's no WebGL, under
+ *   reduced motion, with ?gl=0, or if textures fail; otherwise the WebGL renderer (renderer.js)
+ *   draws the same <img>s (no second download) and the still stays hidden.
+ * - Attention states, all reversible:
+ *     arrival  the intro copy over the scene, readable at once (nothing waits for the assembly)
+ *     admire   "Take in the view" hides the intro; "Back to Cello" (or Esc) returns
+ *     reading  once the focus target (the Work section) reaches the reading line, the scene
+ *              softens, dims and quiets; the place label goes; the bar shows the project in view
+ *              + All work
+ *
+ * Root classes: scene-3d (a renderer is expected), scene-still-on (show the still under/instead of
+ * the canvas), scene-gl-on (the canvas has drawn), scene-admire, scene-reading. The inline head
+ * script in SceneLayout sets scene-3d / scene-still-on before first paint.
+ */
+const root = document.documentElement;
+const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+const mobileQ = matchMedia("(max-width: 768px)");
+const isDark = () => (root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches);
+const clamp01 = (v) => Math.min(1, Math.max(0, v));
+
+/** The A3 tokens the renderer needs, read from the generated tokens.css. */
+function readTokens() {
+  const cs = getComputedStyle(root);
+  const num = (n) => parseFloat(cs.getPropertyValue(n));
+  const sec = (n) => { const v = cs.getPropertyValue(n).trim(); return v.endsWith("ms") ? parseFloat(v) / 1000 : parseFloat(v); };
+  return {
+    focus: {
+      desktop: { blur: num("--focus-blur"), bright: num("--focus-brightness"), sat: num("--focus-saturate") },
+      mobile: { blur: num("--focus-blur-mobile"), bright: num("--focus-brightness-mobile"), sat: num("--focus-saturate-mobile") },
+      scale: num("--focus-scale"),
+    },
+    focusSeconds: sec("--motion-focus"),
+    arrivalStagger: sec("--motion-arrival-stagger"),
+    arrivalOvershoot: num("--motion-arrival-overshoot"),
+  };
+}
+
+/**
+ * The 3D gate. No 3D (the still is the page) under reduced motion, Save-Data, 2G, ?gl=0, or
+ * without WebGL. The head script already ruled out the first four before paint.
+ */
+function webglOK() {
+  try {
+    const c = document.createElement("canvas");
+    return !!(c.getContext("webgl2") || c.getContext("webgl"));
+  } catch { return false; }
+}
+export function skip3D() {
+  const conn = navigator.connection || {};
+  return reduce.matches || conn.saveData === true || /(^|-)2g$/.test(conn.effectiveType || "") ||
+    new URLSearchParams(location.search).get("gl") === "0" || !webglOK();
+}
+
+export function start() {
+  const host = document.querySelector("[data-scene]");
+  if (!host) return;
+  const scene = JSON.parse(host.querySelector("script[data-scene-json]").textContent);
+  const scenery = host;
+  const imgs = [...host.querySelectorAll(".scene-layer")];
+  const noGL = skip3D();
+  if (noGL) root.classList.remove("scene-3d", "scene-still-on");
+
+  /* ---- Admire: "Take in the view" / "Back to Cello" ---- */
+  const hero = document.querySelector("[data-scene-hero]");
+  const admireBtn = document.querySelector("[data-admire-open]");
+  const view = document.querySelector("[data-admire-view]");
+  const context = document.querySelector("[data-scene-context]");
+  const title = context?.querySelector("[data-scene-context-title]");
+
+  /* ---- attention state ---- */
+  const state = { admire: false, reading: false };
+  let gl = null;
+  const apply = () => {
+    root.classList.toggle("scene-admire", state.admire);
+    root.classList.toggle("scene-reading", state.reading);
+    context?.toggleAttribute("inert", !state.reading);
+    gl?.setState({ admire: state.admire, reading: state.reading });
+  };
+
+  function setAdmire(on, { focusReturn = true } = {}) {
+    if (!view || state.admire === on) return;
+    state.admire = on;
+    view.hidden = !on;
+    apply();
+    if (on) view.querySelector("[data-admire-close]").focus({ preventScroll: true });
+    else if (focusReturn && document.activeElement && view.contains(document.activeElement)) admireBtn.focus({ preventScroll: true });
+  }
+  if (admireBtn && view) {
+    admireBtn.hidden = false; // needs this script; without it there's nothing to toggle
+    admireBtn.addEventListener("click", () => setAdmire(true));
+    view.querySelector("[data-admire-close]").addEventListener("click", () => setAdmire(false));
+    view.querySelector("[data-admire-work]")?.addEventListener("click", () => setAdmire(false, { focusReturn: false }));
+    addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && state.admire && !document.getElementById("keyboard-shortcuts-menu")) setAdmire(false);
+    });
+  }
+
+  /* ---- reading: the focus target crossing the reading line ---- */
+  const first = document.querySelector("[data-scene-focus]");
+  const stops = [...document.querySelectorAll("[data-scene-stop]")];
+  function contextFor() {
+    const line = innerHeight * 0.45;
+    let best = null, bestD = Infinity;
+    for (const el of stops) {
+      const r = el.getBoundingClientRect();
+      const d = r.top <= line && r.bottom >= line ? 0 : Math.min(Math.abs(r.top - line), Math.abs(r.bottom - line));
+      if (d < bestD) { bestD = d; best = el; }
+    }
+    return best?.dataset.sceneStop ?? "";
+  }
+  let ticking = false;
+  function onScroll() {
+    ticking = false;
+    if (first) {
+      const top = first.getBoundingClientRect().top;
+      // hysteresis: in at 62% of the viewport height, out at 72%
+      const reading = state.reading ? top < innerHeight * 0.72 : top < innerHeight * 0.62;
+      if (reading !== state.reading) {
+        state.reading = reading;
+        if (reading && state.admire) setAdmire(false, { focusReturn: false });
+        apply();
+      }
+      if (reading && title) { const t = contextFor(); if (title.textContent !== t) title.textContent = t; }
+    }
+    gl?.setScroll(clamp01(scrollY / Math.max(1, hero?.offsetHeight ?? innerHeight)));
+  }
+  addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  addEventListener("resize", onScroll);
+  apply();
+  onScroll();
+
+  // The still shows when there's no renderer (yet): it stays under the opaque canvas if the
+  // renderer arrives late, and shows again if the context is lost.
+  let stillOff = 0;
+  const showStill = (why) => {
+    if (why) console.info(`[scene] showing the still: ${why}`);
+    clearTimeout(stillOff);
+    root.classList.add("scene-still-on");
+    root.classList.remove("scene-gl-on");
+  };
+
+  // review hook (also used by the build's checks)
+  window.__scene = { scene, state: () => ({ ...state, gl: !!gl && root.classList.contains("scene-gl-on"), still: !root.classList.contains("scene-3d") || root.classList.contains("scene-still-on") }), gl: () => gl };
+
+  /* ---- WebGL, after paint, when allowed ---- */
+  if (noGL) return;
+  // "ready" = the canvas has drawn a frame on screen (never while hidden). The 6 s fallback
+  // counts visible time only: it's cancelled while hidden and re-armed when visible again.
+  let ready = false, giveUp = 0;
+  const armGiveUp = () => {
+    clearTimeout(giveUp);
+    if (!ready && !document.hidden) giveUp = setTimeout(() => { if (!ready && !document.hidden) showStill("renderer not ready after 6 s"); }, 6000);
+  };
+  armGiveUp();
+  document.addEventListener("visibilitychange", () => {
+    if (ready) return;
+    if (document.hidden) {
+      clearTimeout(giveUp);
+      // hidden before the first frame: keep the art on screen, skip the assembly later
+      root.classList.add("scene-still-on");
+      gl?.skipArrival();
+    } else armGiveUp();
+  });
+  // the canvas has drawn on screen: cross-fade it in, then stop compositing the still under it
+  const handoff = () => {
+    ready = true;
+    clearTimeout(giveUp);
+    root.classList.add("scene-gl-on");
+    if (root.classList.contains("scene-still-on")) stillOff = setTimeout(() => root.classList.remove("scene-still-on"), 400);
+  };
+  const go = async () => {
+    try {
+      const { createLandscape } = await import("./renderer.js");
+      const canvas = document.createElement("canvas");
+      canvas.className = "scene-gl";
+      scenery.querySelector(".scene-atmos").before(canvas);
+      gl = await createLandscape({
+        canvas, scene, imgs,
+        tokens: readTokens(),
+        mobile: () => mobileQ.matches,
+        dark: isDark(),
+        // the still took over meanwhile: arrive already settled, then cross-fade over it
+        settled: () => root.classList.contains("scene-still-on"),
+        onLost: () => { gl = null; showStill("WebGL context lost"); },
+        onFirstFrame: handoff,
+      });
+      gl.setState({ admire: state.admire, reading: state.reading });
+      gl.setScroll(clamp01(scrollY / Math.max(1, hero?.offsetHeight ?? innerHeight)));
+      gl.start(); // its first on-screen frame calls handoff (deferred while the tab is hidden)
+      const onTheme = () => gl?.setDark(isDark());
+      new MutationObserver(onTheme).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
+      matchMedia("(prefers-color-scheme: dark)").addEventListener("change", onTheme);
+    } catch (err) {
+      clearTimeout(giveUp);
+      gl?.stop(); gl = null;
+      console.warn("[scene] 3D disabled, showing the still:", err);
+      showStill();
+    }
+  };
+  reduce.addEventListener("change", () => { if (reduce.matches) { gl?.stop(); gl = null; showStill("reduced motion turned on"); } });
+  const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 120));
+  idle(go, { timeout: 600 });
+}
