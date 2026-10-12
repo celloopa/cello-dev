@@ -76,6 +76,32 @@ opener), design-engineer craft on every reading surface, the system shown throug
 artifacts rather than as the whole interface. Cello named no further sites; the lanes above
 are the reference set until he adds one.
 
-### Q4. What a hiring manager must take away, in what order
+### Q4. Center of gravity, and the resume
+
+Re-asked after Cello's resume remark was relayed. Facts: live demos are ghosted.cello.design and
+vegavengers.com; 2 published posts + 2 drafts; no YouTube channel linked anywhere.
+Recommended: work first, resume as a utility.
+**Answer (2026-10-12): agree.**
+- Work is the center. Path: 10s = mark assembling + spine line; 60s = four case-study posters
+  (Asheville → Ghosted → VegAvengers → Daybreak, Daybreak labelled personal dogfooding), one
+  outcome line + one real artifact each; 5min = one case study in a shared shape (problem →
+  constraints → system → decisions → build → where the human approves → outcome).
+- Writing and video are one stream ("Log", name open), launching with the 2 published posts; a
+  YouTube surface appears only once a channel exists.
+- Resume leaves the main nav: menu + footer link, "Resume (PDF)". `/resume`, `/cv.json`, PDF kept.
+- Nav ≈ Work · Log · About; contact everywhere.
+
+### Q5. Which signatures carry over
+
+**Answer (2026-10-12): keep all recommendations.**
+- Keep + promote: the mark (C-ring, sun, triangle) as the system's generator for hero, frames,
+  dividers, diagrams.
+- Keep: house curve; thick strokes, offset frames, square corners; texture (quieter, static
+  under reduced motion); ⌘K menu (improved; home of resume, PDF, theme); Saul Bass register at
+  the front door.
+- Keep the big name's scale, retire the typewriter. Retire the marquee. Move the hero photo to
+  About.
+
+### Q6. Motion/tech ambition and the performance + accessibility budget
 
 `[asked 2026-10-12]`
