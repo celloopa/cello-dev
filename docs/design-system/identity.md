@@ -13,7 +13,7 @@ below the window. The mark was already this scene: a sun rising behind a mountai
 1. Daybreak window and times of day: the light theme is Day, the dark theme is Dusk.
 2. Seasonal poster inks, as an art palette.
 3. A poster display face for titles and place names.
-4. The window frame as a shape primitive, and the location card as a component.
+3. The window frame as a shape primitive, and the location card as a component.
 
 ## Decisions
 
@@ -21,6 +21,11 @@ below the window. The mark was already this scene: a sun rising behind a mountai
   and Mt Hood. The Daybreak app's from-scratch identity picks a different motif, which keeps
   "shared family roots, separate systems" (Daybreak grill-log item 18). The Daybreak session
   was told.
+- **I2. Two themes, Day and Dusk; text only on surfaces (2026-10-12).** The system themes are
+  exactly Day (Paper 100 + ink) and Dusk (Midnight Ink + starlight); the values were approved in
+  Q3/Q4. Scenes may print at dawn or night as art, but text only ever sits on Day or Dusk
+  surfaces or on opaque plates, never on a scene. Contrast is checked against those surfaces
+  only. Theme selection still follows the system setting (Q5).
 
 ## Seasonal inks (draft, from the photos)
 
@@ -40,8 +45,7 @@ Dusk is one rule rather than a second palette: each ink is mixed 60% toward Midn
 
 ## Still open, one at a time
 
-1. Day/Dusk naming, and the rule that text only meets Day or Dusk surfaces.
-2. The seasonal inks and the dusk rule.
-3. The display face (Big Shoulders Display recommended; League Gothic and Alfa Slab One shown).
-4. The window frame primitive and the location card (their tier).
-5. How much of this reaches today's site in the migration.
+1. The seasonal inks and the dusk rule.
+2. The display face (Big Shoulders Display recommended; League Gothic and Alfa Slab One shown).
+3. The window frame primitive and the location card (their tier).
+4. How much of this reaches today's site in the migration.
