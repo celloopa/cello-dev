@@ -1,0 +1,81 @@
+{
+  "id": "meadows-lift",
+  "place": "Meadows lift line",
+  "month": "June",
+  "status": "photo-treatment and cut candidate; aesthetic approval pending; still preferred until thin cable cleanup",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "webSize": [
+    1440,
+    1080
+  ],
+  "master": "/scenes/meadows-lift/master-wide.webp",
+  "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
+  "expandedSides": "None: original landscape4:3 aspect retained",
+  "figma": {
+    "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+    "page": "1:48",
+    "section": "24:2",
+    "root": "24:3",
+    "master": "24:4",
+    "layersFrame": "24:5",
+    "layers": {
+      "sky": "24:6",
+      "terrain": "24:7",
+      "lift": "24:8"
+    }
+  },
+  "mobileCropCenter": [
+    0.72,
+    0.5
+  ],
+  "layers": [
+    {
+      "name": "sky",
+      "src": "/scenes/meadows-lift/sky.webp",
+      "depth": 0.97,
+      "testedHorizontalSourcePx": 0,
+      "recommendedHorizontalSourcePx": 0
+    },
+    {
+      "name": "terrain",
+      "src": "/scenes/meadows-lift/terrain.webp",
+      "depth": 0.7,
+      "testedHorizontalSourcePx": 1,
+      "recommendedHorizontalSourcePx": 0
+    },
+    {
+      "name": "lift",
+      "src": "/scenes/meadows-lift/lift.webp",
+      "depth": 0.08,
+      "testedHorizontalSourcePx": 2,
+      "recommendedHorizontalSourcePx": 0
+    }
+  ],
+  "checks": {
+    "restack": "cut-check.json",
+    "motion": [
+      "motion-left.jpg",
+      "motion-right.jpg"
+    ],
+    "isolated": [
+      "isolated-sky.jpg",
+      "isolated-terrain.jpg",
+      "isolated-lift.jpg"
+    ],
+    "crops": [
+      "crop-desktop.jpg",
+      "crop-mobile.jpg"
+    ]
+  },
+  "limitations": [
+    "Thin cable fragments remain in background and portions of cable matte have gaps; visible kinks/ghosts at tested2px. Prefer still until cable mask refinement and fixed upper anchors are implemented.",
+    "Mountain, forest, ground, distant towers and right terminal share one terrain plane. No independent mountain/ground movement claimed.",
+    "Master preserves major viewpoint/landmarks but AI shifts fine geometry, snow contours, path width and tree spacing; treatment is not a deterministic shader.",
+    "Tall mobile crop at72% favors mountain and excludes the two nearest left chairs. Alternate chair crop would exclude peak. Mobile-specific recomposition remains a design decision.",
+    "Exact restack proves source coverage/color, not segmentation quality.",
+    "No physical-device motion or runtime implemented."
+  ]
+}
