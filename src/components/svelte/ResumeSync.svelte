@@ -179,7 +179,7 @@
 
   .preview ul {
     padding-left: var(--space-20);
-    font-family: "Geist Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 0.8rem;
   }
 

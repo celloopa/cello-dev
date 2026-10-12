@@ -1,15 +1,14 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import { basics } from "@cv";
-import "@fontsource/geist-mono/100.css";
-import "@fontsource/geist-mono/200.css";
-import "@fontsource/geist-mono/300.css";
 import "@fontsource/geist-mono/400.css";
 import "@fontsource/geist-mono/500.css";
 import "@fontsource/geist-mono/600.css";
 import "@fontsource/geist-mono/700.css";
 import "@fontsource/geist-mono/800.css";
 import "@fontsource/geist-mono/900.css";
+import geistMono400 from "@fontsource/geist-mono/files/geist-mono-latin-400-normal.woff2?url";
+import geistMono700 from "@fontsource/geist-mono/files/geist-mono-latin-700-normal.woff2?url";
 import "@/styles/colors.css";
 import "@/styles/animations.css";
 import "@/styles/print.css";
@@ -62,6 +61,8 @@ const SOCIAL_ICONS: SocialIcon = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#001A11" />
     <meta name="color-scheme" content="dark light" />
+    <link rel="preload" href={geistMono400} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={geistMono700} as="font" type="font/woff2" crossorigin />
     <link rel="canonical" href={canonicalUrl} />
     <link
       rel="icon"
@@ -263,7 +264,7 @@ const SOCIAL_ICONS: SocialIcon = {
     </script>
     <style is:global>
       html {
-        font-family: "GeistMono", monospace;
+        font-family: var(--font-mono);
         font-weight: var(--weight-regular);
         background: var(--bg-canvas);
         color: var(--text-primary);

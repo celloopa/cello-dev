@@ -62,7 +62,7 @@
   --art-october-ground: #8b7b66;
 
   /* Type */
-  --font-mono: "GeistMono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; /* Body and UI face. The family name is fixed in stage 2a. */
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; /* Body and UI face, Geist Mono (Cello family layer). 400 and 700 are preloaded; 500/600/800/900 load on demand. */
   --font-title: var(--font-mono); /* Titles. Becomes National Park in stage 2b (I4). */
   --font-place: "Switchback", var(--font-mono); /* Place names only (I4). Unused until the rewrite. */
   --type-display-hero: clamp(4.5rem, 10vw, 10rem); /* The hero name only. */
