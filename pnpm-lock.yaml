@@ -32,6 +32,9 @@ importers:
       svelte:
         specifier: ^5.28.2
         version: 5.28.2
+      three:
+        specifier: ^0.186.1
+        version: 0.186.1
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -1881,6 +1884,9 @@ packages:
     resolution: {integrity: sha512-VvrHQ+9uniE+Mvx3+C9IEe/lWasXCU0nXMY2kZeLrHNICuRiC8uMPyM14UEaMOFA5mhyQqEkB02VoQ16n3DLaw==}
     engines: {node: '>=16'}
     hasBin: true
+
+  three@0.186.1:
+    resolution: {integrity: sha512-blFeqb49wRCSGUGj7gtpfnSGHy2lwDk94RhUmS1c/hTby70kvChbWpkJ4Pm1390LqzzvTmzgXKHPEafJwCb8jA==}
 
   tiny-inflate@1.0.3:
     resolution: {integrity: sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==}
@@ -4601,6 +4607,8 @@ snapshots:
       csso: 5.0.5
       picocolors: 1.1.1
       sax: 1.4.4
+
+  three@0.186.1: {}
 
   tiny-inflate@1.0.3: {}
 
