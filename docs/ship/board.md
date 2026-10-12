@@ -16,10 +16,13 @@ Kept by the "Ship cello.dev" session (`ship-conductor` skill). Profile: `docs/sh
 
 In flight, not handed off:
 
-- **Design-system migration, stage 0 + identity** (`claude/design-system-migration` at
-  `54bd1e6`, local, unpushed): stage 0 token source/generator/guards/`ui:shots` (`756f5b3`,
-  "no visual change intended") plus identity I1–I6 docs and amendment A1. Stage 1 paused by
-  Cello to fold in the window identity.
+- **Design-system migration** (`claude/design-system-migration`, local, unpushed; the thread
+  pushes only when Cello asks): stage 0 token source/generator/guards/`ui:shots` (`756f5b3`,
+  0 px intended); identity I1–I6 + amendment A1 (`d4a64ec..54bd1e6`, docs); stage 1a roles at
+  today's values (0 px) committed. Next: 1b literals → tokens (0 px), then 2a Geist Mono
+  actually loads (first visible stage); the thread stops there for Cello's look. 0 px proof at
+  hand-off: `ui:shots --compare b0,b1` against two stage-0 baseline runs (one phone screen has
+  a documented 1 px two-state flicker; see `docs/design-system/audit.md`).
 - **Rewrite exploration** (`claude/rewrite-exploration` at `6f16df3`, local): exploration only;
   not a part.
 
@@ -27,7 +30,7 @@ In flight, not handed off:
 
 | Session | Owns | Branch | State |
 |---|---|---|---|
-| Audit and unify the cello.dev design system | Staged migration of today's site; identity I1–I6 + A1 | `claude/design-system-migration` | Stage 0 committed; stage 1 paused for identity; idle |
+| Audit and unify the cello.dev design system | Staged migration of today's site; identity I1–I6 + A1 | `claude/design-system-migration` | Stages 0 + 1a committed; 1b then 2a next; stops at 2a for Cello's look |
 | Rewrite cello.dev | Rewrite exploration: window scenes, layer cut, Figma scenes file | `claude/rewrite-exploration` | Exploring; hands off nothing until Cello picks a direction |
 | Rewrite cello.dev (old, handed off) | Predecessor of the above | — | Handed off; archive candidate (Cello's OK) |
 | Rethink Daybreak from the ground up | Daybreak, separate repo | (daybreak repo) | Cross-thread decisions only |
@@ -48,6 +51,14 @@ In flight, not handed off:
   Midnight Ink `#001A11` as text and primary action on paper, Paper `#F3EDE2`, the voice.
   Daybreak keeps its own paper/ink names, no Day/Dusk. **Rule:** if cello.dev changes any of
   those root values, the conductor sends Daybreak one line to re-sync. Migration thread told.
+- 2026-10-12, migration thread's family-root deltas (cello.dev vs Daybreak's 0.2.0-draft),
+  relayed to Daybreak: text on paper **same** (Midnight Ink `#001a11`); house curve **same**;
+  Paper `#f3ede2` **same value**, but on cello.dev only from stage 3 (live Day canvas is
+  `#e0e0e0` today); primary action **differs** (cello.dev Day action is green signal-700
+  `#007a33`, Cello's Q4); type **differs** (cello.dev uses Geist Mono only, no Geist Sans;
+  National Park/Switchback are product-level); reduced-motion contract text **same**, but
+  cello.dev's code only meets it from stage 4 (delays not zeroed today). Two of these are open
+  calls below.
 - 2026-10-12: ship order: migration stages reach `master` first; the rewrite's build plan
   follows only after the migration ships (rewrite handoff, "Next, ranked").
 
@@ -57,6 +68,11 @@ In flight, not handed off:
   migration thread hands it off with a 0 px `ui:shots` compare? It puts the token guard into
   `pnpm build` for every later part.
 - Archive "Rewrite cello.dev (old, handed off)"?
+- Family roots (Daybreak's `family.identifiers` 0.2.0-draft vs cello.dev): is **primary action
+  color** a family root (Daybreak: Midnight Ink) or product-level (cello.dev: green
+  `#007a33`, per your Q4)? And is **Geist Sans** a family root when cello.dev uses Geist Mono
+  only? Either answer is fine; it decides whether Daybreak's family file drops those two or
+  cello.dev changes.
 
 ## After deploy, for Cello
 
