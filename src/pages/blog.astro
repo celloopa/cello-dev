@@ -44,30 +44,30 @@ const publishedPosts = allPosts
 <style>
 	h1 {
 		font-size: 2.5rem;
-		font-weight: 700;
+		font-weight: var(--weight-bold);
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		letter-spacing: var(--track-caps);
 		color: var(--color-accent);
 		margin-bottom: 0;
 	}
 
 	.intro {
-		color: var(--color-text);
+		color: var(--text-primary);
 		opacity: 0.8;
-		margin-top: 0.5rem;
+		margin-top: var(--space-8);
 	}
 
 	.blog-grid {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
-		gap: 2rem;
+		gap: var(--space-32);
 	}
 
 	.empty {
 		text-align: center;
-		color: var(--color-text);
+		color: var(--text-primary);
 		opacity: 0.6;
-		font-size: 1.1rem;
+		font-size: var(--type-body-lg);
 	}
 
 	@media (width <= 700px) {

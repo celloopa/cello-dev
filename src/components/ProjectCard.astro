@@ -87,10 +87,10 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
 <style>
   .card {
     position: relative;
-    background: var(--color-background);
-    border: 3px solid var(--color-text);
+    background: var(--bg-canvas);
+    border: 3px solid var(--text-primary);
     overflow: hidden;
-    animation: slideUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation: slideUp 0.7s var(--ease-out) backwards;
     animation-delay: calc(var(--i) * 0.1s);
   }
 
@@ -103,7 +103,7 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
     height: 100%;
     background: var(--color-accent);
     transform: translateX(-101%);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.4s var(--ease-out);
     z-index: 0;
   }
 
@@ -121,30 +121,30 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
   .card:hover footer,
   .card:focus-within .content,
   .card:focus-within footer {
-    color: var(--color-background);
+    color: var(--bg-canvas);
   }
 
   .card:hover .role,
   .card:focus-within .role {
-    color: var(--color-background);
-    border-color: var(--color-background);
+    color: var(--bg-canvas);
+    border-color: var(--bg-canvas);
   }
 
   .card:hover .bar,
   .card:focus-within .bar {
-    background: var(--color-background);
+    background: var(--bg-canvas);
   }
 
   .card:hover .tags li,
   .card:focus-within .tags li {
-    border-color: var(--color-background);
-    color: var(--color-background);
+    border-color: var(--bg-canvas);
+    color: var(--bg-canvas);
   }
 
   .card:hover .external,
   .card:focus-within .external {
-    color: var(--color-background);
-    border-color: var(--color-background);
+    color: var(--bg-canvas);
+    border-color: var(--bg-canvas);
   }
 
   .card-link {
@@ -165,7 +165,7 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform var(--motion-entry) var(--ease-out);
     filter: grayscale(20%);
   }
 
@@ -181,7 +181,7 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
         transparent 2px 16px
       ),
       rgba(var(--color-text-rgb), 0.04);
-    border-bottom: 2px solid var(--color-text);
+    border-bottom: 2px solid var(--text-primary);
   }
 
   .placeholder-box::after {
@@ -193,21 +193,21 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
     border: 2px solid var(--color-accent);
     color: var(--color-accent);
     font-size: 0.72rem;
-    font-weight: 800;
-    line-height: 1.2;
+    font-weight: var(--weight-extrabold);
+    line-height: var(--leading-heading);
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
 
   .card:hover .placeholder-box,
   .card:focus-within .placeholder-box {
-    border-color: var(--color-background);
+    border-color: var(--bg-canvas);
   }
 
   .card:hover .placeholder-box::after,
   .card:focus-within .placeholder-box::after {
-    color: var(--color-background);
-    border-color: var(--color-background);
+    color: var(--bg-canvas);
+    border-color: var(--bg-canvas);
   }
 
   img {
@@ -215,7 +215,7 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform var(--motion-entry) var(--ease-out);
     filter: grayscale(20%);
   }
 
@@ -235,11 +235,11 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
     height: 40%;
     background: linear-gradient(
       to top,
-      var(--color-background) 0%,
+      var(--bg-canvas) 0%,
       transparent 100%
     );
     pointer-events: none;
-    transition: opacity 0.3s ease;
+    transition: opacity var(--motion-ui) ease;
   }
 
   .card:hover .image-accent,
@@ -248,31 +248,31 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
   }
 
   .content {
-    padding: 1.25rem;
+    padding: var(--space-20);
     position: relative;
     z-index: 1;
-    transition: color 0.3s ease;
+    transition: color var(--motion-ui) ease;
   }
 
   .role {
     display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: var(--track-wide);
     color: var(--color-accent);
     border: 2px solid var(--color-accent);
-    padding: 0.25rem 0.5rem;
-    margin-bottom: 0.75rem;
-    transition: all 0.3s ease;
+    padding: var(--space-4) var(--space-8);
+    margin-bottom: var(--space-12);
+    transition: all var(--motion-ui) ease;
   }
 
   h3 {
-    font-size: 1.5rem;
-    font-weight: 900;
+    font-size: var(--type-heading);
+    font-weight: var(--weight-black);
     text-transform: uppercase;
     line-height: 1;
-    margin: 0 0 0.75rem;
+    margin: 0 0 var(--space-12);
     padding: 0;
     letter-spacing: 0;
   }
@@ -281,12 +281,12 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
     width: 60px;
     height: 4px;
     background: var(--color-accent);
-    margin-bottom: 0.75rem;
-    transition: background 0.3s ease;
+    margin-bottom: var(--space-12);
+    transition: background var(--motion-ui) ease;
   }
 
   p {
-    font-size: 0.9rem;
+    font-size: var(--type-ui);
     line-height: 1.5;
     margin: 0;
     padding: 0;
@@ -301,8 +301,8 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.25rem;
-    border-top: 2px solid var(--color-text);
+    padding: var(--space-16) var(--space-20);
+    border-top: 2px solid var(--text-primary);
     position: relative;
     z-index: 1;
     transition:
@@ -312,7 +312,7 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
 
   .card:hover footer,
   .card:focus-within footer {
-    border-color: var(--color-background);
+    border-color: var(--bg-canvas);
   }
 
   .tags {
@@ -323,12 +323,12 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
 
   .tags li {
     font-size: 0.7rem;
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: var(--track-caps);
     padding: 0.2rem 0.4rem;
-    border: 1px solid var(--color-text);
-    transition: all 0.3s ease;
+    border: 1px solid var(--text-primary);
+    transition: all var(--motion-ui) ease;
   }
 
   .tags .tag-more {
@@ -338,7 +338,7 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
 
   .links {
     display: flex;
-    gap: 0.5rem;
+    gap: var(--space-8);
   }
 
   .external {
@@ -347,15 +347,15 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
     justify-content: center;
     width: 44px;
     height: 44px;
-    border: 2px solid var(--color-text);
-    color: var(--color-text);
-    transition: all 0.3s ease;
+    border: 2px solid var(--text-primary);
+    color: var(--text-primary);
+    transition: all var(--motion-ui) ease;
   }
 
   .external:hover {
-    background: var(--color-background);
+    background: var(--bg-canvas);
     color: var(--color-accent);
-    border-color: var(--color-background);
+    border-color: var(--bg-canvas);
   }
 
   @keyframes slideUp {
@@ -371,15 +371,15 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
 
   @media (width <= 700px) {
     h3 {
-      font-size: 1.25rem;
+      font-size: var(--type-title);
     }
 
     .content {
-      padding: 1rem;
+      padding: var(--space-16);
     }
 
     footer {
-      padding: 0.75rem 1rem;
+      padding: var(--space-12) var(--space-16);
     }
   }
 </style>

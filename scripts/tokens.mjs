@@ -82,7 +82,7 @@ const RULES = {
   "letter-spacing": { prop: /(?:^|[\s;{])letter-spacing\s*:\s*([^;}"`]+)/g, why: "Use a tracking token." },
   spacing: { prop: /(?:^|[\s;{])(?:margin|padding)(?:-[a-z-]+)?\s*:\s*([^;}"`]+)|(?:^|[\s;{])(?:row-|column-)?gap\s*:\s*([^;}"`]+)/g, split: true, why: "Use a space or layout token." },
   duration: { re: /(?<![\w.-])\d*\.?\d+m?s\b/g, ctx: /transition|animation/, why: "Use a motion token." },
-  easing: { re: /cubic-bezier\([^)]*\)|\b(?:ease-in-out|ease-in|ease-out|ease)\b(?![-\w])/g, ctx: /transition|animation/, why: "Use the house curve token (--ds-ease-out)." },
+  easing: { re: /cubic-bezier\([^)]*\)|(?<![-\w])(?:ease-in-out|ease-in|ease-out|ease)(?![-\w])/g, ctx: /transition|animation/, why: "Use the house curve token (--ease-out)." },
 };
 const BANS = {
   "keyframes-outside-animations": { re: /@keyframes\s+[\w-]+/g, skip: (f) => f.endsWith("styles/animations.css"), why: "Define keyframes once in src/styles/animations.css: Astro doesn't scope @keyframes, so a second definition with the same name overrides the first site-wide." },

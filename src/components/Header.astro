@@ -112,9 +112,9 @@ const menuLabel = activeNav?.label ?? "Menu";
     z-index: 100;
     width: 100%;
     overflow-x: clip;
-    background: color-mix(in srgb, var(--color-background) 58%, transparent);
+    background: color-mix(in srgb, var(--bg-canvas) 58%, transparent);
     backdrop-filter: blur(6px);
-    margin-bottom: 2rem;
+    margin-bottom: var(--space-32);
   }
 
   .site-header::before {
@@ -127,7 +127,7 @@ const menuLabel = activeNav?.label ?? "Menu";
     transform: translateY(100%);
     background: linear-gradient(
       to bottom,
-      color-mix(in srgb, var(--color-background) 10%, transparent),
+      color-mix(in srgb, var(--bg-canvas) 10%, transparent),
       transparent
     );
     pointer-events: none;
@@ -141,16 +141,16 @@ const menuLabel = activeNav?.label ?? "Menu";
     width: 100%;
     max-width: 1100px;
     margin: 0 auto;
-    padding: 1rem 2rem;
+    padding: var(--space-16) var(--space-32);
   }
 
   .logo {
     display: flex;
     align-items: center;
     opacity: 0;
-    animation: headerSlideLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    filter: drop-shadow(0 2px 8px rgba(var(--color-background-rgb), 0.6));
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: headerSlideLeft var(--motion-entry) var(--ease-out) forwards;
+    filter: drop-shadow(0 2px 8px var(--scrim));
+    transition: transform var(--motion-ui) var(--ease-out);
   }
 
   .logo:hover,
@@ -162,14 +162,14 @@ const menuLabel = activeNav?.label ?? "Menu";
     display: flex;
     align-items: center;
     margin-left: auto;
-    gap: 1rem;
+    gap: var(--space-16);
   }
 
   .nav-links {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-8);
     list-style: none;
     margin: 0;
     padding: 0;
@@ -177,26 +177,26 @@ const menuLabel = activeNav?.label ?? "Menu";
 
   .nav-item {
     opacity: 0;
-    animation: headerSlideRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: headerSlideRight 0.5s var(--ease-out) forwards;
     animation-delay: var(--delay);
   }
 
   .nav-link {
     display: block;
     position: relative;
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-    font-weight: 700;
+    padding: var(--space-8) var(--space-16);
+    font-size: var(--type-small);
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-text);
+    letter-spacing: var(--track-wide);
+    color: var(--text-primary);
     border: 2px solid transparent;
     transition:
-      border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    text-shadow: 0 2px 8px rgba(var(--color-background-rgb), 0.6);
+      border-color 0.3s var(--ease-out),
+      background-color 0.3s var(--ease-out),
+      color 0.3s var(--ease-out),
+      transform 0.3s var(--ease-out);
+    text-shadow: 0 2px 8px var(--scrim);
   }
 
   .nav-link::after {
@@ -207,7 +207,7 @@ const menuLabel = activeNav?.label ?? "Menu";
     width: 0;
     height: 2px;
     background: var(--color-accent);
-    transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: width var(--motion-ui) var(--ease-out);
     transform: translateX(-50%);
   }
 
@@ -224,7 +224,7 @@ const menuLabel = activeNav?.label ?? "Menu";
 
   .nav-link.active {
     background: var(--color-accent);
-    color: var(--color-background);
+    color: var(--bg-canvas);
     border-color: var(--color-accent);
   }
 
@@ -246,17 +246,17 @@ const menuLabel = activeNav?.label ?? "Menu";
     gap: 0.4rem;
     min-width: 44px;
     min-height: 44px;
-    padding: 0.5rem 0.75rem;
+    padding: var(--space-8) var(--space-12);
     background: transparent;
-    border: 3px solid var(--color-text);
+    border: 3px solid var(--text-primary);
     cursor: pointer;
     opacity: 0;
-    animation: headerSlideRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+    animation: headerSlideRight 0.5s var(--ease-out) 0.2s forwards;
     transition:
-      background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 2px 8px rgba(var(--color-background-rgb), 0.6);
+      background-color 0.3s var(--ease-out),
+      border-color 0.3s var(--ease-out),
+      transform 0.3s var(--ease-out);
+    box-shadow: 0 2px 8px var(--scrim);
   }
 
   .menu-btn::before {
@@ -268,7 +268,7 @@ const menuLabel = activeNav?.label ?? "Menu";
     bottom: -4px;
     border: 3px solid var(--color-accent);
     z-index: -1;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all var(--motion-ui) var(--ease-out);
     pointer-events: none;
   }
 
@@ -289,23 +289,23 @@ const menuLabel = activeNav?.label ?? "Menu";
 
   .menu-btn:hover .menu-key,
   .menu-btn:focus-visible .menu-key {
-    background: var(--color-background);
+    background: var(--bg-canvas);
     color: var(--color-accent);
   }
 
   .menu-btn:hover .menu-label,
   .menu-btn:focus-visible .menu-label {
-    color: var(--color-background);
+    color: var(--bg-canvas);
   }
 
   .menu-key {
     display: inline-block;
     position: relative;
     z-index: 1;
-    background: var(--color-text);
-    color: var(--color-background);
+    background: var(--text-primary);
+    color: var(--bg-canvas);
     font-size: 0.7rem;
-    font-weight: 700;
+    font-weight: var(--weight-bold);
     padding: 0.15rem 0.35rem;
     letter-spacing: 0.03em;
     transition:
@@ -323,19 +323,19 @@ const menuLabel = activeNav?.label ?? "Menu";
 
   .menu-btn:hover .menu-key--dot,
   .menu-btn:focus-visible .menu-key--dot {
-    background: var(--color-background);
+    background: var(--bg-canvas);
   }
 
   .menu-label {
     position: relative;
     z-index: 1;
     font-size: 0.8rem;
-    font-weight: 700;
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-text);
-    transition: color 0.3s ease;
-    text-shadow: 0 2px 8px rgba(var(--color-background-rgb), 0.6);
+    letter-spacing: var(--track-wide);
+    color: var(--text-primary);
+    transition: color var(--motion-ui) ease;
+    text-shadow: 0 2px 8px var(--scrim);
   }
 
   @keyframes headerSlideLeft {
@@ -362,7 +362,7 @@ const menuLabel = activeNav?.label ?? "Menu";
 
   @media (max-width: 900px) {
     .site-header {
-      margin-bottom: 1.5rem;
+      margin-bottom: var(--space-24);
     }
 
     .nav-links {
@@ -372,15 +372,15 @@ const menuLabel = activeNav?.label ?? "Menu";
 
   @media (max-width: 700px) {
     .site-header {
-      margin-bottom: 1rem;
+      margin-bottom: var(--space-16);
     }
 
     .nav-container {
-      padding: 0.75rem 1rem;
+      padding: var(--space-12) var(--space-16);
     }
 
     .nav-right {
-      gap: 0.5rem;
+      gap: var(--space-8);
     }
 
     .logo-img {
@@ -389,11 +389,11 @@ const menuLabel = activeNav?.label ?? "Menu";
     }
 
     .menu-btn {
-      padding: 0.5rem 0.65rem;
+      padding: var(--space-8) 0.65rem;
     }
 
     .menu-label {
-      font-size: 0.75rem;
+      font-size: var(--type-label);
     }
   }
 </style>

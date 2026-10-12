@@ -35,14 +35,14 @@ import { education } from "@cv";
   ul {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    margin: 1rem 0 0 0;
+    gap: var(--space-24);
+    margin: var(--space-16) 0 0 0;
     padding: 0;
     list-style: none;
   }
 
   li {
-    padding-top: 1rem;
+    padding-top: var(--space-16);
     border-top: 2px solid rgba(var(--color-accent-rgb), 0.5);
   }
 
@@ -55,7 +55,7 @@ import { education } from "@cv";
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 1rem;
+    gap: var(--space-16);
   }
 
   .edu-info {
@@ -63,34 +63,34 @@ import { education } from "@cv";
   }
 
   article h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-text);
-    line-height: 1.2;
+    font-size: var(--type-body-lg);
+    font-weight: var(--weight-bold);
+    color: var(--text-primary);
+    line-height: var(--leading-heading);
     margin: 0;
     padding: 0;
   }
 
   article h4 {
-    font-size: 0.9rem;
-    font-weight: 600;
+    font-size: var(--type-ui);
+    font-weight: var(--weight-semibold);
     color: var(--color-accent);
-    margin: 0.25rem 0 0 0;
+    margin: var(--space-4) 0 0 0;
     padding: 0;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: var(--track-caps);
   }
 
   article p {
-    font-weight: 400;
-    font-size: 0.85rem;
-    margin: 0.5rem 0 0 0;
+    font-weight: var(--weight-regular);
+    font-size: var(--type-small);
+    margin: var(--space-8) 0 0 0;
     padding: 0;
     opacity: 0.85;
   }
 
   footer {
-    margin-top: 0.5rem;
+    margin-top: var(--space-8);
   }
 
   time {
@@ -99,17 +99,17 @@ import { education } from "@cv";
     justify-content: center;
     color: var(--color-accent);
     font-size: 0.8rem;
-    font-weight: 900;
+    font-weight: var(--weight-black);
     white-space: nowrap;
-    padding: 0.25rem 0.5rem;
+    padding: var(--space-4) var(--space-8);
     border: 2px solid var(--color-accent);
-    line-height: 1.1;
+    line-height: var(--leading-tight);
   }
 
   @media (width <= 700px) {
     header {
       flex-direction: column;
-      gap: 0.25rem;
+      gap: var(--space-4);
     }
 
     .edu-info {
@@ -122,7 +122,7 @@ import { education } from "@cv";
     }
 
     time {
-      font-size: 0.75rem;
+      font-size: var(--type-label);
       display: inline-flex;
       width: 100%;
     }

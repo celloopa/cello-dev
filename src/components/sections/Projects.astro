@@ -49,14 +49,14 @@ import "@/styles/colors.css";
   ul {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    margin: 1rem 0 0 0;
+    gap: var(--space-24);
+    margin: var(--space-16) 0 0 0;
     padding: 0;
     list-style: none;
   }
 
   li {
-    padding-top: 1rem;
+    padding-top: var(--space-16);
     border-top: 2px solid rgba(var(--color-accent-rgb), 0.5);
   }
 
@@ -69,7 +69,7 @@ import "@/styles/colors.css";
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 1rem;
+    gap: var(--space-16);
   }
 
   .project-info {
@@ -78,15 +78,15 @@ import "@/styles/colors.css";
   }
 
   article h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    line-height: 1.2;
+    font-size: var(--type-body-lg);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-heading);
     margin: 0;
     padding: 0;
   }
 
   article a {
-    color: var(--color-text);
+    color: var(--text-primary);
     transition: color 0.2s ease;
   }
 
@@ -95,10 +95,10 @@ import "@/styles/colors.css";
   }
 
   .description {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--color-text);
-    margin: 0.5rem 0 0 0;
+    font-size: var(--type-ui);
+    font-weight: var(--weight-medium);
+    color: var(--text-primary);
+    margin: var(--space-8) 0 0 0;
     padding: 0;
     line-height: 1.5;
     opacity: 0.9;
@@ -106,10 +106,10 @@ import "@/styles/colors.css";
 
   .highlights li {
     position: relative;
-    font-weight: 400;
-    font-size: 0.85rem;
+    font-weight: var(--weight-regular);
+    font-size: var(--type-small);
     line-height: 1.6;
-    margin: 0.25rem 0;
+    margin: var(--space-4) 0;
     padding: 0 0 0 1.35rem;
     border: none;
     opacity: 0.85;
@@ -120,32 +120,32 @@ import "@/styles/colors.css";
     position: absolute;
     left: 0;
     color: var(--color-accent);
-    font-weight: 700;
+    font-weight: var(--weight-bold);
   }
 
   footer {
-    margin-top: 0.75rem;
+    margin-top: var(--space-12);
   }
 
   .highlights {
     display: flex;
     flex-direction: column;
     gap: 0.35rem;
-    margin: 0 0 0.75rem 0;
+    margin: 0 0 var(--space-12) 0;
   }
 
   .keywords {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--space-8);
   }
 
   .keyword {
     font-size: 0.7rem;
-    font-weight: 600;
+    font-weight: var(--weight-semibold);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.25rem 0.5rem;
+    letter-spacing: var(--track-caps);
+    padding: var(--space-4) var(--space-8);
     border: 3px solid var(--color-accent);
     color: var(--color-accent);
   }
@@ -156,18 +156,18 @@ import "@/styles/colors.css";
     justify-content: center;
     color: var(--color-accent);
     font-size: 0.8rem;
-    font-weight: 900;
+    font-weight: var(--weight-black);
     white-space: nowrap;
-    padding: 0.25rem 0.5rem;
+    padding: var(--space-4) var(--space-8);
     margin: 0;
     border: 2px solid var(--color-accent);
-    line-height: 1.1;
+    line-height: var(--leading-tight);
   }
 
   @media (width <= 700px) {
     header {
       flex-direction: column;
-      gap: 0.25rem;
+      gap: var(--space-4);
     }
 
     .project-info {
@@ -179,7 +179,7 @@ import "@/styles/colors.css";
     }
 
     .date-range {
-      font-size: 0.75rem;
+      font-size: var(--type-label);
       display: inline-flex;
       width: 100%;
     }

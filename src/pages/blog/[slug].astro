@@ -129,7 +129,7 @@ const mainIsVideo = isVideo(image || "");
 
 <style>
   .blog-post {
-    padding-top: 1rem;
+    padding-top: var(--space-16);
   }
 
   .top-row {
@@ -137,25 +137,25 @@ const mainIsVideo = isVideo(image || "");
     justify-content: space-between;
     align-items: center;
     padding-inline: 0.8rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-24);
   }
 
   .back-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    color: var(--color-text);
-    font-size: 0.9rem;
-    font-weight: 700;
+    gap: var(--space-8);
+    color: var(--text-primary);
+    font-size: var(--type-ui);
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    letter-spacing: var(--track-caps);
+    transition: all var(--motion-ui) var(--ease-out);
   }
 
   .back-link:hover,
   .back-link:focus-visible {
     color: var(--color-accent);
-    gap: 0.75rem;
+    gap: var(--space-12);
   }
 
   .post-header {
@@ -165,84 +165,84 @@ const mainIsVideo = isVideo(image || "");
   .date-badge {
     display: inline-block;
     font-size: 0.8rem;
-    font-weight: 700;
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: var(--track-wide);
     color: var(--color-accent);
     border: 2px solid var(--color-accent);
     padding: 0.4rem 0.8rem;
   }
 
   h1 {
-    font-size: clamp(2.5rem, 8vw, 4rem);
-    line-height: 1.1;
-    margin: 0 0 1rem 0;
+    font-size: var(--type-page-title);
+    line-height: var(--leading-tight);
+    margin: 0 0 var(--space-16) 0;
     padding: 0;
     overflow-wrap: anywhere;
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+    animation: slideUp var(--motion-entry) var(--ease-out) 0.1s backwards;
   }
 
   .bar {
     width: 80px;
     height: 5px;
     background: var(--color-accent);
-    margin-bottom: 1.5rem;
-    animation: wipeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
+    margin-bottom: var(--space-24);
+    animation: wipeIn 0.5s var(--ease-out) 0.2s backwards;
   }
 
   .description {
-    font-size: 1.1rem;
+    font-size: var(--type-body-lg);
     line-height: 1.8;
     max-width: 60ch;
-    margin: 0 0 2rem 0;
+    margin: 0 0 var(--space-32) 0;
     padding: 0;
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+    animation: slideUp var(--motion-entry) var(--ease-out) 0.3s backwards;
   }
 
   .tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    gap: var(--space-8);
+    margin-bottom: var(--space-24);
   }
 
   .tags li {
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text);
-    border: 2px solid var(--color-text);
+    letter-spacing: var(--track-caps);
+    color: var(--text-primary);
+    border: 2px solid var(--text-primary);
     padding: 0.4rem 0.8rem;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    transition: all var(--motion-ui) var(--ease-out);
+    animation: slideUp 0.5s var(--ease-out) backwards;
     animation-delay: calc(0.4s + var(--i) * 0.05s);
   }
 
   .tags li:hover {
-    background: var(--color-text);
-    color: var(--color-background);
+    background: var(--text-primary);
+    color: var(--bg-canvas);
   }
 
   .updated {
-    font-size: 0.85rem;
-    color: var(--color-text);
+    font-size: var(--type-small);
+    color: var(--text-primary);
     opacity: 0.7;
     font-style: italic;
   }
 
   .hero-image {
     padding-inline: 0.8rem;
-    animation: scaleIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation: scaleIn 0.7s var(--ease-out) backwards;
   }
 
   .post-media {
     width: 100%;
     max-height: 600px;
     object-fit: cover;
-    border: 4px solid var(--color-text);
+    border: 4px solid var(--text-primary);
     filter: grayscale(20%);
-    transition: filter 0.3s ease;
+    transition: filter var(--motion-ui) ease;
   }
 
   .post-media:hover {
@@ -252,14 +252,14 @@ const mainIsVideo = isVideo(image || "");
   .content {
     padding-inline: 0.8rem;
     max-width: 72ch;
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation: slideUp var(--motion-entry) var(--ease-out) backwards;
   }
 
   .content :global(h2) {
-    font-size: 1.5rem;
-    line-height: 1.2;
+    font-size: var(--type-heading);
+    line-height: var(--leading-heading);
     color: var(--color-accent);
-    margin: 3rem 0 1rem 0;
+    margin: var(--space-48) 0 var(--space-16) 0;
     padding: 0;
     text-transform: uppercase;
   }
@@ -269,24 +269,24 @@ const mainIsVideo = isVideo(image || "");
   }
 
   .content :global(h3) {
-    font-size: 1.25rem;
-    line-height: 1.3;
-    color: var(--color-text);
-    margin: 2rem 0 0.75rem 0;
+    font-size: var(--type-title);
+    line-height: var(--leading-title);
+    color: var(--text-primary);
+    margin: var(--space-32) 0 var(--space-12) 0;
     padding: 0;
   }
 
   .content :global(p) {
     padding: 0;
-    margin: 0 0 1.25rem 0;
-    font-size: 1rem;
+    margin: 0 0 var(--space-20) 0;
+    font-size: var(--type-body);
     line-height: 1.8;
   }
 
   .content :global(ul),
   .content :global(ol) {
-    padding-left: 1.5rem;
-    margin: 0 0 1.25rem 0;
+    padding-left: var(--space-24);
+    margin: 0 0 var(--space-20) 0;
   }
 
   .content :global(ul) {
@@ -295,7 +295,7 @@ const mainIsVideo = isVideo(image || "");
 
   .content :global(ul li) {
     position: relative;
-    padding-left: 1.5rem;
+    padding-left: var(--space-24);
   }
 
   .content :global(ul li::before) {
@@ -303,7 +303,7 @@ const mainIsVideo = isVideo(image || "");
     position: absolute;
     left: 0;
     color: var(--color-accent);
-    font-weight: 700;
+    font-weight: var(--weight-bold);
   }
 
   .content :global(ol) {
@@ -311,7 +311,7 @@ const mainIsVideo = isVideo(image || "");
   }
 
   .content :global(li) {
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-8);
     line-height: 1.7;
   }
 
@@ -323,12 +323,12 @@ const mainIsVideo = isVideo(image || "");
   }
 
   .content :global(pre) {
-    background: var(--color-text);
-    color: var(--color-background);
-    border: 3px solid var(--color-text);
-    padding: 1.5rem;
+    background: var(--text-primary);
+    color: var(--bg-canvas);
+    border: 3px solid var(--text-primary);
+    padding: var(--space-24);
     overflow-x: auto;
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 var(--space-24) 0;
   }
 
   .content :global(pre code) {
@@ -340,8 +340,8 @@ const mainIsVideo = isVideo(image || "");
   .content :global(blockquote) {
     border: 2px solid var(--color-accent);
     background: rgba(var(--color-accent-rgb), 0.08);
-    padding: 1rem 1.25rem;
-    margin: 1.5rem 0;
+    padding: var(--space-16) var(--space-20);
+    margin: var(--space-24) 0;
     font-style: italic;
   }
 
@@ -359,30 +359,30 @@ const mainIsVideo = isVideo(image || "");
   .footer-nav {
     display: flex;
     justify-content: center;
-    padding: 3rem 0.8rem;
-    border-top: 3px solid var(--color-text);
-    margin-top: 2rem;
+    padding: var(--space-48) 0.8rem;
+    border-top: 3px solid var(--text-primary);
+    margin-top: var(--space-32);
   }
 
   .nav-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--space-12);
     color: var(--color-accent);
-    font-weight: 700;
-    font-size: 1rem;
+    font-weight: var(--weight-bold);
+    font-size: var(--type-body);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.8rem 1.5rem;
+    letter-spacing: var(--track-caps);
+    padding: 0.8rem var(--space-24);
     border: 3px solid var(--color-accent);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all var(--motion-ui) var(--ease-out);
   }
 
   .nav-link:hover,
   .nav-link:focus-visible {
     background: var(--color-accent);
-    color: var(--color-background);
-    gap: 0.5rem;
+    color: var(--bg-canvas);
+    gap: var(--space-8);
   }
 
   @keyframes slideUp {
@@ -420,13 +420,13 @@ const mainIsVideo = isVideo(image || "");
 
   @media (width <= 700px) {
     .blog-post {
-      padding-top: 0.5rem;
+      padding-top: var(--space-8);
     }
 
     .top-row {
       flex-direction: column;
       align-items: center;
-      gap: 0.75rem;
+      gap: var(--space-12);
     }
 
     h1 {
@@ -440,7 +440,7 @@ const mainIsVideo = isVideo(image || "");
     }
 
     .description {
-      font-size: 1rem;
+      font-size: var(--type-body);
       text-align: center;
     }
 

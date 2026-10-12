@@ -295,7 +295,7 @@ const nextProject =
 
 <style>
   .project-page {
-    padding-top: 1rem;
+    padding-top: var(--space-16);
   }
 
   .top-row {
@@ -303,25 +303,25 @@ const nextProject =
     justify-content: space-between;
     align-items: center;
     padding-inline: 0.8rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: var(--space-24);
   }
 
   .back-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    color: var(--color-text);
-    font-size: 0.9rem;
-    font-weight: 700;
+    gap: var(--space-8);
+    color: var(--text-primary);
+    font-size: var(--type-ui);
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    letter-spacing: var(--track-caps);
+    transition: all var(--motion-ui) var(--ease-out);
   }
 
   .back-link:hover,
   .back-link:focus-visible {
     color: var(--color-accent);
-    gap: 0.75rem;
+    gap: var(--space-12);
   }
 
   .project-header {
@@ -331,9 +331,9 @@ const nextProject =
   .role-badge {
     display: inline-block;
     font-size: 0.8rem;
-    font-weight: 700;
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: var(--track-wide);
     color: var(--color-accent);
     border: 2px solid var(--color-accent);
     padding: 0.4rem 0.8rem;
@@ -346,54 +346,54 @@ const nextProject =
   }
 
   h1 {
-    font-size: clamp(2.5rem, 8vw, 4rem);
-    line-height: 1.1;
-    margin: 0 0 1rem 0;
+    font-size: var(--type-page-title);
+    line-height: var(--leading-tight);
+    margin: 0 0 var(--space-16) 0;
     padding: 0;
     overflow-wrap: anywhere;
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+    animation: slideUp var(--motion-entry) var(--ease-out) 0.1s backwards;
   }
 
   .bar {
     width: 80px;
     height: 5px;
     background: var(--color-accent);
-    margin-bottom: 1.5rem;
-    animation: wipeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s backwards;
+    margin-bottom: var(--space-24);
+    animation: wipeIn 0.5s var(--ease-out) 0.2s backwards;
   }
 
   .description {
-    font-size: 1.1rem;
+    font-size: var(--type-body-lg);
     line-height: 1.8;
     max-width: 60ch;
-    margin: 0 0 2rem 0;
+    margin: 0 0 var(--space-32) 0;
     padding: 0;
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+    animation: slideUp var(--motion-entry) var(--ease-out) 0.3s backwards;
   }
 
   .tech-stack {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 2rem;
+    gap: var(--space-8);
+    margin-bottom: var(--space-32);
   }
 
   .tech-stack li {
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text);
-    border: 2px solid var(--color-text);
+    letter-spacing: var(--track-caps);
+    color: var(--text-primary);
+    border: 2px solid var(--text-primary);
     padding: 0.4rem 0.8rem;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    transition: all var(--motion-ui) var(--ease-out);
+    animation: slideUp 0.5s var(--ease-out) backwards;
     animation-delay: calc(0.4s + var(--i) * 0.05s);
   }
 
   .tech-stack li:hover {
-    background: var(--color-text);
-    color: var(--color-background);
+    background: var(--text-primary);
+    color: var(--bg-canvas);
   }
 
   .tech-stack .tag-more {
@@ -403,54 +403,54 @@ const nextProject =
 
   .tech-stack .tag-more:hover {
     background: var(--color-accent);
-    color: var(--color-background);
+    color: var(--bg-canvas);
   }
 
   .links {
     display: flex;
-    gap: 1rem;
+    gap: var(--space-16);
     flex-wrap: wrap;
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s backwards;
+    animation: slideUp var(--motion-entry) var(--ease-out) 0.5s backwards;
   }
 
   .btn {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.8rem 1.5rem;
-    font-size: 0.85rem;
-    font-weight: 700;
+    gap: var(--space-8);
+    padding: 0.8rem var(--space-24);
+    font-size: var(--type-small);
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: var(--track-caps);
     background: var(--color-accent);
-    color: var(--color-background);
+    color: var(--bg-canvas);
     border: 3px solid var(--color-accent);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all var(--motion-ui) var(--ease-out);
   }
 
   .btn:hover,
   .btn:focus-visible {
-    background: var(--color-background);
+    background: var(--bg-canvas);
     color: var(--color-accent);
   }
 
   .btn.outline {
     background: transparent;
-    color: var(--color-text);
-    border-color: var(--color-text);
+    color: var(--text-primary);
+    border-color: var(--text-primary);
   }
 
   .btn.outline:hover,
   .btn.outline:focus-visible {
-    background: var(--color-text);
-    color: var(--color-background);
+    background: var(--text-primary);
+    color: var(--bg-canvas);
   }
 
   /* Media Gallery Layouts */
   .media-gallery {
     position: relative;
     padding-inline: 0.8rem;
-    animation: scaleIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation: scaleIn 0.7s var(--ease-out) backwards;
   }
 
   .media-full {
@@ -472,37 +472,37 @@ const nextProject =
   .media-two {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    gap: var(--space-16);
   }
 
   .media-three {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    gap: var(--space-16);
   }
 
   .media-item {
     margin: 0;
-    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation: slideUp 0.5s var(--ease-out) backwards;
     animation-delay: calc(var(--i) * 0.1s);
   }
 
   .media-item figcaption {
-    font-size: 0.85rem;
-    font-weight: 600;
+    font-size: var(--type-small);
+    font-weight: var(--weight-semibold);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text);
-    padding: 0.75rem 0;
+    letter-spacing: var(--track-caps);
+    color: var(--text-primary);
+    padding: var(--space-12) 0;
     border-bottom: 2px solid var(--color-accent);
     margin: 0;
   }
 
   .project-media {
     width: 100%;
-    border: 4px solid var(--color-text);
+    border: 4px solid var(--text-primary);
     filter: grayscale(20%);
-    transition: filter 0.3s ease;
+    transition: filter var(--motion-ui) ease;
   }
 
   .media-full .project-media {
@@ -545,29 +545,29 @@ const nextProject =
 
   h2 {
     font-size: clamp(1.5rem, 4vw, 2rem);
-    line-height: 1.2;
-    margin: 0 0 0.75rem 0;
-    animation: slideLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    line-height: var(--leading-heading);
+    margin: 0 0 var(--space-12) 0;
+    animation: slideLeft var(--motion-entry) var(--ease-out) backwards;
   }
 
   .highlights {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
+    gap: var(--space-16);
     padding-inline: 0.8rem;
   }
 
   .highlights li {
     position: relative;
     min-height: 100%;
-    padding: 1rem;
-    border: 3px solid var(--color-text);
-    background: rgba(var(--color-text-rgb), 0.035);
-    font-size: 1rem;
+    padding: var(--space-16);
+    border: 3px solid var(--text-primary);
+    background: var(--bg-raised);
+    font-size: var(--type-body);
     line-height: 1.7;
-    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation: slideUp 0.5s var(--ease-out) backwards;
     animation-delay: calc(var(--i) * 0.1s);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all var(--motion-ui) var(--ease-out);
   }
 
   .highlights li:hover {
@@ -578,7 +578,7 @@ const nextProject =
   .highlights li p {
     margin: 0;
     padding: 0;
-    font-size: 1rem;
+    font-size: var(--type-body);
     line-height: 1.7;
   }
 
@@ -592,15 +592,15 @@ const nextProject =
   }
 
   .section-links {
-    margin: 0 0 1rem;
+    margin: 0 0 var(--space-16);
   }
 
   .section-links span {
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-8);
     color: var(--color-accent);
     font-size: 0.72rem;
-    font-weight: 800;
+    font-weight: var(--weight-extrabold);
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -608,7 +608,7 @@ const nextProject =
   .section-links ul {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: var(--space-8);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -617,10 +617,10 @@ const nextProject =
   .section-links a {
     display: inline-block;
     padding: 0.35rem 0.65rem;
-    border: 2px solid var(--color-text);
-    color: var(--color-text);
-    font-size: 0.85rem;
-    line-height: 1.3;
+    border: 2px solid var(--text-primary);
+    color: var(--text-primary);
+    font-size: var(--type-small);
+    line-height: var(--leading-title);
     text-decoration: none;
   }
 
@@ -634,7 +634,7 @@ const nextProject =
     .section-links ul {
       flex-wrap: nowrap;
       overflow-x: auto;
-      padding-bottom: 0.5rem;
+      padding-bottom: var(--space-8);
       scroll-snap-type: x proximity;
       -webkit-overflow-scrolling: touch;
     }
@@ -653,14 +653,14 @@ const nextProject =
   .content {
     padding-inline: 0.8rem;
     max-width: 72ch;
-    animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation: slideUp var(--motion-entry) var(--ease-out) backwards;
   }
 
   .content :global(h2) {
-    font-size: 1.5rem;
-    line-height: 1.2;
+    font-size: var(--type-heading);
+    line-height: var(--leading-heading);
     color: var(--color-accent);
-    margin: 3rem 0 1rem 0;
+    margin: var(--space-48) 0 var(--space-16) 0;
     padding: 0;
     text-transform: uppercase;
   }
@@ -671,15 +671,15 @@ const nextProject =
 
   .content :global(p) {
     padding: 0;
-    margin: 0 0 1.25rem 0;
-    font-size: 1rem;
+    margin: 0 0 var(--space-20) 0;
+    font-size: var(--type-body);
     line-height: 1.8;
   }
 
   .content :global(ul),
   .content :global(ol) {
-    padding-left: 1.5rem;
-    margin: 0 0 1.25rem 0;
+    padding-left: var(--space-24);
+    margin: 0 0 var(--space-20) 0;
   }
 
   .content :global(ul) {
@@ -688,7 +688,7 @@ const nextProject =
 
   .content :global(ul li) {
     position: relative;
-    padding-left: 1.5rem;
+    padding-left: var(--space-24);
   }
 
   .content :global(ul li::before) {
@@ -696,7 +696,7 @@ const nextProject =
     position: absolute;
     left: 0;
     color: var(--color-accent);
-    font-weight: 700;
+    font-weight: var(--weight-bold);
   }
 
   .content :global(ol) {
@@ -704,7 +704,7 @@ const nextProject =
   }
 
   .content :global(li) {
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--space-8);
     line-height: 1.7;
   }
 
@@ -716,12 +716,12 @@ const nextProject =
   }
 
   .content :global(pre) {
-    background: var(--color-text);
-    color: var(--color-background);
-    border: 3px solid var(--color-text);
-    padding: 1.5rem;
+    background: var(--text-primary);
+    color: var(--bg-canvas);
+    border: 3px solid var(--text-primary);
+    padding: var(--space-24);
     overflow-x: auto;
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 var(--space-24) 0;
   }
 
   .content :global(pre code) {
@@ -732,8 +732,8 @@ const nextProject =
 
   .content :global(blockquote) {
     border: 2px solid var(--color-accent);
-    padding: 1rem 1.25rem;
-    margin: 1.5rem 0;
+    padding: var(--space-16) var(--space-20);
+    margin: var(--space-24) 0;
     font-style: italic;
   }
 
@@ -741,39 +741,39 @@ const nextProject =
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 1rem;
-    padding: 3rem 0.8rem;
-    border-top: 3px solid var(--color-text);
-    margin-top: 2rem;
+    gap: var(--space-16);
+    padding: var(--space-48) 0.8rem;
+    border-top: 3px solid var(--text-primary);
+    margin-top: var(--space-32);
   }
 
   .nav-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--space-12);
     color: var(--color-accent);
-    font-weight: 700;
-    font-size: 1rem;
+    font-weight: var(--weight-bold);
+    font-size: var(--type-body);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.8rem 1.5rem;
+    letter-spacing: var(--track-caps);
+    padding: 0.8rem var(--space-24);
     border: 3px solid var(--color-accent);
     text-align: center;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all var(--motion-ui) var(--ease-out);
   }
 
   .nav-link--adjacent {
     max-width: 18rem;
-    color: var(--color-text);
-    border-color: var(--color-text);
-    font-size: 0.85rem;
+    color: var(--text-primary);
+    border-color: var(--text-primary);
+    font-size: var(--type-small);
   }
 
   .nav-link:hover,
   .nav-link:focus-visible {
     background: var(--color-accent);
-    color: var(--color-background);
-    gap: 0.5rem;
+    color: var(--bg-canvas);
+    gap: var(--space-8);
   }
 
   @keyframes slideLeft {
@@ -822,13 +822,13 @@ const nextProject =
 
   @media (width <= 700px) {
     .project-page {
-      padding-top: 0.5rem;
+      padding-top: var(--space-8);
     }
 
     .top-row {
       flex-direction: column;
       align-items: center;
-      gap: 0.75rem;
+      gap: var(--space-12);
     }
 
     h1 {
@@ -842,7 +842,7 @@ const nextProject =
     }
 
     .description {
-      font-size: 1rem;
+      font-size: var(--type-body);
       text-align: center;
     }
 
@@ -855,7 +855,7 @@ const nextProject =
     }
 
     .btn {
-      padding: 0.6rem 1rem;
+      padding: 0.6rem var(--space-16);
       font-size: 0.8rem;
     }
 

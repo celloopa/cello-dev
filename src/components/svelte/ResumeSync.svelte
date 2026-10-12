@@ -114,48 +114,48 @@
 <style>
   .resume-sync {
     display: grid;
-    gap: 1rem;
-    margin-top: 1.25rem;
-    padding: 1rem;
+    gap: var(--space-16);
+    margin-top: var(--space-20);
+    padding: var(--space-16);
     border: 2px dashed rgba(var(--color-text-rgb), 0.35);
-    font-size: 0.85rem;
+    font-size: var(--type-small);
   }
 
   .row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.75rem;
+    gap: var(--space-12);
   }
 
   .tag {
-    padding: 0.15rem 0.5rem;
+    padding: 0.15rem var(--space-8);
     border: 2px solid var(--color-accent);
     color: var(--color-accent);
     font-size: 0.7rem;
-    font-weight: 700;
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: var(--track-caps);
   }
 
   button {
-    padding: 0.5rem 1rem;
+    padding: var(--space-8) var(--space-16);
     background: transparent;
-    color: var(--color-text);
-    border: 2px solid var(--color-text);
+    color: var(--text-primary);
+    border: 2px solid var(--text-primary);
     font: inherit;
-    font-weight: 700;
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: var(--track-caps);
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all var(--motion-ui) var(--ease-out);
   }
 
   button:hover:not(:disabled),
   button.primary {
     background: var(--color-accent);
     border-color: var(--color-accent);
-    color: var(--color-background);
+    color: var(--bg-canvas);
   }
 
   button:disabled {
@@ -169,7 +169,7 @@
 
   .preview {
     display: grid;
-    gap: 0.75rem;
+    gap: var(--space-12);
   }
 
   .preview p,
@@ -178,7 +178,7 @@
   }
 
   .preview ul {
-    padding-left: 1.25rem;
+    padding-left: var(--space-20);
     font-family: "Geist Mono", monospace;
     font-size: 0.8rem;
   }

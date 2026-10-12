@@ -253,14 +253,14 @@
   }
 
   .menu {
-    background-color: var(--color-background);
-    border: 4px solid var(--color-text);
-    padding: 1.5rem;
+    background-color: var(--bg-canvas);
+    border: 4px solid var(--text-primary);
+    padding: var(--space-24);
     width: 420px;
     max-width: calc(90% - 16px);
-    color: var(--color-text);
+    color: var(--text-primary);
     position: relative;
-    animation: menuSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: menuSlideIn var(--motion-ui) var(--ease-out);
   }
 
   .menu::before {
@@ -277,7 +277,7 @@
 
   @media (max-width: 480px) {
     .menu {
-      padding: 0.75rem;
+      padding: var(--space-12);
       max-width: calc(100% - 2rem);
       max-height: calc(100vh - 3rem);
       overflow-y: auto;
@@ -291,12 +291,12 @@
     }
 
     section {
-      margin-bottom: 0.5rem;
+      margin-bottom: var(--space-8);
     }
 
     h3 {
       font-size: 0.65rem;
-      margin-bottom: 0.25rem;
+      margin-bottom: var(--space-4);
     }
 
     li {
@@ -304,21 +304,21 @@
     }
 
     button {
-      padding: 0.35rem 0.5rem;
+      padding: 0.35rem var(--space-8);
     }
 
     .key {
       font-size: 0.7rem;
       padding: 0.15rem 0.35rem;
-      margin-right: 0.5rem;
+      margin-right: var(--space-8);
     }
 
     .label {
-      font-size: 0.75rem;
+      font-size: var(--type-label);
     }
 
     hr {
-      margin: 0.5rem 0;
+      margin: var(--space-8) 0;
     }
   }
 
@@ -346,7 +346,7 @@
   }
 
   section {
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-16);
   }
 
   section:last-of-type {
@@ -354,16 +354,16 @@
   }
 
   h3 {
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
     letter-spacing: 0.15em;
     color: var(--color-accent);
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 var(--space-8) 0;
     padding: 0;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-8);
   }
 
   h3::after {
@@ -381,7 +381,7 @@
   }
 
   li {
-    margin-bottom: 0.25rem;
+    margin-bottom: var(--space-4);
   }
 
   button {
@@ -391,11 +391,11 @@
     text-align: left;
     background: transparent;
     border: 2px solid transparent;
-    padding: 0.5rem 0.75rem;
+    padding: var(--space-8) var(--space-12);
     cursor: pointer;
     color: inherit;
     font: inherit;
-    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.2s var(--ease-out);
   }
 
   button:hover,
@@ -410,21 +410,21 @@
     align-items: center;
     justify-content: center;
     min-width: 1.5rem;
-    background-color: var(--color-text);
-    color: var(--color-background);
-    font-weight: 700;
+    background-color: var(--text-primary);
+    color: var(--bg-canvas);
+    font-weight: var(--weight-bold);
     font-size: 0.8rem;
-    padding: 0.25rem 0.5rem;
-    margin-right: 0.75rem;
+    padding: var(--space-4) var(--space-8);
+    margin-right: var(--space-12);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: var(--track-caps);
     transition: all 0.2s ease;
   }
 
   .label {
-    color: var(--color-text);
-    font-size: 0.9rem;
-    font-weight: 600;
+    color: var(--text-primary);
+    font-size: var(--type-ui);
+    font-weight: var(--weight-semibold);
     text-transform: uppercase;
     letter-spacing: 0.03em;
     transition: color 0.2s ease;
@@ -433,20 +433,20 @@
   button:hover .key,
   button.active .key,
   button.selected .key {
-    background-color: var(--color-background);
+    background-color: var(--bg-canvas);
     color: var(--color-accent);
   }
 
   button:hover .label,
   button.active .label,
   button.selected .label {
-    color: var(--color-background);
+    color: var(--bg-canvas);
   }
 
   hr {
     border: none;
-    border-top: 2px solid var(--color-text);
+    border-top: 2px solid var(--text-primary);
     opacity: 0.15;
-    margin: 1rem 0;
+    margin: var(--space-16) 0;
   }
 </style>

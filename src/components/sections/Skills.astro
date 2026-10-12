@@ -84,9 +84,9 @@ const getIconName = (name: string) => {
 <style>
   ul {
     display: flex;
-    gap: 0.5rem;
+    gap: var(--space-8);
     flex-wrap: wrap;
-    margin: 1rem 0 0 0;
+    margin: var(--space-16) 0 0 0;
     padding: 0;
     list-style: none;
   }
@@ -94,31 +94,31 @@ const getIconName = (name: string) => {
   li {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-8);
     font-size: 0.8rem;
-    font-weight: 700;
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: var(--color-text);
+    letter-spacing: var(--track-caps);
+    color: var(--text-primary);
     background: transparent;
-    border: 3px solid var(--color-text);
-    padding: 0.4rem 0.75rem;
+    border: 3px solid var(--text-primary);
+    padding: 0.4rem var(--space-12);
     cursor: default;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    animation: skillSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    transition: all var(--motion-ui) var(--ease-out);
+    animation: skillSlideUp 0.5s var(--ease-out) backwards;
     animation-delay: calc(var(--i) * 0.03s);
   }
 
   li:hover {
-    background: var(--color-text);
-    color: var(--color-background);
+    background: var(--text-primary);
+    color: var(--bg-canvas);
     transform: translateY(-2px);
   }
 
   li :global(svg) {
     width: 18px;
     height: 18px;
-    transition: transform 0.3s ease;
+    transition: transform var(--motion-ui) ease;
   }
 
   li:hover :global(svg) {

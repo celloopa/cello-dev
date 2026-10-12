@@ -84,7 +84,7 @@
 	mix-blend-mode: overlay;
 	animation: noiseScroll var(--texture-duration) linear infinite;
 	z-index: 1;
-	transition: opacity var(--motion-base) var(--ease-out-expo);
+	transition: opacity var(--motion-base) var(--ease-out);
 	transform: translate3d(0, 0, 0);
 	contain: paint;
 }
@@ -212,27 +212,27 @@
 
 /* Animation utility classes */
 .animate-slide-up {
-	animation: slideUp var(--motion-slow) var(--ease-out-expo) forwards;
+	animation: slideUp var(--motion-slow) var(--ease-out) forwards;
 }
 
 .animate-slide-left {
-	animation: slideLeft var(--motion-slow) var(--ease-out-expo) forwards;
+	animation: slideLeft var(--motion-slow) var(--ease-out) forwards;
 }
 
 .animate-slide-right {
-	animation: slideRight var(--motion-slow) var(--ease-out-expo) forwards;
+	animation: slideRight var(--motion-slow) var(--ease-out) forwards;
 }
 
 .animate-scale {
-	animation: scaleReveal 0.6s var(--ease-out-expo) forwards;
+	animation: scaleReveal var(--motion-entry) var(--ease-out) forwards;
 }
 
 .animate-wipe {
-	animation: wipeIn var(--motion-slow) var(--ease-out-expo) forwards;
+	animation: wipeIn var(--motion-slow) var(--ease-out) forwards;
 }
 
 .animate-rotate {
-	animation: rotateIn 0.6s var(--ease-out-expo) forwards;
+	animation: rotateIn var(--motion-entry) var(--ease-out) forwards;
 }
 
 .animate-fade {
@@ -279,7 +279,7 @@
 
 /* Smooth easing for interactions */
 .smooth {
-	transition: all 0.4s var(--ease-out-expo);
+	transition: all 0.4s var(--ease-out);
 }
 
 /* Bold geometric accents */
@@ -288,7 +288,7 @@
 	height: 4px;
 	background: var(--color-accent);
 	transform-origin: left;
-	animation: drawLine 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	animation: drawLine var(--motion-entry) var(--ease-out) forwards;
 }
 
 .accent-bar-vertical {
@@ -296,7 +296,7 @@
 	width: 4px;
 	background: var(--color-accent);
 	transform-origin: top;
-	animation: drawLine 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	animation: drawLine var(--motion-entry) var(--ease-out) forwards;
 }
 
 /* Geometric shape decorations */
@@ -316,8 +316,8 @@
 
 /* Hover lift with shadow */
 .hover-lift {
-	transition: transform var(--motion-base) var(--ease-out-expo),
-		box-shadow var(--motion-base) var(--ease-out-expo);
+	transition: transform var(--motion-base) var(--ease-out),
+		box-shadow var(--motion-base) var(--ease-out);
 }
 
 .hover-lift:hover {
@@ -340,7 +340,7 @@
 	background: var(--color-accent);
 	transform: scaleX(0);
 	transform-origin: right;
-	transition: transform var(--motion-base) var(--ease-out-expo);
+	transition: transform var(--motion-base) var(--ease-out);
 }
 
 .hover-underline:hover::after {

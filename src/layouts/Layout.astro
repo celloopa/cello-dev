@@ -264,9 +264,9 @@ const SOCIAL_ICONS: SocialIcon = {
     <style is:global>
       html {
         font-family: "GeistMono", monospace;
-        font-weight: 400;
-        background: var(--color-background);
-        color: var(--color-text);
+        font-weight: var(--weight-regular);
+        background: var(--bg-canvas);
+        color: var(--text-primary);
         letter-spacing: 0;
         scroll-behavior: smooth;
       }
@@ -296,7 +296,7 @@ const SOCIAL_ICONS: SocialIcon = {
       a {
         color: inherit;
         text-decoration: none;
-        transition: color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: color var(--motion-ui) var(--ease-out);
       }
 
       a,
@@ -339,8 +339,8 @@ const SOCIAL_ICONS: SocialIcon = {
       .site-footer {
         position: relative;
         z-index: 1;
-        border-top: 3px solid var(--color-text);
-        padding: 2rem;
+        border-top: 3px solid var(--text-primary);
+        padding: var(--space-32);
       }
 
       .footer-inner {
@@ -352,19 +352,19 @@ const SOCIAL_ICONS: SocialIcon = {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 1.5rem;
+        gap: var(--space-24);
       }
 
       .footer-row--bottom {
-        margin-top: 1.5rem;
-        padding-top: 1.25rem;
-        border-top: 2px solid rgba(var(--color-text-rgb), 0.18);
+        margin-top: var(--space-24);
+        padding-top: var(--space-20);
+        border-top: 2px solid var(--border-muted);
       }
 
       .footer-logo {
         display: inline-flex;
         align-items: center;
-        transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform var(--motion-ui) var(--ease-out);
       }
 
       .footer-logo:hover,
@@ -376,23 +376,23 @@ const SOCIAL_ICONS: SocialIcon = {
         display: flex;
         flex-wrap: wrap;
         justify-content: flex-end;
-        gap: 0.5rem;
+        gap: var(--space-8);
       }
 
       .footer-nav a {
         display: block;
         position: relative;
-        padding: 0.5rem 0.75rem;
+        padding: var(--space-8) var(--space-12);
         border: 2px solid transparent;
-        color: var(--color-text);
+        color: var(--text-primary);
         font-size: 0.8rem;
-        font-weight: 700;
-        letter-spacing: 0.1em;
+        font-weight: var(--weight-bold);
+        letter-spacing: var(--track-wide);
         text-transform: uppercase;
         transition:
-          border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-          color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-          transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          border-color 0.3s var(--ease-out),
+          color 0.3s var(--ease-out),
+          transform 0.3s var(--ease-out);
       }
 
       .footer-nav a::after {
@@ -404,7 +404,7 @@ const SOCIAL_ICONS: SocialIcon = {
         height: 2px;
         background: var(--color-accent);
         transform: translateX(-50%);
-        transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: width var(--motion-ui) var(--ease-out);
       }
 
       .footer-nav a:hover,
@@ -420,7 +420,7 @@ const SOCIAL_ICONS: SocialIcon = {
 
       .footer-socials {
         display: flex;
-        gap: 0.5rem;
+        gap: var(--space-8);
         flex-wrap: wrap;
       }
 
@@ -430,30 +430,30 @@ const SOCIAL_ICONS: SocialIcon = {
         justify-content: center;
         width: 40px;
         height: 40px;
-        border: 2px solid var(--color-text);
-        background: var(--color-background);
-        color: var(--color-text);
+        border: 2px solid var(--text-primary);
+        background: var(--bg-canvas);
+        color: var(--text-primary);
         transition:
-          background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-          border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-          color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-          transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+          background-color 0.3s var(--ease-out),
+          border-color 0.3s var(--ease-out),
+          color 0.3s var(--ease-out),
+          transform 0.3s var(--ease-out);
       }
 
       .footer-socials a:hover,
       .footer-socials a:focus-visible {
         background: var(--color-accent);
         border-color: var(--color-accent);
-        color: var(--color-background);
+        color: var(--bg-canvas);
         transform: translateY(-2px);
       }
 
       .footer-meta {
-        color: var(--color-text);
+        color: var(--text-primary);
         font-size: 0.8rem;
-        font-weight: 700;
-        line-height: 1.4;
-        letter-spacing: 0.05em;
+        font-weight: var(--weight-bold);
+        line-height: var(--leading-ui);
+        letter-spacing: var(--track-caps);
         margin: 0;
         text-transform: uppercase;
         opacity: 0.82;
@@ -478,11 +478,11 @@ const SOCIAL_ICONS: SocialIcon = {
       }
 
       ::view-transition-new(root) {
-        animation: wipe-in 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        animation: wipe-in 0.45s var(--ease-out);
       }
 
       ::view-transition-old(root) {
-        animation: wipe-out 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        animation: wipe-out 0.45s var(--ease-out);
       }
 
       ::view-transition-group(root) {
@@ -492,9 +492,9 @@ const SOCIAL_ICONS: SocialIcon = {
       p,
       span {
         text-align: start;
-        font-size: 1.1rem;
-        line-height: 1.75;
-        margin-block: 0.5rem;
+        font-size: var(--type-body-lg);
+        line-height: var(--leading-read);
+        margin-block: var(--space-8);
         margin-inline: 0;
         text-wrap: pretty;
       }
@@ -511,47 +511,47 @@ const SOCIAL_ICONS: SocialIcon = {
       h3,
       h4,
       h5 {
-        line-height: 1.1;
+        line-height: var(--leading-tight);
         margin-bottom: 0;
         margin-inline: 0;
         letter-spacing: 0;
       }
 
       h1 {
-        color: var(--color-text);
+        color: var(--text-primary);
         font-size: clamp(3.5rem, 10vw, 6rem);
-        font-weight: 900;
-        line-height: 0.95;
-        margin-top: 1rem;
+        font-weight: var(--weight-black);
+        line-height: var(--leading-display);
+        margin-top: var(--space-16);
         text-transform: uppercase;
       }
 
       h2 {
         color: var(--color-accent);
-        font-size: clamp(2rem, 5vw, 3rem);
-        font-weight: 800;
+        font-size: var(--type-section-title);
+        font-weight: var(--weight-extrabold);
         text-align: start;
-        margin-top: 2rem;
+        margin-top: var(--space-32);
         text-transform: uppercase;
       }
 
       h3 {
         font-size: 1.6rem;
-        font-weight: 700;
+        font-weight: var(--weight-bold);
       }
 
       h4 {
         color: var(--color-accent);
         font-size: 1.2rem;
-        font-weight: 600;
+        font-weight: var(--weight-semibold);
         text-transform: uppercase;
-        letter-spacing: 0.05em;
+        letter-spacing: var(--track-caps);
       }
 
       /* Bold selection */
       ::selection {
         background: var(--color-accent);
-        color: var(--color-background);
+        color: var(--bg-canvas);
       }
 
       /* Scroll progress bar */
@@ -576,8 +576,8 @@ const SOCIAL_ICONS: SocialIcon = {
         opacity: 0;
         transform: translateY(26px);
         transition:
-          opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-          transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+          opacity 0.7s var(--ease-out),
+          transform 0.7s var(--ease-out);
         transition-delay: calc(var(--reveal-i, 0) * 80ms);
       }
 
@@ -603,7 +603,7 @@ const SOCIAL_ICONS: SocialIcon = {
       [data-reveal="line"]::before {
         transform: scaleX(0);
         transform-origin: left;
-        transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 0.9s var(--ease-out);
       }
 
       [data-reveal="line"].is-revealed::before {
@@ -654,7 +654,7 @@ const SOCIAL_ICONS: SocialIcon = {
 
       @media (width <= 700px) {
         .site-footer {
-          padding: 1.5rem 1rem;
+          padding: var(--space-24) var(--space-16);
         }
 
         .footer-row {

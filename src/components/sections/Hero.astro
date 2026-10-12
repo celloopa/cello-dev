@@ -155,7 +155,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
-		gap: 2rem;
+		gap: var(--space-32);
 	}
 
 	.info {
@@ -172,17 +172,17 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 
 	.info h2 {
 		font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-		font-weight: 600;
+		font-weight: var(--weight-semibold);
 		text-transform: uppercase;
-		letter-spacing: 0.05em;
+		letter-spacing: var(--track-caps);
 		color: var(--color-accent);
 		text-wrap: balance;
-		margin-top: 0.5rem;
+		margin-top: var(--space-8);
 	}
 
 	.image-frame {
 		position: relative;
-		border: 3px solid var(--color-text);
+		border: 3px solid var(--text-primary);
 		margin: 0;
 	}
 
@@ -203,7 +203,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		width: 240px;
 		display: block;
 		filter: grayscale(30%);
-		transition: filter 0.3s ease;
+		transition: filter var(--motion-ui) ease;
 	}
 
 	.image-frame:hover img {
@@ -212,58 +212,58 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 
 	span,
 	p {
-		color: var(--color-text);
+		color: var(--text-primary);
 		display: flex;
 		align-items: center;
-		gap: 0.25rem;
-		font-size: 0.9rem;
+		gap: var(--space-4);
+		font-size: var(--type-ui);
 		letter-spacing: -0.05rem;
 	}
 
 	button {
-		background: var(--color-background);
-		color: var(--color-text);
+		background: var(--bg-canvas);
+		color: var(--text-primary);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border: 2px solid var(--color-text);
+		border: 2px solid var(--text-primary);
 		padding: 0;
 		height: 36px;
 		width: 36px;
 		cursor: pointer;
-		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		transition: all var(--motion-ui) var(--ease-out);
 	}
 
 	button:hover {
 		background: var(--color-accent);
 		border-color: var(--color-accent);
-		color: var(--color-background);
+		color: var(--bg-canvas);
 	}
 
 	footer {
 		color: var(--color-accent);
-		font-size: 0.75rem;
+		font-size: var(--type-label);
 		display: flex;
-		gap: 0.5rem;
-		margin-top: 0.75rem;
+		gap: var(--space-8);
+		margin-top: var(--space-12);
 	}
 
 	footer a {
-		color: var(--color-text);
+		color: var(--text-primary);
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		border: 2px solid var(--color-text);
+		border: 2px solid var(--text-primary);
 		padding: 0;
 		height: 36px;
 		width: 36px;
-		transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+		transition: all var(--motion-ui) var(--ease-out);
 	}
 
 	footer a:hover {
 		background: var(--color-accent);
 		border-color: var(--color-accent);
-		color: var(--color-background);
+		color: var(--bg-canvas);
 	}
 
 	@media (width <= 700px) {

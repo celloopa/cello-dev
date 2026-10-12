@@ -42,14 +42,14 @@ import Layout from "@/layouts/Layout.astro";
     align-items: center;
     justify-content: center;
     min-height: min(72vh, 48rem);
-    padding: 2rem;
+    padding: var(--space-32);
     text-align: center;
   }
 
   .error-code {
     color: var(--color-accent);
     font-size: clamp(8rem, 30vw, 22rem);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     line-height: 0.9;
     margin: 0;
     padding: 0;
@@ -60,8 +60,8 @@ import Layout from "@/layouts/Layout.astro";
     flex-direction: column;
     align-items: center;
     gap: 4px;
-    margin: 1.25rem 0 1.5rem;
-    animation: wipeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    margin: var(--space-20) 0 var(--space-24);
+    animation: wipeIn 0.5s var(--ease-out) backwards;
     transform-origin: left;
   }
 
@@ -74,7 +74,7 @@ import Layout from "@/layouts/Layout.astro";
   .hero-bar-thin {
     width: 180px;
     height: 2px;
-    background: var(--color-text);
+    background: var(--text-primary);
     opacity: 0.7;
   }
 
@@ -83,33 +83,33 @@ import Layout from "@/layouts/Layout.astro";
     align-items: center;
     justify-content: center;
     gap: 0.6rem;
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-16);
   }
 
   .kicker-text {
-    color: var(--color-text);
-    font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
+    color: var(--text-primary);
+    font-size: var(--type-ui);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
     text-transform: uppercase;
   }
 
   .cta-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 0.25rem;
+    gap: var(--space-8);
+    padding: var(--space-12) var(--space-4);
     color: var(--color-accent);
-    font-size: 0.85rem;
-    font-weight: 800;
-    letter-spacing: 0.05em;
+    font-size: var(--type-small);
+    font-weight: var(--weight-extrabold);
+    letter-spacing: var(--track-caps);
     text-transform: uppercase;
-    transition: gap 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: gap var(--motion-ui) var(--ease-out);
   }
 
   .cta-link:hover,
   .cta-link:focus-visible {
-    gap: 0.75rem;
+    gap: var(--space-12);
   }
 
   @keyframes wipeIn {
@@ -126,7 +126,7 @@ import Layout from "@/layouts/Layout.astro";
   @media (width <= 700px) {
     .not-found {
       min-height: 64vh;
-      padding: 1rem;
+      padding: var(--space-16);
     }
   }
 </style>

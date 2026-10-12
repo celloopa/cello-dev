@@ -26,32 +26,32 @@ const { items } = Astro.props;
 	.case-meta {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-		gap: 0.75rem;
-		margin: 2rem 0;
+		gap: var(--space-12);
+		margin: var(--space-32) 0;
 	}
 
 	.meta-item {
-		border: 2px solid var(--color-text);
-		padding: 1rem;
+		border: 2px solid var(--text-primary);
+		padding: var(--space-16);
 		background: rgba(var(--color-text-rgb), 0.04);
 	}
 
 	span {
 		display: block;
-		margin-bottom: 0.5rem;
+		margin-bottom: var(--space-8);
 		color: var(--color-accent);
 		font-size: 0.72rem;
-		font-weight: 800;
+		font-weight: var(--weight-extrabold);
 		letter-spacing: 0.08em;
-		line-height: 1.2;
+		line-height: var(--leading-heading);
 		text-transform: uppercase;
 	}
 
 	p {
 		margin: 0;
 		padding: 0;
-		color: var(--color-text);
+		color: var(--text-primary);
 		font-size: 0.95rem;
-		line-height: 1.55;
+		line-height: var(--leading-small);
 	}
 </style>

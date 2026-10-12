@@ -116,7 +116,11 @@ async function load(ctx, url) {
   });
   // Settle every scroll reveal in its final state. Transitions are switched off first, because
   // reveal delays survive reduced motion and would otherwise catch some elements mid-flight.
-  await page.addStyleTag({ content: "*,*::before,*::after{animation-play-state:paused!important;caret-color:transparent!important}[data-reveal],[data-reveal]::before{transition:none!important}" });
+  await page.addStyleTag({ content: "*,*::before,*::after{animation-play-state:paused!important;caret-color:transparent!important}[data-reveal],[data-reveal]::before{transition:none!important}" +
+    // Known flicker (audit.md): the header menu button sits at a fractional x, and its finished entry
+    // animation keeps a composited layer that snaps to either of two pixels. Show it in its end state
+    // (fully visible, in place) without the animation.
+    ".menu-btn{animation:none!important;opacity:1!important}" });
   await page.evaluate(() => {
     document.querySelectorAll("[data-reveal]").forEach((e) => e.classList.add("is-revealed"));
     // Entry animations end in their final frame; loops (logo, texture, marquee) rest at frame 0.

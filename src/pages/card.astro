@@ -254,10 +254,10 @@ const qrCodeSvg = await QRCode.toString(url, {
     background:
       linear-gradient(
         180deg,
-        color-mix(in srgb, var(--color-accent) 9%, var(--color-background)),
-        var(--color-background) 18rem
+        color-mix(in srgb, var(--color-accent) 9%, var(--bg-canvas)),
+        var(--bg-canvas) 18rem
       );
-    color: var(--color-text);
+    color: var(--text-primary);
   }
 
   body {
@@ -283,7 +283,7 @@ const qrCodeSvg = await QRCode.toString(url, {
         transparent 2px,
         transparent 28px
       ),
-      var(--color-background);
+      var(--bg-canvas);
   }
 
   *,
@@ -303,7 +303,7 @@ const qrCodeSvg = await QRCode.toString(url, {
     position: relative;
     z-index: 2;
     min-height: 100vh;
-    padding: max(1.5rem, env(safe-area-inset-top)) 1.25rem
+    padding: max(1.5rem, env(safe-area-inset-top)) var(--space-20)
       max(1.5rem, env(safe-area-inset-bottom));
     display: grid;
     place-items: center;
@@ -313,7 +313,7 @@ const qrCodeSvg = await QRCode.toString(url, {
     width: min(100%, 1120px);
     display: grid;
     grid-template-columns: minmax(0, 1fr) clamp(14rem, 24vw, 18rem);
-    gap: 3rem;
+    gap: var(--space-48);
     align-items: start;
   }
 
@@ -324,7 +324,7 @@ const qrCodeSvg = await QRCode.toString(url, {
 
   .identity-panel {
     padding: 0;
-    animation: slideLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation: slideLeft 0.8s var(--ease-out) backwards;
     contain: layout paint;
   }
 
@@ -334,16 +334,16 @@ const qrCodeSvg = await QRCode.toString(url, {
     align-items: flex-start;
     width: 100%;
     max-width: 18rem;
-    animation: slideRight 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    animation: slideRight 0.8s var(--ease-out) backwards;
     contain: layout paint;
     content-visibility: auto;
     contain-intrinsic-size: 22rem;
   }
 
   .eyebrow {
-    margin: 0 0 1rem;
+    margin: 0 0 var(--space-16);
     font-size: 0.8rem;
-    font-weight: 700;
+    font-weight: var(--weight-bold);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-accent);
@@ -352,14 +352,14 @@ const qrCodeSvg = await QRCode.toString(url, {
   .intro {
     display: grid;
     grid-template-columns: auto 1fr;
-    gap: 1.25rem;
+    gap: var(--space-20);
     align-items: center;
   }
 
   .avatar-wrap {
     width: clamp(5rem, 18vw, 7rem);
     aspect-ratio: 1;
-    border: 3px solid var(--color-text);
+    border: 3px solid var(--text-primary);
     box-shadow: 10px 10px 0 var(--color-accent);
   }
 
@@ -416,8 +416,8 @@ const qrCodeSvg = await QRCode.toString(url, {
 
   .role {
     margin-top: 0.65rem;
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: var(--type-body);
+    font-weight: var(--weight-bold);
     line-height: 1.5;
     color: var(--color-accent);
     text-transform: uppercase;
@@ -431,18 +431,18 @@ const qrCodeSvg = await QRCode.toString(url, {
   }
 
   .summary {
-    margin-top: 1.5rem;
+    margin-top: var(--space-24);
     max-width: 44ch;
-    font-size: 1rem;
+    font-size: var(--type-body);
     line-height: 1.7;
     color: rgba(var(--color-text-rgb), 0.88);
   }
 
   .primary-actions {
-    margin-top: 2rem;
+    margin-top: var(--space-32);
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.75rem;
+    gap: var(--space-12);
   }
 
   .action {
@@ -451,18 +451,18 @@ const qrCodeSvg = await QRCode.toString(url, {
     gap: 0.3rem;
     justify-content: center;
     min-height: 4.5rem;
-    padding: 0.95rem 1rem;
-    border: 2px solid var(--color-text);
+    padding: 0.95rem var(--space-16);
+    border: 2px solid var(--text-primary);
     background: transparent;
-    color: var(--color-text);
+    color: var(--text-primary);
     text-align: left;
     text-decoration: none;
     cursor: pointer;
     transition:
-      transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-      color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transform 0.3s var(--ease-out),
+      border-color 0.3s var(--ease-out),
+      background 0.3s var(--ease-out),
+      color 0.3s var(--ease-out);
   }
 
   .action:hover,
@@ -470,7 +470,7 @@ const qrCodeSvg = await QRCode.toString(url, {
     transform: translateY(-2px);
     border-color: var(--color-accent);
     background: var(--color-accent);
-    color: var(--color-background);
+    color: var(--bg-canvas);
   }
 
   .action-primary {
@@ -480,15 +480,15 @@ const qrCodeSvg = await QRCode.toString(url, {
   .action-title {
     display: block;
     font-size: 0.88rem;
-    font-weight: 800;
-    letter-spacing: 0.05em;
+    font-weight: var(--weight-extrabold);
+    letter-spacing: var(--track-caps);
     text-transform: uppercase;
   }
 
   .action-copy {
     display: block;
     font-size: 0.84rem;
-    line-height: 1.4;
+    line-height: var(--leading-ui);
     color: rgba(var(--color-text-rgb), 0.72);
   }
 
@@ -500,18 +500,18 @@ const qrCodeSvg = await QRCode.toString(url, {
   .secondary-links {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, max-content));
-    gap: 0.75rem 1.25rem;
-    margin-top: 1.5rem;
+    gap: var(--space-12) var(--space-20);
+    margin-top: var(--space-24);
   }
 
   .detail-link {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--space-8);
     min-height: 44px;
     color: rgba(var(--color-text-rgb), 0.8);
     font-size: 0.88rem;
-    line-height: 1.4;
+    line-height: var(--leading-ui);
     text-decoration: none;
   }
 
@@ -522,9 +522,9 @@ const qrCodeSvg = await QRCode.toString(url, {
   }
 
   .share-note {
-    margin-top: 1.25rem;
+    margin-top: var(--space-20);
     font-size: 0.88rem;
-    line-height: 1.55;
+    line-height: var(--leading-small);
     color: rgba(var(--color-text-rgb), 0.7);
   }
 
@@ -535,7 +535,7 @@ const qrCodeSvg = await QRCode.toString(url, {
     aspect-ratio: 1;
     padding: 0.9rem;
     margin-top: 0.4rem;
-    border: 2px solid var(--color-text);
+    border: 2px solid var(--text-primary);
     background: var(--color-paper);
   }
 
@@ -549,7 +549,7 @@ const qrCodeSvg = await QRCode.toString(url, {
     margin-top: 0.85rem;
     max-width: 22ch;
     font-size: 0.88rem;
-    line-height: 1.55;
+    line-height: var(--leading-small);
     color: rgba(var(--color-text-rgb), 0.72);
   }
 
@@ -557,7 +557,7 @@ const qrCodeSvg = await QRCode.toString(url, {
     margin-top: 0.85rem;
     color: var(--color-accent);
     font-size: 0.84rem;
-    font-weight: 700;
+    font-weight: var(--weight-bold);
     text-transform: uppercase;
     letter-spacing: 0.08em;
     text-decoration: none;
@@ -566,7 +566,7 @@ const qrCodeSvg = await QRCode.toString(url, {
   @media (max-width: 960px) {
     .card-shell {
       grid-template-columns: 1fr;
-      gap: 2.5rem;
+      gap: var(--space-40);
     }
 
     .qr-panel {
@@ -574,7 +574,7 @@ const qrCodeSvg = await QRCode.toString(url, {
       max-width: none;
       display: grid;
       grid-template-columns: auto minmax(0, 1fr);
-      gap: 1rem 1.5rem;
+      gap: var(--space-16) var(--space-24);
       align-items: start;
     }
 
@@ -595,7 +595,7 @@ const qrCodeSvg = await QRCode.toString(url, {
     }
 
     .mini-link {
-      margin-top: 0.25rem;
+      margin-top: var(--space-4);
       align-self: start;
     }
 
@@ -627,7 +627,7 @@ const qrCodeSvg = await QRCode.toString(url, {
 
     .secondary-links {
       grid-template-columns: 1fr;
-      gap: 0.5rem;
+      gap: var(--space-8);
     }
 
     .primary-actions {
@@ -640,7 +640,7 @@ const qrCodeSvg = await QRCode.toString(url, {
     }
 
     .qr-panel .eyebrow {
-      margin-bottom: 1rem;
+      margin-bottom: var(--space-16);
     }
 
     .qr-frame {
