@@ -277,3 +277,22 @@ Design-system impact (told to Cello; sent to the audit session as rewrite-only a
 `bg-plate`; art token group `scene.<stop>.*` (day + night variants, exempt from text contrast because
 they never carry text); the ride is a motion signature (reduced motion → stills); components Plate,
 LocationCard, SceneStop. The staged migration is unchanged.
+
+### Correction: a window, not a train (2026-10-12)
+
+Cello: "we don actually want a train ride i was using a comparison and you took it literally,
+window transition is more accurate". The train-ride parallax is dropped (a literal reading of an
+analogy, the same latching failure the channel brief warns about).
+What he said instead:
+- "the desk window setup can also stay as the hero and transition to the other scenes depending
+  on blog, case study etc."
+- "on load its a different one of the scenes masked through the window hero"
+→ Window = the persistent hero/frame; scenes swap *through* it with a window transition; which
+  scene shows depends on the content (case study, post…); a different scene on each load.
+People in the photos: keep them subtle, behind-the-scenes only (tiny, not obvious). Who they are is
+not recorded here: this repo is public.
+Audit session (2026-10-12): Cello approved its proposal as written; the scene additions (plate
+rule, `bg-plate`, `scene.*`, Signature tier, Plate/LocationCard/SceneStop) come back as one
+amendment for his approval once a rewrite direction is picked. Stage 0 of the migration is in
+progress on `claude/design-system-migration`; stage 1 keeps legacy aliases, so prototype token
+names stay valid.
