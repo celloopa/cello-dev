@@ -136,3 +136,37 @@ export function loadScene(id: string): SceneData {
   });
   return { id, place: entry.place ?? man.place ?? id, month: entry.month ?? man.month ?? "", grid, layers };
 }
+
+export interface SceneArt {
+  id: string;
+  place: string;
+  month: string;
+  /** 480×320, the layers flattened (scripts/scene-derivatives.mjs): the SceneSelector swatch. */
+  swatch: string;
+  /** The flattened scene at web size and a 9:16 crop around the mobile center. Only scenes a
+   * case study is paired with have them (null otherwise). */
+  flat: string | null;
+  flatTall: string | null;
+  /** Desktop cover-fit anchor of the flattened scene (0…1, like object-position). */
+  anchor: [number, number];
+}
+
+/**
+ * A scene as a picture rather than the live Scene: its swatch and flattened copies, made by
+ * `pnpm scenes:derive` (scripts/scene-derivatives.mjs) and committed. Throws at build time if a
+ * file is missing, so a new pairing can't ship without its art.
+ */
+export function sceneArt(id: string): SceneArt {
+  const scene = loadScene(id);
+  const has = (f: string) => fs.existsSync(path.join(process.cwd(), "public", "scenes", id, f));
+  if (!has("swatch.webp")) throw new Error(`[scene] ${id} has no swatch.webp: run pnpm scenes:derive`);
+  return {
+    id,
+    place: scene.place,
+    month: scene.month,
+    swatch: `/scenes/${id}/swatch.webp`,
+    flat: has("flat.webp") ? `/scenes/${id}/flat.webp` : null,
+    flatTall: has("flat-tall.webp") ? `/scenes/${id}/flat-tall.webp` : null,
+    anchor: SETTINGS[id]?.anchor ?? [0.5, 0.5],
+  };
+}

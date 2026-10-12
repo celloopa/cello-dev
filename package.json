@@ -12,7 +12,8 @@
     "astro": "astro",
     "ui:shots": "node scripts/ui-shots.mjs",
     "sync-projects": "npx tsx scripts/sync-projects.ts",
-    "resume:pdf": "node scripts/generate-resume-pdf.mjs"
+    "resume:pdf": "node scripts/generate-resume-pdf.mjs",
+    "scenes:derive": "node scripts/scene-derivatives.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
