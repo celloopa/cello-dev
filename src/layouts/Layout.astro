@@ -614,17 +614,6 @@ const SOCIAL_ICONS: SocialIcon = {
         will-change: transform;
       }
 
-      @media (prefers-reduced-motion: reduce) {
-        [data-reveal] {
-          opacity: 1 !important;
-          transform: none !important;
-        }
-
-        [data-reveal="line"]::before {
-          transform: scaleX(1) !important;
-        }
-      }
-
       .print {
         display: none !important;
       }
@@ -672,22 +661,7 @@ const SOCIAL_ICONS: SocialIcon = {
         }
       }
 
-      /* Reduced motion */
-      @media (prefers-reduced-motion: reduce) {
-        *,
-        *::before,
-        *::after {
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-          scroll-behavior: auto !important;
-          transition-duration: 0.01ms !important;
-        }
-
-        ::view-transition-new(root),
-        ::view-transition-old(root) {
-          animation: none !important;
-        }
-      }
+      /* Reduced motion: the one contract block lives in src/styles/animations.css. */
     </style>
     <script>
       import { bindThemeToggles } from "@/utils/themeToggle.js";

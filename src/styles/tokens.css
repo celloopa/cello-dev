@@ -128,6 +128,7 @@
   --motion-ui: 300ms; /* Hover, color, press, menu. */
   --motion-entry: 600ms; /* Reveal, slide, wipe, scale. */
   --motion-stagger: 60ms; /* Per item in a staggered entry. */
+  --motion-none: 0s; /* No wait. The reduced-motion contract zeroes every delay with it, so content never waits on motion. */
 
   /* Legacy aliases (old names kept so open branches build; removed once nothing uses them) */
   --ds-color-ink-950: var(--ink-950);

@@ -367,15 +367,35 @@
 	}
 }
 
-/* Reduced motion */
+/* The reduced-motion contract (Cello family layer), the site's one block: every animation and
+   transition finishes at once, delays are zeroed so content never waits on motion, loops stop,
+   and revealed content is simply there. Components add direct-state fallbacks of their own
+   (the static logo, the final hero text) next to their motion. */
 @media (prefers-reduced-motion: reduce) {
 
 	*,
 	*::before,
 	*::after {
 		animation-duration: 0.01ms !important;
+		animation-delay: var(--motion-none) !important;
 		animation-iteration-count: 1 !important;
 		transition-duration: 0.01ms !important;
+		transition-delay: var(--motion-none) !important;
+		scroll-behavior: auto !important;
+	}
+
+	::view-transition-new(root),
+	::view-transition-old(root) {
+		animation: none !important;
+	}
+
+	[data-reveal] {
+		opacity: 1 !important;
+		transform: none !important;
+	}
+
+	[data-reveal="line"]::before {
+		transform: scaleX(1) !important;
 	}
 
 	.texture-layer {
