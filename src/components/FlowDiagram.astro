@@ -1,6 +1,8 @@
 ---
-import "@/styles/colors.css";
-
+/*
+ * FlowDiagram: a titled sequence of steps (label + detail), with an optional caption.
+ * The figure is a plate (A1 bg-plate), so its labels and text never sit on scene art.
+ */
 interface FlowItem {
   label: string;
   detail: string;
@@ -19,8 +21,8 @@ const { title, items, caption } = Astro.props;
   <figcaption>{title}</figcaption>
   <ol>
     {
-      items.map((item, index) => (
-        <li style={`--i: ${index}`}>
+      items.map((item) => (
+        <li>
           <strong>{item.label}</strong>
           <p>{item.detail}</p>
         </li>
@@ -34,21 +36,16 @@ const { title, items, caption } = Astro.props;
   .flow-diagram {
     margin: var(--space-32) 0;
     padding: var(--space-16);
-    border: 3px solid var(--text-primary);
-    background: linear-gradient(
-        135deg,
-        rgba(var(--color-accent-rgb), 0.12),
-        transparent 42%
-      ),
-      var(--bg-raised);
+    border: var(--stroke-frame) solid var(--border-strong);
+    background: var(--bg-plate);
   }
 
   figcaption {
     margin-bottom: var(--space-16);
-    color: var(--color-accent);
-    font-size: 0.78rem;
+    color: var(--text-accent);
+    font-size: var(--type-label);
     font-weight: var(--weight-extrabold);
-    letter-spacing: 0.08em;
+    letter-spacing: var(--track-wide);
     line-height: var(--leading-title);
     text-transform: uppercase;
   }
@@ -64,24 +61,24 @@ const { title, items, caption } = Astro.props;
 
   li {
     min-height: 100%;
-    padding: 0.9rem;
-    border: 2px solid rgba(var(--color-text-rgb), 0.5);
-    background: var(--bg-canvas);
+    padding: var(--space-12);
+    border: var(--stroke-control) solid var(--border-muted);
+    background: var(--bg-raised);
   }
 
   li::before {
     content: "";
     display: block;
-    width: 2.5rem;
-    height: 4px;
+    width: var(--space-40);
+    height: var(--stroke-bar);
     margin-bottom: var(--space-12);
-    background: var(--color-accent);
+    background: var(--action-primary);
   }
 
   strong {
     display: block;
-    margin-bottom: 0.35rem;
-    font-size: 0.95rem;
+    margin-bottom: var(--space-4);
+    font-size: var(--type-ui);
     line-height: var(--leading-title);
     text-transform: uppercase;
   }
@@ -89,16 +86,16 @@ const { title, items, caption } = Astro.props;
   p {
     margin: 0;
     padding: 0;
-    font-size: 0.92rem;
+    font-size: var(--type-ui);
     line-height: var(--leading-small);
   }
 
   .caption {
     margin-top: var(--space-16);
     padding-top: var(--space-16);
-    border-top: 1px solid rgba(var(--color-text-rgb), 0.35);
-    font-size: 0.88rem;
-    line-height: 1.6;
-    opacity: 0.85;
+    border-top: var(--stroke-rule) solid var(--border-muted);
+    color: var(--text-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
   }
 </style>

@@ -1,57 +1,61 @@
 ---
-import "@/styles/colors.css";
-
+/*
+ * CaseMeta: a case study's opening facts (problem, role, decision, result) as labeled panels.
+ * Each panel is a plate (A1 bg-plate): opaque, so its labels and text never sit on scene art.
+ */
 interface MetaItem {
-	label: string;
-	value: string;
+  label: string;
+  value: string;
 }
 
 interface Props {
-	items: MetaItem[];
+  items: MetaItem[];
 }
 
 const { items } = Astro.props;
 ---
 
 <aside class="case-meta" aria-label="Case study summary">
-	{items.map((item) => (
-		<div class="meta-item">
-			<span>{item.label}</span>
-			<p>{item.value}</p>
-		</div>
-	))}
+  {
+    items.map((item) => (
+      <div class="meta-item">
+        <span>{item.label}</span>
+        <p>{item.value}</p>
+      </div>
+    ))
+  }
 </aside>
 
 <style>
-	.case-meta {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-		gap: var(--space-12);
-		margin: var(--space-32) 0;
-	}
+  .case-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-12);
+    margin: var(--space-32) 0;
+  }
 
-	.meta-item {
-		border: 2px solid var(--text-primary);
-		padding: var(--space-16);
-		background: rgba(var(--color-text-rgb), 0.04);
-	}
+  .meta-item {
+    padding: var(--space-16);
+    border: var(--stroke-control) solid var(--border-strong);
+    background: var(--bg-plate);
+  }
 
-	span {
-		display: block;
-		margin-bottom: var(--space-8);
-		color: var(--color-accent);
-		font-size: 0.72rem;
-		font-weight: var(--weight-extrabold);
-		letter-spacing: 0.08em;
-		line-height: var(--leading-heading);
-		text-transform: uppercase;
-	}
+  span {
+    display: block;
+    margin-bottom: var(--space-8);
+    color: var(--text-accent);
+    font-size: var(--type-label);
+    font-weight: var(--weight-extrabold);
+    letter-spacing: var(--track-wide);
+    line-height: var(--leading-heading);
+    text-transform: uppercase;
+  }
 
-	p {
-		margin: 0;
-		padding: 0;
-		color: var(--text-primary);
-		font-size: 0.95rem;
-		line-height: var(--leading-small);
-	}
+  p {
+    margin: 0;
+    padding: 0;
+    color: var(--text-primary);
+    font-size: var(--type-ui);
+    line-height: var(--leading-small);
+  }
 </style>
