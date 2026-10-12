@@ -296,3 +296,18 @@ rule, `bg-plate`, `scene.*`, Signature tier, Plate/LocationCard/SceneStop) come 
 amendment for his approval once a rewrite direction is picked. Stage 0 of the migration is in
 progress on `claude/design-system-migration`; stage 1 keeps legacy aliases, so prototype token
 names stay valid.
+
+### Q15. What swaps the scene (2026-10-12)
+
+**Answer: sticky window that follows reading, "build it".** Built as the window storyboard
+(`1cfefd0`): room in HTML/SVG, places from the scene kit in three.js, content on plates, blind
+transition, random opening place, hover/focus previews.
+
+### Feedback on the shapes (2026-10-12)
+
+Cello: "i don't love the look. what could we do? render textures and layers using gpt images and
+you composite them and use three? i don't love the shapes that are coming out sorry. they serve as
+story boards tho". → The kit renders are storyboards (composition + depth plan). Next: generated
+art via Pi's `codex_imagegen` (prompts in `docs/rewrite/imagegen-prompts.md`), composited in
+three.js as depth layers. Step 1: three style frames of one place; Cello picks; then a layer test;
+then the rest. Sending a photo to the image model needs Cello's explicit OK (asked).
