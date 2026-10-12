@@ -140,4 +140,16 @@ Cello said "b and c"; clarified as the merge.
 
 ### Q8. Who writes the three.js code
 
-`[asked 2026-10-12]`
+Options: A agent builds all (annotated code) · B Cello writes, agent tutors · C split by phase.
+**Answer (2026-10-12): A.** The agent builds all of it; the code is annotated so Cello can read
+it. Post framing shifts from "my first three.js project" to "how I directed a rebuild".
+
+### Q9. Which treatments to prototype
+
+Offered: Cut paper, Construction, Stage light. Cello kept the first two and asked for a new third
+direction instead of Stage light.
+**Answer (2026-10-12): build Cut paper, Construction and Print run (risograph in 3D).**
+Brief added with the go: "keep it prudent yet impressive and allow mobile to work well too.
+we're trying to make a good impression and get hired."
+
+Shared understanding reached; prototypes are being built in `docs/rewrite/prototypes/`.
