@@ -1,4 +1,4 @@
-# Landscape build: checks (S0–S1, 2026-10-12)
+# Landscape build: checks (S0–S2, 2026-10-12)
 
 Branch `claude/landscape-build`. Production build served by `astro preview` on this Mac; browser
 checks in headless installed Chrome through `playwright-core` (GPU on, so WebGL runs). The scratch
@@ -100,5 +100,114 @@ resume, design-system, card, 404) are 0 px.
 
 - The still is Day art in both themes (the Dusk grade is WebGL only), as in the prototype.
 - Not tested on a real phone GPU.
-- Ghosted's card media (today's `swipe-keep.webm`) shows a real resume; D3 says case-study
-  artifacts use demo personas. Content is today's, unchanged here; it's Cello's call.
+- D3 (demo personas only): see S2 below. The swipe-keep clips are now demo-only; several
+  Ghosted stills still show a real resume.
+
+---
+
+# S2: case studies and posts in the landscape (2026-10-12)
+
+Same setup as above (production build on `astro preview`, headless installed Chrome with the GPU
+on). Pages: the four case studies (Asheville Dispensary → Over Hood, Ghosted → Ecola,
+VegAvengers → Sauvie, Daybreak → Meadows) and the two live posts (Designing for the Second User
+→ Moss Falls, Programmatic Resumes → Bald Mountain; the rotation hash picks them). Shots:
+`shots/s2/`.
+
+## Merges before S2
+
+- `claude/design-system-migration` @ 01c79e4 (2c + stage 3 Day), then @ e1e313e (the
+  public-docs strip, which contains `master` e10cc19; merging `origin/master` afterwards was
+  already up to date). The conductor's strip check (local paths, private Figma and board links,
+  the team name) over `docs/` and `src/` comes back empty.
+- Home after the merge, Day and Dusk: contrast re-run, **0 failures**, the same minimums as the
+  S1 table above (e.g. Day WebGL reading 7.72 small / 3.53 large at 1440).
+
+## Build and URL contract
+
+`pnpm build` green: tokens up to date, no new raw values; `astro check` 95 files, 0 errors,
+0 warnings, 0 hints. `raw-baseline.json` ratchets 401 → 277 (the old [slug] templates' and media
+components' literals). The 16 URLs are 200; the 8 expected 404s are 404 (the two drafts
+included); `cv.json` parses, the PDF starts `%PDF-`; the two 301s are Netlify's (unchanged
+`_redirects`).
+
+## Behavior (6 pages × 1440/390 × Day/Dusk = 24 runs)
+
+| Check | Result |
+|---|---|
+| Reading state at first paint | `html.scene-reading scene-read-page` from the server; still filter `blur(7px) brightness(0.45) saturate(0.65)` (390: 5px, .36, .6); `--atmos-read` 1; place label opacity 0 |
+| Renderer | arrives settled and focused: focus 1, every plane's travel 0,0, every layer faded in (no assembly) |
+| Nearly still | **0 frames** in 1.5 s idle and **0 frames** while the pointer sweeps the window and the page scrolls 600 px, in all 24 runs |
+| Bar | the h1's title + "All work" → /projects (posts: "All posts" → /blog); context not inert; Work and the utility links hidden; menu and theme kept ("Switch to Day" / "Switch to Dusk") |
+| Prose (2c) | direct-child paragraphs in Geist Variable at 31em (1440; full column at 390); h2 National Park; h3, captions and CaseMeta Geist Mono; body links underlined |
+| End | next story (case studies by order, wrapping; posts newest first), the previous one, the index; footer Work + About · Writing · Contact · Resume |
+| Horizontal overflow | 0 px everywhere |
+| Reduced motion | the still with the CSS focus recipe; the renderer chunk is never requested |
+| `?gl=0`, Day | the still; no renderer request |
+| Hidden tab (Daybreak, hidden from before load, 8 s) | the still on screen, 0 frames; on visible the canvas takes over already focused (2 frames) |
+| Day across navigation | Day picked on /projects/ghosted → "All work" (full load of a Layout page) → /resume (ClientRouter swap, same window) → /projects/vegavengers (full load): `data-theme="light"` throughout |
+
+**Console:** none (zero errors, zero warnings, no failed requests) across every run above and the
+contrast runs.
+
+## Ghosted: the Loop video (MediaVideo)
+
+| Check | 1440 | 390 |
+|---|---|---|
+| Plays on screen | `ghosted-loop.webm`, readyState 4, time advancing | same |
+| Pause / Play | Pause → paused, time holds, label "Play" ("Play video"); scrolling away and back keeps it paused; Play resumes; Enter on the focused button toggles | same |
+| Reduced motion | paused at 0 s on `ghosted-loop-poster.webp`, no `autoplay` attribute, button reads "Play"; 0 videos playing on the page | same |
+
+## Text over art: contrast (S2 pages, top to bottom)
+
+Same measure as S1 (each line vs the 99th-percentile brightest pixel under it; text on its own
+fill or on a plate excluded; videos paused). Every viewport step down all six pages:
+
+| State | 1440 small | 1440 large | 390 small | 390 large |
+|---|---|---|---|---|
+| Dusk, WebGL | 9.83 | 5.70 | 9.83 | 6.28 |
+| Dusk, still | 6.92 | 3.60 | 8.35 | 4.42 |
+| Day, WebGL | 6.93 | 3.60 | 8.36 | 4.48 |
+| Day, still | 6.92 | 3.60 | 8.35 | 4.42 |
+
+**0 failures** of 4.5:1 / 3:1 across 15,316 measured lines. Thinnest margin: VegAvengers' green
+h2 "Publishing Without F…" in Day (3.60:1, large text, needs 3). Small green text never sits on
+art: labels over art use `--text-on-art-muted`, and CaseMeta, FlowDiagram, tables, quotes and
+inline code sit on `bg-plate`.
+
+## Performance (Ghosted, the longest case study)
+
+Phone 390, Fast 4G, 4× CPU, cache off, median of 5: **LCP 0.38 s** (the lede), FCP 0.38 s,
+**CLS 0.0008**. Desktop 1440 Fast 4G: LCP 0.39 s, CLS 0.019. The renderer (129.9 KB) arrives at
+≈1.3–1.7 s.
+
+Slow 4G (1.6 Mbps): FCP 0.80 s, but LCP 7.6 s (390) / 8.0 s (1440), and the LCP element is the
+scene's near layer. The page's own media (the cover video and nearby images) share the slow
+link, so the renderer arrives after the 6 s give-up; the still then fades in and becomes the
+largest paint. Text is readable from 0.8 s. Not fixed in S2: see the note for Cello.
+
+## ui:shots (exact, baseline = the migration tip e1e313e from a clean export, two runs)
+
+**28 of 48 screens changed**, all expected: home (the footer's utilities), the four case
+studies and the post (the landscape), and `/projects` (86,547 px at 1440: only the Ghosted
+card, whose video is now the demo clip). Resume, design-system, card, blog index and 404 are
+0 px.
+
+## D3: demo personas only (Ghosted)
+
+Every Ghosted image was OCR'd (tesseract at 2×) and every video frame-sampled (1–2 fps), then
+checked by eye.
+
+- **Fixed:** `v3/swipe-keep.webm` (cover and card) and `v3/swipe-keep-full.webm` showed Cello's
+  real resume (name, email, LinkedIn, GitHub, city). Both are now Ghosted's own landing clip of
+  the made-up "Rowan Ellis" (example.com contact lines), re-encoded to VP9 at the same paths.
+  OCR of every frame: only the demo persona. The new `ghosted-loop` video: the same.
+- **Still showing the real resume**, left for Cello (no demo replacements exist yet):
+  - in the Ghosted case study: `v3/proposal.webp`, `v3/phones.webp`, `v3/style-looks.webp`,
+    and `v3/og.png` (the social image);
+  - in "Programmatic Resumes You Can Chat With": `v3/highlights.webp` (its cover),
+    `v3/interview.webp`, `v3/tailored.webp`, `v3/history.webp`, `v3/edit-style.webp`,
+    `v3/archetype.webp`, `v3/report.webp`.
+- Possible tester data: `v3/signin.webp`'s access-code placeholder reads "e.g. kim-7x2qpd".
+- Clean: the brand and design-system images, `board`, `board-dark`, `category`, `fit`,
+  `intake`, `research`, `tour-look`, and every `web/*` image (demo "Sam Rivera").
+- The old files stay in git history.
