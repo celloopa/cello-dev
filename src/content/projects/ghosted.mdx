@@ -18,7 +18,7 @@ highlights:
   - "A live React + Typst resume canvas where every AI edit is a versioned, highlighted proposal the person keeps, rejects or edits themselves"
   - "Designed Fit and Research as prep you can tick off: the proof first, then what to lead with and the gaps, plus reading picked by the AI with links that only come from a real search"
   - Designed a first-resume interview with the ghost, one card at a time beside the live page, for a high school student with no resume yet
-  - "Logged 70 production releases in the first four days, most of them traced to something a named tester said or did"
+  - "Logged 102 production releases in the first four days, most of them traced to something a named tester said or did"
   - Built the brand from the product's one ownable moment, the yellow highlight, and made "the highlight settles into ink" the hero motion
   - "Measured the focus pass: on phones the resume moved from 522 px to 233 px down the first screen; opening Style went from an 880 ms freeze to 30 ms"
   - "Cut the AI's input tokens for a chat edit by 86% (25,470 to 3,621) by replacing a command-line wrapper with a direct request, and made replies stream in"
@@ -39,7 +39,7 @@ import MediaThree from '@/components/media/MediaThree.astro';
   { label: "Users", value: "Invited testers tailoring real applications, including my own application to Nike and a high school student writing his first resume. CVs work in English and Spanish." },
   { label: "Constraints", value: "Model output that can't be trusted blindly, resumes that must stay true to the person, PDFs that have to survive applicant-tracking systems, testers who've never seen an API key, and a phone screen." },
   { label: "Tools", value: "React, Vite, TypeScript, typst.ts, Node, Hono, SQLite, Codex (GPT on my ChatGPT subscription), Firecrawl, Figma." },
-  { label: "Outcome", value: "Live at ghosted.cello.design in private beta. 70 production releases logged in its first four days, an identity built from the product's own highlight, and a phone layout that puts the resume 289 px higher on the first screen." }
+  { label: "Outcome", value: "Live at ghosted.cello.design in private beta. 102 production releases logged in its first four days, an identity built from the product's own highlight, and a phone layout that puts the resume 289 px higher on the first screen." }
 ]} />
 
 ## The Problem
@@ -221,9 +221,17 @@ One fictional resume performs the whole product as you scroll, in five chapters:
 
 It's a showcase, so it gets its own motion tier, written down as a decision: no animation library, no scroll hijacking (snap points only catch a fling, so a trackpad can't skip a chapter), a Pause motion toggle for WCAG 2.2.2, and five still panels with reduced motion. Splitting the signed-in app into its own bundle took the landing's JavaScript from 288 kB to 81 kB gzipped. On mobile, Lighthouse performance went from 93 to 98 and page weight from 978 KiB to 349 KiB (the live page against the new build, measured locally). A phone audit afterwards found taps landing on faded layers and scrolling that re-styled about 300 elements every frame. Moving the scrubbed parts onto one scroll timeline cut frames over 33 ms from 21 to 3 on a throttled desktop, and every hands-on moment now works on a phone.
 
+## Where The AI Stops: Off, Offline, And Limits
+
+The question at the top of this page has a blunt version: can you use Ghosted without the AI at all? I know people who'd rather not, so on October 11 I asked for a switch, and for an honest answer on what still works. Fetching the one posting you pasted, once, when you click, is what a browser does, and reading its title and pay is plain code. A keyword Fit is honest if it says exactly what it is ("your resume mentions 9 of the posting's 15 key terms"), with no score. So with AI off, every AI button turns into its manual version instead of greying out, and the server refuses every AI call before a prompt is written, so a stale tab can't send anything. Building it turned up two calls that ran without a click; they now ask first, for everyone. LinkedIn links stopped being fetched entirely, because LinkedIn's terms don't allow it.
+
+Offline came from the same evening and uses the same rule. The AI lives on OpenAI's servers, so offline always means no AI, and the app gives way exactly as it does when AI is off, with its own line: your edits are saved here and sync when you're back. Ghosted now opens with no connection and installs like an app. When two devices both changed something, it merges them instead of quietly keeping one, and says so. Planning it also found a live bug that could lose edits, which we fixed before building anything new.
+
+A growing beta needed limits too. One heavy user could use up my plan's week for everyone, so each person gets 100 AI requests a day, and past that the same manual versions take over. The first default was 50; the real counts moved it to 100. Backups now leave the server, sealed with a key only I hold.
+
 ## By The Numbers
 
-- **70** entries in the production release log from October 8 to 11, each with what shipped, why, and who decided.
+- **102** entries in the production release log from October 8 to 11, each with what shipped, why, and who decided.
 - **522 → 233 px:** where the resume starts on a phone, before and after the focus pass.
 - **62%** of the first phone screen was chrome before that pass.
 - **880 → 30 ms** to open Style.
@@ -234,7 +242,8 @@ It's a showcase, so it gets its own motion tier, written down as a decision: no 
 - **~12** search credits per tailored job for Research, against a plan of 5,000 a month.
 - **26** cards to a one-page first resume for a made-up student, with nothing invented.
 - **288 → 81 kB** of landing-page JavaScript, gzipped; Lighthouse mobile performance **93 → 98**.
-- **0** usage claims. Ghosted is days old with a handful of testers, and measuring how they actually use it is the next piece of work.
+- **100** AI requests a day per person, a limit set from real counts: the busiest tester peaked at 58 in 24 hours.
+- **0** usage claims. Ghosted is days old with a handful of testers. It now counts what people do (which feature, when, never what they wrote), and I read those numbers with the testers' feedback before saying anything about them.
 
 ## How It Was Built
 
@@ -254,7 +263,6 @@ Ghosted is my third pass at the same problem. The first was a Go terminal app wi
 
 - **Pick a layout.** The three layout studies above (AI-generated concepts from the brand lab, still with the retired 3D ghost) are unselected. The identity reskinned the current layout. Phones still stack three rows of tabs on a job, and that's the first thing a new layout has to fix.
 - **Open Spanish to everyone** once my family in Peru has been through it.
-- **Bring Keep's burst and Reject's break from the landing page into the app**, after testers have seen them.
 - **Tune Research's searches** from the links testers mark as not useful.
 - **Check that Fit is right:** a way to say an item isn't true, and tracking whether "strong" fits actually get interviews.
 - **Archetypes that learn** from what you keep across jobs, instead of only being built on request.
