@@ -210,6 +210,18 @@
 	}
 }
 
+/* Scene settle (landscape /card): a flattened scene eases from the focus recipe's scale to rest
+   as its panel scrolls in (scroll-linked; never under reduced motion) */
+@keyframes sceneSettle {
+	from {
+		transform: scale(var(--focus-scale));
+	}
+
+	to {
+		transform: none;
+	}
+}
+
 /* Animation utility classes */
 .animate-slide-up {
 	animation: slideUp var(--motion-slow) var(--ease-out) forwards;
