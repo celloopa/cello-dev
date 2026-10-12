@@ -26,7 +26,18 @@ In flight, not handed off:
 - **Ghosted case study: live landing Loop recording** (rewrite thread; Cello: "Both"). Expected
   as a real part, with files, the exact MDX change and go status. It also fixes the stale "five
   chapters" line (the live landing has six). Review against D3: demo personas only.
-- **Rewrite exploration** (`claude/rewrite-exploration` at `6f16df3`, local): exploration only;
+- **Landscape build (the rewrite becomes a build)**: `claude/landscape-build`, cut from the
+  migration branch at `42824f2` (it contains `03daa69`). Plan: `docs/landscape/PLAN.md` @
+  `59629e9`, stages S0–S4. Cello, GRILL Q22 @ `f0ff8c0`: "i like the landscape concept … its
+  time to do it and make it fit in the design system"; "rewrite only for now, keep site for now
+  but allow me to see a demo of the new so we can start ironing it out and cutover this week".
+  Today's site stays live until cutover; **cutover goes through this board** with his "ship it".
+  Preview: Netlify **branch deploys look off** (pushed branches get no Netlify status; the
+  `claude-ship-conductor--marcelorondon.netlify.app` URL is 404), but **PR deploy previews work**
+  (`deploy-preview-<N>--marcelorondon.netlify.app`, e.g. PR #13). So the demo route is a
+  **draft PR** against `master`, never merged by anyone but this conductor. The thread asks Cello
+  before opening it.
+- **Rewrite exploration (superseded by the build above)** (`claude/rewrite-exploration` at `6f16df3`, local): exploration only;
   not a part.
 
 ## Threads
@@ -34,7 +45,7 @@ In flight, not handed off:
 | Session | Owns | Branch | State |
 |---|---|---|---|
 | Audit and unify the cello.dev design system | Staged migration of today's site; identity I1–I6 + A1 | `claude/design-system-migration` | **Stopped (usage limit).** Committed through 1a `e3cb897`. Uncommitted in its worktree: 1b codemod (raw values 1208 → 499), lowered ratchet baseline, `@types/node` 22.15.17 pin (its install had dropped it: `astro check` 31 errors → 0). Next session: stabilize the shots harness, re-shoot b0/b1 from `756f5b3`, prove 1b at 0 px, commit, hand off; remove `.claude/worktrees/ds-stage0-baseline`; propose the Geist Sans amendment |
-| Rewrite cello.dev | Rewrite exploration: window scenes, layer cut, Figma scenes file | `claude/rewrite-exploration` | Exploring; hands off nothing until Cello picks a direction |
+| Rewrite cello.dev | Landscape build (S0–S4) + Ghosted Loop video part | `claude/landscape-build`; `claude/rewrite-exploration` | **Building** (Cello picked the landscape, Q22); cutover target this week |
 | Rethink Daybreak from the ground up | Daybreak, separate repo | (daybreak repo) | Cross-thread decisions only |
 
 ## Decisions that affect several threads
@@ -93,14 +104,15 @@ In flight, not handed off:
   National Park + Switchback (I4); Geist Sans for long reading (A2).
 - 2026-10-12, Cello: Geist Sans goes to long reading only (case-study and blog body), recorded
   as migration amendment A2, a visible stage after 2b (reported by the audit thread).
+- 2026-10-12, Cello (GRILL Q22): **D1 is rewrite only.** Today's site keeps I2/I5/`bg-plate`
+  until cutover. The landscape is the build, made on the design system; the migration thread
+  ("Continue the cello.dev design-system migration") owns how DS-HANDOFF proposals enter the
+  system.
 - 2026-10-12: ship order: migration stages reach `master` first; the rewrite's build plan
   follows only after the migration ships (rewrite handoff, "Next, ranked").
 
 ## Open calls for Cello
 
-- I2/I5 revision ("Yes, revise it", Q21, asked in the rewrite's context): does it also change
-  what today's site gets in the migration under I6 (window frame, `bg-plate`), or only the
-  rewrite?
 - Where cello.dev uses Geist Sans: the migration thread will propose this as an amendment.
 
 ## After deploy, for Cello
