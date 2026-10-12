@@ -30,6 +30,18 @@ below the window. The mark was already this scene: a sun rising behind a mountai
   snow, forest, ground}` group at the values below, plus the dusk rule. These are art only: never
   text, never action, and exempt from text contrast because text never sits on them (I2). More
   months are added as places are added.
+- **I4. Display faces: National Park for titles, Switchback for place names (2026-10-12).** Cello
+  asked for faces I wouldn't default to, researched online (Firecrawl), and checked against the
+  identity. Six candidates were set in context (`shots/display-face-candidates.jpg`): NPS 2026,
+  Switchback, National Park, Tanker, Limelight, and Big Shoulders as the default for comparison.
+  He picked Switchback and National Park. Roles, one meaning each:
+  - **National Park** (Google Fonts, OFL 1.1, variable weight; routed park-sign lettering) sets page
+    and section titles.
+  - **Switchback** (NPS-inspired open set, github.com/national-park-service/fonts, OFL 1.1;
+    routed trail-sign caps, plus a Rough sibling) sets place names: location cards and scenes.
+  - **Geist Mono** sets everything else.
+  - Both faces are self-hosted from the repo (Switchback isn't on npm or Google Fonts), each with a
+    real fallback stack.
 
 ## Seasonal inks (I3, from the photos)
 
@@ -49,6 +61,5 @@ Dusk is one rule rather than a second palette: each ink is mixed 60% toward Midn
 
 ## Still open, one at a time
 
-1. The display face (Big Shoulders Display recommended; League Gothic and Alfa Slab One shown).
-2. The window frame primitive and the location card (their tier).
-3. How much of this reaches today's site in the migration.
+1. The window frame primitive and the location card (their tier).
+2. How much of this reaches today's site in the migration.
