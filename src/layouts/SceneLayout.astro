@@ -47,6 +47,11 @@ interface Props {
    * scene, the bar's reading context) and stays there. `title` names it in the bar.
    */
   reading?: { title: string; all?: { href: string; label: string } };
+  /**
+   * An index page (/projects, /blog): the scene is in the focus recipe from the first paint, like a
+   * reading page, but the bar stays in the exploring context (identity + Work + utilities).
+   */
+  focus?: boolean;
 }
 
 const siteName = "Cello - Product Designer & Design Engineer";
@@ -54,7 +59,7 @@ const siteDescription =
   "Product designer and design engineer focused on design systems and human-centered AI tools. I build and run what I design.";
 const siteImage = "/images/thumbnail.png";
 
-const { title = siteName, description = siteDescription, image, canonicalPath, place, reading } = Astro.props;
+const { title = siteName, description = siteDescription, image, canonicalPath, place, reading, focus } = Astro.props;
 const { url, email, profiles } = basics;
 const canonicalUrl = canonicalPath ? new URL(canonicalPath, url).toString() : url;
 const ogImage = image ? new URL(image, url).toString() : new URL(siteImage, url).toString();
@@ -66,7 +71,7 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
 <html
   lang="en"
   data-theme="dark"
-  class:list={["scene-page", reading && "scene-reading scene-read-page"]}
+  class:list={["scene-page", reading && "scene-reading scene-read-page", !reading && focus && "scene-focus-page"]}
   data-place={place}
 >
   <head>
@@ -92,7 +97,9 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
         else r.style.setProperty("--bar-kbd", /mac|iphone|ipad/i.test(navigator.userAgent) ? '"⌘K"' : '"Ctrl+K"');
         // the scene's 3D gate, before paint (scenery.js adds the WebGL check): a renderer is
         // expected, so the still waits under the ink for the arrival; a page that loads hidden
-        // keeps the still and its renderer arrives settled
+        // keeps the still and its renderer arrives settled. A reading or index page has no
+        // arrival: its still shows (focused) from the first paint and the renderer, which
+        // arrives settled and focused too, takes over without a visible change.
         const c = navigator.connection || {};
         const ok =
           !matchMedia("(prefers-reduced-motion: reduce)").matches &&
@@ -101,7 +108,8 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
           new URLSearchParams(location.search).get("gl") !== "0";
         if (ok) {
           r.classList.add("scene-3d");
-          if (document.hidden) r.classList.add("scene-still-on");
+          if (document.hidden || r.classList.contains("scene-read-page") || r.classList.contains("scene-focus-page"))
+            r.classList.add("scene-still-on");
         }
       })();
     </script>

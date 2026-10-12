@@ -82,13 +82,17 @@ export function start() {
   // A reading page (a case study or a post: html.scene-read-page, server-rendered with
   // scene-reading) opens in the reading state and stays there; it has no focus target.
   const readPage = root.classList.contains("scene-read-page");
+  // An index page (html.scene-focus-page: /projects, /blog) keeps the scene focused from the
+  // first paint like a reading page, while the bar stays in the exploring context.
+  const focusPage = root.classList.contains("scene-focus-page");
   const state = { admire: false, reading: readPage };
   let gl = null;
+  const glState = () => ({ admire: state.admire, reading: state.reading || focusPage });
   const apply = () => {
     root.classList.toggle("scene-admire", state.admire);
     root.classList.toggle("scene-reading", state.reading);
     context?.toggleAttribute("inert", !state.reading);
-    gl?.setState({ admire: state.admire, reading: state.reading });
+    gl?.setState(glState());
   };
 
   function setAdmire(on, { focusReturn = true } = {}) {
@@ -195,14 +199,14 @@ export function start() {
         tokens: readTokens(),
         mobile: () => mobileQ.matches,
         dark: isDark(),
-        reading: readPage,
-        // the still took over meanwhile, or this is a reading page (no assembly behind an
-        // article): arrive already settled, then cross-fade in
-        settled: () => readPage || root.classList.contains("scene-still-on"),
+        reading: readPage || focusPage,
+        // the still took over meanwhile, or this is a reading or index page (no assembly behind
+        // an article or a list): arrive already settled, then cross-fade in
+        settled: () => readPage || focusPage || root.classList.contains("scene-still-on"),
         onLost: () => { gl = null; showStill("WebGL context lost"); },
         onFirstFrame: handoff,
       });
-      gl.setState({ admire: state.admire, reading: state.reading });
+      gl.setState(glState());
       gl.setScroll(clamp01(scrollY / Math.max(1, hero?.offsetHeight ?? innerHeight)));
       gl.start(); // its first on-screen frame calls handoff (deferred while the tab is hidden)
       const onTheme = () => gl?.setDark(isDark());

@@ -8,7 +8,9 @@
   shared/landscape.css, on tokens.
 
   Root state classes (scenery.js and the head script): scene-3d, scene-still-on, scene-gl-on,
-  scene-admire, scene-reading. data-place names the scene.
+  scene-admire, scene-reading; from the server, scene-read-page (a case study or a post) and
+  scene-focus-page (an index: focused like a reading page, with the exploring bar). data-place
+  names the scene.
 */
 
 /* Roles: Dusk in both themes on scene pages (same values as tokens.json's dusk column). */
@@ -79,12 +81,12 @@ html:root.scene-page[data-place="ecola"] {
 html.scene-3d:not(.scene-still-on) .scene-still {
   opacity: 0;
 }
-html.scene-reading .scene-still {
+html:is(.scene-reading, .scene-focus-page) .scene-still {
   filter: var(--focus-filter);
   transform: scale(var(--focus-scale));
 }
 @media (max-width: 768px) {
-  html.scene-reading .scene-still {
+  html:is(.scene-reading, .scene-focus-page) .scene-still {
     filter: var(--focus-filter-mobile);
   }
 }
@@ -130,11 +132,11 @@ html.scene-admire .scene-atmos-arrive {
 html.scene-admire .scene-atmos-view {
   opacity: 1;
 }
-html.scene-reading .scene-atmos-arrive,
-html.scene-reading .scene-atmos-view {
+html:is(.scene-reading, .scene-focus-page) .scene-atmos-arrive,
+html:is(.scene-reading, .scene-focus-page) .scene-atmos-view {
   opacity: 0;
 }
-html.scene-reading .scene-atmos-read {
+html:is(.scene-reading, .scene-focus-page) .scene-atmos-read {
   opacity: 1;
 }
 
@@ -155,7 +157,7 @@ html.scene-reading .scene-atmos-read {
   color: var(--text-on-art);
   transition: opacity var(--motion-handoff) var(--ease-out);
 }
-html.scene-reading .place-label,
+html:is(.scene-reading, .scene-focus-page) .place-label,
 html.scene-admire .place-label {
   opacity: 0;
 }
