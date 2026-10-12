@@ -154,6 +154,9 @@
 
   /* Scene (amendment A3, pending Cello; the rewrite's landscape pages only. Motion caps live in each scene's manifest, not here) */
   --scene-bar: 4rem; /* The dark top bar's height; the scene starts under it. */
+  --scene-copy-start: 43vw; /* Desktop: where copy over a scene starts, so the scene's subject (Mirror Lake's Mt Hood) stays clear on the left. */
+  --scene-copy-end: 7vw; /* Desktop: the copy's right inset over a scene. */
+  --scene-copy-bottom: 10vh; /* Desktop: the copy's bottom inset over a scene (the place label sits below it). */
   --focus-blur: 7px; /* Focus recipe, desktop (D4, the storyboard v2 level Cello approved): the scene's blur while reading. */
   --focus-brightness: 0.45; /* Focus recipe, desktop: brightness while reading. */
   --focus-saturate: 0.65; /* Focus recipe, desktop: saturation while reading. */

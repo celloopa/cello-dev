@@ -1,0 +1,285 @@
+/*
+  Scene pages (the landscape build; amendment A3, pending Cello). Loaded by SceneLayout only.
+
+  The scene fills the page under the dark bar and the content sits in front of it (D1: text may
+  sit over scene art, with the copy scrim or the focus dim under it). Every surface here is the
+  scene, so the roles take their Dusk values in both themes; the theme picks the scene's grade
+  (Day art, or the Dusk grade in WebGL). Ported from the rewrite prototype's
+  shared/landscape.css, on tokens.
+
+  Root state classes (scenery.js and the head script): scene-3d, scene-still-on, scene-gl-on,
+  scene-admire, scene-reading. data-place names the scene.
+*/
+
+/* Roles: Dusk in both themes on scene pages (same values as tokens.json's dusk column). */
+html:root.scene-page {
+  --bg-canvas: var(--ink-950);
+  --bg-raised: color-mix(in srgb, var(--paper-200) 3.5%, transparent);
+  --bg-muted: color-mix(in srgb, var(--paper-200) 8%, transparent);
+  --bg-inverse: var(--paper-200);
+  --text-primary: var(--paper-200);
+  --text-muted: color-mix(in srgb, var(--paper-200) 82%, transparent);
+  --text-inverse: var(--ink-950);
+  --text-accent: var(--signal-500);
+  --action-primary: var(--signal-500);
+  --focus-ring: var(--signal-500);
+  --accent-ground: var(--earth-400);
+  --border-muted: color-mix(in srgb, var(--paper-200) 18%, transparent);
+  --scrim: color-mix(in srgb, var(--ink-950) 60%, transparent);
+  --color-accent: var(--action-primary);
+  --color-background: var(--bg-canvas);
+  --scrim-copy-strength: var(--scrim-copy);
+  color-scheme: dark;
+}
+@media (max-width: 768px) {
+  html:root.scene-page {
+    --scrim-copy-strength: var(--scrim-copy-mobile);
+  }
+}
+html:root.scene-page[data-place="ecola"] {
+  --scrim-copy-strength: var(--scrim-copy-ecola);
+}
+@media (max-width: 768px) {
+  html:root.scene-page[data-place="ecola"] {
+    --scrim-copy-strength: var(--scrim-copy-ecola-mobile);
+  }
+}
+
+/* ---------- the scene (fixed, decorative) ---------- */
+.scene {
+  position: fixed;
+  inset: var(--scene-bar) 0 0 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--bg-canvas);
+}
+.scene-still {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity var(--motion-handoff) var(--ease-out),
+    filter var(--motion-scene-fade) var(--ease-out),
+    transform var(--motion-scene-fade) var(--ease-out);
+}
+.scene-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: var(--ax) var(--ay);
+}
+@media (max-width: 768px) {
+  .scene-layer {
+    object-position: var(--mx) var(--my);
+  }
+}
+html.scene-3d:not(.scene-still-on) .scene-still {
+  opacity: 0;
+}
+html.scene-reading .scene-still {
+  filter: var(--focus-filter);
+  transform: scale(var(--focus-scale));
+}
+@media (max-width: 768px) {
+  html.scene-reading .scene-still {
+    filter: var(--focus-filter-mobile);
+  }
+}
+.scene-gl {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity var(--motion-handoff) linear;
+}
+html.scene-gl-on .scene-gl {
+  opacity: 1;
+}
+.scene-atmos,
+.scene-atmos i {
+  position: absolute;
+  inset: 0;
+}
+.scene-atmos i {
+  transition: opacity var(--motion-scene-fade) var(--ease-out);
+}
+.scene-atmos-arrive {
+  background: var(--atmos-arrive);
+}
+@media (max-width: 768px) {
+  .scene-atmos-arrive {
+    background: var(--atmos-arrive-mobile);
+  }
+}
+.scene-atmos-view {
+  background: var(--atmos-view);
+  opacity: 0;
+}
+.scene-atmos-read {
+  background: var(--atmos-read);
+  opacity: 0;
+}
+html.scene-admire .scene-atmos-arrive {
+  opacity: 0;
+}
+html.scene-admire .scene-atmos-view {
+  opacity: 1;
+}
+html.scene-reading .scene-atmos-arrive,
+html.scene-reading .scene-atmos-view {
+  opacity: 0;
+}
+html.scene-reading .scene-atmos-read {
+  opacity: 1;
+}
+
+/* ---------- PlaceLabel: shown while exploring; gone while reading (D4) and in Admire ---------- */
+.place-label {
+  position: fixed;
+  left: var(--space-48);
+  bottom: var(--space-24);
+  z-index: 1;
+  margin: 0;
+  pointer-events: none;
+  font-family: var(--font-place);
+  font-size: var(--type-place-label);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-ui);
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  color: var(--text-on-art);
+  transition: opacity var(--motion-handoff) var(--ease-out);
+}
+html.scene-reading .place-label,
+html.scene-admire .place-label {
+  opacity: 0;
+}
+@media (max-width: 768px) {
+  .place-label {
+    left: var(--space-24);
+  }
+}
+
+/* ---------- CopyScrim: flat ink under every line of copy over art, feathered ---------- */
+.copy-scrim {
+  position: relative;
+  isolation: isolate;
+}
+.copy-scrim::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -46% -22% -26% -20%;
+  pointer-events: none;
+  background: var(--scrim-copy-fill);
+  -webkit-mask-image: var(--scrim-copy-mask);
+  -webkit-mask-composite: source-in;
+  mask-image: var(--scrim-copy-mask);
+  mask-composite: intersect;
+}
+
+/* ---------- Admire: "Take in the view" / "Back to Cello" ---------- */
+.admire-btn,
+.admire-return {
+  min-height: var(--touch-target);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text-on-art);
+  font: inherit;
+  font-size: var(--type-ui);
+  letter-spacing: var(--track-caps);
+  cursor: pointer;
+}
+.admire-btn {
+  opacity: 0.85;
+}
+.admire-btn:hover,
+.admire-btn:focus-visible {
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: var(--space-8);
+}
+/* visibility stays visible for the whole fade either way, so the intro hides only once faded */
+[data-scene-intro] {
+  transition:
+    opacity var(--motion-ui) var(--ease-out),
+    visibility var(--motion-ui) linear;
+}
+html.scene-admire [data-scene-intro] {
+  opacity: 0;
+  visibility: hidden;
+}
+.admire-view {
+  position: absolute;
+  left: var(--scene-copy-start);
+  bottom: var(--scene-copy-bottom);
+  z-index: 1;
+  color: var(--text-on-art);
+  animation: fadeIn var(--motion-handoff) var(--ease-out) calc(var(--motion-ui) / 2) both;
+}
+.admire-view[hidden] {
+  display: none;
+}
+.admire-place {
+  margin: 0 0 var(--space-16);
+  font-family: var(--font-place);
+  font-size: var(--type-place-name);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+}
+.admire-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-8) var(--space-24);
+}
+.admire-return {
+  min-height: 0;
+  padding-bottom: var(--space-4);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  border-bottom: var(--stroke-control) solid var(--action-primary);
+}
+@media (max-width: 768px) {
+  .admire-view {
+    left: var(--space-24);
+    right: var(--space-24);
+    bottom: var(--space-96);
+  }
+}
+
+/* ---------- ArrowLink over art ---------- */
+.scene-arrow {
+  display: inline-flex;
+  gap: var(--space-8);
+  align-items: center;
+  padding-bottom: var(--space-4);
+  border-bottom: var(--stroke-control) solid var(--action-primary);
+  color: var(--text-on-art);
+  font-size: var(--type-ui);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color var(--motion-ui) var(--ease-out);
+}
+.scene-arrow:hover,
+.scene-arrow:focus-visible {
+  color: var(--action-primary);
+}
+
+/* reduced motion: animations.css zeroes durations; nothing here waits on a delay either */
+@media (prefers-reduced-motion: reduce) {
+  .admire-view,
+  html.scene-reading .bar-context {
+    animation: none;
+  }
+}

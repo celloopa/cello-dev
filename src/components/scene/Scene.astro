@@ -1,0 +1,46 @@
+---
+/*
+ * Scene (amendment A3; components.md "Rewrite" tier): one place's cut layers behind the page.
+ * The still (stacked <img>s) is in the HTML; scenery.js runs the attention states and, when the
+ * 3D gate allows, loads the WebGL renderer after paint (a dynamic import of three.js) and hands
+ * over to it. Also renders the PlaceLabel (Switchback, the place-name role).
+ */
+import { loadScene } from "@/lib/scene/catalog";
+
+interface Props {
+  place: string;
+}
+
+const scene = loadScene(Astro.props.place);
+const label = `${scene.place} · ${scene.month}`;
+const pct = (v: number) => `${+(v * 100).toFixed(2)}%`;
+---
+
+<div class="scene" data-scene aria-hidden="true">
+  <div class="scene-still">
+    {
+      scene.layers.map((l) => (
+        <img
+          class={`scene-layer scene-layer-${l.name}`}
+          src={l.src}
+          width={l.width}
+          height={l.height}
+          alt=""
+          decoding="async"
+          style={`--ax:${pct(l.anchor[0])};--ay:${pct(l.anchor[1])};--mx:${pct(l.mobileAnchor[0])};--my:${pct(l.mobileAnchor[1])}`}
+        />
+      ))
+    }
+  </div>
+  <div class="scene-atmos">
+    <i class="scene-atmos-arrive"></i><i class="scene-atmos-view"></i><i
+      class="scene-atmos-read"></i>
+  </div>
+  <script is:inline type="application/json" data-scene-json set:html={JSON.stringify(scene)} />
+</div>
+<p class="place-label" aria-hidden="true">{label}</p>
+
+<script>
+  import { start } from "@/lib/scene/scenery.js";
+  start();
+</script>

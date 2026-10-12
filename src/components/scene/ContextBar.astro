@@ -1,0 +1,277 @@
+---
+/*
+ * ContextBar (amendment A3; D5): the dark green top bar on scene pages.
+ *   exploring  identity + Work, with About and the other utilities kept separate
+ *   reading    the project in view + "All work" (scenery.js fills the title and sets
+ *              html.scene-reading)
+ * The menu button and ⌘K open today's KeyboardShortcutsMenu; the theme button uses today's
+ * theme util (it picks the scene's Day or Dusk grade; the bar stays dark either way).
+ */
+import Mark from "./Mark.astro";
+import Sun from "@/icons/Sun.astro";
+
+const utilities = [
+  { label: "About", href: "/#about" },
+  { label: "Writing", href: "/blog" },
+  { label: "Design System", href: "/design-system" },
+  { label: "Resume", href: "/resume" },
+];
+const path = Astro.url.pathname;
+const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page" : undefined);
+---
+
+<header class="bar">
+  <nav class="bar-inner" aria-label="Main">
+    <a class="bar-brand" href="/" aria-label="Cello, home">
+      <Mark class="bar-mark" />
+      <span>Cello</span>
+    </a>
+    <a class="bar-link bar-work" href="/projects" aria-current={current("/projects")}>Work</a>
+    <div class="bar-context" data-scene-context>
+      <span class="bar-context-title" data-scene-context-title></span>
+      <a class="bar-allwork" href="/projects">All work</a>
+    </div>
+    <ul class="bar-utils">
+      {
+        utilities.map((u) => (
+          <li>
+            <a class="bar-link" href={u.href} aria-current={current(u.href)}>
+              {u.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="bar-actions">
+      <button
+        class="bar-btn bar-menu"
+        type="button"
+        data-bar-menu
+        aria-haspopup="dialog"
+        aria-controls="keyboard-shortcuts-menu"
+        aria-keyshortcuts="Meta+K Control+K"
+      >
+        <span class="bar-key" data-bar-key></span>
+        <span>Menu</span>
+      </button>
+      <button class="bar-btn bar-theme" type="button" data-bar-theme aria-label="Toggle theme">
+        <Sun />
+      </button>
+    </div>
+  </nav>
+</header>
+
+<script>
+  import { toggleTheme } from "@/utils/themeToggle.js";
+
+  const menu = document.querySelector<HTMLButtonElement>("[data-bar-menu]");
+  const key = document.querySelector<HTMLElement>("[data-bar-key]");
+  const ua = navigator.userAgent.toLowerCase();
+  const touch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  if (key) {
+    if (touch) key.classList.add("bar-key--dot");
+    else key.textContent = /mac|iphone|ipad/.test(ua) ? "⌘K" : "Ctrl+K";
+  }
+  menu?.addEventListener("click", () => window.dispatchEvent(new CustomEvent("toggleKeyboardMenu")));
+  document.querySelector("[data-bar-theme]")?.addEventListener("click", () => toggleTheme());
+</script>
+
+<style>
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: var(--scene-bar);
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .bar-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-24);
+    height: 100%;
+    width: min(100% - 2 * var(--layout-gutter), var(--layout-container));
+    margin-inline: auto;
+  }
+
+  .bar-brand {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--space-12);
+    font-size: var(--type-ui);
+    font-weight: var(--weight-extrabold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+
+  .bar-brand :global(.bar-mark) {
+    width: 32px;
+    height: 34px;
+  }
+
+  .bar-link,
+  .bar-allwork {
+    display: block;
+    padding-block: var(--space-8);
+    border-bottom: var(--stroke-control) solid transparent;
+    font-size: var(--type-ui);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    transition:
+      border-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
+  }
+
+  .bar-link:hover,
+  .bar-link:focus-visible,
+  .bar-link[aria-current="page"] {
+    border-bottom-color: var(--action-primary);
+  }
+
+  .bar-utils {
+    display: flex;
+    gap: var(--space-24);
+    margin: 0 0 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bar-utils .bar-link {
+    color: var(--text-muted);
+  }
+
+  .bar-utils .bar-link:hover,
+  .bar-utils .bar-link:focus-visible {
+    color: var(--text-primary);
+  }
+
+  .bar-actions {
+    display: flex;
+    flex: none;
+    gap: var(--space-8);
+  }
+
+  .bar-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+    min-width: var(--touch-target);
+    height: var(--touch-target);
+    padding-inline: var(--space-12);
+    border: var(--stroke-control) solid var(--border-strong);
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      background-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
+  }
+
+  .bar-btn:hover,
+  .bar-btn:focus-visible {
+    background: var(--text-primary);
+    color: var(--bg-canvas);
+  }
+
+  .bar-key {
+    padding-inline: var(--space-4);
+    background: var(--text-primary);
+    color: var(--bg-canvas);
+  }
+
+  .bar-btn:hover .bar-key,
+  .bar-btn:focus-visible .bar-key {
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+  }
+
+  .bar-key:empty:not(.bar-key--dot) {
+    display: none;
+  }
+
+  .bar-key--dot {
+    width: var(--space-8);
+    height: var(--space-8);
+    padding: 0;
+    background: var(--action-primary);
+  }
+
+  .bar-theme {
+    padding-inline: 0;
+  }
+
+  /* reading: the project in view + All work; Work and the utilities step aside */
+  .bar-context {
+    display: none;
+    flex: 1;
+    min-width: 0;
+    align-items: center;
+    gap: var(--space-16);
+  }
+
+  .bar-context-title {
+    margin-inline: auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+    color: var(--text-on-art-muted);
+  }
+
+  .bar-allwork {
+    flex: none;
+    border-bottom-color: var(--action-primary);
+  }
+
+  :global(html.scene-reading) .bar-context {
+    display: flex;
+    animation: fadeIn var(--motion-handoff) var(--ease-out);
+  }
+
+  :global(html.scene-reading) .bar-work,
+  :global(html.scene-reading) .bar-utils,
+  :global(html.scene-reading) .bar-actions {
+    display: none;
+  }
+
+  @media (width <= 900px) {
+    .bar-utils {
+      display: none;
+    }
+
+    .bar-actions {
+      margin-left: auto;
+    }
+  }
+
+  @media (width <= 700px) {
+    .bar-inner {
+      gap: var(--space-16);
+    }
+
+    .bar-brand span {
+      display: none;
+    }
+
+    .bar-context-title {
+      font-size: var(--type-label);
+    }
+
+    .bar-allwork {
+      font-size: var(--type-label);
+    }
+  }
+</style>

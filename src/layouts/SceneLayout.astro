@@ -1,0 +1,328 @@
+---
+/*
+ * The layout for landscape pages (the rewrite build; amendment A3, pending Cello). Pages not yet
+ * migrated keep Layout.astro. A scene page has the dark ContextBar, one Scene behind everything,
+ * and today's footer and ⌘K menu. No ClientRouter: moving between a scene page and a Layout page
+ * is a full page load, so neither layout's scripts run on the other's DOM.
+ *
+ * Fonts load the way Layout.astro loads them (stage 2a/2b): Geist Mono and National Park
+ * Variable from @fontsource, with the faces the first paint needs preloaded. Switchback comes
+ * from the generated tokens.css and loads only when the place label renders.
+ */
+import { basics } from "@cv";
+import "@fontsource/geist-mono/400.css";
+import "@fontsource/geist-mono/500.css";
+import "@fontsource/geist-mono/600.css";
+import "@fontsource/geist-mono/700.css";
+import "@fontsource/geist-mono/800.css";
+import "@fontsource/geist-mono/900.css";
+import geistMono400 from "@fontsource/geist-mono/files/geist-mono-latin-400-normal.woff2?url";
+import geistMono700 from "@fontsource/geist-mono/files/geist-mono-latin-700-normal.woff2?url";
+import "@fontsource-variable/national-park";
+import nationalParkLatin from "@fontsource-variable/national-park/files/national-park-latin-wght-normal.woff2?url";
+import "@/styles/colors.css";
+import "@/styles/animations.css";
+import "@/styles/print.css";
+import "@/styles/scene.css";
+import ContextBar from "@/components/scene/ContextBar.astro";
+import Scene from "@/components/scene/Scene.astro";
+import KeyboardManager from "@/components/KeyboardManager.astro";
+import Mark from "@/components/scene/Mark.astro";
+import Mail from "@/icons/Mail.astro";
+import GitHub from "@/icons/GitHub.astro";
+import LinkedIn from "@/icons/LinkedIn.astro";
+import Bsky from "@/icons/Bsky.astro";
+import type { SocialIcon } from "@/types";
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  canonicalPath?: string;
+  /** The scene behind this page: an id from src/data/scene-library.json. */
+  place: string;
+}
+
+const siteName = "Cello - Product Designer & Design Engineer";
+const siteDescription =
+  "Product designer and design engineer focused on design systems and human-centered AI tools. I build and run what I design.";
+const siteImage = "/images/thumbnail.png";
+
+const { title = siteName, description = siteDescription, image, canonicalPath, place } = Astro.props;
+const { url, email, profiles } = basics;
+const canonicalUrl = canonicalPath ? new URL(canonicalPath, url).toString() : url;
+const ogImage = image ? new URL(image, url).toString() : new URL(siteImage, url).toString();
+const currentYear = new Date().getFullYear();
+const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark" class="scene-page" data-place={place}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#001A11" />
+    <meta name="color-scheme" content="dark" />
+    <link rel="preload" href={geistMono400} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={geistMono700} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={nationalParkLatin} as="font" type="font/woff2" crossorigin />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/images/logos/SVG/full-light.svg" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/svg+xml" href="/images/logos/SVG/full-dark.svg" media="(prefers-color-scheme: dark)" />
+    <script is:inline>
+      (() => {
+        const r = document.documentElement;
+        // theme: the same rule as Layout.astro (saved choice, else the system)
+        const savedTheme = localStorage.getItem("theme");
+        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        r.setAttribute("data-theme", savedTheme || systemTheme);
+        // the scene's 3D gate, before paint (scenery.js adds the WebGL check): a renderer is
+        // expected, so the still waits under the ink for the arrival; a page that loads hidden
+        // keeps the still and its renderer arrives settled
+        const c = navigator.connection || {};
+        const ok =
+          !matchMedia("(prefers-reduced-motion: reduce)").matches &&
+          c.saveData !== true &&
+          !/(^|-)2g$/.test(c.effectiveType || "") &&
+          new URLSearchParams(location.search).get("gl") !== "0";
+        if (ok) {
+          r.classList.add("scene-3d");
+          if (document.hidden) r.classList.add("scene-still-on");
+        }
+      })();
+    </script>
+
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="twitter:domain" content={url.split("//")[1] ?? ""} />
+    <meta property="twitter:url" content={canonicalUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <ContextBar />
+    <Scene place={place} />
+    <main id="main">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-row">
+          <a href="/" class="footer-logo" aria-label="Home"><Mark class="footer-mark" /></a>
+          <nav class="footer-nav" aria-label="Footer navigation">
+            <a href="/projects">Work</a>
+            <a href="/resume">Resume</a>
+          </nav>
+        </div>
+        <div class="footer-row footer-row--bottom">
+          <ul class="footer-socials" aria-label="Social links">
+            {
+              email && (
+                <li>
+                  <a href={`mailto:${email}`} title="Email" aria-label="Email Marcelo Rondon">
+                    <Mail />
+                  </a>
+                </li>
+              )
+            }
+            {
+              profiles.map(({ network, url }) => {
+                const Icon = SOCIAL_ICONS[network];
+                if (!Icon) return null;
+                return (
+                  <li>
+                    <a
+                      href={url}
+                      title={network}
+                      aria-label={network === "Bsky" ? "Bluesky" : network}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Icon />
+                    </a>
+                  </li>
+                );
+              })
+            }
+          </ul>
+          <span class="footer-meta">© {currentYear} Cello Rondon · Built in Astro</span>
+        </div>
+      </div>
+    </footer>
+    <KeyboardManager />
+    <style is:global>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        font-family: var(--font-mono);
+        font-weight: var(--weight-regular);
+        background: var(--bg-canvas);
+        color: var(--text-primary);
+        scroll-padding-top: var(--space-96);
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100svh;
+        font-size: var(--type-body);
+        line-height: var(--leading-read);
+        overflow-x: clip;
+      }
+
+      img,
+      video {
+        display: block;
+        max-width: 100%;
+        height: auto;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+        outline: var(--stroke-frame) solid var(--focus-ring);
+        outline-offset: var(--space-4);
+      }
+
+      ::selection {
+        background: var(--action-primary);
+        color: var(--text-inverse);
+      }
+
+      .skip {
+        position: absolute;
+        left: var(--layout-gutter);
+        top: -4rem;
+        z-index: 200;
+        padding: var(--space-8) var(--space-16);
+        background: var(--action-primary);
+        color: var(--text-inverse);
+        font-weight: var(--weight-bold);
+      }
+
+      .skip:focus {
+        top: var(--space-16);
+      }
+
+      .container {
+        width: min(100% - 2 * var(--layout-gutter), var(--layout-container));
+        margin-inline: auto;
+      }
+
+      .site-footer {
+        position: relative;
+        padding: var(--space-48) 0;
+        background: var(--bg-canvas);
+        border-top: var(--stroke-bar) solid var(--text-primary);
+      }
+
+      .footer-inner {
+        width: min(100% - 2 * var(--layout-gutter), var(--layout-container));
+        margin-inline: auto;
+      }
+
+      .footer-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-24);
+      }
+
+      .footer-row--bottom {
+        margin-top: var(--space-24);
+        padding-top: var(--space-20);
+        border-top: var(--stroke-control) solid var(--border-muted);
+      }
+
+      .footer-mark {
+        display: block;
+        width: 48px;
+        height: 51px;
+      }
+
+      .footer-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-24);
+      }
+
+      .footer-nav a {
+        padding-block: var(--space-8);
+        border-bottom: var(--stroke-control) solid transparent;
+        font-size: var(--type-ui);
+        font-weight: var(--weight-bold);
+        letter-spacing: var(--track-wide);
+        text-transform: uppercase;
+        transition: border-color var(--motion-ui) var(--ease-out);
+      }
+
+      .footer-nav a:hover,
+      .footer-nav a:focus-visible {
+        border-bottom-color: var(--action-primary);
+      }
+
+      .footer-socials {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-8);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .footer-socials a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: var(--touch-target);
+        height: var(--touch-target);
+        border: var(--stroke-control) solid var(--border-strong);
+        transition:
+          background-color var(--motion-ui) var(--ease-out),
+          color var(--motion-ui) var(--ease-out);
+      }
+
+      .footer-socials a:hover,
+      .footer-socials a:focus-visible {
+        background: var(--action-primary);
+        border-color: var(--action-primary);
+        color: var(--text-inverse);
+      }
+
+      .footer-meta {
+        color: var(--text-muted);
+        font-size: var(--type-label);
+        font-weight: var(--weight-bold);
+        letter-spacing: var(--track-caps);
+        text-transform: uppercase;
+      }
+
+      @media (width <= 700px) {
+        .footer-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </body>
+</html>
