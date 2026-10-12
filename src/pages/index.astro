@@ -1,24 +1,21 @@
 ---
+/*
+ * Home in the landscape (landscape build S1). The scene is Mirror Lake; the words are today's
+ * home page, unchanged. Arrival: the hero copy over the scene, readable at first paint. Admire:
+ * "Take in the view". Reading: once the Work section reaches the reading line, the scene
+ * softens and dims and the bar names the project in view.
+ * Retired from today's home: the typewriter lock-in and the marquee (proposal §10), and the
+ * hero photo (a rewrite moves it to About).
+ */
 import { getCollection } from "astro:content";
-import Layout from "@/layouts/Layout.astro";
-import Section from "@/components/Section.astro";
-import ProjectCard from "@/components/ProjectCard.astro";
+import SceneLayout from "@/layouts/SceneLayout.astro";
+import WorkItem from "@/components/scene/WorkItem.astro";
+import { loadScene } from "@/lib/scene/catalog";
 import { basics } from "@cv";
-import "@/styles/colors.css";
-import Mail from "@/icons/Mail.astro";
-import GitHub from "@/icons/GitHub.astro";
-import LinkedIn from "@/icons/LinkedIn.astro";
-import Bsky from "@/icons/Bsky.astro";
-import Sun from "@/icons/Sun.astro";
-import type { SocialIcon } from "@/types";
 
-const { name, profiles, email } = basics;
-
-const SOCIAL_ICONS: SocialIcon = {
-  GitHub,
-  LinkedIn,
-  Bsky,
-};
+const PLACE = "mirror-lake";
+const scene = loadScene(PLACE);
+const { email } = basics;
 
 const allProjects = await getCollection("projects");
 const featuredProjects = allProjects
@@ -28,1376 +25,371 @@ const featuredProjects = allProjects
 const homeTitle = "Cello — Digital Designer, Brand & Design Systems";
 const homeDescription =
   "I lead design across three brands through a shared Figma system, then build the components and tools that carry it into everyday use.";
-
-const marqueeWords = [
-  "Design Systems",
-  "Brand Systems",
-  "Design Engineering",
-  "Human-Centered AI",
-];
 ---
 
-<Layout title={homeTitle} description={homeDescription}>
-  <section class="hero">
-    <div class="title-block">
-      <svg
-        class="hero-construct"
-        viewBox="0 0 640 260"
-        fill="none"
-        aria-hidden="true"
-      >
-        <path class="hc-line" pathLength="100" d="M0 224 H640"></path>
-        <path class="hc-line hc-tick" pathLength="100" d="M16 210 V238"></path>
-        <path class="hc-line hc-tick" pathLength="100" d="M624 210 V238"></path>
-        <path
-          class="hc-arc"
-          pathLength="100"
-          d="M598 18 a 46 46 0 1 0 46 46"></path>
-        <path class="hc-cross" pathLength="100" d="M20 36 h44 M42 14 v44"
-        ></path>
-        <circle class="hc-dot" cx="42" cy="36" r="4"></circle>
-      </svg>
-      <h1 class="nickname" id="typewriter-name">
-        <span class="typewriter-text"></span><span class="cursor">|</span>
-      </h1>
-      <div class="hero-bar" aria-hidden="true">
-        <span class="hero-bar-heavy"></span>
-        <span class="hero-bar-thin"></span>
-      </div>
-    </div>
-    <div class="hero-copy">
+<SceneLayout title={homeTitle} description={homeDescription} place={PLACE}>
+  <section class="hero" aria-labelledby="hero-name" data-scene-hero>
+    <div class="hero-copy copy-scrim" data-scene-intro>
+      <h1 class="hero-name" id="hero-name">Cello</h1>
       <p class="kicker">
         <span class="kicker-dot" aria-hidden="true"></span>
-        <span class="kicker-text">Open to design systems, brand and product design roles</span>
+        <span>Open to design systems, brand and product design roles</span>
       </p>
-      <p class="title-line">
+      <p class="hero-line">
         Digital Designer
-        <span class="title-line-sub">Brand &amp; Design Systems</span>
+        <span class="hero-line-sub">Brand &amp; Design Systems</span>
       </p>
-      <p class="summary">
-        I lead design across three brands through a shared Figma system, then
-        build the components and tools that carry it into everyday use.
+      <p class="hero-summary">
+        I lead design across three brands through a shared Figma system, then build the
+        components and tools that carry it into everyday use.
       </p>
-      <div class="hero-actions" aria-label="Primary actions">
-        <a href="/projects" class="cta primary" data-magnetic>View Case Studies</a>
-        <a href="/resume" class="cta-link">
-          <span>View Resume</span>
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M5 12H19M19 12L12 5M19 12L12 19"
-              stroke="currentColor"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"></path>
-          </svg>
+      <div class="hero-actions">
+        <a href="#work" class="hero-cta">View Case Studies</a>
+        <a href="/resume" class="scene-arrow">View Resume <span aria-hidden="true">→</span></a>
+        <button class="admire-btn" type="button" data-admire-open hidden>Take in the view</button>
+      </div>
+    </div>
+    <div class="admire-view copy-scrim" data-admire-view hidden>
+      <p class="admire-place">{scene.place} · {scene.month}</p>
+      <div class="admire-actions">
+        <button class="admire-return" type="button" data-admire-close>Back to Cello</button>
+        <a class="scene-arrow" href="#work" data-admire-work>
+          View Case Studies <span aria-hidden="true">↓</span>
         </a>
       </div>
     </div>
-    <div class="hero-visual">
-      <div class="image-frame">
-        <img src="/images/profile.webp" alt={name} />
-      </div>
-      <div class="socials">
+  </section>
+
+  <section class="work" id="work" aria-labelledby="work-title" data-scene-focus>
+    <div class="container">
+      <header class="section-head" data-scene-stop="Selected Case Studies">
+        <h2 class="section-title" id="work-title">Selected Case Studies</h2>
+        <p class="section-intro">
+          Systems first: one shared system across three brands, and a design system whose tokens
+          and checks keep AI coding agents inside it. Then the products I designed and built on
+          the same rules.
+        </p>
+      </header>
+      <ol class="work-list">
         {
-          email && (
-            <a
-              href={`mailto:${email}`}
-              title="Email"
-              aria-label="Email Marcelo Rondon"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <Mail />
-            </a>
-          )
+          featuredProjects.map((project, i) => (
+            <WorkItem
+              title={project.data.title}
+              description={project.data.description}
+              image={project.data.image}
+              url={project.data.url}
+              techStack={project.data.techStack}
+              role={project.data.role}
+              slug={project.slug}
+              index={i}
+            />
+          ))
         }
-        {
-          profiles.map(({ network, url }) => {
-            const Icon = SOCIAL_ICONS[network];
-            return (
-              <a
-                href={url}
-                title={network}
-                aria-label={network === "Bsky" ? "Bluesky" : network}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <Icon />
-              </a>
-            );
-          })
-        }
-        <button onclick="toggleTheme()" aria-label="Toggle theme">
-          <Sun />
-        </button>
+      </ol>
+      <a href="/projects" class="scene-arrow view-all">All Case Studies <span aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <section class="how" aria-labelledby="how-heading" data-scene-stop="How I Build">
+    <div class="container">
+      <h2 class="section-title" id="how-heading">How I Build</h2>
+      <p class="section-intro">
+        I build what I design, so the system reaches production intact. Code does everything it
+        can, the model gets the smallest job it can be trusted with, and a person approves
+        wherever the consequences are.
+      </p>
+      <div class="proof-strip">
+        <a class="proof-item" href="/projects/asheville-dispensary">
+          <h3>Code First</h3>
+          <p>
+            A script checks for new product drops before any model runs. An idle day costs about
+            $0.30 instead of $12.
+          </p>
+          <span class="proof-link">Proof: Asheville automations →</span>
+        </a>
+        <a class="proof-item" href="/projects/ghosted">
+          <h3>A Small, Checkable Job</h3>
+          <p>
+            The agent edits the resume, but every change arrives highlighted and versioned, for
+            the person to accept or reject.
+          </p>
+          <span class="proof-link">Proof: Ghosted →</span>
+        </a>
+        <a class="proof-item" href="/projects/vegavengers">
+          <h3>Approval Where It Matters</h3>
+          <p>
+            An AI checker proposes festival updates as ordinary CMS drafts. Editors publish; the
+            AI never does.
+          </p>
+          <span class="proof-link">Proof: VegAvengers →</span>
+        </a>
       </div>
     </div>
   </section>
 
-  <div class="section-divider" aria-hidden="true" data-reveal="line"></div>
-
-  <section id="about" class="about-section">
-    <h2 data-reveal>About</h2>
-    <div class="about-preview" data-reveal style="--reveal-i: 1">
-      <p>
-        I came to product design through visual journalism, brand systems, and
-        front-end engineering. That range lets me translate creative intent into
-        product rules, prototype behavior, make constraints legible, and speak
-        the language of the team shipping it.
+  <section class="about" id="about" aria-labelledby="about-heading" data-scene-stop="About">
+    <div class="container">
+      <h2 class="section-title" id="about-heading">About</h2>
+      <p class="section-intro">
+        I came to product design through visual journalism, brand systems, and front-end
+        engineering. That range lets me translate creative intent into product rules, prototype
+        behavior, make constraints legible, and speak the language of the team shipping it.
       </p>
     </div>
   </section>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      {
-        [0, 1].map(() => (
-          <div class="marquee-seq">
-            {marqueeWords.map((word, i) => (
-              <>
-                <span class={`m-word ${i % 2 ? "outline" : ""}`}>{word}</span>
-                <span class={`m-sep ${i % 2 ? "m-tri" : "m-sun"}`} />
-              </>
-            ))}
-          </div>
-        ))
-      }
-    </div>
-  </div>
-
-  <div class="projects-section-wrapper">
-    <Section title="Selected Case Studies">
-      <div class="bar section-bar"></div>
-      <p class="section-intro" data-reveal>
-        Systems first: one shared system across three brands, and a design
-        system whose tokens and checks keep AI coding agents inside it. Then
-        the products I designed and built on the same rules.
+  <section class="contact" aria-labelledby="contact-heading" data-scene-stop="Let’s Talk">
+    <div class="container">
+      <h2 class="section-title" id="contact-heading">Let’s Talk</h2>
+      <p class="section-intro">
+        Open to design systems, brand and product design roles, remote in the US or in Portland.
+        The fastest way to reach me is email.
       </p>
-    </Section>
-    <div class="carousel-frame" data-reveal style="--reveal-i: 1">
-      <div class="featured-carousel">
-        <div class="projects-grid">
-          {
-            featuredProjects.map((project, i) => (
-              <ProjectCard
-                title={project.data.title}
-                description={project.data.description}
-                image={project.data.image}
-                url={project.data.url}
-                techStack={project.data.techStack}
-                role={project.data.role}
-                slug={project.slug}
-                index={i}
-              />
-            ))
-          }
-        </div>
+      <div class="contact-actions">
+        <a href={`mailto:${email}`} class="hero-cta">Email Me</a>
+        <a href="/resume" class="scene-arrow">View Resume <span aria-hidden="true">→</span></a>
       </div>
-      <span class="carousel-cue" aria-hidden="true">← SCROLL →</span>
-    </div>
-    <Section>
-      <a href="/projects" class="view-all">
-        <span>All Case Studies</span>
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M5 12H19M19 12L12 5M19 12L12 19"
-            stroke="currentColor"
-            stroke-width="3"
-            stroke-linecap="round"
-            stroke-linejoin="round"></path>
-        </svg>
-      </a>
-    </Section>
-  </div>
-
-  <div class="section-divider" aria-hidden="true" data-reveal="line"></div>
-
-  <section class="how-section" aria-labelledby="how-heading">
-    <h2 id="how-heading" data-reveal>How I Build</h2>
-    <p class="how-intro" data-reveal style="--reveal-i: 1">
-      I build what I design, so the system reaches production intact. Code
-      does everything it can, the model gets the smallest job it can be
-      trusted with, and a person approves wherever the consequences are.
-    </p>
-    <div class="proof-strip">
-      <a
-        class="proof-item"
-        href="/projects/asheville-dispensary"
-        data-reveal
-        style="--reveal-i: 0"
-      >
-        <h3>Code First</h3>
-        <p>
-          A script checks for new product drops before any model runs. An idle
-          day costs about $0.30 instead of $12.
-        </p>
-        <span class="proof-link">Proof: Asheville automations →</span>
-      </a>
-      <a
-        class="proof-item"
-        href="/projects/ghosted"
-        data-reveal
-        style="--reveal-i: 1"
-      >
-        <h3>A Small, Checkable Job</h3>
-        <p>
-          The agent edits the resume, but every change arrives highlighted and
-          versioned, for the person to accept or reject.
-        </p>
-        <span class="proof-link">Proof: Ghosted →</span>
-      </a>
-      <a
-        class="proof-item"
-        href="/projects/vegavengers"
-        data-reveal
-        style="--reveal-i: 2"
-      >
-        <h3>Approval Where It Matters</h3>
-        <p>
-          An AI checker proposes festival updates as ordinary CMS drafts. Editors
-          publish; the AI never does.
-        </p>
-        <span class="proof-link">Proof: VegAvengers →</span>
-      </a>
     </div>
   </section>
+</SceneLayout>
 
-  <div class="section-divider" aria-hidden="true" data-reveal="line"></div>
-
-  <section class="contact-section" aria-label="Contact">
-    <h2 data-reveal>Let’s Talk</h2>
-    <p data-reveal style="--reveal-i: 1">
-      Open to design systems, brand and product design roles, remote in the US or in Portland.
-      The fastest way to reach me is email.
-    </p>
-    <div class="contact-actions" data-reveal style="--reveal-i: 2">
-      <a href={`mailto:${email}`} class="cta primary" data-magnetic>Email Me</a>
-      <a href="/resume" class="cta-link">
-        <span>View Resume</span>
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          aria-hidden="true"
-        >
-          <path
-            d="M5 12H19M19 12L12 5M19 12L12 19"
-            stroke="currentColor"
-            stroke-width="3"
-            stroke-linecap="round"
-            stroke-linejoin="round"></path>
-        </svg>
-      </a>
-    </div>
-  </section>
-</Layout>
-
-<script is:inline>
-  function toggleTheme() {
-    const currentTheme = localStorage.getItem("theme") || "dark";
-    const newTheme = currentTheme === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", newTheme);
-    localStorage.setItem("theme", newTheme);
+<script>
+  // Case-study videos play only while they're on screen (and never under reduced motion, where
+  // they show their first frame).
+  const videos = document.querySelectorAll<HTMLVideoElement>("[data-work-video]");
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (still || !("IntersectionObserver" in window)) {
+    videos.forEach((v) => (v.preload = "metadata"));
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) v.play().catch(() => {});
+          else v.pause();
+        }
+      },
+      { rootMargin: "200px 0px" },
+    );
+    videos.forEach((v) => io.observe(v));
   }
-
-  function initTypewriter() {
-    const text = "Cello";
-    const element = document.querySelector(".typewriter-text");
-    const titleBlock = document.querySelector(".title-block");
-    const cursor = document.querySelector(".cursor");
-    if (!element) return;
-
-    titleBlock?.classList.remove("is-locked");
-    cursor?.classList.remove("is-hidden");
-
-    function lockTitle() {
-      titleBlock?.classList.add("is-locked");
-      window.dispatchEvent(new CustomEvent("typewriter:done"));
-      window.setTimeout(() => cursor?.classList.add("is-hidden"), 600);
-    }
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      element.textContent = text;
-      titleBlock?.classList.add("is-locked");
-      cursor?.classList.add("is-hidden");
-      return;
-    }
-
-    const typeSpeed = 150;
-    let charIndex = 0;
-
-    function type() {
-      if (charIndex < text.length) {
-        element.textContent = text.substring(0, charIndex + 1);
-        charIndex++;
-        setTimeout(type, typeSpeed);
-      } else {
-        lockTitle();
-      }
-    }
-
-    element.textContent = "";
-    type();
-  }
-
-  function initHeroParallax() {
-    if (
-      !window.matchMedia("(pointer: fine)").matches ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    ) {
-      return;
-    }
-    const hero = document.querySelector(".hero");
-    const frame = document.querySelector(".image-frame");
-    if (!hero || !frame || frame.dataset.parallaxBound) return;
-    frame.dataset.parallaxBound = "true";
-
-    let raf = 0;
-    let pointerX = 0;
-    let pointerY = 0;
-
-    function apply() {
-      raf = 0;
-      const r = frame.getBoundingClientRect();
-      const clamp = (v) => Math.max(-1, Math.min(1, v));
-      const x = clamp((pointerX - (r.left + r.width / 2)) / r.width);
-      const y = clamp((pointerY - (r.top + r.height / 2)) / r.height);
-      frame.style.setProperty("--par-x", x.toFixed(3));
-      frame.style.setProperty("--par-y", y.toFixed(3));
-    }
-
-    hero.addEventListener("pointermove", (e) => {
-      pointerX = e.clientX;
-      pointerY = e.clientY;
-      if (!raf) raf = requestAnimationFrame(apply);
-    });
-
-    hero.addEventListener("pointerleave", () => {
-      frame.style.setProperty("--par-x", "0");
-      frame.style.setProperty("--par-y", "0");
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", () => {
-    initTypewriter();
-    initHeroParallax();
-  });
-
-  document.addEventListener("astro:after-swap", () => {
-    initTypewriter();
-    initHeroParallax();
-  });
 </script>
 
 <style>
+  /* ---------- arrival: identity, role and the route to work, over the scene at once ---------- */
   .hero {
+    position: relative;
+    overflow-x: clip; /* the copy scrim must not widen the page */
     display: grid;
-    grid-template-areas:
-      "title visual"
-      "copy copy";
-    grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
-    column-gap: clamp(2rem, 5vw, 4.5rem);
-    row-gap: clamp(1.5rem, 4vh, 3rem);
-    align-items: center;
-    width: min(100%, 1100px);
-    padding: clamp(1rem, 4vh, 3rem) var(--space-32) clamp(2rem, 5vh, 3.5rem);
-    max-width: 1100px;
-    margin: 0 auto;
+    align-items: end;
+    min-height: calc(100svh - var(--scene-bar));
+    padding: var(--space-48) var(--scene-copy-end) var(--scene-copy-bottom) var(--scene-copy-start);
   }
 
   .hero-copy {
-    grid-area: copy;
-    min-width: 0;
     max-width: 42rem;
-    animation: slideLeft 0.8s var(--ease-out) backwards;
+    color: var(--text-on-art);
   }
 
-  .title-block {
-    position: relative;
-    grid-area: title;
-    margin-bottom: 0;
-  }
-
-  .hero-construct {
-    position: absolute;
-    inset: -12% -4%;
-    width: 108%;
-    height: 124%;
-    z-index: -1;
-    pointer-events: none;
-    overflow: visible;
-  }
-
-  .hero-construct path {
-    stroke-width: 2;
-    stroke-dasharray: 100;
-    stroke-dashoffset: 100;
-  }
-
-  .hero-construct .hc-line {
-    stroke: var(--accent-construction);
-    opacity: 0.4;
-  }
-
-  .hero-construct .hc-arc {
-    stroke: var(--color-accent-secondary);
-    opacity: 0.5;
-  }
-
-  .hero-construct .hc-cross {
-    stroke: var(--accent-construction);
-    opacity: 0.45;
-  }
-
-  .hero-construct .hc-dot {
-    fill: var(--color-accent);
-    opacity: 0;
-    transition: opacity 0.4s var(--ease-out) 1s;
-  }
-
-  .title-block.is-locked .hero-construct path {
-    animation: drawPath 0.9s var(--ease-out) forwards;
-  }
-
-  .title-block.is-locked .hero-construct .hc-tick {
-    animation-delay: 0.25s;
-  }
-
-  .title-block.is-locked .hero-construct .hc-arc {
-    animation-delay: 0.4s;
-  }
-
-  .title-block.is-locked .hero-construct .hc-cross {
-    animation-delay: 0.55s;
-  }
-
-  .title-block.is-locked .hero-construct .hc-dot {
-    opacity: 0.7;
-  }
-
-  @keyframes drawPath {
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-
-  h1.nickname {
-    font-size: clamp(4.5rem, 10vw, 10rem) !important;
-    line-height: 1 !important;
-    margin: 0;
-    padding: 0;
-    color: var(--color-accent);
-    display: inline-flex;
-    align-items: baseline;
-    letter-spacing: normal;
-    white-space: nowrap;
-    position: relative;
-  }
-
-  .typewriter-text {
-    display: inline-block;
-    min-width: 5ch;
-    font-size: inherit !important;
-  }
-
-  .title-block.is-locked .typewriter-text {
-    animation: typeSettle 0.24s var(--ease-out);
-  }
-
-  .cursor {
-    display: inline-block;
-    color: var(--text-primary);
-    font-weight: var(--weight-regular);
-    font-size: inherit !important;
-    animation: blink 0.7s step-end infinite;
-    transition: opacity var(--motion-ui) var(--ease-out);
-  }
-
-  .cursor.is-hidden {
-    opacity: 0;
-  }
-
-  @media (max-width: 700px) {
-    .cursor {
-      margin-left: -0.5ch;
-      margin-right: -0.5ch;
-    }
-  }
-
-  @keyframes blink {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
-  }
-
-  @keyframes typeSettle {
-    0%,
-    100% {
-      transform: scale(1);
-    }
-    55% {
-      transform: scale(1.04);
-    }
-  }
-
-  @keyframes barLockSweep {
-    0% {
-      transform: translateX(-101%);
-    }
-    45% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(101%);
-    }
-  }
-
-  .bar {
-    width: 100px;
-    height: 6px;
-    background: var(--color-accent);
-    margin-top: var(--space-16);
-    margin-left: 0.8rem;
-    animation: wipeIn 0.5s var(--ease-out) 0.3s backwards;
-  }
-
-  .section-bar {
-    margin-bottom: var(--space-24);
-  }
-
-  .hero-bar {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    margin-top: var(--space-16);
-    margin-left: 0.8rem;
-    animation: wipeIn 0.5s var(--ease-out) 0.3s backwards;
-    transform-origin: left;
-  }
-
-  .hero-bar-heavy {
-    position: relative;
-    overflow: hidden;
-    width: 60px;
-    height: 8px;
-    background: var(--color-accent);
-  }
-
-  .hero-bar-heavy::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: var(--text-primary);
-    transform: translateX(-101%);
-  }
-
-  .title-block.is-locked .hero-bar-heavy::after {
-    animation: barLockSweep 0.42s var(--ease-out);
-  }
-
-  .hero-bar-thin {
-    width: 140px;
-    height: 2px;
-    background: var(--text-primary);
-    opacity: 0.7;
+  .hero-name {
+    margin: 0 0 var(--space-12);
+    font-family: var(--font-title);
+    font-size: var(--type-display-scene);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-display);
+    letter-spacing: var(--track-tight);
   }
 
   .kicker {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin-bottom: 0.55rem;
-    animation: slideUp var(--motion-entry) var(--ease-out) 0.2s backwards;
-  }
-
-  .kicker-text {
-    font-size: var(--type-ui);
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-12);
+    margin: 0 0 var(--space-16);
+    font-size: var(--type-label);
     font-weight: var(--weight-bold);
-    text-transform: uppercase;
+    line-height: var(--leading-ui);
     letter-spacing: var(--track-wide);
-    color: var(--text-primary);
+    text-transform: uppercase;
   }
 
   .kicker-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--color-accent);
-    animation: kickerPulse 2.4s ease-in-out infinite;
+    flex: none;
+    width: var(--space-8);
+    height: var(--space-8);
+    border-radius: var(--radius-circle);
+    background: var(--action-primary);
+    transform: translateY(-1px);
   }
 
-  @keyframes kickerPulse {
-    0%,
-    100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.45;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .kicker-dot {
-      animation: none;
-    }
-  }
-
-  .title-line {
-    color: var(--color-accent);
-    font-size: 2rem;
-    font-weight: var(--weight-black);
-    line-height: 1.12;
+  .hero-line {
     max-width: 24ch;
     margin: 0 0 var(--space-16);
-    text-transform: uppercase;
-    text-wrap: balance;
-    overflow-wrap: normal;
-    animation: slideUp var(--motion-entry) var(--ease-out) 0.25s backwards;
+    font-family: var(--font-title);
+    font-size: var(--type-hero-line);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
   }
 
-  .title-line-sub {
+  .hero-line-sub {
     display: block;
-    margin-block: 0.35rem 0;
-    line-height: var(--leading-title);
-    text-align: inherit;
-    color: var(--text-primary);
-    font-size: 0.55em;
+    margin-top: var(--space-8);
+    font-family: var(--font-mono);
+    font-size: var(--type-ui);
+    font-weight: var(--weight-bold);
     letter-spacing: var(--track-caps);
+    text-transform: uppercase;
   }
 
-  .summary {
+  .hero-summary {
+    max-width: var(--layout-measure-narrow);
+    margin: 0 0 var(--space-24);
     font-size: var(--type-body);
-    line-height: 1.7;
-    max-width: 58ch;
-    overflow-wrap: break-word;
-    animation: slideUp var(--motion-entry) var(--ease-out) 0.3s backwards;
+    line-height: var(--leading-read);
   }
 
-  .hero-actions {
+  .hero-actions,
+  .contact-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-12);
-    margin-top: var(--space-24);
-    animation: slideUp var(--motion-entry) var(--ease-out) 0.4s backwards;
+    align-items: center;
+    gap: var(--space-12) var(--space-24);
   }
 
-  .cta {
+  .hero-cta {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    min-height: 44px;
+    min-height: var(--touch-target);
     padding: var(--space-12) var(--space-16);
-    border: 3px solid var(--color-accent);
+    border: var(--stroke-frame) solid var(--action-primary);
+    background: var(--action-primary);
+    color: var(--text-inverse);
     font-size: var(--type-small);
     font-weight: var(--weight-extrabold);
-    text-transform: uppercase;
     letter-spacing: var(--track-caps);
-    transition:
-      background-color 0.3s var(--ease-out),
-      border-color 0.3s var(--ease-out),
-      color 0.3s var(--ease-out),
-      transform 0.3s var(--ease-out);
-  }
-
-  .cta.primary {
-    background: var(--color-accent);
-    color: var(--bg-canvas);
-  }
-
-  .cta:hover,
-  .cta:focus-visible {
-    transform: translateY(-2px);
-  }
-
-  .cta.primary:hover,
-  .cta.primary:focus-visible {
-    background: transparent;
-    color: var(--color-accent);
-  }
-
-  .cta-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-8);
-    padding: var(--space-12) var(--space-4);
-    color: var(--color-accent);
-    font-size: var(--type-small);
-    font-weight: var(--weight-extrabold);
     text-transform: uppercase;
-    letter-spacing: var(--track-caps);
-    transition: gap var(--motion-ui) var(--ease-out);
-  }
-
-  .cta-link:hover,
-  .cta-link:focus-visible {
-    gap: var(--space-12);
-  }
-
-  .hero-visual {
-    grid-area: visual;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-self: end;
-    min-width: 0;
-    gap: var(--space-20);
-    animation: slideRight 0.8s var(--ease-out) 0.2s backwards;
-  }
-
-  .image-frame {
-    position: relative;
-    border: 4px solid var(--text-primary);
-  }
-
-  .image-frame::before {
-    content: "";
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    right: -10px;
-    bottom: -10px;
-    border: 4px solid var(--color-accent);
-    z-index: -1;
-    transform: translate(
-      calc(var(--par-x, 0) * -9px),
-      calc(var(--par-y, 0) * -9px)
-    );
-    transition: transform 0.45s var(--ease-out);
-  }
-
-  .image-frame img {
-    width: clamp(220px, 24vw, 300px);
-    height: clamp(220px, 24vw, 300px);
-    object-fit: cover;
-    display: block;
-    filter: grayscale(30%);
-    transform: translate(
-      calc(var(--par-x, 0) * 5px),
-      calc(var(--par-y, 0) * 5px)
-    );
     transition:
-      filter 0.3s ease,
-      transform 0.45s var(--ease-out);
+      background-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
   }
 
-  .image-frame:hover img {
-    filter: grayscale(0%);
-  }
-
-  .socials {
-    display: flex;
-    gap: var(--space-8);
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .socials a,
-  .socials button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border: 2px solid var(--text-primary);
+  .hero-cta:hover,
+  .hero-cta:focus-visible {
     background: var(--bg-canvas);
-    color: var(--text-primary);
-    cursor: pointer;
-    transition:
-      background-color 0.3s var(--ease-out),
-      border-color 0.3s var(--ease-out),
-      color 0.3s var(--ease-out),
-      transform 0.3s var(--ease-out);
+    color: var(--action-primary);
   }
 
-  .socials a:hover,
-  .socials a:focus-visible,
-  .socials button:focus-visible,
-  .socials button:hover {
-    background: var(--color-accent);
-    border-color: var(--color-accent);
-    color: var(--bg-canvas);
-    transform: translateY(-2px);
+  /* ---------- reading: the content over the focused scene ---------- */
+  .work {
+    padding-block: var(--space-96) var(--space-64);
   }
 
-  @media (hover: none), (pointer: coarse) {
-    .image-frame:hover img,
-    .socials a:hover,
-    .socials button:hover {
-      transform: none;
-      filter: grayscale(30%);
-    }
+  .section-head {
+    padding-bottom: var(--space-32);
   }
 
-  .how-section {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding-inline: var(--space-32);
-  }
-
-  .how-section > h2 {
-    margin: 0 0 var(--space-12);
-    color: var(--color-accent);
-    font-size: var(--type-heading);
+  .section-title {
+    margin: 0 0 var(--space-24);
+    color: var(--text-accent);
+    font-family: var(--font-title);
+    font-size: var(--type-section-title);
     font-weight: var(--weight-bold);
     line-height: var(--leading-tight);
-    text-transform: uppercase;
     letter-spacing: var(--track-caps);
+    text-transform: uppercase;
   }
 
-  .how-intro {
-    max-width: 68ch;
-    margin: 0 0 var(--space-20);
+  .section-intro {
+    max-width: var(--layout-measure);
+    margin: 0;
+    color: var(--text-on-art);
     font-size: var(--type-body);
-    line-height: 1.7;
-    opacity: 0.88;
+    line-height: var(--leading-read);
+  }
+
+  .work-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .view-all {
+    margin-top: var(--space-32);
+  }
+
+  .how,
+  .about,
+  .contact {
+    padding-block: var(--space-64);
   }
 
   .proof-strip {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-16);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-24);
+    margin-top: var(--space-48);
   }
 
   .proof-item {
-    position: relative;
     display: flex;
     flex-direction: column;
-    border: 3px solid var(--text-primary);
-    background: var(--bg-raised);
-    padding: var(--space-16);
-    min-height: 100%;
-    color: var(--text-primary);
-    transition: all var(--motion-ui) var(--ease-out);
+    padding-top: var(--space-16);
+    border-top: var(--stroke-frame) solid var(--border-strong);
+    color: var(--text-on-art);
+    transition: border-color var(--motion-ui) var(--ease-out);
   }
 
   .proof-item:hover,
   .proof-item:focus-visible {
-    border-color: var(--color-accent);
-    transform: translateY(-2px);
+    border-top-color: var(--action-primary);
   }
 
   .proof-item h3 {
-    margin: 0 0 0.65rem;
-    padding: 0;
-    font-size: clamp(1rem, 2vw, 1.2rem);
-    line-height: 1.15;
+    margin: 0 0 var(--space-12);
+    font-size: var(--type-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-title);
     text-transform: uppercase;
   }
 
   .proof-item p {
-    margin: 0 0 0.85rem;
-    padding: 0;
-    font-size: var(--type-ui);
+    margin: 0 0 var(--space-16);
+    font-size: var(--type-small);
     line-height: var(--leading-small);
-    opacity: 0.86;
   }
 
   .proof-link {
     margin-top: auto;
+    /* small text over the focused scene: green measured 4.46:1 on the still, so it reads in the
+       on-art label color; the card's top rule turns green on hover instead */
+    color: var(--text-on-art-muted);
     font-size: var(--type-label);
     font-weight: var(--weight-bold);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--color-accent);
-  }
-
-  .about-section {
-    max-width: 1100px;
-    margin: clamp(2.5rem, 7vh, 4.5rem) auto 0;
-    padding-inline: var(--space-32);
-  }
-
-  .about-section h2 {
-    margin: 0 0 var(--space-12);
-    color: var(--color-accent);
-    font-size: var(--type-heading);
-    font-weight: var(--weight-bold);
-    line-height: var(--leading-tight);
-    text-transform: uppercase;
-    letter-spacing: var(--track-caps);
-  }
-
-  .about-preview {
-    max-width: 76ch;
-  }
-
-  .about-preview p,
-  .section-intro {
-    font-size: var(--type-body);
-    line-height: 1.7;
-    opacity: 0.88;
-  }
-
-  .section-intro {
-    max-width: 68ch;
-    margin-top: 0;
-  }
-
-  .section-divider {
-    max-width: 1100px;
-    margin: clamp(2.5rem, 6vh, 4rem) auto;
-    padding-inline: var(--space-32);
-  }
-
-  .section-divider::before {
-    content: "";
-    display: block;
-    height: 2px;
-    background: var(--text-primary);
-    opacity: 0.18;
-  }
-
-  .carousel-frame {
-    position: relative;
-  }
-
-  /* Marquee band */
-  .marquee {
-    overflow: hidden;
-    border-block: 3px solid var(--text-primary);
-    margin: clamp(2.5rem, 6vh, 4rem) 0;
-    padding: 1.1rem 0;
-  }
-
-  .marquee-track {
-    display: flex;
-    width: max-content;
-    animation: marqueeScroll 32s linear infinite;
-  }
-
-  .marquee:hover .marquee-track {
-    animation-play-state: paused;
-  }
-
-  .marquee-seq {
-    display: flex;
-    align-items: center;
-    gap: clamp(1.5rem, 3vw, 2.75rem);
-    padding-right: clamp(1.5rem, 3vw, 2.75rem);
-  }
-
-  .m-word {
-    font-size: clamp(1.5rem, 3.2vw, 2.6rem);
-    font-weight: var(--weight-black);
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-    color: var(--text-primary);
-  }
-
-  .m-word.outline {
-    color: transparent;
-    -webkit-text-stroke: 2px var(--text-primary);
-  }
-
-  .m-sep {
-    flex: none;
-  }
-
-  .m-sun {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--color-accent);
-  }
-
-  .m-tri {
-    width: 0;
-    height: 0;
-    border-left: 11px solid transparent;
-    border-right: 11px solid transparent;
-    border-bottom: 19px solid var(--color-accent-secondary);
-  }
-
-  @keyframes marqueeScroll {
-    to {
-      transform: translateX(-50%);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .marquee-track {
-      animation: none;
-    }
-  }
-
-  .featured-carousel {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
-    padding-inline: max(2rem, calc((100vw - 1500px) / 2));
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .featured-carousel::-webkit-scrollbar {
-    display: none;
-  }
-
-  .carousel-cue {
-    display: none;
-    position: absolute;
-    right: 1rem;
-    bottom: -1.75rem;
-    font-size: 0.7rem;
-    font-weight: var(--weight-bold);
     letter-spacing: var(--track-wide);
-    color: var(--color-accent);
-    pointer-events: none;
-  }
-
-  .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(340px, 1fr));
-    gap: var(--space-32);
-    scroll-snap-align: start;
-  }
-
-  .projects-grid :global(.card) {
-    animation-name: slideFromRight;
-  }
-
-  .projects-section-wrapper {
-    margin-top: 0;
-  }
-
-  .view-all {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-12);
-    margin-top: var(--space-32);
-    color: var(--color-accent);
-    font-weight: var(--weight-bold);
-    font-size: var(--type-body);
     text-transform: uppercase;
-    letter-spacing: var(--track-caps);
-    transition: gap var(--motion-ui) var(--ease-out);
   }
 
-  .view-all:hover {
-    gap: var(--space-16);
-  }
-
-  .contact-section {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 var(--space-32) clamp(3rem, 8vh, 5rem);
-  }
-
-  .contact-section h2 {
-    margin: 0 0 var(--space-16);
-    color: var(--color-accent);
-    font-size: clamp(2.2rem, 6vw, 4rem);
-    font-weight: var(--weight-black);
-    line-height: 1;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-  }
-
-  .contact-section p {
-    max-width: 58ch;
-    margin: 0;
-    font-size: var(--type-body);
-    line-height: 1.7;
-    opacity: 0.88;
+  .contact {
+    padding-bottom: var(--space-96);
   }
 
   .contact-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-12);
     margin-top: var(--space-24);
   }
 
-  @keyframes slideLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-60px);
+  /* ---------- phones ---------- */
+  @media (max-width: 768px) {
+    .hero {
+      padding: var(--space-32) var(--space-24) var(--space-96);
     }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
 
-  @keyframes slideRight {
-    from {
-      opacity: 0;
-      transform: translateX(60px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes wipeIn {
-    from {
-      transform: scaleX(0);
-      transform-origin: left;
-    }
-    to {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-  }
-
-  @keyframes slideFromRight {
-    from {
-      opacity: 0;
-      transform: translateX(60px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slideFromLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-60px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
+    .hero-summary {
+      font-size: var(--type-small);
+      line-height: var(--leading-small);
     }
   }
 
   @media (width <= 900px) {
-    .hero {
-      grid-template-areas:
-        "visual"
-        "title"
-        "copy";
-      grid-template-columns: 1fr;
-      gap: var(--space-20);
-      align-items: start;
-    }
-
-    h1.nickname {
-      font-size: clamp(4.25rem, 13vw, 7rem) !important;
-      min-height: 1em;
-    }
-
-    .hero-visual {
-      justify-self: center;
-    }
-
-    .hero-copy {
-      text-align: center;
-      width: 100%;
-      max-width: 38rem;
-      margin-inline: auto;
-    }
-
-    .title-block {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .hero-construct {
-      display: none;
-    }
-
-    .title-line {
-      width: min(100%, 28rem);
-      margin-inline: auto;
-      font-size: 1.45rem;
-      text-align: center;
-    }
-
-    .summary {
-      width: min(100%, 36rem);
-      max-width: 46ch;
-      margin-inline: auto;
-      text-align: center;
-    }
-
-    .hero-bar {
-      align-items: center;
-      margin-left: 0;
-    }
-
-    .kicker {
-      justify-content: center;
-    }
-
-    .hero-actions {
-      justify-content: center;
-    }
-
     .proof-strip {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @media (width <= 1100px) {
-    .carousel-cue {
-      display: inline-block;
-    }
-  }
-
-  @media (width <= 700px) {
-    .hero {
-      gap: 1.15rem;
-      min-height: auto;
-      padding: var(--space-12) var(--space-16) var(--space-32);
-    }
-
-    .hero-visual {
-      gap: 0.85rem;
-    }
-
-    .title-block {
-      margin-bottom: 0;
-    }
-
-    h1.nickname {
-      display: flex;
-      justify-content: center;
-      font-size: clamp(3.2rem, 18vw, 4.5rem) !important;
-      max-width: 100%;
-      min-height: 1em;
-    }
-
-    .summary {
-      width: min(100%, 21rem);
-      max-width: 100%;
-      margin-inline: auto;
-      line-height: 1.6;
-      text-align: center;
-    }
-
-    .title-line {
-      width: min(100%, 19rem);
-      max-width: 100%;
-      margin-inline: auto;
-      font-size: 1.15rem;
-      text-align: center;
-    }
-
-    .how-section {
-      padding-inline: var(--space-16);
-    }
-
-    .how-section > h2,
-    .how-intro {
-      text-align: center;
-    }
-
-    .section-divider {
-      padding-inline: var(--space-16);
-    }
-
-    .about-section {
-      margin-top: var(--space-40);
-      padding-inline: var(--space-16);
-    }
-
-    .about-section h2,
-    .about-preview p {
-      text-align: center;
-    }
-
-    .contact-section {
-      padding-inline: var(--space-16);
-      text-align: center;
-    }
-
-    .contact-section p {
-      margin-inline: auto;
-    }
-
-    .contact-actions {
-      display: grid;
-      grid-template-columns: 1fr;
-      width: min(100%, 20rem);
-      margin-inline: auto;
-    }
-
-    .hero-actions {
-      display: grid;
-      grid-template-columns: 1fr;
-      width: min(100%, 20rem);
-      margin-inline: auto;
-    }
-
-    .cta {
-      width: 100%;
-    }
-
-    .cta-link {
-      justify-content: center;
-    }
-
-    .image-frame::before {
-      top: 8px;
-      left: 8px;
-      right: -8px;
-      bottom: -8px;
-    }
-
-    .image-frame img {
-      width: clamp(150px, 46vw, 190px);
-      height: clamp(150px, 46vw, 190px);
-    }
-
-    .socials a,
-    .socials button {
-      width: 36px;
-      height: 36px;
-    }
-
-    .featured-carousel {
-      width: 100%;
-      margin-left: 0;
-      padding-inline: var(--space-16);
-      overflow-x: visible;
-      scroll-snap-type: none;
-    }
-
-    .carousel-cue {
-      display: none;
-    }
-
-    .projects-section-wrapper :global(h2) {
-      text-align: center;
-    }
-
-    .projects-section-wrapper .section-bar {
-      margin-inline: auto;
-    }
-
-    .projects-grid {
       grid-template-columns: 1fr;
     }
   }
