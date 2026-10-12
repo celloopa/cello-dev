@@ -1,10 +1,19 @@
 ---
+/*
+ * A post in the landscape (landscape build S2). It opens over a scene from the post rotation
+ * (src/data/scene-pairings.json, stable per slug) already in the reading state: the focus dim, a
+ * still scene, and the bar showing the post + "All posts". The words and the MDX are today's,
+ * unchanged; the body is Prose (2c's Geist Sans reading measure), and the page ends on the next
+ * story.
+ */
 import "@fontsource-variable/geist";
 import "@fontsource-variable/geist/wght-italic.css";
 import { getCollection, render } from "astro:content";
-import Layout from "@/layouts/Layout.astro";
-import Section from "@/components/Section.astro";
-import "@/styles/colors.css";
+import SceneLayout from "@/layouts/SceneLayout.astro";
+import Prose from "@/components/ui/Prose.astro";
+import ReadHead from "@/components/scene/ReadHead.astro";
+import StoryEnd from "@/components/scene/StoryEnd.astro";
+import { sceneForPost } from "@/lib/scene/pairing";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
@@ -20,450 +29,70 @@ const { post } = Astro.props;
 const { Content } = await render(post);
 const { title, description, publishDate, image, tags, updatedDate } = post.data;
 
-const formattedDate = publishDate.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  timeZone: "UTC",
-});
+const formatDate = (d: Date) =>
+  d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
+const formattedUpdatedDate = updatedDate && formatDate(updatedDate);
 
-const formattedUpdatedDate = updatedDate?.toLocaleDateString("en-US", {
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-  timeZone: "UTC",
+// newest first, like /blog; the next story is the next one down the list (wrapping)
+const posts = (await getCollection("blog"))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+const i = posts.findIndex((p) => p.slug === post.slug);
+const story = (p: (typeof posts)[number]) => ({
+  href: `/blog/${p.slug}`,
+  title: p.data.title,
+  eyebrow: formatDate(p.data.publishDate),
+  description: p.data.description,
 });
-
-const isVideo = (src: string) =>
-  src?.endsWith(".webm") || src?.endsWith(".mp4");
-const mainIsVideo = isVideo(image || "");
+const next = story(posts[(i + 1) % posts.length]);
+const previous = story(posts[(i - 1 + posts.length) % posts.length]);
+const all = { href: "/blog", label: "All posts" };
 ---
 
-<Layout
+<SceneLayout
   title={`${title} - Marcelo Rondon`}
   description={description}
   image={image}
+  canonicalPath={`/blog/${post.slug}`}
+  place={sceneForPost(post.slug)}
+  reading={{ title, all }}
 >
-  <article class="blog-post">
-    <Section>
-      <div class="top-row">
-        <span class="date-badge">{formattedDate}</span>
-        <a href="/blog" class="back-link">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M19 12H5M5 12L12 5M5 12L12 19"
-              stroke="currentColor"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"></path>
-          </svg>
-          <span>Back</span>
-        </a>
-      </div>
+  <article class="read">
+    <ReadHead
+      eyebrow={formatDate(publishDate)}
+      title={title}
+      lede={description}
+      tags={tags}
+      cover={image ? { src: image, alt: title } : undefined}
+    >
+      {formattedUpdatedDate && <p class="read-updated">Updated: {formattedUpdatedDate}</p>}
+    </ReadHead>
 
-      <header class="post-header">
-        <h1>{title}</h1>
-        <div class="bar"></div>
-        <p class="description">{description}</p>
-
-        {
-          tags && tags.length > 0 && (
-            <ul class="tags">
-              {tags.map((tag, i) => (
-                <li style={`--i: ${i}`}>{tag}</li>
-              ))}
-            </ul>
-          )
-        }
-
-        {
-          formattedUpdatedDate && (
-            <p class="updated">Updated: {formattedUpdatedDate}</p>
-          )
-        }
-      </header>
-    </Section>
-
-    {
-      image && (
-        <Section>
-          <div class="hero-image">
-            {mainIsVideo ? (
-              <video
-                src={image}
-                class="post-media"
-                autoplay
-                loop
-                muted
-                playsinline
-              />
-            ) : (
-              <img src={image} alt={title} class="post-media" />
-            )}
-          </div>
-        </Section>
-      )
-    }
-
-    <Section>
-      <div class="content">
+    <div class="read-body container">
+      <Prose>
         <Content />
-      </div>
-    </Section>
+      </Prose>
 
-    <Section>
-      <div class="footer-nav">
-        <a href="/blog" class="nav-link">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M19 12H5M5 12L12 19M5 12L12 5"
-              stroke="currentColor"
-              stroke-width="3"
-              stroke-linecap="round"
-              stroke-linejoin="round"></path>
-          </svg>
-          <span>All Posts</span>
-        </a>
-      </div>
-    </Section>
+      {posts.length > 1 && <StoryEnd next={next} previous={previous} all={all} />}
+    </div>
   </article>
-</Layout>
+</SceneLayout>
 
 <style>
-  .blog-post {
-    padding-top: var(--space-16);
+  .read {
+    padding-block: var(--space-64) var(--space-96);
+    color: var(--text-on-art);
   }
 
-  .top-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-inline: 0.8rem;
-    margin-bottom: var(--space-24);
-  }
-
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-8);
-    color: var(--text-primary);
-    font-size: var(--type-ui);
-    font-weight: var(--weight-bold);
-    text-transform: uppercase;
-    letter-spacing: var(--track-caps);
-    transition: all var(--motion-ui) var(--ease-out);
-  }
-
-  .back-link:hover,
-  .back-link:focus-visible {
-    color: var(--color-accent);
-    gap: var(--space-12);
-  }
-
-  .post-header {
-    padding-inline: 0.8rem;
-  }
-
-  .date-badge {
-    display: inline-block;
-    font-size: 0.8rem;
-    font-weight: var(--weight-bold);
-    text-transform: uppercase;
-    letter-spacing: var(--track-wide);
-    color: var(--color-accent);
-    border: 2px solid var(--color-accent);
-    padding: 0.4rem 0.8rem;
-  }
-
-  h1 {
-    font-size: var(--type-page-title);
-    line-height: var(--leading-tight);
-    margin: 0 0 var(--space-16) 0;
-    padding: 0;
-    overflow-wrap: anywhere;
-    animation: slideUp var(--motion-entry) var(--ease-out) 0.1s backwards;
-  }
-
-  .bar {
-    width: 80px;
-    height: 5px;
-    background: var(--color-accent);
-    margin-bottom: var(--space-24);
-    animation: wipeIn 0.5s var(--ease-out) 0.2s backwards;
-  }
-
-  .description {
-    font-size: var(--type-body-lg);
-    line-height: 1.8;
-    max-width: 60ch;
-    margin: 0 0 var(--space-32) 0;
-    padding: 0;
-    animation: slideUp var(--motion-entry) var(--ease-out) 0.3s backwards;
-  }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-8);
-    margin-bottom: var(--space-24);
-  }
-
-  .tags li {
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    text-transform: uppercase;
-    letter-spacing: var(--track-caps);
-    color: var(--text-primary);
-    border: 2px solid var(--text-primary);
-    padding: 0.4rem 0.8rem;
-    transition: all var(--motion-ui) var(--ease-out);
-    animation: slideUp 0.5s var(--ease-out) backwards;
-    animation-delay: calc(0.4s + var(--i) * 0.05s);
-  }
-
-  .tags li:hover {
-    background: var(--text-primary);
-    color: var(--bg-canvas);
-  }
-
-  .updated {
+  .read-updated {
+    margin: 0;
+    color: var(--text-on-art-muted);
     font-size: var(--type-small);
-    color: var(--text-primary);
-    opacity: 0.7;
-    font-style: italic;
-  }
-
-  .hero-image {
-    padding-inline: 0.8rem;
-    animation: scaleIn 0.7s var(--ease-out) backwards;
-  }
-
-  .post-media {
-    width: 100%;
-    max-height: 600px;
-    object-fit: cover;
-    border: 4px solid var(--text-primary);
-    filter: grayscale(20%);
-    transition: filter var(--motion-ui) ease;
-  }
-
-  .post-media:hover {
-    filter: grayscale(0%);
-  }
-
-  .content {
-    padding-inline: 0.8rem;
-    max-width: 72ch;
-    animation: slideUp var(--motion-entry) var(--ease-out) backwards;
-  }
-
-  /* Long reading (A2): the article's own paragraphs, lists and quotes set in Geist Sans, at a
-     reading measure of about 69 characters. Media and headings keep the wider column.
-     Embedded components (CaseMeta, FlowDiagram, media captions) keep Geist Mono. */
-  .content > :global(p),
-  .content > :global(ul),
-  .content > :global(ol),
-  .content > :global(blockquote) {
-    font-family: var(--font-read);
-    max-width: var(--layout-measure-read);
-  }
-
-  .content :global(h2) {
-    font-size: var(--type-heading);
-    line-height: var(--leading-heading);
-    color: var(--color-accent);
-    margin: var(--space-48) 0 var(--space-16) 0;
-    padding: 0;
-    text-transform: uppercase;
-  }
-
-  .content :global(h2:first-child) {
-    margin-top: 0;
-  }
-
-  .content :global(h3) {
-    font-size: var(--type-title);
-    line-height: var(--leading-title);
-    color: var(--text-primary);
-    margin: var(--space-32) 0 var(--space-12) 0;
-    padding: 0;
-  }
-
-  .content :global(p) {
-    padding: 0;
-    margin: 0 0 var(--space-20) 0;
-    font-size: var(--type-body);
-    line-height: 1.8;
-  }
-
-  .content :global(ul),
-  .content :global(ol) {
-    padding-left: var(--space-24);
-    margin: 0 0 var(--space-20) 0;
-  }
-
-  .content :global(ul) {
-    list-style: none;
-  }
-
-  .content :global(ul li) {
-    position: relative;
-    padding-left: var(--space-24);
-  }
-
-  .content :global(ul li::before) {
-    content: "—";
-    position: absolute;
-    left: 0;
-    color: var(--color-accent);
-    font-weight: var(--weight-bold);
-  }
-
-  .content :global(ol) {
-    list-style: decimal;
-  }
-
-  .content :global(li) {
-    margin-bottom: var(--space-8);
-    line-height: 1.7;
-  }
-
-  .content :global(code) {
-    font-family: var(--font-mono); /* Was the browser's monospace (Courier); code stays Geist Mono inside Geist Sans prose. */
-    background: rgba(var(--color-accent-rgb), 0.1);
-    border: 1px solid rgba(var(--color-accent-rgb), 0.2);
-    padding: 0.2rem 0.4rem;
-    font-size: 0.9em;
-  }
-
-  .content :global(pre) {
-    background: var(--text-primary);
-    color: var(--bg-canvas);
-    border: 3px solid var(--text-primary);
-    padding: var(--space-24);
-    overflow-x: auto;
-    margin: 0 0 var(--space-24) 0;
-  }
-
-  .content :global(pre code) {
-    background: none;
-    border: none;
-    padding: 0;
-  }
-
-  .content :global(blockquote) {
-    border: 2px solid var(--color-accent);
-    background: rgba(var(--color-accent-rgb), 0.08);
-    padding: var(--space-16) var(--space-20);
-    margin: var(--space-24) 0;
-    font-style: italic;
-  }
-
-  .content :global(a) {
-    color: var(--color-accent);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    transition: opacity 0.2s ease;
-  }
-
-  .content :global(a:hover) {
-    opacity: 0.8;
-  }
-
-  .footer-nav {
-    display: flex;
-    justify-content: center;
-    padding: var(--space-48) 0.8rem;
-    border-top: 3px solid var(--text-primary);
-    margin-top: var(--space-32);
-  }
-
-  .nav-link {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-12);
-    color: var(--color-accent);
-    font-weight: var(--weight-bold);
-    font-size: var(--type-body);
-    text-transform: uppercase;
-    letter-spacing: var(--track-caps);
-    padding: 0.8rem var(--space-24);
-    border: 3px solid var(--color-accent);
-    transition: all var(--motion-ui) var(--ease-out);
-  }
-
-  .nav-link:hover,
-  .nav-link:focus-visible {
-    background: var(--color-accent);
-    color: var(--bg-canvas);
-    gap: var(--space-8);
-  }
-
-  @keyframes slideUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes wipeIn {
-    from {
-      transform: scaleX(0);
-      transform-origin: left;
-    }
-    to {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-  }
-
-  @keyframes scaleIn {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
   }
 
   @media (width <= 700px) {
-    .blog-post {
-      padding-top: var(--space-8);
-    }
-
-    .top-row {
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-12);
-    }
-
-    h1 {
-      font-size: clamp(2rem, 10vw, 3rem);
-      text-align: center;
-    }
-
-    .bar {
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .description {
-      font-size: var(--type-body);
-      text-align: center;
-    }
-
-    .tags {
-      justify-content: center;
-    }
-
-    .post-media {
-      max-height: 300px;
+    .read {
+      padding-top: var(--space-32);
     }
   }
 </style>

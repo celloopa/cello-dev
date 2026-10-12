@@ -14,7 +14,9 @@
  *     admire   "Take in the view" hides the intro; "Back to Cello" (or Esc) returns
  *     reading  once the focus target (the Work section) reaches the reading line, the scene
  *              softens, dims and quiets; the place label goes; the bar shows the project in view
- *              + All work
+ *              + All work. A reading page (html.scene-read-page: a case study or a post) is in
+ *              this state from the first paint and never leaves it; its renderer arrives
+ *              settled and already focused.
  *
  * Root classes: scene-3d (a renderer is expected), scene-still-on (show the still under/instead of
  * the canvas), scene-gl-on (the canvas has drawn), scene-admire, scene-reading. The inline head
@@ -77,7 +79,10 @@ export function start() {
   const title = context?.querySelector("[data-scene-context-title]");
 
   /* ---- attention state ---- */
-  const state = { admire: false, reading: false };
+  // A reading page (a case study or a post: html.scene-read-page, server-rendered with
+  // scene-reading) opens in the reading state and stays there; it has no focus target.
+  const readPage = root.classList.contains("scene-read-page");
+  const state = { admire: false, reading: readPage };
   let gl = null;
   const apply = () => {
     root.classList.toggle("scene-admire", state.admire);
@@ -190,8 +195,10 @@ export function start() {
         tokens: readTokens(),
         mobile: () => mobileQ.matches,
         dark: isDark(),
-        // the still took over meanwhile: arrive already settled, then cross-fade over it
-        settled: () => root.classList.contains("scene-still-on"),
+        reading: readPage,
+        // the still took over meanwhile, or this is a reading page (no assembly behind an
+        // article): arrive already settled, then cross-fade in
+        settled: () => readPage || root.classList.contains("scene-still-on"),
         onLost: () => { gl = null; showStill("WebGL context lost"); },
         onFirstFrame: handoff,
       });

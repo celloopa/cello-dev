@@ -127,7 +127,7 @@ function springResidual(t, zeta, omega) {
 const overshoot = (zeta) => (zeta >= 1 ? 0 : Math.exp((-zeta * Math.PI) / Math.sqrt(1 - zeta * zeta)));
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
-export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dark = false, settled = () => false, onLost, onFirstFrame }) {
+export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dark = false, reading = false, settled = () => false, onLost, onFirstFrame }) {
   const { REF, READ_SCALE, FOCUS_RATE, ARRIVE } = tuning(tokens);
   // textures straight from the still's <img>s: no second download
   await Promise.all(imgs.map((img) => (img.complete && img.naturalWidth ? null : img.decode())));
@@ -239,8 +239,12 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
   }
 
   /* ---- state ---- */
-  const target = { reading: 0, admire: 0, scroll: 0 };
-  let focus = 0, admire = 0, ambient = 0;
+  // a reading page starts (and stays) fully focused: no focus transition on arrival
+  const target = { reading: reading ? 1 : 0, admire: 0, scroll: 0 };
+  let focus = target.reading, admire = 0, ambient = 0;
+  // fully read: travel and micro-motion are 0, so pointer and scroll input change nothing on
+  // screen and wake no frames (the loop stays stopped while reading)
+  const settledReading = () => target.reading === 1 && focus === 1;
   let arrivalT = settled() ? 99 : 0, arrivalHeld = null;
   const pointer = { x: 0, y: 0 };
   let lastInput = performance.now(), last = performance.now(), lastDraw = 0, time = 0, raf = 0, lost = false, running = false, frames = 0;
@@ -349,11 +353,11 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     if (!fine.matches || isMobile || e.pointerType === "touch") return;
     pointer.x = clamp((e.clientX / innerWidth) * 2 - 1, -1, 1);
     pointer.y = clamp(-(((e.clientY - canvas.getBoundingClientRect().top) / H) * 2 - 1), -1, 1);
-    wake();
+    if (!settledReading()) wake();
   }, { passive: true });
   // pointer leaves the window → spring back to rest
-  document.documentElement.addEventListener("pointerleave", () => { pointer.x = 0; pointer.y = 0; wake(); });
-  addEventListener("blur", () => { pointer.x = 0; pointer.y = 0; wake(); });
+  document.documentElement.addEventListener("pointerleave", () => { pointer.x = 0; pointer.y = 0; if (!settledReading()) wake(); });
+  addEventListener("blur", () => { pointer.x = 0; pointer.y = 0; if (!settledReading()) wake(); });
   addEventListener("resize", () => { if (layout()) { renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.5 : 2)); renderer.setSize(W, H, false); wake(); } });
   new ResizeObserver(() => { if (layout()) wake(); }).observe(canvas);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) { last = performance.now(); wake(); } });
@@ -367,7 +371,7 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
   return {
     start() { running = true; last = performance.now(); wake(); },
     setState({ reading, admire: a }) { target.reading = reading ? 1 : 0; target.admire = a ? 1 : 0; wake(); },
-    setScroll(p) { if (Math.abs(p - target.scroll) > 1e-4) { target.scroll = p; if (isMobile) wake(); } },
+    setScroll(p) { if (Math.abs(p - target.scroll) > 1e-4) { target.scroll = p; if (isMobile && !settledReading()) wake(); } },
     setDark(d) { shared.uDusk.value = d ? 1 : 0; wake(); },
     stop() { running = false; lost = true; cancelAnimationFrame(raf); },
     /** Review hooks: hold the arrival at t seconds (null resumes), and report plane offsets. */

@@ -42,6 +42,11 @@ interface Props {
   canonicalPath?: string;
   /** The scene behind this page: an id from src/data/scene-library.json. */
   place: string;
+  /**
+   * A reading page (a case study or a post): it opens in the reading state (focus dim, a still
+   * scene, the bar's reading context) and stays there. `title` names it in the bar.
+   */
+  reading?: { title: string; all?: { href: string; label: string } };
 }
 
 const siteName = "Cello - Product Designer & Design Engineer";
@@ -49,7 +54,7 @@ const siteDescription =
   "Product designer and design engineer focused on design systems and human-centered AI tools. I build and run what I design.";
 const siteImage = "/images/thumbnail.png";
 
-const { title = siteName, description = siteDescription, image, canonicalPath, place } = Astro.props;
+const { title = siteName, description = siteDescription, image, canonicalPath, place, reading } = Astro.props;
 const { url, email, profiles } = basics;
 const canonicalUrl = canonicalPath ? new URL(canonicalPath, url).toString() : url;
 const ogImage = image ? new URL(image, url).toString() : new URL(siteImage, url).toString();
@@ -58,7 +63,12 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark" class="scene-page" data-place={place}>
+<html
+  lang="en"
+  data-theme="dark"
+  class:list={["scene-page", reading && "scene-reading scene-read-page"]}
+  data-place={place}
+>
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
@@ -112,7 +122,7 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-    <ContextBar />
+    <ContextBar context={reading?.title} all={reading?.all} />
     <Scene place={place} />
     <main id="main">
       <slot />
@@ -123,7 +133,12 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
           <a href="/" class="footer-logo" aria-label="Home"><Mark class="footer-mark" /></a>
           <nav class="footer-nav" aria-label="Footer navigation">
             <a href="/projects">Work</a>
-            <a href="/resume">Resume</a>
+            <ul class="footer-utils" aria-label="Utilities">
+              <li><a href="/#about">About</a></li>
+              <li><a href="/blog">Writing</a></li>
+              {email && <li><a href={`mailto:${email}`}>Contact</a></li>}
+              <li><a href="/resume">Resume</a></li>
+            </ul>
           </nav>
         </div>
         <div class="footer-row footer-row--bottom">
@@ -267,10 +282,30 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
         height: 51px;
       }
 
-      .footer-nav {
+      .footer-nav,
+      .footer-utils {
         display: flex;
         flex-wrap: wrap;
+        align-items: center;
         gap: var(--space-24);
+      }
+
+      /* About, Writing, Contact and Resume: utilities, kept apart from Work (D5) */
+      .footer-utils {
+        margin: 0;
+        padding: 0 0 0 var(--space-24);
+        border-left: var(--stroke-rule) solid var(--border-muted);
+        list-style: none;
+      }
+
+      .footer-utils a {
+        display: block;
+        color: var(--text-muted);
+      }
+
+      .footer-utils a:hover,
+      .footer-utils a:focus-visible {
+        color: var(--text-primary);
       }
 
       .footer-nav a {
@@ -328,6 +363,15 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
         .footer-row {
           flex-direction: column;
           align-items: flex-start;
+        }
+
+        .footer-nav {
+          gap: var(--space-8) var(--space-24);
+        }
+
+        .footer-utils {
+          padding-left: 0;
+          border-left: 0;
         }
       }
     </style>

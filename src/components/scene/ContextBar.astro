@@ -4,12 +4,24 @@
  *   exploring  identity + Work, with About and the other utilities kept separate
  *   reading    the project in view + "All work" (scenery.js fills the title and sets
  *              html.scene-reading)
+ * A reading page (a case study or a post) is in the reading context from the first paint: its
+ * title and "All" link are server-rendered here, and the menu and theme buttons stay, since
+ * the page never returns to exploring.
  * The menu button and ⌘K open today's KeyboardShortcutsMenu. The theme button is a plain
  * <button data-theme-toggle>, bound and labelled by SceneLayout through src/utils/themeToggle.js
  * (it picks the scene's Day or Dusk grade; the bar stays dark either way).
  */
 import Mark from "./Mark.astro";
 import Sun from "@/icons/Sun.astro";
+
+interface Props {
+  /** A reading page's title, shown from the first paint (else scenery.js names the stop in view). */
+  context?: string;
+  /** Where the reading context's "All" link goes: All work, or All posts on a post. */
+  all?: { href: string; label: string };
+}
+
+const { context = "", all = { href: "/projects", label: "All work" } } = Astro.props;
 
 const utilities = [
   { label: "About", href: "/#about" },
@@ -29,8 +41,8 @@ const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page
     </a>
     <a class="bar-link bar-work" href="/projects" aria-current={current("/projects")}>Work</a>
     <div class="bar-context" data-scene-context>
-      <span class="bar-context-title" data-scene-context-title></span>
-      <a class="bar-allwork" href="/projects">All work</a>
+      <span class="bar-context-title" data-scene-context-title>{context}</span>
+      <a class="bar-allwork" href={all.href}>{all.label}</a>
     </div>
     <ul class="bar-utils">
       {
@@ -247,6 +259,16 @@ const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page
     display: none;
   }
 
+  /* a reading page opens in this context and stays in it: no hand-off to fade, and the menu and
+     theme buttons stay (home gets them back by scrolling up; a reading page never does) */
+  :global(html.scene-read-page) .bar-context {
+    animation: none;
+  }
+
+  :global(html.scene-read-page) .bar-actions {
+    display: flex;
+  }
+
   @media (width <= 900px) {
     .bar-utils {
       display: none;
@@ -272,6 +294,20 @@ const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page
 
     .bar-allwork {
       font-size: var(--type-label);
+    }
+
+    /* reading page on a phone: the menu button keeps its dot and its name, not its word */
+    :global(html.scene-read-page) .bar-menu {
+      padding-inline: 0;
+    }
+
+    :global(html.scene-read-page) .bar-menu span:not(.bar-key) {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
     }
   }
 </style>
