@@ -427,3 +427,11 @@ asked four things before building. Cello's answers:
   the window frame is no longer the hero's framing. This revises identity I2/I5 and the
   `bg-plate` rule in the migration; sent to the "Ship cello.dev" conductor to relay.
 - **Build: start hero + focus** in three.js from the real layers, Mirror Lake first, Ecola second.
+
+Cello (2026-10-12): "I actually want to update the ghosted stuff to fit the demo profiles I've been
+making for its landing page". → The storyboard's Ghosted artifact (`storyboard-artifacts/ghosted-proposal.webp`)
+was a screenshot of Cello's own resume; it is now Ghosted's landing-page proposal shot (Rowan Ellis,
+the made-up job-search persona; ghosted-app `web/public/landing/proposal.webp`), captioned as such.
+Ghosted's demo personas (ghosted-app `web/src/demo/personas.ts`, on its worktrees): four use cases ×
+an English person and a Spanish twin, all invented. Any further Ghosted visuals in the rewrite come
+from those personas, never real resumes or tester data.
