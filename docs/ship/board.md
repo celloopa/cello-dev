@@ -65,21 +65,22 @@ In flight, not handed off:
   as an amendment, outside 0–1b and 2a). Both threads told.
 - 2026-10-12, Cello: "yes" to archiving "Rewrite cello.dev (old, handed off)". Archived (its
   worktree was clean and its HEAD was on daybreak `main`).
-- 2026-10-12, **reported by the rewrite thread, awaiting Cello's confirmation here**: Cello said
-  "yes, revise it". In the rewrite's landscape direction, text may sit directly over scene art
-  (with the approved focus dim), and the window frame stops being the hero's framing. That would
-  revise I2 (text on surfaces/plates only), I5 (window frame as the framing primitive) and the
-  migration's `bg-plate` rule. Sources: `docs/rewrite/STORYBOARD.md` (uncommitted, "Conflicts
-  surfaced to Cello", item 1); GRILL Q18. Q21 isn't in GRILL.md yet. Not relayed to the migration
-  thread until Cello confirms, and until he says whether it also changes today's site under I6.
+- 2026-10-12, Cello (GRILL Q21, `1dddfda` on `claude/rewrite-exploration`; he answered "Yes,
+  revise it" to "The storyboard puts text straight on the scene and drops the window frame. That
+  revises identity I2 and I5 and the bg-plate rule in the design-system migration. Is that your
+  direction now?"). **For the rewrite's landscape direction:** text may sit over scene art with
+  the approved focus dim, and the window frame is no longer the hero's framing. I2, I5 and
+  `bg-plate` are revised accordingly. **Still open:** whether today's site changes too under I6
+  (window frame replacing the offset frame, `bg-plate`). Relayed to the migration thread with
+  that caveat.
 - 2026-10-12: ship order: migration stages reach `master` first; the rewrite's build plan
   follows only after the migration ships (rewrite handoff, "Next, ranked").
 
 ## Open calls for Cello
 
-- Confirm the I2/I5 revision ("yes, revise it", reported by the rewrite thread). Does it apply to
-  the rewrite only, or also change what today's site gets in the migration (window frame,
-  `bg-plate`)?
+- I2/I5 revision ("Yes, revise it", Q21, asked in the rewrite's context): does it also change
+  what today's site gets in the migration under I6 (window frame, `bg-plate`), or only the
+  rewrite?
 - Where cello.dev uses Geist Sans: the migration thread will propose this as an amendment.
 
 ## After deploy, for Cello
