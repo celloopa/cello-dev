@@ -30,8 +30,20 @@ Source: `audit.md` §11 on `claude/design-system-audit` @ `c418c5f`.
 - **Scope (audit Q1, 2026-10-12):** full staged migration of today's site first. "A rewrite stays
   possible later (its own thread) and would start from the migrated system."
 - **Face (audit Q2, 2026-10-12):** Geist Mono; the family-name fix ships as its own visible stage.
-- Audit Q3–Q8 (light canvas, green in light mode, first-visit theme, blueprint/coral, family
-  layer, Figma link) are being asked there. Read §11 before asking anything that overlaps.
+- **Light canvas (audit Q3):** Paper 100 `#f3ede2`.
+- **Green (audit Q4):** action in both themes; light mode uses new `signal-700 #007a33`; earth is
+  grounding/decoration in both.
+- **First visit (audit Q5):** follows the system setting. Docs move from "dark-first" to "dark is
+  the hero scene; both themes are first-class". Prototypes treat light and dark as equals.
+- **Blueprint/coral (audit Q6):** keep blueprint for construction lines and annotations only
+  (never text, never action); drop coral.
+- Still open there: Q7 family layer (home, contents), Q8 Figma link.
+
+## Explorations noted (not decisions)
+
+- 2026-10-12, Cello in the audit session: "maybe the resume isnt the point of the site anymore
+  its more about the projetct, demos, youtube, writing etc". Relayed by that session as IA and
+  positioning ground for this thread. Taken up as part of Q4; not acted on until he answers.
 
 ## Questions
 
@@ -55,5 +67,15 @@ three kinds of evidence; per-application tuning stays in cover letters and tailo
 the live homepage or `cv.json`; that's for whenever a direction ships.
 
 ### Q3. References
+
+Offered three lanes: kinetic poster (Saul Bass/Swiss at scale; e.g. Dennis Snellenberg,
+Locomotive), design-engineer craft (e.g. Rauno Freiberg, Emil Kowalski, Vercel Geist), system as
+interface (e.g. Teenage Engineering, Lynn Fisher's yearly redesigns).
+**Answer (2026-10-12): the hybrid.** Kinetic poster at the front door (home + each case study's
+opener), design-engineer craft on every reading surface, the system shown through case-study
+artifacts rather than as the whole interface. Cello named no further sites; the lanes above
+are the reference set until he adds one.
+
+### Q4. What a hiring manager must take away, in what order
 
 `[asked 2026-10-12]`
