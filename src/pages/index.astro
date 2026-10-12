@@ -25,15 +25,15 @@ const featuredProjects = allProjects
   .filter((p) => p.data.featured && p.data.complete)
   .sort((a, b) => a.data.order - b.data.order);
 
-const homeTitle = "Cello — Product Designer & Design Engineer";
+const homeTitle = "Cello — Digital Designer, Brand & Design Systems";
 const homeDescription =
-  "Product designer and design engineer focused on design systems and human-centered AI tools. Deterministic code does everything it can, the model gets the smallest trustworthy job, and human approval sits where the consequences are.";
+  "I lead design across three brands through a shared Figma system, then build the components and tools that carry it into everyday use.";
 
 const marqueeWords = [
   "Design Systems",
+  "Brand Systems",
+  "Design Engineering",
   "Human-Centered AI",
-  "Design-Engineering",
-  "Prototype the Uncertain",
 ];
 ---
 
@@ -68,16 +68,15 @@ const marqueeWords = [
     <div class="hero-copy">
       <p class="kicker">
         <span class="kicker-dot" aria-hidden="true"></span>
-        <span class="kicker-text">Open to design engineering and product design roles</span>
+        <span class="kicker-text">Open to design systems, brand and product design roles</span>
       </p>
       <p class="title-line">
-        Product Designer &amp; Design Engineer
-        <span class="title-line-sub">Design Systems &amp; AI Tools</span>
+        Digital Designer
+        <span class="title-line-sub">Brand &amp; Design Systems</span>
       </p>
       <p class="summary">
-        I design systems and the tools around them, then build and run them.
-        Code does everything it can, the model gets the smallest job it can be
-        trusted with, and a person approves wherever the consequences are.
+        I lead design across three brands through a shared Figma system, then
+        build the components and tools that carry it into everyday use.
       </p>
       <div class="hero-actions" aria-label="Primary actions">
         <a href="/projects" class="cta primary" data-magnetic>View Case Studies</a>
@@ -141,48 +140,6 @@ const marqueeWords = [
     </div>
   </section>
 
-  <section class="proof-strip" aria-label="How I build, with proof">
-    <a
-      class="proof-item"
-      href="/projects/asheville-dispensary"
-      data-reveal
-      style="--reveal-i: 0"
-    >
-      <h2>Code First</h2>
-      <p>
-        A script checks for new product drops before any model runs. An idle
-        day costs about $0.30 instead of $12.
-      </p>
-      <span class="proof-link">Proof: Asheville automations →</span>
-    </a>
-    <a
-      class="proof-item"
-      href="/projects/ghosted"
-      data-reveal
-      style="--reveal-i: 1"
-    >
-      <h2>A Small, Checkable Job</h2>
-      <p>
-        The agent edits the resume, but every change arrives highlighted and
-        versioned, for the person to accept or reject.
-      </p>
-      <span class="proof-link">Proof: Ghosted →</span>
-    </a>
-    <a
-      class="proof-item"
-      href="/projects/vegavengers"
-      data-reveal
-      style="--reveal-i: 2"
-    >
-      <h2>Approval Where It Matters</h2>
-      <p>
-        An AI checker proposes festival updates as ordinary CMS drafts. Editors
-        publish; the AI never does.
-      </p>
-      <span class="proof-link">Proof: VegAvengers →</span>
-    </a>
-  </section>
-
   <div class="section-divider" aria-hidden="true" data-reveal="line"></div>
 
   <section id="about" class="about-section">
@@ -218,8 +175,9 @@ const marqueeWords = [
     <Section title="Selected Case Studies">
       <div class="bar section-bar"></div>
       <p class="section-intro" data-reveal>
-        Shipped systems where I decided what code does, what the model does,
-        and where a person signs off — then built them and kept them running.
+        Systems first: one shared system across three brands, and a design
+        system whose tokens and checks keep AI coding agents inside it. Then
+        the products I designed and built on the same rules.
       </p>
     </Section>
     <div class="carousel-frame" data-reveal style="--reveal-i: 1">
@@ -260,10 +218,62 @@ const marqueeWords = [
 
   <div class="section-divider" aria-hidden="true" data-reveal="line"></div>
 
+  <section class="how-section" aria-labelledby="how-heading">
+    <h2 id="how-heading" data-reveal>How I Build</h2>
+    <p class="how-intro" data-reveal style="--reveal-i: 1">
+      I build what I design, so the system reaches production intact. Code
+      does everything it can, the model gets the smallest job it can be
+      trusted with, and a person approves wherever the consequences are.
+    </p>
+    <div class="proof-strip">
+      <a
+        class="proof-item"
+        href="/projects/asheville-dispensary"
+        data-reveal
+        style="--reveal-i: 0"
+      >
+        <h3>Code First</h3>
+        <p>
+          A script checks for new product drops before any model runs. An idle
+          day costs about $0.30 instead of $12.
+        </p>
+        <span class="proof-link">Proof: Asheville automations →</span>
+      </a>
+      <a
+        class="proof-item"
+        href="/projects/ghosted"
+        data-reveal
+        style="--reveal-i: 1"
+      >
+        <h3>A Small, Checkable Job</h3>
+        <p>
+          The agent edits the resume, but every change arrives highlighted and
+          versioned, for the person to accept or reject.
+        </p>
+        <span class="proof-link">Proof: Ghosted →</span>
+      </a>
+      <a
+        class="proof-item"
+        href="/projects/vegavengers"
+        data-reveal
+        style="--reveal-i: 2"
+      >
+        <h3>Approval Where It Matters</h3>
+        <p>
+          An AI checker proposes festival updates as ordinary CMS drafts. Editors
+          publish; the AI never does.
+        </p>
+        <span class="proof-link">Proof: VegAvengers →</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="section-divider" aria-hidden="true" data-reveal="line"></div>
+
   <section class="contact-section" aria-label="Contact">
     <h2 data-reveal>Let’s Talk</h2>
     <p data-reveal style="--reveal-i: 1">
-      Open to design engineering, product design, and design systems roles on AI and tool products, remote in the US or in Portland.
+      Open to design systems, brand and product design roles, remote in the US or in Portland.
       The fastest way to reach me is email.
     </p>
     <div class="contact-actions" data-reveal style="--reveal-i: 2">
@@ -830,13 +840,34 @@ const marqueeWords = [
     }
   }
 
+  .how-section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-inline: 2rem;
+  }
+
+  .how-section > h2 {
+    margin: 0 0 0.75rem;
+    color: var(--color-accent);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .how-intro {
+    max-width: 68ch;
+    margin: 0 0 1.25rem;
+    font-size: 1rem;
+    line-height: 1.7;
+    opacity: 0.88;
+  }
+
   .proof-strip {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 2rem;
   }
 
   .proof-item {
@@ -857,7 +888,7 @@ const marqueeWords = [
     transform: translateY(-2px);
   }
 
-  .proof-item h2 {
+  .proof-item h3 {
     margin: 0 0 0.65rem;
     padding: 0;
     font-size: clamp(1rem, 2vw, 1.2rem);
@@ -1274,8 +1305,13 @@ const marqueeWords = [
       text-align: center;
     }
 
-    .proof-strip {
-      padding: 0 1rem;
+    .how-section {
+      padding-inline: 1rem;
+    }
+
+    .how-section > h2,
+    .how-intro {
+      text-align: center;
     }
 
     .section-divider {
