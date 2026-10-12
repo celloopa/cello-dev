@@ -311,3 +311,28 @@ story boards tho". → The kit renders are storyboards (composition + depth plan
 art via Pi's `codex_imagegen` (prompts in `docs/rewrite/imagegen-prompts.md`), composited in
 three.js as depth layers. Step 1: three style frames of one place; Cello picks; then a layer test;
 then the rest. Sending a photo to the image model needs Cello's explicit OK (asked).
+
+### Identity revision inherited from the audit thread (2026-10-12)
+
+Cello folded the window concept into cello.dev's identity (`docs/design-system/identity.md` I1–I6
+and proposal amendment A1 on `claude/design-system-migration` @ `54bd1e6`). Use in the rewrite:
+- I1 the mark reads as C + green sun + Mt Hood (cello.dev only; Daybreak finds its own motif).
+- I2 themes are **Day** (light) and **Dusk** (dark), same values; text only on Day/Dusk surfaces or
+  opaque plates, never on scene art.
+- I3 art tokens `art/season/<month>/{sky, far, snow, forest, ground}` (inks from his photos);
+  Dusk = `color-mix(in oklab, ink 40%, #001a11)`, snow 55%.
+- I4 display faces: **National Park** for titles, **Switchback** for place names (new `place-name`
+  role), Geist Mono for everything else; self-hosted, OFL.
+- I5 the window frame (frame 6 · mullion 4 · sill) replaces the offset frame; LocationCard is a
+  must-tier rewrite component.
+- `bg-plate` approved in A1.
+Still this thread's to bring as an amendment: SceneStop + the scene kit's shape, and the window
+transition as a Signature motion tier.
+
+### Image generation path (2026-10-12)
+
+Cello: "codex image gen might be outdated in pi. search the best way to tap into the images api
+with my sub". Research: `docs/rewrite/imagegen-research.md`. Recommendation put to Cello: call
+the Codex Images endpoints directly with his existing login (local script); fallbacks
+`pi-codex-image-gen` or the upgraded CLI; metered gpt-image-2.5-sunburst only if quality falls
+short. Prompt palettes now use the September inks (I3).

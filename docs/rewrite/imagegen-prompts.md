@@ -9,6 +9,9 @@ kit-drawn shapes (`docs/rewrite/shots/window-*.jpg`) are **storyboards**: compos
 plan only. These prompts replace their look with generated art that three.js composites in
 depth.
 
+Palettes are the seasonal art inks approved in the identity revision (`identity.md` I3 on
+`claude/design-system-migration`).
+
 References live in `docs/rewrite/private/refs/` (git-ignored; photos are re-encoded with no
 GPS, date or device metadata). People are never generated.
 
@@ -47,9 +50,10 @@ GPS, date or device metadata). People are never generated.
 > Style: a 1930s national-park screenprint poster. Six to eight flat ink colors with crisp,
 > hand-cut edges; subtle paper grain and slight ink texture; simplified but specific shapes
 > (each fir a distinct silhouette, the mountain's snowfields shaped as real glaciers and ridges).
-> Light from the upper left. Palette: deep green-black (#001a11) for the darkest trees, forest
-> greens, warm paper (#f3ede2) for highlights and snow, a muted earth (#887850), the natural blues
-> of sky and lake, and the fireweed magenta as the one vivid accent.
+> Light from the upper left. Palette: the September inks taken from this place: sky #4885e3,
+> far ridges and lake #38618c, snow #d4dce4, firs #323f44, ground #7c6145, deepened toward
+> green-black #001a11 for the darkest shadows, warm paper #f3ede2 for the brightest highlights, and
+> the fireweed magenta as the one vivid accent.
 >
 > Format: landscape 3:2, full-bleed, no border or frame.
 >
@@ -66,9 +70,10 @@ GPS, date or device metadata). People are never generated.
 >
 > Style: a matte gouache illustration on paper. Flat painted shapes with visible brush texture and
 > dry-brush edges; soft hand-painted gradients in the sky and the lake; warm late-afternoon light
-> from the upper left; a restrained palette built on deep green-black (#001a11), forest greens,
-> warm paper (#f3ede2), muted earth (#887850), sky and lake blues, and fireweed magenta as the
-> single vivid accent. Calm and quiet, like a page from an illustrated field journal.
+> from the upper left; a restrained palette built on the September inks taken from this place
+> (sky #4885e3, far ridges and lake #38618c, snow #d4dce4, firs #323f44, ground #7c6145), with
+> green-black #001a11 in the deepest shadows, warm paper #f3ede2 in the highlights, and fireweed
+> magenta as the single vivid accent. Calm and quiet, like a page from an illustrated field journal.
 >
 > Format: landscape 3:2, full-bleed, no border or frame.
 >
@@ -83,8 +88,8 @@ GPS, date or device metadata). People are never generated.
 
 > Intended use, subject and references: exactly as in section 1.
 >
-> Style: a risograph print in two inks, forest green (#1f6b3a) and warm earth (#887850), on cream
-> paper (#f3ede2). Shading made with halftone dots; where the two inks overlap they make a dark
+> Style: a risograph print in two inks, lake blue (#38618c) and earth (#7c6145) (this place's
+> September inks), on cream paper (#f3ede2). Shading made with halftone dots; where the two inks overlap they make a dark
 > olive third color; a slight misregistration between the inks; visible paper grain and uneven
 > ink coverage. Bold, simplified shapes; the snow and highlights are the bare paper.
 >
