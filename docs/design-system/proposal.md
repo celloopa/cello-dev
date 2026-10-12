@@ -311,6 +311,17 @@ visible stage, **2c**, after 2b, covering articles only. That shows best once Pr
 2c lands before stage 6 it styles the two article templates' `.content` directly.
 
 
+## Scope note: the landscape cutover (Cello, 2026-10-12)
+
+The rewrite's landscape build (`claude/landscape-build`, cut from this branch) replaces home,
+the projects index and the blog index at cutover. Cello answered two questions about that on
+2026-10-12 ("1-2 good yes"):
+- Stage 3 (Day canvas, green as action, one ThemeToggle, /resume follows the system) still ships to
+  today's site before the cutover.
+- Stages 4–6 skip the pages the landscape replaces. They cover what survives the cutover: case
+  studies, posts, /resume, /card, /design-system and 404.
+The same answer approved stage 2b's look.
+
 ## Amendment A3 (proposed, pending Cello): what the rewrite's landscape build adds
 
 Source: `docs/rewrite/DS-HANDOFF.md` at `7a96777` and the prototype at `f1b1e66`, both on

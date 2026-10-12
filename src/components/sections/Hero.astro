@@ -91,56 +91,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 						},
 					)
 				}
-				<button onclick="toggleTheme()"><Sun /></button>
-				<script is:inline>
-					// Function to set the theme
-					function setTheme(theme) {
-						document.documentElement.setAttribute(
-							"data-theme",
-							theme,
-						);
-						localStorage.setItem(
-							"theme",
-							theme,
-						);
-					}
-
-					// Function to toggle the theme
-					function toggleTheme() {
-						const currentTheme =
-							localStorage.getItem(
-								"theme",
-							) || "dark";
-						const newTheme =
-							currentTheme === "dark"
-								? "light"
-								: "dark";
-						setTheme(newTheme);
-					}
-
-					// Initialize theme on page load and after navigation
-					document.addEventListener(
-						"DOMContentLoaded",
-						() => {
-							const savedTheme =
-								localStorage.getItem(
-									"theme",
-								) || "dark";
-							setTheme(savedTheme);
-						},
-					);
-
-					document.addEventListener(
-						"astro:after-swap",
-						() => {
-							const savedTheme =
-								localStorage.getItem(
-									"theme",
-								) || "dark";
-							setTheme(savedTheme);
-						},
-					);
-				</script>
+				<button type="button" data-theme-toggle aria-label="Switch between Day and Dusk"><Sun /></button>
 			</footer>
 		</div>
 		<figure class="image-frame">

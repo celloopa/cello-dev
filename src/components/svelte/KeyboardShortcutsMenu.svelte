@@ -43,7 +43,7 @@
       title: "ACTIONS",
       shortcuts: [
         { key: "d", label: "Download Resume", action: () => downloadResume() },
-        { key: "t", label: "Toggle Theme", action: toggleTheme },
+        { key: "t", label: "Switch Day / Dusk", action: toggleTheme },
       ],
     },
     {

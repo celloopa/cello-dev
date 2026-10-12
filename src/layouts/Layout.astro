@@ -15,6 +15,7 @@ import "@/styles/colors.css";
 import "@/styles/animations.css";
 import "@/styles/print.css";
 import Header from "@/components/Header.astro";
+import ThemeInit from "@/components/ThemeInit.astro";
 import KeyboardManager from "@/components/KeyboardManager.astro";
 import AnimatedLogo from "@/components/AnimatedLogo.astro";
 import Mail from "@/icons/Mail.astro";
@@ -61,7 +62,8 @@ const SOCIAL_ICONS: SocialIcon = {
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#001A11" />
+    <meta name="theme-color" content="#001A11" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F3EDE2" media="(prefers-color-scheme: light)" />
     <meta name="color-scheme" content="dark light" />
     <link rel="preload" href={geistMono400} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={geistMono700} as="font" type="font/woff2" crossorigin />
@@ -79,19 +81,7 @@ const SOCIAL_ICONS: SocialIcon = {
       href="/images/logos/SVG/full-dark.svg"
       media="(prefers-color-scheme: dark)"
     />
-    <script is:inline>
-      (() => {
-        const savedTheme = localStorage.getItem("theme");
-        const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-          .matches
-          ? "dark"
-          : "light";
-        document.documentElement.setAttribute(
-          "data-theme",
-          savedTheme || systemTheme,
-        );
-      })();
-    </script>
+    <ThemeInit />
     <noscript>
       <style>
         [data-reveal] {
@@ -699,5 +689,9 @@ const SOCIAL_ICONS: SocialIcon = {
         }
       }
     </style>
+    <script>
+      import { bindThemeToggles } from "@/utils/themeToggle.js";
+      bindThemeToggles();
+    </script>
   </body>
 </html>

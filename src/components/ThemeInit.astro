@@ -1,0 +1,23 @@
+---
+// Sets the theme before first paint: the saved choice, else the system setting. It runs again
+// after every client-side navigation, because the router copies the new page's
+// <html data-theme="dark"> over the current one. Switching lives in src/utils/themeToggle.js.
+---
+
+<script is:inline>
+  (() => {
+    const apply = () => {
+      let saved = null;
+      try {
+        saved = localStorage.getItem("theme");
+      } catch {}
+      const system = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      document.documentElement.setAttribute(
+        "data-theme",
+        saved === "light" || saved === "dark" ? saved : system,
+      );
+    };
+    apply();
+    document.addEventListener("astro:after-swap", apply);
+  })();
+</script>
