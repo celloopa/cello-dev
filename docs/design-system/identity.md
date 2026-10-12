@@ -13,7 +13,7 @@ below the window. The mark was already this scene: a sun rising behind a mountai
 1. Daybreak window and times of day: the light theme is Day, the dark theme is Dusk.
 2. Seasonal poster inks, as an art palette.
 3. A poster display face for titles and place names.
-3. The window frame as a shape primitive, and the location card as a component.
+2. The window frame as a shape primitive, and the location card as a component.
 
 ## Decisions
 
@@ -26,8 +26,12 @@ below the window. The mark was already this scene: a sun rising behind a mountai
   Q3/Q4. Scenes may print at dawn or night as art, but text only ever sits on Day or Dusk
   surfaces or on opaque plates, never on a scene. Contrast is checked against those surfaces
   only. Theme selection still follows the system setting (Q5).
+- **I3. Seasonal inks as art tokens, as drafted (2026-10-12).** An `art/season/<month>/{sky, far,
+  snow, forest, ground}` group at the values below, plus the dusk rule. These are art only: never
+  text, never action, and exempt from text contrast because text never sits on them (I2). More
+  months are added as places are added.
 
-## Seasonal inks (draft, from the photos)
+## Seasonal inks (I3, from the photos)
 
 Pixel colors from Cello's ten landscape photos, read without metadata, then flattened the way
 a WPA print simplifies a view (saturation ×1.35).
@@ -45,7 +49,6 @@ Dusk is one rule rather than a second palette: each ink is mixed 60% toward Midn
 
 ## Still open, one at a time
 
-1. The seasonal inks and the dusk rule.
-2. The display face (Big Shoulders Display recommended; League Gothic and Alfa Slab One shown).
-3. The window frame primitive and the location card (their tier).
-4. How much of this reaches today's site in the migration.
+1. The display face (Big Shoulders Display recommended; League Gothic and Alfa Slab One shown).
+2. The window frame primitive and the location card (their tier).
+3. How much of this reaches today's site in the migration.
