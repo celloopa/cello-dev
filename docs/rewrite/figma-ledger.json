@@ -1,20 +1,173 @@
 {
-  "file": "cello.dev — window scenes",
+  "file": "cello.dev \u2014 window scenes",
   "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
   "url": "https://www.figma.com/design/BHwjRNFmaMra4MUhsSwUXC",
   "team": "Harmonic Convergence",
   "created": "2026-10-12",
   "pages": {
-    "Process": { "id": "0:1", "root": "1:2" },
-    "Scenes": { "id": "1:48" }
+    "Process": {
+      "id": "0:1",
+      "root": "1:2"
+    },
+    "Scenes": {
+      "id": "1:48"
+    }
   },
   "scenes": {
     "mirror-lake": {
       "section": "1:49",
       "master": "1:53",
       "layersFrame": "1:54",
-      "layers": { "sky": "1:55", "far": "1:56", "mid": "1:57", "near": "1:58" },
+      "layers": {
+        "sky": "1:55",
+        "far": "1:56",
+        "mid": "1:57",
+        "near": "1:58"
+      },
       "exportTo": "docs/rewrite/prototypes/public/gen/layers/mirror-lake/figma/<name>.png"
+    },
+    "ecola": {
+      "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+      "page": "1:48",
+      "section": "6:2",
+      "master": "6:10",
+      "portrait": "6:21",
+      "layersFrame": "6:13",
+      "layers": {
+        "sky": "6:14",
+        "far": "6:15",
+        "mid": "6:16",
+        "near": "6:17"
+      },
+      "exportTo": "docs/rewrite/prototypes/public/gen/layers/ecola/figma/<name>.png",
+      "exportStatus": "native isolated PNG roundtrip verified; asset URL endpoint blocked"
+    },
+    "meadows": {
+      "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+      "page": "1:48",
+      "section": "15:26",
+      "root": "15:27",
+      "master": "15:31",
+      "portrait": "15:37",
+      "layersFrame": "15:32",
+      "layers": {
+        "sky": "15:33",
+        "far": "15:34",
+        "mid": "15:35",
+        "near": "15:36"
+      },
+      "exportStatus": "native isolated PNG roundtrip verified",
+      "exportTo": "docs/rewrite/prototypes/public/gen/layers/meadows/figma/<name>.png"
+    },
+    "ramona": {
+      "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+      "page": "1:48",
+      "section": "15:2",
+      "master": "15:10",
+      "portrait": "15:20",
+      "layersFrame": "15:13",
+      "layers": {
+        "sky": "15:14",
+        "mid": "15:15",
+        "near": "15:16"
+      },
+      "exportStatus": "native isolated PNG roundtrip verified",
+      "exportTo": "docs/rewrite/prototypes/public/gen/layers/ramona/figma/<name>.png"
+    },
+    "over-hood": {
+      "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+      "page": "1:48",
+      "section": "14:2",
+      "root": "14:3",
+      "master": "15:21",
+      "layersFrame": "15:22",
+      "layers": {
+        "sky": "15:23",
+        "terrain": "15:24",
+        "wing": "15:25"
+      },
+      "exportStatus": "native isolated PNG roundtrip verified",
+      "exportTo": "docs/rewrite/prototypes/public/gen/layers/over-hood/figma/<name>.png"
+    },
+    "sauvie": {
+      "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+      "page": "1:48",
+      "section": "19:2",
+      "root": "19:3",
+      "master": "19:10",
+      "portrait": "19:20",
+      "layersFrame": "19:13",
+      "layers": {
+        "sky": "19:14",
+        "far": "19:15",
+        "near": "19:16"
+      },
+      "exportStatus": "native isolated PNG roundtrip verified",
+      "exportTo": "docs/rewrite/prototypes/public/gen/layers/sauvie/figma/<name>.png"
+    },
+    "moss-falls": {
+      "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+      "page": "1:48",
+      "section": "20:2",
+      "root": "20:3",
+      "stack": "22:10",
+      "masterWide": "22:22",
+      "portrait": "22:26",
+      "layers": {
+        "sky": "22:23",
+        "mid": "22:24",
+        "near": "22:25"
+      },
+      "status": "Uploaded and native isolated PNG round trip verified",
+      "exportStatus": "native isolated PNG roundtrip verified",
+      "exportTo": "docs/rewrite/prototypes/public/gen/layers/moss-falls/figma/<name>.png"
+    },
+    "meadows-lift": {
+      "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+      "page": "1:48",
+      "section": "24:2",
+      "root": "24:3",
+      "master": "24:4",
+      "layersFrame": "24:5",
+      "layers": {
+        "sky": "24:6",
+        "terrain": "24:7",
+        "lift": "24:8"
+      },
+      "exportStatus": "native isolated PNG roundtrip verified",
+      "exportTo": "docs/rewrite/prototypes/public/gen/layers/meadows-lift/figma/<name>.png"
+    },
+    "bald-mountain": {
+      "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+      "page": "1:48",
+      "section": "22:2",
+      "root": "22:3",
+      "master": "22:27",
+      "portrait": "22:31",
+      "layersFrame": "22:18",
+      "layers": {
+        "sky": "22:28",
+        "far": "22:29",
+        "near": "22:30"
+      },
+      "exportStatus": "native isolated PNG roundtrip verified",
+      "exportTo": "docs/rewrite/prototypes/public/gen/layers/bald-mountain/figma/<name>.png"
+    },
+    "salmon-ridge": {
+      "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+      "page": "1:48",
+      "section": "24:13",
+      "root": "24:14",
+      "master": "24:15",
+      "portrait": "24:20",
+      "layersFrame": "24:16",
+      "layers": {
+        "sky": "24:17",
+        "far": "24:18",
+        "near": "24:19"
+      },
+      "exportStatus": "native isolated PNG roundtrip verified",
+      "exportTo": "docs/rewrite/prototypes/public/gen/layers/salmon-ridge/figma/<name>.png"
     }
   }
 }

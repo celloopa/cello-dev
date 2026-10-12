@@ -1,0 +1,41 @@
+{
+  "status": "candidate; visual review required",
+  "source_size": [
+    2172,
+    1448
+  ],
+  "web_size": [
+    1536,
+    1024
+  ],
+  "restack_max_difference": 0,
+  "restack_mean_difference": 0.0,
+  "motion_test_source_px": {
+    "far": 1,
+    "mid": 3,
+    "near": 5
+  },
+  "layers": [
+    {
+      "name": "sky",
+      "sha256": "acb63f49dc54a48dbe6aa90467a08f376358df64cfbd7631a60188eadc7360ff"
+    },
+    {
+      "name": "far",
+      "sha256": "51e673d6a9b40a345231140982ef56af2dbe3045efea61dcc8a82514565f71a9"
+    },
+    {
+      "name": "mid",
+      "sha256": "768ba4fbb9fa8735d375adf2691048aaace5c34c65ce9ebf6e3f95199a724e77"
+    },
+    {
+      "name": "near",
+      "sha256": "0efbd92718868a663d756579ce6296ceaf3abd0022b97316eb8434003fe7163b"
+    }
+  ],
+  "limitations": [
+    "Foreground meadow shadows overlap; nearest strip and mid ground are not fully disoccluded",
+    "Large tree motion requires additional hidden forest/ground cleanup",
+    "Exact restack validates coverage/color, not mask quality"
+  ]
+}

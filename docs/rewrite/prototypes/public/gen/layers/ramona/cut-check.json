@@ -1,0 +1,37 @@
+{
+  "source_size": [
+    2172,
+    1448
+  ],
+  "web_size": [
+    1536,
+    1024
+  ],
+  "restack_max_difference": 0,
+  "restack_mean_difference": 0.0,
+  "motion_test_source_px": {
+    "sky": 0,
+    "mid": 2,
+    "near": 4
+  },
+  "limitations": [
+    "Three planes: sky, forest framing, connected waterfall/basalt foreground. No independent water plane.",
+    "Source-color sky threshold and source-authored cascade bound are scene-specific.",
+    "Cascade mask includes dark forest at extreme bottom corners; large displacements are not safe.",
+    "Exact restack validates visible color and coverage only."
+  ],
+  "layers": [
+    {
+      "name": "sky",
+      "sha256": "f1ab00030bdb1f1aafeb5da65bb19710edcbc856f6208ce97c5f6a4968a3ea58"
+    },
+    {
+      "name": "mid",
+      "sha256": "3cd6de204b19eb615660ffe04691564ee567f860379ed40417e4cdf095098f87"
+    },
+    {
+      "name": "near",
+      "sha256": "8b71eaafa5820aa0e275f0c26b954da1ca6139d0a0e49860c9498966e2c3aa68"
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "id": "ecola",
+  "place": "Ecola",
+  "month": "July",
+  "status": "photo-treatment and cut candidate; aesthetic approval pending",
+  "sourceSize": [
+    2172,
+    1448
+  ],
+  "webSize": [
+    1536,
+    1024
+  ],
+  "master": "/gen/layers/ecola/master-wide.webp",
+  "portrait": "/gen/layers/ecola/master.webp",
+  "originalPortraitBounds": [
+    543,
+    0,
+    1629,
+    1448
+  ],
+  "expandedSides": "AI outpainted; original stylized center mechanically preserved",
+  "exportOrigin": "Figma native isolated PNG renders; contentsOnly true at source resolution; visible RGB within3/255 and alpha exact",
+  "figma": {
+    "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+    "page": "1:48",
+    "section": "6:2",
+    "master": "6:10",
+    "portrait": "6:21",
+    "layersFrame": "6:13",
+    "layers": {
+      "sky": "6:14",
+      "far": "6:15",
+      "mid": "6:16",
+      "near": "6:17"
+    }
+  },
+  "layers": [
+    {
+      "name": "sky",
+      "src": "/gen/layers/ecola/sky.webp",
+      "depth": 0.97,
+      "testedHorizontalSourcePx": 0
+    },
+    {
+      "name": "far",
+      "src": "/gen/layers/ecola/far.webp",
+      "depth": 0.85,
+      "testedHorizontalSourcePx": 1
+    },
+    {
+      "name": "mid",
+      "src": "/gen/layers/ecola/mid.webp",
+      "depth": 0.35,
+      "testedHorizontalSourcePx": 4
+    },
+    {
+      "name": "near",
+      "src": "/gen/layers/ecola/near.webp",
+      "depth": 0.05,
+      "testedHorizontalSourcePx": 6
+    }
+  ],
+  "checks": {
+    "restack": "cut-check.json",
+    "center": "expansion.json",
+    "motion": [
+      "motion-left.jpg",
+      "motion-right.jpg"
+    ]
+  },
+  "limitations": [
+    "Larger motion needs hidden forest cleanup",
+    "Exact restack proves coverage/color, not segmentation quality",
+    "AI treatment alters fine branches and haze; deterministic shader fallback remains open"
+  ]
+}

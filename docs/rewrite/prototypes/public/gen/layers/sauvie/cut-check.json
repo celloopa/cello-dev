@@ -1,0 +1,50 @@
+{
+  "status": "candidate; aesthetic selection pending",
+  "source_size": [
+    2172,
+    1448
+  ],
+  "web_size": [
+    1536,
+    1024
+  ],
+  "restack_max_difference": 0,
+  "restack_mean_difference": 0.0,
+  "motion_test_source_px": {
+    "sky": 0,
+    "far": 2,
+    "near": 5
+  },
+  "layers": [
+    {
+      "name": "sky",
+      "sha256": "7148a90a4874744062d68e7ebb1da84b92dc8768f30c31d0c025ddc3a21382e9",
+      "alpha_extrema": [
+        255,
+        255
+      ]
+    },
+    {
+      "name": "far",
+      "sha256": "66a7d619a500dc5b0eebba3a26a661f4347ace7c5ec6736960da92221a878da1",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    },
+    {
+      "name": "near",
+      "sha256": "bfba48a9c2f6772f0b1b36d7a0fc51e58802313b4218b4fa4f732e95118b6dbc",
+      "alpha_extrema": [
+        0,
+        255
+      ]
+    }
+  ],
+  "limitations": [
+    "AI mattes may drift at fine skyline and grass edges; inspect isolated and movement proofs",
+    "Sky/clouds are one plane; wagons/people stay attached to farmland",
+    "Large parallax needs additional hidden-fill review",
+    "Overscan/viewport clipping required to hide translated outer image edges"
+  ]
+}

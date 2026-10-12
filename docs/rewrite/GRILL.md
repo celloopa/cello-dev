@@ -375,3 +375,55 @@ keep reusing globally", then "once a few scenes work correctly, cutting pieces c
 skill." → The method is documented per run in `imagegen-prompts.md`; the global scene-cutting
 skill gets written once a few places cut cleanly, not before (Mirror Lake is the first).
 Cello on the Process page (2026-10-12): "layer cut is definitely the coolest".
+
+### Q18. Landscape storyboard and focus (2026-10-12, Codex continuation)
+
+Cello wants the landscape to fill most of the hero, with content inhabiting depth rather than
+literal paper cards. Scrapbook means how the layers enter, settle/bounce, and respond to input.
+Keep the dark menu bar. During reading, the scenery softens, dims, and quiets; the work wins.
+Cello approved the v2 storyboard's dim level and asked to remove location/sound indicators during
+focus (brief location introduction only when a place changes). Project/scene selection is the
+primary navigation group; About and other utilities are separate. Useful context remains in a
+small sticky bar; a reachable footer offers next work and personal/contact links.
+
+Storyboard source, corrections, audience, mobile motion theory, and pending decisions:
+`docs/rewrite/STORYBOARD.md`. Static desktop/mobile frames:
+`http://localhost:4610/storyboard.html`. Production site and original window prototype unchanged.
+
+### Q19. Photo treatment, then cutting, then composition (2026-10-12)
+
+Cello: "it basically uses image gen as a shader on my pictures keeping the composition and
+everything. then cutting, and then we will rearrage the composition on the three canvas to
+create depth". The image model should retain the source photo's viewpoint, composition, and
+aspect ratio; it is a style treatment, not a layout generator. Layout studies that redraw the
+landscape are superseded as the rendering method. Portrait scenes may be expanded beyond their
+edges (Cello authorized it), with the original center retained. If AI treatment cannot maintain
+consistency, evaluate a deterministic cutout/screenprint shader instead.
+
+Ecola is the next end-to-end run (`docs/rewrite/scene-runs/ecola.md`). Once one completes,
+update cutting/Figma skills and delegate individual remaining scenes. Claude's “rewrite cello
+dev” session receives the assets and reference storyboard. The reusable storyboard → build
+report waits until Claude acknowledges the handoff; no acknowledgment yet.
+
+### Q20. Final atmosphere pass (2026-10-12)
+
+Cello: "Also at the end sfx and microinteractiob ambient synth emulation? Super subtle but relaxing".
+Record this as a final polish pass after the visual/story flow is settled: explore quiet ambient
+synthesis, sparse soft interaction cues and gentle visual response. Reading quiets the sound
+further; sound remains opt-in with remembered preference and settings in utilities. Concrete
+sounds, synthesis method and listening levels remain to be prototyped and reviewed. Nothing
+audio-related is implemented yet. Detailed intent is in `STORYBOARD.md`.
+
+### Q21. Claude takes the storyboard handoff (2026-10-12)
+
+Claude acknowledged the storyboard (`STORYBOARD.md`, "Continuation and process-report gate") and
+asked four things before building. Cello's answers:
+- **People in scenes: make them tiny or remove.** Moss Falls (adult + dog), Bald Mountain (hiker)
+  and Salmon Ridge (seated adult) are re-treated before anything showing them is committed or
+  shown publicly. Sauvie's distant figures already fit the "subtle, behind-the-scenes" rule.
+- **Lean commit.** Docs, manifests, tools and the WebP layers are committed; per-scene QA JPEGs and
+  full-size storyboard PNGs stay local (git-ignored), with compressed JPG sheets committed.
+- **Plate rule: yes, revise it.** Text may sit over scene art (with the approved focus dim) and
+  the window frame is no longer the hero's framing. This revises identity I2/I5 and the
+  `bg-plate` rule in the migration; sent to the "Ship cello.dev" conductor to relay.
+- **Build: start hero + focus** in three.js from the real layers, Mirror Lake first, Ecola second.

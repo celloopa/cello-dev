@@ -1,0 +1,50 @@
+[
+  {
+    "name": "master-wide",
+    "node": "19:10",
+    "httpStatus": 200,
+    "response": {
+      "success": true,
+      "imageHash": "407e0a34295ab535286db0d134e5bd28c7f0aa33",
+      "sizeBytes": 5688965,
+      "contentType": "image/png",
+      "placedOnNodeId": "19:10"
+    }
+  },
+  {
+    "name": "sky",
+    "node": "19:14",
+    "httpStatus": 200,
+    "response": {
+      "success": true,
+      "imageHash": "84ff47fcda1f315d40173173abb1febb515e83e1",
+      "sizeBytes": 5160097,
+      "contentType": "image/png",
+      "placedOnNodeId": "19:14"
+    }
+  },
+  {
+    "name": "far",
+    "node": "19:15",
+    "httpStatus": 200,
+    "response": {
+      "success": true,
+      "imageHash": "d77edb8e7421d2d7773b92f115426ebb67838ec3",
+      "sizeBytes": 5857431,
+      "contentType": "image/png",
+      "placedOnNodeId": "19:15"
+    }
+  },
+  {
+    "name": "master",
+    "node": "19:20",
+    "httpStatus": 200,
+    "response": {
+      "success": true,
+      "imageHash": "fc30b70137dacb71de17af06c597c46db782048d",
+      "sizeBytes": 3316714,
+      "contentType": "image/png",
+      "placedOnNodeId": "19:20"
+    }
+  }
+]

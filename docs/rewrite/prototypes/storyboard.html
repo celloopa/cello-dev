@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cello · Mirror Lake arrival storyboard</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #e6e1d7; color: #173328; font-family: Arial, sans-serif; }
+    .sheet { max-width: 1500px; padding: 32px; margin: auto; }
+    .sheet > header { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 32px; }
+    h1 { margin: 8px 0; font-size: 30px; letter-spacing: -.04em; }
+    .label { font: 11px/1.5 ui-monospace, monospace; text-transform: uppercase; letter-spacing: .1em; }
+    .sheet p { max-width: 70ch; font-size: 14px; line-height: 1.6; }
+    .beat { padding: 28px 0 34px; border-top: 1px solid #17332840; }
+    .beat h2 { font-size: 22px; margin: 0 0 8px; letter-spacing: -.025em; }
+    .pair { display: grid; grid-template-columns: minmax(0, 1fr) 260px; gap: 28px; align-items: start; }
+    .viewport { width: 100%; overflow: hidden; position: relative; background: #001a11; }
+    .desktop { aspect-ratio: 1440/900; }
+    .phone { aspect-ratio: 390/844; }
+    iframe { position: absolute; inset: 0; border: 0; transform-origin: top left; }
+    .caption { margin: 0 0 8px; font: 11px/1.5 ui-monospace, monospace; }
+    .note { max-width: 90ch !important; }
+    .asset-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 28px; }
+    .asset-item img { width: 100%; aspect-ratio: 3/2; object-fit: cover; display: block; }
+    .asset-item > svg { width:100%; height:auto; aspect-ratio:3/2; display:block; }
+    .asset-item h3 { margin: 12px 0 6px; }
+    .asset-item a { color: inherit; }
+    .asset-item p { font-size: 12px; }
+    .scene-photo .layer { object-position: var(--scene-center, 50%) 50%; }
+    .scene { position: relative; width: 100vw; height: 100vh; overflow: hidden; background: #3973a1; color: #f3ede2; }
+    .art { position: absolute; inset: 0; overflow: hidden; }
+    .layer { position: absolute; inset: -2%; width: 104%; height: 104%; object-fit: cover; object-position: 50% 50%; }
+    .sky { z-index: 0; }
+    .far { z-index: 1; }
+    .mid { z-index: 3; }
+    .near { z-index: 5; }
+    .name { position: absolute; z-index: 2; left: 37%; top: 18%; margin: 0; font-size: 200px; line-height: .85; letter-spacing: -.075em; font-weight: 800; color: #f3ede2; }
+    .atmosphere { position: absolute; z-index: 6; inset: 0; background: linear-gradient(0deg, #001a11ee 0%, #001a117d 25%, transparent 55%); }
+    .nav { position: absolute; z-index: 10; inset: 0 0 auto; height: 68px; background: #001a11; padding: 0 48px; display: flex; align-items: center; justify-content: space-between; font: 13px ui-monospace, monospace; }
+    .nav strong { font-size: 19px; letter-spacing: -.06em; }
+    .nav span { margin-left: 30px; }
+    .nav-focus { display: none; }
+    .nav-project { display: none; font-size: 12px; color: #a8c3b2; }
+    .utility { margin-left: 38px; padding-left: 28px; border-left: 1px solid #f3ede240; }
+    .utility span { margin-left: 18px; }
+    .intro, .reading, .view-label { position: absolute; z-index: 8; }
+    .intro { left: 43%; right: 7%; bottom: 10%; }
+    .eyebrow { font: 12px/1.5 ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; color: #b5cdb7; }
+    .intro h2 { font-size: 54px; line-height: 1.05; margin: 14px 0 18px; font-weight: 500; letter-spacing: -.045em; }
+    .intro p { font-size: 19px; line-height: 1.5; margin: 0 0 26px; max-width: 45ch; }
+    .actions { display: flex; align-items: center; gap: 28px; font: 14px ui-monospace, monospace; }
+    .primary { border-bottom: 2px solid #77bc84; padding-bottom: 9px; }
+    .secondary { opacity: .8; }
+    .place { position: absolute; z-index: 8; left: 48px; bottom: 28px; font: 11px ui-monospace, monospace; }
+    .sound { position: absolute; z-index: 8; right: 48px; bottom: 28px; font: 11px ui-monospace, monospace; }
+    .reading { display: none; left: 20%; right: 20%; top: 22%; }
+    .reading h2 { font-size: 70px; letter-spacing: -.045em; line-height: 1; margin: 24px 0; font-weight: 500; }
+    .reading .lede { font-size: 27px; line-height: 1.35; max-width: 32ch; }
+    .reading .summary { font-size: 18px; line-height: 1.65; max-width: 52ch; }
+    .reading .meta { border-top: 1px solid #f3ede252; padding-top: 20px; margin-top: 30px; font: 12px/1.8 ui-monospace, monospace; }
+    .reading .actions { margin-top: 36px; }
+    .view-label { display: none; bottom: 10%; left: 48px; }
+    .view-label h2 { font-size: 38px; margin: 8px 0 24px; letter-spacing: -.035em; font-weight: 500; }
+    .state-reading .art { filter: blur(7px) brightness(.45) saturate(.65); transform: scale(1.025); }
+    .state-reading .name, .state-reading .intro { display: none; }
+    .state-reading .reading { display: block; }
+    .state-reading .atmosphere { background: #001a115c; }
+    .state-reading .place, .state-reading .sound, .state-reading .nav-main { display: none; }
+    .state-reading .nav-focus { display: block; }
+    .state-reading .nav-project { display: block; }
+    .state-view .intro, .state-view .name { display: none; }
+    .state-view .view-label { display: block; }
+    .state-view .atmosphere { background: linear-gradient(0deg, #001a119e, transparent 32%); }
+    .artifact-frame .reading { left: 8%; right: 8%; top: 16%; }
+    .artifact-frame .reading h2 { font-size: 44px; margin: 14px 0; }
+    .artifact-frame .reading .summary { font-size: 18px; max-width: 65ch; margin-bottom: 25px; }
+    .product-proof { margin: 0; }
+    .product-proof img { display: block; max-width: 100%; width: 840px; max-height: 52vh; object-fit: contain; object-position: left top; }
+    .product-proof figcaption { font: 11px/1.5 ui-monospace, monospace; margin-top: 15px; color: #b5cdb7; }
+    .kit-scene { height: 100%; width: 100%; }
+    .kit-scene > svg { height: 100%; width: 100%; display: block; }
+    .selector, .ending { display: none; position: absolute; z-index: 8; left: 6%; right: 6%; bottom: 12%; }
+    .selector h2, .ending h2 { font-size: 62px; letter-spacing: -.05em; font-weight: 500; margin: 12px 0; }
+    .selector p, .ending p { font-size: 18px; line-height: 1.5; }
+    .scene-index { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 40px; }
+    .stop { position: relative; border-top: 1px solid #f3ede265; padding-top: 14px; }
+    .stop::before { content: ''; position: absolute; top: -4px; left: 0; width: 7px; height: 7px; border-radius: 50%; background: #f3ede2; }
+    .stop.active { border-color: #7fd98a; }
+    .stop.active::before { background: #7fd98a; }
+    .stop .swatch { height: 104px; overflow: hidden; margin: 0 0 15px; }
+    .swatch img { width: 100%; height: 100%; object-fit: cover; }
+    .swatch svg { width: 100%; height: 100%; display: block; }
+    .stop .number { font: 11px ui-monospace, monospace; color: #b5cdb7; }
+    .stop h3 { font-size: 21px; letter-spacing: -.03em; margin: 8px 0; font-weight: 500; }
+    .stop .stop-place { font: 11px ui-monospace, monospace; opacity: .75; }
+    .selector-footer { display: flex; justify-content: space-between; margin-top: 26px; font: 12px ui-monospace, monospace; }
+    .state-selector .intro, .state-selector .name, .state-selector .place, .state-selector .sound { display: none; }
+    .state-selector .selector { display: block; }
+    .state-selector .atmosphere { background: linear-gradient(0deg, #001a11f5, #001a11bd 38%, #001a1120 75%, transparent); }
+    .state-ending .ending { display: block; }
+    .state-ending .reading, .state-ending .intro, .state-ending .name, .state-ending .place, .state-ending .sound { display: none; }
+    .state-ending .atmosphere { background: linear-gradient(0deg, #001a11f5, #001a11c7 55%, #001a1120); }
+    .next-story { padding: 26px 0; margin-top: 30px; border-top: 1px solid #f3ede25c; border-bottom: 1px solid #f3ede25c; display: flex; justify-content: space-between; align-items: center; }
+    .next-story strong { font-size: 36px; font-weight: 500; }
+    .footer-utilities { display: flex; gap: 38px; align-items: center; margin-top: 34px; font: 14px ui-monospace, monospace; }
+    .footer-utilities .contact { margin-right: auto; }
+    .footer-note { margin-top: 28px; font: 11px ui-monospace, monospace; color: #b5cdb7; }
+    @media (max-width: 700px) {
+      .sheet { padding: 20px; }
+      .sheet > header { display: block; }
+      .pair { grid-template-columns: 1fr; }
+      .pair > div:last-child { max-width: 300px; }
+      .nav { height: 58px; padding: 0 22px; font-size: 11px; }
+      .nav span { margin-left: 20px; }
+      .nav .desktop-link { display: none; }
+      .utility { margin-left: 24px; padding-left: 14px; }
+      .utility span { margin-left: 0; }
+      .nav-project { max-width: 95px; font-size: 10px; }
+      .layer { object-position: 51% 50%; }
+      .near { object-position: 9% 50%; }
+      .scene-coast .near { object-position: 51% 50%; }
+      .name { top: 26%; left: 15%; font-size: 112px; }
+      .intro { left: 26px; right: 26px; bottom: 105px; }
+      .intro h2 { font-size: 39px; margin: 12px 0 16px; }
+      .intro p { font-size: 16px; line-height: 1.5; margin-bottom: 24px; }
+      .eyebrow { font-size: 10px; }
+      .actions { font-size: 12px; gap: 24px; }
+      .place { left: 26px; bottom: 24px; font-size: 10px; }
+      .sound { right: 26px; bottom: 24px; font-size: 10px; }
+      .atmosphere { background: linear-gradient(0deg, #001a11f5 0%, #001a11c2 28%, #001a113d 50%, transparent 68%); }
+      .reading { left: 26px; right: 26px; top: 145px; }
+      .reading h2 { font-size: 49px; margin: 24px 0; }
+      .reading .lede { font-size: 24px; }
+      .reading .summary { font-size: 16px; line-height: 1.6; }
+      .reading .meta { font-size: 11px; margin-top: 24px; }
+      .reading .actions { margin-top: 28px; }
+      .state-reading .art { filter: blur(5px) brightness(.36) saturate(.6); }
+      .artifact-frame .reading { left: 26px; right: 26px; top: 125px; }
+      .artifact-frame .reading h2 { font-size: 36px; }
+      .artifact-frame .reading .summary { font-size: 17px; line-height: 1.6; }
+      .product-proof img { width: 100%; max-height: none; }
+      .view-label { left: 26px; bottom: 100px; }
+      .view-label h2 { font-size: 32px; }
+      .selector, .ending { left: 26px; right: 26px; bottom: 70px; }
+      .selector h2, .ending h2 { font-size: 42px; }
+      .selector p, .ending p { font-size: 16px; }
+      .scene-index { display: flex; flex-direction: column; gap: 0; margin-top: 25px; }
+      .stop { padding: 14px 0 14px 72px; min-height: 88px; }
+      .stop .swatch { width: 54px; height: 54px; position: absolute; left: 0; top: 16px; border-radius: 50%; }
+      .stop::before { display: none; }
+      .stop .number { display: none; }
+      .stop h3 { font-size: 20px; margin: 6px 0 7px; }
+      .stop .stop-place { font-size: 10px; }
+      .selector-footer { flex-direction: column; gap: 16px; margin-top: 16px; font-size: 11px; }
+      .next-story { margin-top: 26px; padding: 22px 0; }
+      .next-story strong { font-size: 26px; }
+      .footer-utilities { flex-wrap: wrap; gap: 24px; font-size: 12px; }
+      .footer-utilities .contact { width: 100%; }
+      .footer-note { line-height: 1.6; }
+    }
+  </style>
+</head>
+<body>
+<div id="storyboard-root"></div>
+<script type="module">
+  import { PLACES } from './scenes/places.js';
+  import { svgFor, skyFor } from './scenes/svg.js';
+  // Static storyboard frames, not a site implementation or animation prototype.
+  const params = new URLSearchParams(location.search);
+  const state = ['arrival', 'view', 'reading', 'selector', 'selector-coast', 'case-study', 'artifact', 'ending'].includes(params.get('state')) ? params.get('state') : 'arrival';
+  const states = [
+    ['arrival', '01 · Arrive in the landscape', 'Who Cello is and where to see the work are immediately visible. Decorative name sits behind the forest; all useful copy stays in front.', 'Motion proposal: sky first, mountain settles, forest follows, fireweed makes the smallest final bounce. Text never waits for the sequence.'],
+    ['view', '02 · Take in the view', 'A deliberate pause: the introduction yields to the actual art. Work stays available in the dark top bar, with a clear return to the introduction.', 'Desktop: unequal layer travel with a soft spring on release. Mobile: a short settle or restrained scroll depth; no tilt permission or hidden hover gesture.'],
+    ['reading', '03 · Bring the work into focus', 'Cello approved this dim level. Location and sound indicators now disappear; navigation reduces to project context and a route back. Asheville is an example, not an approved place pairing.', 'Focus proposal: soften and dim art, reduce parallax to almost still. Sharp type remains fixed. A changed location can appear briefly at the scene change, then clear.'],
+    ['selector', '04 · Choose a project through its scene', 'A scene index: each named project has a landscape swatch and a place. Work is the primary group; About, Log, Resume, and other utilities sit separately.', 'Motion proposal: desktop hover or keyboard focus can preview a scene, click opens its story. On mobile, tap a named project to open directly; do not require swiping through a carousel.'],
+    ['selector-coast', '05 · The choice changes the view', 'Ghosted is highlighted and the lake gives way to the coast. Ecola now uses four cuts from the photo treatment candidate, also placed in Figma. Its expanded sides are invented; the original portrait center is retained. All project/place pairings here are placeholders.', 'Transition proposal: near foliage briefly occludes the change, the new horizon holds position, then the layers settle. No location teleport is claimed; this is an authored association, not a geographic map.'],
+    ['case-study', '06 · The chosen story takes the foreground', 'The coast now recedes behind Ghosted. The persistent bar gives project context and All work; location, sound, and utility links stay out of the reading area.', 'The named project is the navigation anchor. Keep the selected title continuous into the story, soften the scenery, and let the first real product artifact come into focus next.'],
+    ['artifact', '07 · The product becomes the view', 'A real Ghosted artifact replaces scenery as the main visual. The coast stays quiet at the edges; the story explains the product decision in plain language. This screenshot uses existing demo data, not a new invented result.', 'Scroll carries the reader into the actual case study. Keep the artifact stable and sharp; do not pan it with the landscape. On phones, preserve its proportions and provide an enlarged view in the build.'],
+    ['ending', '08 · A reachable ending, then another invitation', 'The case study ends with a next-story choice and a separate footer for contact and personal links. The landscape can regain clarity as reading ends.', 'Footer proposal: ordinary document flow, never an infinite scroll trap. Next project changes the landscape; About, Contact, Log, and Resume remain grouped as utilities.']
+  ];
+  const projects = [
+    { title: 'Asheville Dispensary', place: 'Mirror Lake', id: 'mirror-lake' },
+    { title: 'VegAvengers', place: 'Mt Hood Meadows', id: 'meadows' },
+    { title: 'Ghosted', place: 'Ecola', id: 'ecola' },
+    { title: 'Daybreak', place: 'Ramona Falls', id: 'ramona' },
+  ];
+  const coast = ['selector-coast', 'case-study', 'artifact', 'ending'].includes(state);
+  const sceneLibrary = await fetch('/gen/scene-library.json').then(r=>r.json());
+  const scenicId = params.get('scene') || (coast ? 'ecola' : 'mirror-lake');
+  const scenic = sceneLibrary.scenes.find(s=>s.id===scenicId);
+  const active = coast ? 2 : 0;
+  const stateClasses = ['reading', 'case-study', 'artifact'].includes(state) ? 'state-reading' : state.startsWith('selector') ? 'state-selector' : `state-${state}`;
+  if (state === 'artifact') document.documentElement.classList.add('artifact-frame');
+  const swatch = p => {
+    const scene = sceneLibrary.scenes.find(s=>s.id===p.id);
+    return scene?.master ? `<img src="${scene.master}" alt="">` : svgFor(PLACES.find(place=>place.id===p.id),false);
+  };
+  if (params.has('frame')) {
+    document.getElementById('storyboard-root').innerHTML = `<main class="scene ${stateClasses} ${coast ? 'scene-coast' : ''}" aria-label="${state} storyboard frame">
+      <div class="art" aria-hidden="true">
+        <img class="layer sky" src="/gen/layers/mirror-lake/sky.webp" alt="">
+        <img class="layer far" src="/gen/layers/mirror-lake/far.webp" alt="">
+        <p class="name">Cello</p>
+        <img class="layer mid" src="/gen/layers/mirror-lake/mid.webp" alt="">
+        <img class="layer near" src="/gen/layers/mirror-lake/near.webp" alt="">
+      </div>
+      <div class="atmosphere" aria-hidden="true"></div>
+      <div class="nav"><strong>cello.dev</strong><div class="nav-project">${coast ? 'Ghosted' : 'Asheville Dispensary'}</div><div class="nav-main"><span>Work</span><span class="utility"><span class="desktop-link">About</span><span class="desktop-link">Resume</span><span>More ↗</span></span></div><div class="nav-focus">All work ↗</div></div>
+      <div class="intro"><div class="eyebrow">Product designer · Technical prototyping</div><h2>Thoughtful systems.<br>Ideas you can use.</h2><p>I’m Cello. I design experiences and build prototypes that bring design and engineering together.</p><div class="actions"><span class="primary">Explore the work ↘</span><span class="secondary">Take in the view</span></div></div>
+      <div class="view-label"><div class="eyebrow">A moment outside</div><h2>Mirror Lake, Oregon</h2><div class="actions"><span class="primary">Back to Cello ↗</span><span class="secondary">Explore the work</span></div></div>
+      <article class="reading"><div class="eyebrow">Selected work · ${coast ? '03' : '01'} / 04</div><h2>${coast ? 'Ghosted' : 'Asheville<br>Dispensary'}</h2><p class="lede">${coast ? 'Making resume tailoring easier to review.' : 'Making a growing brand easier to run.'}</p><p class="summary">${coast ? 'An AI resume tool, shaped around the decisions people need to see and control.' : 'A look at the product decisions, systems, and prototypes behind the work.'}</p><div class="meta">ROLE · Product design + design engineering<br>STORY · Problem → decisions → what changed</div><div class="actions"><span class="primary">Read the story ↓</span><span class="secondary">Enjoy the view</span></div></article>
+      <section class="selector"><div class="eyebrow">Selected work · Places to begin</div><h2>Choose a story.</h2><p>Four projects. Different problems, different views.</p><div class="scene-index">${projects.map((p, i) => `<div class="stop ${i === active ? 'active' : ''}"><div class="swatch">${swatch(p)}</div><div class="number">0${i + 1} ${i === active ? '· In view' : ''}</div><h3>${p.title} ↗</h3><div class="stop-place">${p.place}</div></div>`).join('')}</div><div class="selector-footer"><span>View: ${projects[active].place}</span><span>Read ${projects[active].title} ↗</span></div></section>
+      <footer class="ending"><div class="eyebrow">End of the case study</div><h2>Stay a little longer.</h2><p>Another project, another view.</p><div class="next-story"><div><div class="eyebrow">Up next · Personal project</div><strong>Daybreak ↗</strong></div><span>All work ↗</span></div><div class="footer-utilities"><span class="contact">Let’s talk ↗</span><span>About</span><span>Log</span><span>Resume ↗</span></div><div class="footer-note">cello.dev · Sound & motion settings</div></footer>
+      <div class="place">Mirror Lake · September</div><div class="sound">Sound off</div>
+    </main>`;
+    if (state === 'artifact') {
+      document.querySelector('.reading').innerHTML = `<div class="eyebrow">Ghosted · A product decision</div><h2>See the change.<br>Keep the choice.</h2><p class="summary">Every AI edit arrives highlighted on the real resume. You can keep it, reject it, or edit it yourself.</p><figure class="product-proof"><img src="/storyboard-artifacts/ghosted-proposal.webp" alt="Ghosted resume workspace showing an AI proposal in yellow with Keep and Reject controls"><figcaption>Existing case-study artifact · Demo resume and fictional job<br>Yellow means a proposal awaiting your decision.</figcaption></figure>`;
+    }
+    if (scenic?.layers.length && scenicId !== 'mirror-lake') {
+      const main=document.querySelector('.scene'); main.classList.add('scene-photo'); main.style.setProperty('--scene-center',scenic.mobileCenter+'%');
+      document.querySelector('.art').innerHTML=scenic.layers.map((l,i)=>`<img class="layer" style="z-index:${i}" src="${l.src}" alt="">`).join('');
+    }
+    if (scenic) {
+      document.querySelector('.place').textContent=scenic.place+' · '+scenic.month;
+      document.querySelector('.view-label h2').textContent=scenic.place;
+    }
+  } else {
+    document.getElementById('storyboard-root').innerHTML = `<main class="sheet"><header><div><div class="label">Storyboard / real layers / 2026-10-12</div><h1>A landscape that makes room for the work.</h1><p>Real registered cuts are replacing the shape storyboards as each photo treatment arrives. The cutting table below shows available scenes and their limits. Static states for discussion; motion, copy, typography, and place pairings remain proposals.</p></div><div class="label">Desktop + mobile<br>Arrival → choice → story → ending · v3</div></header>${states.map(([id, title, description, motion]) => `<section class="beat" id="${id}"><h2>${title}</h2><p>${description}</p><div class="pair"><div><p class="caption">DESKTOP · 1440 × 900</p><div class="viewport desktop"><iframe title="${title} desktop" src="?frame=desktop&state=${id}" width="1440" height="900"></iframe></div></div><div><p class="caption">MOBILE · 390 × 844</p><div class="viewport phone"><iframe title="${title} mobile" src="?frame=mobile&state=${id}" width="390" height="844"></iframe></div></div></div><p class="note">${motion}</p></section>`).join('')}<section class="beat" id="scene-library"><h2>Scene cutting table · candidates for review</h2><p>Same photos, treated and cut on a shared grid. Preview links show still compositions; motion readiness varies by scene. Project/place pairings above remain illustrative.</p><div class="asset-grid">${sceneLibrary.scenes.map(s=>`<article class="asset-item">${s.master?`<img src="${s.master}" alt="${s.place} photo treatment candidate">`:svgFor(PLACES.find(p=>p.id===s.id),false)}<h3>${s.place}</h3><p>${s.status}</p><p>${s.layers.length?s.layers.length+' registered planes':'Shape storyboard only'}${s.layers.length?` · <a href="?frame=desktop&state=view&scene=${s.id}">Preview scene</a>`:''}</p><p>${s.motionReadiness || ''}</p></article>`).join('')}</div></section><p class="note">Method: sky → mountain → decorative name → forest/lake → fireweed → atmosphere → useful copy. Mobile keeps the shared sky/mountain/forest projection and reframes only the transparent fireweed layer. Reading uses blur + dimming; it does not invent a new scene. Ecola keeps all four planes on a shared source grid, including on mobile. Ecola uses full-resolution isolated PNG renders returned from Figma; visible color and alpha match its source cuts exactly. Sound is an opt-in proposal, not implemented audio. Display font is a temporary system sans, not a claim to render National Park. Swatch rail is an index, not a map or a claim these projects were made at those places.</p></main>`;
+    const observer = new ResizeObserver(entries => {
+      for (const { target } of entries) {
+        const frame = target.querySelector('iframe');
+        frame.style.transform = `scale(${target.clientWidth / Number(frame.width)})`;
+      }
+    });
+    document.querySelectorAll('.viewport').forEach(el => observer.observe(el));
+  }
+</script>
+</body>
+</html>

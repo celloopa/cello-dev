@@ -1,0 +1,54 @@
+[
+  {
+    "name": "sky",
+    "target": "15:33",
+    "status": "uploaded",
+    "sha256": "acb63f49dc54a48dbe6aa90467a08f376358df64cfbd7631a60188eadc7360ff",
+    "response": {
+      "success": true,
+      "imageHash": "d3d7175092be431eb30ac45b7b223d9fc7a369e0",
+      "sizeBytes": 4552520,
+      "contentType": "image/png",
+      "placedOnNodeId": "15:33"
+    }
+  },
+  {
+    "name": "far",
+    "target": "15:34",
+    "status": "uploaded",
+    "sha256": "51e673d6a9b40a345231140982ef56af2dbe3045efea61dcc8a82514565f71a9",
+    "response": {
+      "success": true,
+      "imageHash": "900990f77c49873792c0c09420a6504aeb8b72c7",
+      "sizeBytes": 5109450,
+      "contentType": "image/png",
+      "placedOnNodeId": "15:34"
+    }
+  },
+  {
+    "name": "mid",
+    "target": "15:35",
+    "status": "uploaded",
+    "sha256": "768ba4fbb9fa8735d375adf2691048aaace5c34c65ce9ebf6e3f95199a724e77",
+    "response": {
+      "success": true,
+      "imageHash": "9672e979080478c0e374d9ce583b864ba98b5c25",
+      "sizeBytes": 6128120,
+      "contentType": "image/png",
+      "placedOnNodeId": "15:35"
+    }
+  },
+  {
+    "name": "master",
+    "target": "15:37",
+    "status": "uploaded",
+    "sha256": "a3cd0494051e6b099a15e50ad07a995b889dcacab1d913a9e3f76045d728b742",
+    "response": {
+      "success": true,
+      "imageHash": "853f9498178a24e69b7c13f6a360dfe08b6e27bd",
+      "sizeBytes": 3149502,
+      "contentType": "image/png",
+      "placedOnNodeId": "15:37"
+    }
+  }
+]

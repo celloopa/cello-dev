@@ -1,0 +1,31 @@
+{
+  "status": "candidate; aesthetic approval pending",
+  "source_size": [
+    1448,
+    1086
+  ],
+  "web_size": [
+    1440,
+    1080
+  ],
+  "restack_max_difference": 0,
+  "restack_mean_difference": 0.0,
+  "motion_test_source_px": {
+    "terrain": 1,
+    "lift": 2
+  },
+  "layers": [
+    {
+      "name": "sky",
+      "sha256": "c3a8d52d32662dee9219e39fdd5a4dc0f94a8f6f27779f10644f924eaee12bd9"
+    },
+    {
+      "name": "terrain",
+      "sha256": "5940e93467fba75a55e396d3e3fa38e0f98fb73bb8dea8cf1a8b0cac4e5bdd97"
+    },
+    {
+      "name": "lift",
+      "sha256": "6b5d7c21f88a8076df4e9fd68a9d4d34e42c82f4f495f7199a1d113d52f3b025"
+    }
+  ]
+}

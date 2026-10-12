@@ -1,0 +1,36 @@
+{
+  "source_size": [
+    2172,
+    1448
+  ],
+  "web_size": [
+    1536,
+    1024
+  ],
+  "restack_max_difference": 0,
+  "restack_mean_difference": 0.0,
+  "motion_test_source_px": {
+    "terrain": 1,
+    "wing": 5
+  },
+  "mask_method": "AI wing matte keyed to binary; atmosphere/terrain shared plane with blue-sky transition upper edge",
+  "layers": [
+    {
+      "name": "sky",
+      "sha256": "db6bf265e0e12e6ad87be5b88077555215e2e6deafdb1f1a6d01ec8be37af297"
+    },
+    {
+      "name": "terrain",
+      "sha256": "e43cc2e7a17843e6d28119166c7013bc98b554b048b0f472d1b7969bf2c1d3e0"
+    },
+    {
+      "name": "wing",
+      "sha256": "18f4eb9d6b91ed3fc5d491241678de1c114b009a60143a46d6c39eb65c3ee6b9"
+    }
+  ],
+  "limitations": [
+    "wing edge matte is a candidate; large displacement needs edge cleanup and deeper hidden fills",
+    "terrain, mountain and cloud bank remain one coherent plane",
+    "restack equality does not prove segmentation quality"
+  ]
+}

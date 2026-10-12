@@ -1,0 +1,84 @@
+{
+  "id": "over-hood",
+  "place": "Over Hood",
+  "month": "September",
+  "status": "photo-treatment and cut candidate; aesthetic approval pending; wing-edge motion cleanup needed",
+  "sourceSize": [
+    2172,
+    1448
+  ],
+  "webSize": [
+    1536,
+    1024
+  ],
+  "master": "/gen/layers/over-hood/master-wide.webp",
+  "portrait": "/gen/layers/over-hood/master.webp",
+  "originalPortraitBounds": [
+    543,
+    0,
+    1629,
+    1448
+  ],
+  "expandedSides": "AI outpainted; original stylized portrait center mechanically preserved with zero difference",
+  "exportOrigin": "Figma native isolated PNG renders at full source resolution; alpha exact and visible RGB checked",
+  "figma": {
+    "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+    "page": "1:48",
+    "section": "14:2",
+    "root": "14:3",
+    "master": "15:21",
+    "layersFrame": "15:22",
+    "layers": {
+      "sky": "15:23",
+      "terrain": "15:24",
+      "wing": "15:25"
+    }
+  },
+  "layers": [
+    {
+      "name": "sky",
+      "src": "/gen/layers/over-hood/sky.webp",
+      "depth": 0.97,
+      "testedHorizontalSourcePx": 0
+    },
+    {
+      "name": "terrain",
+      "src": "/gen/layers/over-hood/terrain.webp",
+      "depth": 0.8,
+      "testedHorizontalSourcePx": 1
+    },
+    {
+      "name": "wing",
+      "src": "/gen/layers/over-hood/wing.webp",
+      "depth": 0.05,
+      "testedHorizontalSourcePx": 5,
+      "recommendedHorizontalSourcePx": 0
+    }
+  ],
+  "checks": {
+    "restack": "cut-check.json",
+    "center": "expansion.json",
+    "motion": [
+      "motion-left.jpg",
+      "motion-right.jpg"
+    ],
+    "isolated": [
+      "terrain-isolated.jpg",
+      "wing-isolated.jpg"
+    ],
+    "crops": [
+      "desktop-crop.jpg",
+      "mobile-crop.jpg"
+    ],
+    "figmaExport": "figma-export-check.json",
+    "figmaRoundtrip": "figma-roundtrip.json"
+  },
+  "limitations": [
+    "Thin original wing edge remains in background where model matte is inset; ghost visible at tested 5 px. Use still composition until refined.",
+    "Atmosphere, Mount Hood, cloud bank and ridges share one terrain plane; upper boundary passes through blue sky above cloud band.",
+    "Outpaint center joins have slight tone/grain seams, particularly at left boundary. Original center remains unmodified.",
+    "Photo treatment changes haze into cream cloud bands, simplifies forest and strengthens sunlight contrast.",
+    "Exact restack proves coverage/color, not segmentation quality.",
+    "Portrait mobile crop is at 53% horizontal center. No tilt/scroll runtime implemented."
+  ]
+}

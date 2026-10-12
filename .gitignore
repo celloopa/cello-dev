@@ -41,3 +41,6 @@ generated/
 docs/rewrite/private/
 # generated image masters (PNG) stay local; web copies (.webp) are committed
 docs/rewrite/prototypes/public/gen/**/*.png
+# rewrite exploration: per-scene QA crops and full-size storyboard PNGs stay local (compressed JPG sheets are committed)
+docs/rewrite/prototypes/public/gen/layers/**/*.jpg
+docs/rewrite/storyboards/**/*.png

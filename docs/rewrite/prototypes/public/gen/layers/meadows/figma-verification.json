@@ -1,0 +1,63 @@
+{
+  "root": {
+    "id": "15:27",
+    "width": 5574,
+    "height": 1631
+  },
+  "nodes": [
+    {
+      "id": "15:31",
+      "name": "meadows · master-wide · invented side continuation",
+      "width": 2172,
+      "height": 1448,
+      "x": 0,
+      "y": 0,
+      "imageHash": "744e5d8b8a86c9105f29a556dbb756ec1b689ad9"
+    },
+    {
+      "id": "15:33",
+      "name": "meadows · sky",
+      "width": 2172,
+      "height": 1448,
+      "x": 0,
+      "y": 0,
+      "imageHash": "d3d7175092be431eb30ac45b7b223d9fc7a369e0"
+    },
+    {
+      "id": "15:34",
+      "name": "meadows · far",
+      "width": 2172,
+      "height": 1448,
+      "x": 0,
+      "y": 0,
+      "imageHash": "900990f77c49873792c0c09420a6504aeb8b72c7"
+    },
+    {
+      "id": "15:35",
+      "name": "meadows · mid",
+      "width": 2172,
+      "height": 1448,
+      "x": 0,
+      "y": 0,
+      "imageHash": "9672e979080478c0e374d9ce583b864ba98b5c25"
+    },
+    {
+      "id": "15:36",
+      "name": "meadows · near",
+      "width": 2172,
+      "height": 1448,
+      "x": 0,
+      "y": 0,
+      "imageHash": "e494c60dec1a0433149de8581b99ce5f41db1154"
+    },
+    {
+      "id": "15:37",
+      "name": "meadows · original treated portrait · no expansion",
+      "width": 1086,
+      "height": 1448,
+      "x": 4424,
+      "y": 0,
+      "imageHash": "853f9498178a24e69b7c13f6a360dfe08b6e27bd"
+    }
+  ]
+}

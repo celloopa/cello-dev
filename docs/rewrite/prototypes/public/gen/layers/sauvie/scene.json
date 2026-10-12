@@ -1,0 +1,89 @@
+{
+  "id": "sauvie",
+  "place": "Sauvie Island",
+  "month": "October",
+  "status": "photo-treatment and cut candidate; aesthetic approval pending",
+  "sourceSize": [
+    2172,
+    1448
+  ],
+  "webSize": [
+    1536,
+    1024
+  ],
+  "master": "/gen/layers/sauvie/master-wide.webp",
+  "portrait": "/gen/layers/sauvie/master.webp",
+  "originalPortraitBounds": [
+    543,
+    0,
+    1629,
+    1448
+  ],
+  "expandedSides": "AI outpainted; treated portrait center restored with zero pixel difference",
+  "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
+  "figma": {
+    "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+    "page": "1:48",
+    "section": "19:2",
+    "root": "19:3",
+    "master": "19:10",
+    "portrait": "19:20",
+    "layersFrame": "19:13",
+    "layers": {
+      "sky": "19:14",
+      "far": "19:15",
+      "near": "19:16"
+    }
+  },
+  "layers": [
+    {
+      "name": "sky",
+      "src": "/gen/layers/sauvie/sky.webp",
+      "depth": 0.97,
+      "testedHorizontalSourcePx": 0
+    },
+    {
+      "name": "far",
+      "src": "/gen/layers/sauvie/far.webp",
+      "depth": 0.65,
+      "testedHorizontalSourcePx": 2
+    },
+    {
+      "name": "near",
+      "src": "/gen/layers/sauvie/near.webp",
+      "depth": 0.05,
+      "testedHorizontalSourcePx": 5
+    }
+  ],
+  "mobileCropCenter": [
+    0.53,
+    0.5
+  ],
+  "checks": {
+    "restack": "cut-check.json",
+    "center": "expansion.json",
+    "isolated": [
+      "isolated-sky.jpg",
+      "isolated-far.jpg",
+      "isolated-near.jpg"
+    ],
+    "motion": [
+      "motion-left.jpg",
+      "motion-right.jpg",
+      "post-motion-detail.jpg"
+    ],
+    "crops": [
+      "crop-desktop.jpg",
+      "crop-mobile.jpg"
+    ],
+    "figmaUpload": "figma-upload.json",
+    "figmaRoundtrip": "figma-roundtrip.json"
+  },
+  "limitations": [
+    "Storm clouds remain one sky plane; hills/field/wagons/anonymous people remain one land plane",
+    "AI treatment simplifies cloud contours and fine ground details; it is not a deterministic shader",
+    "Only \u00b12 px far and \u00b15 px near source-pixel movement inspected; larger travel unproven",
+    "Outer translated image edges require overscan/viewport clipping",
+    "Scene/project association not selected"
+  ]
+}

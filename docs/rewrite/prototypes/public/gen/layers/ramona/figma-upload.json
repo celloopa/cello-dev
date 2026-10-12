@@ -1,0 +1,37 @@
+[
+  {
+    "file": "master-wide.png",
+    "nodeId": "15:10",
+    "status": 200,
+    "sha256": "6adb466b4ba1505c8eb06b017b7df2c0b49c1e660866c750a8de8b199599781c",
+    "response": "{\"success\":true,\"imageHash\":\"59d2f9ba4c935b7f4e2e4c48743c963488a5417c\",\"sizeBytes\":5856383,\"contentType\":\"image/png\",\"placedOnNodeId\":\"15:10\"}"
+  },
+  {
+    "file": "sky.png",
+    "nodeId": "15:14",
+    "status": 200,
+    "sha256": "5342e67f087e50679bbb9dcb4d533af05a503524bc61f41712629a2144ec0ef7",
+    "response": "{\"success\":true,\"imageHash\":\"a5def4011f9862ac3babfbbaf5d8e21d1e721978\",\"sizeBytes\":5204752,\"contentType\":\"image/png\",\"placedOnNodeId\":\"15:14\"}"
+  },
+  {
+    "file": "mid.png",
+    "nodeId": "15:15",
+    "status": 200,
+    "sha256": "1abd94065e4be0fb8f83a3efba22172c25f6ee54c7554869ca76f9a0c985b003",
+    "response": "{\"success\":true,\"imageHash\":\"317507c4c5e9523ef1e7cc66c95cf10b998b9112\",\"sizeBytes\":6344557,\"contentType\":\"image/png\",\"placedOnNodeId\":\"15:15\"}"
+  },
+  {
+    "file": "near.png",
+    "nodeId": "15:16",
+    "status": 200,
+    "sha256": "8b71eaafa5820aa0e275f0c26b954da1ca6139d0a0e49860c9498966e2c3aa68",
+    "response": "{\"success\":true,\"imageHash\":\"3de2f0465f52f50605fca2113fd2d88c229e91da\",\"sizeBytes\":6419997,\"contentType\":\"image/png\",\"placedOnNodeId\":\"15:16\"}"
+  },
+  {
+    "file": "master.png",
+    "nodeId": "15:20",
+    "status": 200,
+    "sha256": "8cf73cccbb7a7333cee303aaf7eaa464e4f5f92570f8eb0ac261f0132a644cc9",
+    "response": "{\"success\":true,\"imageHash\":\"b32a51f8302a88b3777cbe41bc381a8cbe662830\",\"sizeBytes\":3379150,\"contentType\":\"image/png\",\"placedOnNodeId\":\"15:20\"}"
+  }
+]

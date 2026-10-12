@@ -1,0 +1,62 @@
+[
+  {
+    "file": "master-wide.png",
+    "result": {
+      "success": true,
+      "imageHash": "702fa2eb3e1f9cff0440c62e392be0984d198279",
+      "sizeBytes": 6053687,
+      "contentType": "image/png",
+      "placedOnNodeId": "6:10"
+    }
+  },
+  {
+    "file": "sky.png",
+    "result": {
+      "success": true,
+      "imageHash": "ad474696177129d62f52112b6de9c505824aeb9b",
+      "sizeBytes": 5097507,
+      "contentType": "image/png",
+      "placedOnNodeId": "6:14"
+    }
+  },
+  {
+    "file": "far.png",
+    "result": {
+      "success": true,
+      "imageHash": "7abe41fad900d84927d15da21188a39598242ac3",
+      "sizeBytes": 4764829,
+      "contentType": "image/png",
+      "placedOnNodeId": "6:15"
+    }
+  },
+  {
+    "file": "mid.png",
+    "result": {
+      "success": true,
+      "imageHash": "5f7bb7217885d3b95c7684553f25ef28c9685569",
+      "sizeBytes": 6817833,
+      "contentType": "image/png",
+      "placedOnNodeId": "6:16"
+    }
+  },
+  {
+    "file": "near.png",
+    "result": {
+      "success": true,
+      "imageHash": "f123e0f03ec225afd98e3ae0c06fba894bcbda36",
+      "sizeBytes": 6758224,
+      "contentType": "image/png",
+      "placedOnNodeId": "6:17"
+    }
+  },
+  {
+    "file": "master.png",
+    "result": {
+      "success": true,
+      "imageHash": "3ce0c055f18a3feec5af0cc937f89e072e9426ca",
+      "sizeBytes": 3316173,
+      "contentType": "image/png",
+      "placedOnNodeId": "6:21"
+    }
+  }
+]

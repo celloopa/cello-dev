@@ -113,7 +113,41 @@ values), and nobody could see the drift, because the site still looked fine in C
     trip is lossless on visible pixels (max 3/255). Small snags: Figma's uploader rejects WebP
     without an explicit content type, and its renderer showed uploaded WebP blank, so JPEG/PNG go in.
 
-`[more beats: the layers in the three.js window, the next places, the scene-cutting skill]`
+16. **The landscape becomes the stage.** In the Codex continuation, Cello moved away from
+    paper cards toward full-screen scenery and content in depth. Ten generated layout studies
+    explored cards, a name on the horizon, focus, and a project index. They changed the art;
+    Cello corrected the method: compose the actual cut layers instead. Static paired desktop
+    and mobile storyboards now use Mirror Lake's existing layers and the kit for uncut places.
+    He approved the reading dim level, then removed location and sound clutter during focus.
+17. **Photo first, composition later.** Cello clarified “image gen as a shader”: keep the
+    actual photo composition, stylize it, cut the resulting master, then rearrange layers in
+    three.js. Portrait scenes may be outpainted, with their center preserved. Ecola now has an expanded master with its treated portrait center restored exactly and four
+    source-colored cuts. Restack matches exactly, with small depth extremes reviewed. The six
+    PNGs are placed in Figma. The URL export endpoint returned an empty challenge response;
+    native isolated PNG image outputs recovered the round trip with exact visible color/alpha. A shared scene-cutting skill and updated Figma
+    notes carry the method into individual Meadows, Ramona and Over Hood agents. Other scenes
+    follow. A real Ghosted artifact now shows where the landscape yields to product evidence.
+
+18. **One proof, eight agents.** Ecola established the workflow before eight individual scene
+    agents each owned a photo, run log, cut recipe and Figma section. The parent merged the
+    ledger and verified native exports: nine new candidates,29 planes, eight locked portrait
+    centers, all exact0 pixel checks. Meadows Lift was already landscape4:3 and needed no
+    expansion. Fine-detail consistency still varies. Over Hood, Moss Falls, Meadows Lift and
+    Salmon Ridge are marked still-first because motion exposes wing, foreground, cable or
+    expansion seams. Asset completion does not mean animation clearance.
+19. **The export can be tiled.** Moss mid's full native PNG response closed transport while
+    a smaller preview worked. Two temporary pixel-aligned transparent clipping frames produced
+    scale1 PNG tiles. Joining them restored the source-resolution plane exactly; the temporary
+    nodes were removed. The cutting skill and Figma notes now include this recovery, and the
+    storyboard shows the real cuts with explicit limitations.
+
+20. **The handoff has a real gate.** The prepared brief targets the exact `Rewrite cello.dev`
+    session. An inherited API-key override failed on credits; retrying the existing subscription
+    login failed because OAuth expired and refresh failed. No acknowledgment is claimed. Cello
+    was asked to sign in; the process report remains pending until Claude actually receives and
+    acknowledges the storyboard.
+
+`[next: retry Claude after sign-in, then the requested storyboard → build process report]`
 
 ## 5. Numbers
 

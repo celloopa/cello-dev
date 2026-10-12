@@ -1,0 +1,55 @@
+{
+  "status": "Historical AI layout studies; superseded by real-layer composition at Cello\u2019s request. No layout selected.",
+  "images": [
+    {
+      "file": "focus-pull-desktop.png",
+      "generated_source": "exec-029b85d4-aa00-4c39-931a-9160f704c9e8.png",
+      "sha256": "126acdc8c7076788e568a3236cafc99e77fa212581a137ad5fa24cf447f70273"
+    },
+    {
+      "file": "focus-pull-mobile.png",
+      "generated_source": "exec-947e0dab-0df9-4f2b-b155-adec9972c629.png",
+      "sha256": "356fca85358968d1e0c5519d54de4e3dec1c84cfd7e2acb05b0f5084fd842d2d"
+    },
+    {
+      "file": "horizon-name-desktop.png",
+      "generated_source": "exec-2e7dbce4-ae72-49ed-a89b-20b9cc600159.png",
+      "sha256": "8656d2a63d58938f46370ad720951305d6f09518a05bfde580eebfabe83c38c3"
+    },
+    {
+      "file": "horizon-name-mobile.png",
+      "generated_source": "exec-2f3109ca-548b-4079-ae15-34c06a3593c9.png",
+      "sha256": "bc20deda4aed9cec96a3f3c56c415643bc71c5a6841329caa5a6e4234f05abff"
+    },
+    {
+      "file": "living-contents-desktop.png",
+      "generated_source": "exec-2e2ae8b0-4955-451c-880c-5bfe7007a56f.png",
+      "sha256": "8737a96682e64d5c0c81ba87ad32eabfedd8489110979d12dcc22b9fd37d8f42"
+    },
+    {
+      "file": "living-contents-mobile.png",
+      "generated_source": "exec-95b2152a-2d12-4369-8a62-40eaaa263de3.png",
+      "sha256": "0e0471782065efd195efcd94679c5b63000f4176aefc9e1f242a38db72ffc93e"
+    },
+    {
+      "file": "card-study-01.png",
+      "generated_source": "exec-0b7b4f96-ca32-45a5-ac17-93a0c28e6352.png",
+      "sha256": "59d147ba67b609d3ba676e2c075f368e2102c7d5e502b50644b24b1f7c9ebd8d"
+    },
+    {
+      "file": "card-study-02.png",
+      "generated_source": "exec-1cf2b4f3-ab4b-4233-bd67-07819d454bd5.png",
+      "sha256": "f767e22147820cd41d23e1eda5de786f905e5de633b9b3ea0cfe360ac10a3f89"
+    },
+    {
+      "file": "card-study-03.png",
+      "generated_source": "exec-00fd81ca-111c-4d09-b788-142aa41ed52d.png",
+      "sha256": "3df3f6cd33d931d86af73a1a8a0f4d25b93156a08e8dc000825e81009f5ed4f6"
+    },
+    {
+      "file": "card-study-04.png",
+      "generated_source": "exec-90d00dfa-75a4-438b-9a06-80b882735e37.png",
+      "sha256": "d606de2778acf4bc9eb226f5b528726bdde8550bc68f4d673fcb40a109df53ec"
+    }
+  ]
+}

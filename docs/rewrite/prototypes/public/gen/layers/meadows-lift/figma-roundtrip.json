@@ -1,0 +1,39 @@
+{
+  "status": "native isolated PNG round trip verified",
+  "method": "get_screenshot contentsOnly true, source long-edge maxDimension, enableBase64Response true; URL endpoint failed",
+  "layers": {
+    "sky": {
+      "size": [
+        1448,
+        1086
+      ],
+      "alphaMaxDiff": 0,
+      "visibleRgbMaxDiff": 0,
+      "pngSha256": "f149d118fbf881781f0563b4c2eaca701de73f9f3956d6038df16cc226e3d209"
+    },
+    "terrain": {
+      "size": [
+        1448,
+        1086
+      ],
+      "alphaMaxDiff": 0,
+      "visibleRgbMaxDiff": 0,
+      "pngSha256": "b03b7c61b7816f1531aa528ac394a8aadfe81fd19b6aa7309fd0f855f3874fef"
+    },
+    "lift": {
+      "size": [
+        1448,
+        1086
+      ],
+      "alphaMaxDiff": 0,
+      "visibleRgbMaxDiff": 0,
+      "pngSha256": "f8d1b5e3132096361b0d618b9d06e411d55761f87559606a89a2e6a725a37a1c"
+    }
+  },
+  "restackRgbMaxDiff": 0,
+  "restackRgbMeanDiff": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

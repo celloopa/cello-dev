@@ -1,0 +1,41 @@
+{
+  "status": "candidate; aesthetic selection pending",
+  "source_size": [
+    2172,
+    1448
+  ],
+  "web_size": [
+    1536,
+    1024
+  ],
+  "restack_max_difference": 0,
+  "restack_mean_difference": 0.0,
+  "motion_test_source_px": {
+    "far": 1,
+    "mid": 4,
+    "near": 6
+  },
+  "limitations": [
+    "near ground overlaps forest; larger movement needs additional hidden forest fill",
+    "source-color refinement is specific to this forest/coast palette",
+    "restack equality does not validate cut edges or physical occlusion"
+  ],
+  "layers": [
+    {
+      "name": "sky",
+      "sha256": "88c4a7cb9b6c24c0f82d1f668c08cf15858789424560d60e3637587c1a47ec65"
+    },
+    {
+      "name": "far",
+      "sha256": "f0d8cca976869082bf882038878f5f49cd6b88c9fa2261ea3ff5f3f1291eb797"
+    },
+    {
+      "name": "mid",
+      "sha256": "62c250cd354e2fea9ac20656a7a09147942dcb92db379d99ad05a8255544d96e"
+    },
+    {
+      "name": "near",
+      "sha256": "a69e8fb3fb958d8537177b03ede558244f89e7f1178d570775a14cd58e11c07b"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "method": "Existing cut layers composed with HTML/CSS, without new raster generation or editing.",
+  "source_layers": [
+    {
+      "path": "docs/rewrite/prototypes/public/gen/layers/mirror-lake/far.webp",
+      "sha256": "6e18269dffe0d21505432e9651ea7f2e7f6327fea8ec61b2aa1b45ea28c0300e"
+    },
+    {
+      "path": "docs/rewrite/prototypes/public/gen/layers/mirror-lake/mid.webp",
+      "sha256": "73f52f90add6997e653bc68204197dc08e741c07a66b33d27fe51212b57e0aac"
+    },
+    {
+      "path": "docs/rewrite/prototypes/public/gen/layers/mirror-lake/near.webp",
+      "sha256": "45f8190807f1bbb4e3b6818612f0eacf86c110e8fd9d746c226f4d4bc1cfda91"
+    },
+    {
+      "path": "docs/rewrite/prototypes/public/gen/layers/mirror-lake/sky.webp",
+      "sha256": "ce0a6c351d0434ac178935252b9683624ec60638aad1d3ebaf82a021cd3fb73f"
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "status": "native isolated PNG roundtrip verified",
+  "layers": {
+    "sky": {
+      "alphaMaxDiff": 0,
+      "visibleRgbMaxDiff": 0,
+      "size": [
+        2172,
+        1448
+      ],
+      "sha256": "ce3da0c3f4e2325d295b9055ff709a0503cf3631eeb884341b63d1b5b945134e"
+    },
+    "mid": {
+      "alphaMaxDiff": 0,
+      "visibleRgbMaxDiff": 0,
+      "size": [
+        2172,
+        1448
+      ],
+      "sha256": "3b57df4c3c8db592ca0cb944f1ee1dfbbb2dcd478fb1443e91134a0386108a36"
+    },
+    "near": {
+      "alphaMaxDiff": 0,
+      "visibleRgbMaxDiff": 0,
+      "size": [
+        2172,
+        1448
+      ],
+      "sha256": "2ea0089e8c5627723efca6c6db0e7e2a46334db1e57844391df713c2e3b34614"
+    }
+  },
+  "restackRgbMaxDiff": 0,
+  "restackRgbMeanDiff": [
+    0.0,
+    0.0,
+    0.0
+  ]
+}

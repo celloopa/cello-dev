@@ -1,0 +1,52 @@
+{
+  "scope": "nine new candidates; existing Mirror Lake exports excluded from new native audit",
+  "newScenes": {
+    "moss-falls": {
+      "nativePlanes": 3,
+      "restackMaxDiff": 0,
+      "lockedCenterMaxDiff": 0
+    },
+    "meadows": {
+      "nativePlanes": 4,
+      "restackMaxDiff": 0,
+      "lockedCenterMaxDiff": 0
+    },
+    "meadows-lift": {
+      "nativePlanes": 3,
+      "restackMaxDiff": 0,
+      "expansion": "none; original landscape aspect retained"
+    },
+    "ecola": {
+      "nativePlanes": 4,
+      "restackMaxDiff": 0,
+      "lockedCenterMaxDiff": 0
+    },
+    "salmon-ridge": {
+      "nativePlanes": 3,
+      "restackMaxDiff": 0,
+      "lockedCenterMaxDiff": 0
+    },
+    "ramona": {
+      "nativePlanes": 3,
+      "restackMaxDiff": 0,
+      "lockedCenterMaxDiff": 0
+    },
+    "over-hood": {
+      "nativePlanes": 3,
+      "restackMaxDiff": 0,
+      "lockedCenterMaxDiff": 0
+    },
+    "bald-mountain": {
+      "nativePlanes": 3,
+      "restackMaxDiff": 0,
+      "lockedCenterMaxDiff": 0
+    },
+    "sauvie": {
+      "nativePlanes": 3,
+      "restackMaxDiff": 0,
+      "lockedCenterMaxDiff": 0
+    }
+  },
+  "nativePlaneCount": 29,
+  "lockedPortraitCount": 8
+}

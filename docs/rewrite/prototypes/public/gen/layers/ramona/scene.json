@@ -1,0 +1,86 @@
+{
+  "id": "ramona",
+  "place": "Ramona Falls",
+  "month": "August",
+  "status": "photo-treatment and cut candidate; aesthetic approval pending",
+  "sourcePhoto": "IMG_3114.HEIC (private original, not served)",
+  "sourceSize": [
+    2172,
+    1448
+  ],
+  "webSize": [
+    1536,
+    1024
+  ],
+  "master": "/gen/layers/ramona/master-wide.webp",
+  "portrait": "/gen/layers/ramona/master.webp",
+  "originalPortraitBounds": [
+    543,
+    0,
+    1629,
+    1448
+  ],
+  "expandedSides": "AI outpainted; original stylized center mechanically preserved",
+  "exportOrigin": "Figma native isolated PNG renders at full source resolution; alpha exact and visible RGB checked",
+  "figma": {
+    "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+    "page": "1:48",
+    "section": "15:2",
+    "master": "15:10",
+    "portrait": "15:20",
+    "layersFrame": "15:13",
+    "layers": {
+      "sky": "15:14",
+      "mid": "15:15",
+      "near": "15:16"
+    }
+  },
+  "layers": [
+    {
+      "name": "sky",
+      "src": "/gen/layers/ramona/sky.webp",
+      "depth": 0.97,
+      "testedHorizontalSourcePx": 0
+    },
+    {
+      "name": "mid",
+      "src": "/gen/layers/ramona/mid.webp",
+      "depth": 0.5,
+      "testedHorizontalSourcePx": 2
+    },
+    {
+      "name": "near",
+      "src": "/gen/layers/ramona/near.webp",
+      "depth": 0.12,
+      "testedHorizontalSourcePx": 4
+    }
+  ],
+  "checks": {
+    "restack": "cut-check.json",
+    "center": "expansion.json",
+    "motion": [
+      "motion-left.jpg",
+      "motion-right.jpg"
+    ],
+    "isolated": [
+      "sky-isolated.jpg",
+      "mid-isolated.jpg",
+      "near-isolated.jpg"
+    ],
+    "crops": [
+      "desktop-crop.jpg",
+      "mobile-crop.jpg"
+    ],
+    "figma": "figma-download-check.json",
+    "figmaRoundtrip": "figma-roundtrip.json"
+  },
+  "limitations": [
+    "AI style treatment changes fine needles, branches, clouds and water ribbons; broad upward viewpoint/low cascade retained, user approval pending.",
+    "Expanded sides are invented; stylized portrait center is mechanically unchanged.",
+    "Three planes only; waterfall and basalt stay connected. Water motion would require a separate shader/mask.",
+    "Only forest \u00b12 and cascade \u00b14 source pixels inspected. Fine-edge color halos remain possible; do not increase travel without cleanup.",
+    "Cascade silhouette is conservative and retains forest at extreme bottom corners; hidden fill has faint residual water near left edge.",
+    "Centered desktop cover crop clips waterfall base. Mobile center crop keeps opening and cascade; actual responsive canvas composition pending.",
+    "Isolated sky plate contains dark/cream continuation specks under occluding foliage; these stay hidden at rest. Tiny motion only, further sky fill cleanup before wider depth travel."
+  ]
+}

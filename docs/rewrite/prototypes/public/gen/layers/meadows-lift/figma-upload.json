@@ -1,0 +1,38 @@
+{
+  "status": "uploaded",
+  "uploads": [
+    {
+      "name": "master",
+      "nodeId": "24:4",
+      "httpStatus": 200
+    },
+    {
+      "name": "sky",
+      "nodeId": "24:6",
+      "httpStatus": 200
+    },
+    {
+      "name": "terrain",
+      "nodeId": "24:7",
+      "httpStatus": 200
+    },
+    {
+      "name": "lift",
+      "nodeId": "24:8",
+      "httpStatus": 200
+    }
+  ],
+  "figma": {
+    "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
+    "page": "1:48",
+    "section": "24:2",
+    "root": "24:3",
+    "master": "24:4",
+    "layersFrame": "24:5",
+    "layers": {
+      "sky": "24:6",
+      "terrain": "24:7",
+      "lift": "24:8"
+    }
+  }
+}

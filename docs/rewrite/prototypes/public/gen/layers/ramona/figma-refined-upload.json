@@ -1,0 +1,14 @@
+[
+  {
+    "file": "sky.png",
+    "nodeId": "15:14",
+    "status": 200,
+    "response": "{\"success\":true,\"imageHash\":\"dd905f55575af3c95c7c6381480552d8471a1ce5\",\"sizeBytes\":5025423,\"contentType\":\"image/png\",\"placedOnNodeId\":\"15:14\"}"
+  },
+  {
+    "file": "mid.png",
+    "nodeId": "15:15",
+    "status": 200,
+    "response": "{\"success\":true,\"imageHash\":\"8302bdcb6049090be552d2a8425f6c81ee414b60\",\"sizeBytes\":6185879,\"contentType\":\"image/png\",\"placedOnNodeId\":\"15:15\"}"
+  }
+]

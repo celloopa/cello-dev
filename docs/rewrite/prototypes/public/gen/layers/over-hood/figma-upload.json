@@ -1,0 +1,50 @@
+[
+  {
+    "name": "master-wide",
+    "target": "15:21",
+    "bytes": 5233600,
+    "result": {
+      "success": true,
+      "imageHash": "8b3571b867348b766707eb860273140b2ef9c407",
+      "sizeBytes": 5233600,
+      "contentType": "image/png",
+      "placedOnNodeId": "15:21"
+    }
+  },
+  {
+    "name": "sky",
+    "target": "15:23",
+    "bytes": 4550261,
+    "result": {
+      "success": true,
+      "imageHash": "17cf9c928efa9ce60c3aef7620c132e216bd0b84",
+      "sizeBytes": 4550261,
+      "contentType": "image/png",
+      "placedOnNodeId": "15:23"
+    }
+  },
+  {
+    "name": "terrain",
+    "target": "15:24",
+    "bytes": 5593684,
+    "result": {
+      "success": true,
+      "imageHash": "554a3ac92ffda5974b73de10e29703e9de50110f",
+      "sizeBytes": 5593684,
+      "contentType": "image/png",
+      "placedOnNodeId": "15:24"
+    }
+  },
+  {
+    "name": "wing",
+    "target": "15:25",
+    "bytes": 5595272,
+    "result": {
+      "success": true,
+      "imageHash": "173c4469fab637dc03a4bf1f51ead2b52704046a",
+      "sizeBytes": 5595272,
+      "contentType": "image/png",
+      "placedOnNodeId": "15:25"
+    }
+  }
+]
