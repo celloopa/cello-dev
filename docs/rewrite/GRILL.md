@@ -251,3 +251,29 @@ Photos incoming: the desk window and the landscapes. Metadata handling: see belo
 Photo handling rule (agreed in this thread): GPS/EXIF from originals on disk is read only to
 name a place; coordinates are never written to the repo, Brain or the site; the home/desk photo's
 location is not read at all; photos stay out of the repo (only traced shapes are committed).
+
+### Photos read (2026-10-12)
+
+11 iPhone 16 photos in `~/Documents/code/astro/cello-dev-places-2026-10-12/` (private, outside the
+repo). Desk: IMG_2001 (location not read). Landscapes, by date: Jun 14 Mt Hood Meadows (×2) · Jun 26
+waterfall SE of Cottage Grove (Moon or Spirit Falls, [verify]) · Jul 5 Ecola State Park · Aug 22 ridge
+above the Salmon River ([verify]) · Aug 29 Ramona Falls · Sep 7 over Mt Hood from a plane · Sep 20
+near Bald Mountain/Top Spur ([verify]) · Sep 27 Mirror Lake · Oct 10 Sauvie Island. Mt Hood is in 7
+of 10; no city landmarks. People in 3 photos → tiny unidentifiable silhouettes or omitted.
+
+### Q14. Order of the ride (2026-10-12)
+
+**Answer: chronological, summer → fall. "build it".** Palette follows the season (June meadow → July
+coast fog → August dry gold → September high light → October storm sky). Mt Hood recurs. Home/desk
+bookends the ride. City landmarks dropped.
+Cello: "we don't have enough projects for all the scenes but i wanted to plan them and have them
+loaded up over time. maybe blogs can vary them too." → every stop is a slot: a project, a post, or
+scenery only, filled over time.
+Cello: "all content should be readable over the three recreations of the scenes and we can split
+that work." → rule: text never sits on a scene; content sits on system surfaces (wall/desk) or
+opaque plates. Scenes are authored as data from a scene kit so the work can be split (agents or
+Cello in Figma).
+Design-system impact (told to Cello; sent to the audit session as rewrite-only additions): new role
+`bg-plate`; art token group `scene.<stop>.*` (day + night variants, exempt from text contrast because
+they never carry text); the ride is a motion signature (reduced motion → stills); components Plate,
+LocationCard, SceneStop. The staged migration is unchanged.
