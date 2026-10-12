@@ -354,7 +354,7 @@ approved.** It applies only to the rewrite and stays off today's site until Cell
 6. **Place label** (the `place-name` role in Switchback) and the **Admire** control.
 7. **Scene selector**: storyboarded, not built.
 
-How the landscape build (`claude/landscape-build`, S0–S1) encodes this, for review:
+How the landscape build (`claude/landscape-build`, S0–S2) encodes this, for review:
 - **Tokens**, group "Scene" in `tokens.json`, each with a use-line: focus recipe `--focus-blur`,
   `--focus-brightness`, `--focus-saturate` (+ `-mobile`), `--focus-scale`, and the composed
   `--focus-filter`/`--focus-filter-mobile` for the DOM still; copy scrim `--scrim-copy` 64%,
@@ -375,6 +375,19 @@ How the landscape build (`claude/landscape-build`, S0–S1) encodes this, for re
   99th-percentile brightest pixel under it, at 1440 and 390, in Day and Dusk, WebGL and the still,
   in arrival, Admire and reading (`docs/landscape/CHECKS.md`). A line that fails gets a stronger
   scrim or an on-art color, never a weaker check.
+- **Reading pages (S2).** A case study or a post is a scene page that opens in the reading state
+  and stays there (`SceneLayout reading`, `html.scene-read-page`): the focus recipe and
+  `--atmos-read` from the first paint, the renderer arriving settled and focused (no assembly,
+  no travel, no micro-motion, no frames while idle), and ContextBar's reading context
+  server-rendered (the title + "All work", or "All posts"), with the menu and theme buttons
+  kept. Which scene a page gets is data (`src/data/scene-pairings.json`; posts rotate by a hash
+  of the slug). No new tokens.
+- **Pieces S2 adds**, all on existing tokens: **Prose** (§7; 2c's `--font-read` scoping
+  unchanged), **MediaVideo** under MediaFull/Two/Three (poster, mp4 fallback, Pause/Play for
+  WCAG 2.2.2, the poster under reduced motion), **ReadHead** (eyebrow, title, lede, tags,
+  cover) and **StoryEnd** (the next story, then the previous one and the index; storyboard
+  frame 08). Text on small labels over art uses `--text-on-art-muted`; anything else small and
+  green (CaseMeta, FlowDiagram, table heads, quotes, inline code) sits on `bg-plate` (A1).
 
 What the migration owes the rewrite:
 - National Park self-hosted (stage 2b).

@@ -343,6 +343,7 @@ stays the one place for components.
 | **ContextBar** | The dark green top bar: identity + Work while exploring; the project + "All work" while reading |
 | **PlaceLabel** + **Admire** | The place name in Switchback (`place-name`) and the control that shows the scene ("Take in the view" / "Back to Cello") |
 | **LocationCard** | Already in A1: later for today's site, must for the rewrite |
+| **ReadHead** + **StoryEnd** | A reading page's opening (eyebrow, title, lede, tags, cover) and ending (the next story, then the previous one and the index), shared by case studies and posts. Built in S2 (`src/components/scene/`) |
 | **SceneSelector** | Storyboard only |
 
 ### Never
