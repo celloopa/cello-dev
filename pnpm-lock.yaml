@@ -13,16 +13,16 @@ importers:
         version: 0.9.6(prettier-plugin-astro@0.13.0)(prettier@3.3.3)(typescript@5.5.4)
       '@astrojs/mdx':
         specifier: ^4.3.13
-        version: 4.3.13(astro@5.16.8(@types/node@22.15.17)(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1))
+        version: 4.3.13(astro@5.16.8(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1))
       '@astrojs/svelte':
         specifier: ^7.2.5
-        version: 7.2.5(@types/node@22.15.17)(astro@5.16.8(@types/node@22.15.17)(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1))(svelte@5.28.2)(typescript@5.5.4)(yaml@2.7.1)
+        version: 7.2.5(astro@5.16.8(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1))(svelte@5.28.2)(typescript@5.5.4)(yaml@2.7.1)
       '@fontsource/geist-mono':
         specifier: ^5.0.3
         version: 5.0.3
       astro:
         specifier: ^5.16.8
-        version: 5.16.8(@types/node@22.15.17)(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1)
+        version: 5.16.8(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1)
       qrcode:
         specifier: ^1.5.4
         version: 1.5.4
@@ -36,6 +36,15 @@ importers:
       '@astrojs/ts-plugin':
         specifier: ^1.10.4
         version: 1.10.4
+      pixelmatch:
+        specifier: 5.3.0
+        version: 5.3.0
+      playwright-core:
+        specifier: 1.48.2
+        version: 1.48.2
+      pngjs:
+        specifier: 7.0.0
+        version: 7.0.0
       prettier:
         specifier: ^3.3.3
         version: 3.3.3
@@ -723,9 +732,6 @@ packages:
 
   '@types/nlcst@2.0.3':
     resolution: {integrity: sha512-vSYNSDe6Ix3q+6Z7ri9lyWqgGhJTmzRjZRqyq15N0Z/1/UnVsno9G/N40NBijoYx2seFDIl0+B2mgAb9mezUCA==}
-
-  '@types/node@22.15.17':
-    resolution: {integrity: sha512-wIX2aSZL5FE+MR0JlvF87BNVrtFWf6AE6rxSE9X7OwnVvoyCQjpzSRJ+M87se/4QCkCiebQAqrJ0y6fwIyi7nw==}
 
   '@types/unist@2.0.11':
     resolution: {integrity: sha512-CmBKiL6NNo/OqgmMn95Fk9Whlp2mtvIv+KNpQKN2F4SjvrEesubTRWGYSg+BnWZOnlCaSTU1sMpsBOzgbYhnsA==}
@@ -1607,9 +1613,26 @@ packages:
     resolution: {integrity: sha512-5gTmgEY/sqK6gFXLIsQNH19lWb4ebPDLA4SdLP7dsWkIXHWlG66oPuVvXSGFPppYZz8ZDZq0dYYrbHfBCVUb1Q==}
     engines: {node: '>=12'}
 
+  pixelmatch@5.3.0:
+    resolution: {integrity: sha512-o8mkY4E/+LNUf6LzX96ht6k6CEDi65k9G2rjMtBe9Oo+VPKSvl+0GKHuH/AlG+GA5LPG/i5hrekkxUc3s2HU+Q==}
+    hasBin: true
+
+  playwright-core@1.48.2:
+    resolution: {integrity: sha512-sjjw+qrLFlriJo64du+EK0kJgZzoQPsabGF4lBvsid+3CNIZIYLgnMj9V6JY5VhM2Peh20DJWIVpVljLLnlawA==}
+    engines: {node: '>=18'}
+    hasBin: true
+
   pngjs@5.0.0:
     resolution: {integrity: sha512-40QW5YalBNfQo5yRYmiw7Yz6TKKVr3h6970B2YE+3fQpsWcrbj1PzJgxeJ19DRQjhMbKPIuMY8rFaXc8moolVw==}
     engines: {node: '>=10.13.0'}
+
+  pngjs@6.0.0:
+    resolution: {integrity: sha512-TRzzuFRRmEoSW/p1KVAmiOgPco2Irlah+bGFCeNfJXxxYGwSw7YwAOAcd7X28K/m5bjBWKsC29KyoMfHbypayg==}
+    engines: {node: '>=12.13.0'}
+
+  pngjs@7.0.0:
+    resolution: {integrity: sha512-LKWqWJRhstyYo9pGvgor/ivk2w94eSjE3RGVuzLGlr3NmD8bf7RcYGze1mNdEHRP6TRP6rMuDHk5t44hnTRyow==}
+    engines: {node: '>=14.19.0'}
 
   postcss@8.5.6:
     resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
@@ -1904,9 +1927,6 @@ packages:
 
   uncrypto@0.1.3:
     resolution: {integrity: sha512-Ql87qFHB3s/De2ClA9e0gsnS6zXG27SkTiSJwjCc9MebbfapQfuPzumMIUMi38ezPZVNFcHI9sUIepeQfw8J8Q==}
-
-  undici-types@6.21.0:
-    resolution: {integrity: sha512-iwDZqg0QAGrg9Rav5H4n0M64c3mkR59cJ6wQp+7C4nI0gsmExaedaYLNO44eT4AtBBwjbTiGPMlt2Md0T9H9JQ==}
 
   unified@11.0.5:
     resolution: {integrity: sha512-xKvGhPWw3k84Qjh8bI3ZeJjqnyadK+GEFtazSfZv/rKeTkTjOJho6mFqh2SM96iIcZokxiOpg78GazTSg8+KHA==}
@@ -2334,12 +2354,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@astrojs/mdx@4.3.13(astro@5.16.8(@types/node@22.15.17)(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1))':
+  '@astrojs/mdx@4.3.13(astro@5.16.8(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1))':
     dependencies:
       '@astrojs/markdown-remark': 6.3.10
       '@mdx-js/mdx': 3.1.1
       acorn: 8.15.0
-      astro: 5.16.8(@types/node@22.15.17)(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1)
+      astro: 5.16.8(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1)
       es-module-lexer: 1.7.0
       estree-util-visit: 2.0.0
       hast-util-to-html: 9.0.5
@@ -2357,14 +2377,14 @@ snapshots:
     dependencies:
       prismjs: 1.30.0
 
-  '@astrojs/svelte@7.2.5(@types/node@22.15.17)(astro@5.16.8(@types/node@22.15.17)(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1))(svelte@5.28.2)(typescript@5.5.4)(yaml@2.7.1)':
+  '@astrojs/svelte@7.2.5(astro@5.16.8(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1))(svelte@5.28.2)(typescript@5.5.4)(yaml@2.7.1)':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 5.1.1(svelte@5.28.2)(vite@6.4.1(@types/node@22.15.17)(yaml@2.7.1))
-      astro: 5.16.8(@types/node@22.15.17)(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1)
+      '@sveltejs/vite-plugin-svelte': 5.1.1(svelte@5.28.2)(vite@6.4.1(yaml@2.7.1))
+      astro: 5.16.8(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1)
       svelte: 5.28.2
       svelte2tsx: 0.7.46(svelte@5.28.2)(typescript@5.5.4)
       typescript: 5.5.4
-      vite: 6.4.1(@types/node@22.15.17)(yaml@2.7.1)
+      vite: 6.4.1(yaml@2.7.1)
     transitivePeerDependencies:
       - '@types/node'
       - jiti
@@ -2810,25 +2830,25 @@ snapshots:
     dependencies:
       acorn: 8.12.1
 
-  '@sveltejs/vite-plugin-svelte-inspector@4.0.1(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.28.2)(vite@6.4.1(@types/node@22.15.17)(yaml@2.7.1)))(svelte@5.28.2)(vite@6.4.1(@types/node@22.15.17)(yaml@2.7.1))':
+  '@sveltejs/vite-plugin-svelte-inspector@4.0.1(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.28.2)(vite@6.4.1(yaml@2.7.1)))(svelte@5.28.2)(vite@6.4.1(yaml@2.7.1))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte': 5.1.1(svelte@5.28.2)(vite@6.4.1(@types/node@22.15.17)(yaml@2.7.1))
+      '@sveltejs/vite-plugin-svelte': 5.1.1(svelte@5.28.2)(vite@6.4.1(yaml@2.7.1))
       debug: 4.4.3
       svelte: 5.28.2
-      vite: 6.4.1(@types/node@22.15.17)(yaml@2.7.1)
+      vite: 6.4.1(yaml@2.7.1)
     transitivePeerDependencies:
       - supports-color
 
-  '@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.28.2)(vite@6.4.1(@types/node@22.15.17)(yaml@2.7.1))':
+  '@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.28.2)(vite@6.4.1(yaml@2.7.1))':
     dependencies:
-      '@sveltejs/vite-plugin-svelte-inspector': 4.0.1(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.28.2)(vite@6.4.1(@types/node@22.15.17)(yaml@2.7.1)))(svelte@5.28.2)(vite@6.4.1(@types/node@22.15.17)(yaml@2.7.1))
+      '@sveltejs/vite-plugin-svelte-inspector': 4.0.1(@sveltejs/vite-plugin-svelte@5.1.1(svelte@5.28.2)(vite@6.4.1(yaml@2.7.1)))(svelte@5.28.2)(vite@6.4.1(yaml@2.7.1))
       debug: 4.4.3
       deepmerge: 4.3.1
       kleur: 4.1.5
       magic-string: 0.30.21
       svelte: 5.28.2
-      vite: 6.4.1(@types/node@22.15.17)(yaml@2.7.1)
-      vitefu: 1.1.1(vite@6.4.1(@types/node@22.15.17)(yaml@2.7.1))
+      vite: 6.4.1(yaml@2.7.1)
+      vitefu: 1.1.1(vite@6.4.1(yaml@2.7.1))
     transitivePeerDependencies:
       - supports-color
 
@@ -2861,11 +2881,6 @@ snapshots:
   '@types/nlcst@2.0.3':
     dependencies:
       '@types/unist': 3.0.3
-
-  '@types/node@22.15.17':
-    dependencies:
-      undici-types: 6.21.0
-    optional: true
 
   '@types/unist@2.0.11': {}
 
@@ -2981,7 +2996,7 @@ snapshots:
 
   astring@1.9.0: {}
 
-  astro@5.16.8(@types/node@22.15.17)(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1):
+  astro@5.16.8(rollup@4.55.1)(typescript@5.5.4)(yaml@2.7.1):
     dependencies:
       '@astrojs/compiler': 2.13.0
       '@astrojs/internal-helpers': 0.7.5
@@ -3038,8 +3053,8 @@ snapshots:
       unist-util-visit: 5.0.0
       unstorage: 1.17.3
       vfile: 6.0.3
-      vite: 6.4.1(@types/node@22.15.17)(yaml@2.7.1)
-      vitefu: 1.1.1(vite@6.4.1(@types/node@22.15.17)(yaml@2.7.1))
+      vite: 6.4.1(yaml@2.7.1)
+      vitefu: 1.1.1(vite@6.4.1(yaml@2.7.1))
       xxhash-wasm: 1.1.0
       yargs-parser: 21.1.1
       yocto-spinner: 0.2.3
@@ -4185,7 +4200,17 @@ snapshots:
 
   picomatch@4.0.3: {}
 
+  pixelmatch@5.3.0:
+    dependencies:
+      pngjs: 6.0.0
+
+  playwright-core@1.48.2: {}
+
   pngjs@5.0.0: {}
+
+  pngjs@6.0.0: {}
+
+  pngjs@7.0.0: {}
 
   postcss@8.5.6:
     dependencies:
@@ -4596,9 +4621,6 @@ snapshots:
 
   uncrypto@0.1.3: {}
 
-  undici-types@6.21.0:
-    optional: true
-
   unified@11.0.5:
     dependencies:
       '@types/unist': 3.0.3
@@ -4687,7 +4709,7 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.3
 
-  vite@6.4.1(@types/node@22.15.17)(yaml@2.7.1):
+  vite@6.4.1(yaml@2.7.1):
     dependencies:
       esbuild: 0.25.12
       fdir: 6.5.0(picomatch@4.0.3)
@@ -4696,13 +4718,12 @@ snapshots:
       rollup: 4.55.1
       tinyglobby: 0.2.15
     optionalDependencies:
-      '@types/node': 22.15.17
       fsevents: 2.3.3
       yaml: 2.7.1
 
-  vitefu@1.1.1(vite@6.4.1(@types/node@22.15.17)(yaml@2.7.1)):
+  vitefu@1.1.1(vite@6.4.1(yaml@2.7.1)):
     optionalDependencies:
-      vite: 6.4.1(@types/node@22.15.17)(yaml@2.7.1)
+      vite: 6.4.1(yaml@2.7.1)
 
   volar-service-css@0.0.67(@volar/language-service@2.4.27):
     dependencies:

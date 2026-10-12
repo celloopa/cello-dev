@@ -5,9 +5,12 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
+    "tokens": "node scripts/tokens.mjs",
+    "check": "node scripts/tokens.mjs --check && astro check",
+    "build": "node scripts/tokens.mjs --check && astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "ui:shots": "node scripts/ui-shots.mjs",
     "sync-projects": "npx tsx scripts/sync-projects.ts",
     "resume:pdf": "node scripts/generate-resume-pdf.mjs"
   },
@@ -23,6 +26,9 @@
   },
   "devDependencies": {
     "@astrojs/ts-plugin": "^1.10.4",
+    "pixelmatch": "5.3.0",
+    "playwright-core": "1.48.2",
+    "pngjs": "7.0.0",
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.13.0"
   }
