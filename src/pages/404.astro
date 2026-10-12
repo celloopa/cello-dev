@@ -61,7 +61,7 @@ import Layout from "@/layouts/Layout.astro";
     align-items: center;
     gap: 4px;
     margin: var(--space-20) 0 var(--space-24);
-    animation: wipeIn 0.5s var(--ease-out) backwards;
+    animation: enter-wipe 0.5s var(--ease-out) backwards;
     transform-origin: left;
   }
 
@@ -110,17 +110,6 @@ import Layout from "@/layouts/Layout.astro";
   .cta-link:hover,
   .cta-link:focus-visible {
     gap: var(--space-12);
-  }
-
-  @keyframes wipeIn {
-    from {
-      transform: scaleX(0);
-      transform-origin: left;
-    }
-    to {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
   }
 
   @media (width <= 700px) {

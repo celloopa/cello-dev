@@ -1,13 +1,5 @@
 {
  "src/components/AnimatedLogo.astro": {
-  "ban:keyframes-outside-animations": {
-   "@keyframes logoSlideFromLeft": 1,
-   "@keyframes logoSlideFromTopRight": 1,
-   "@keyframes logoSlideFromBottom": 1,
-   "@keyframes breakC": 1,
-   "@keyframes breakSun": 1,
-   "@keyframes breakTriangle": 1
-  },
   "duration": {
    "12s": 3,
    "0.18s": 1,
@@ -39,9 +31,6 @@
   },
   "font-size": {
    "0.7rem": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes slideUp": 1
   }
  },
  "src/components/CaseMeta.astro": {
@@ -109,10 +98,6 @@
   },
   "easing": {
    "ease": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes headerSlideLeft": 1,
-   "@keyframes headerSlideRight": 1
   }
  },
  "src/components/ProjectCard.astro": {
@@ -148,9 +133,6 @@
   "line-height": {
    "1": 1,
    "1.5": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes slideUp": 1
   }
  },
  "src/components/Section.astro": {
@@ -167,9 +149,6 @@
   },
   "easing": {
    "ease": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes scaleIn": 1
   }
  },
  "src/components/media/MediaThree.astro": {
@@ -180,10 +159,6 @@
   },
   "easing": {
    "ease": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes scaleIn": 1,
-   "@keyframes slideUp": 1
   }
  },
  "src/components/media/MediaTwo.astro": {
@@ -194,10 +169,6 @@
   },
   "easing": {
    "ease": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes scaleIn": 1,
-   "@keyframes slideUp": 1
   }
  },
  "src/components/sections/Education.astro": {
@@ -294,9 +265,6 @@
   },
   "line-height": {
    "1": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes skillSlideUp": 1
   }
  },
  "src/components/svelte/KeyboardShortcutsMenu.svelte": {
@@ -365,15 +333,10 @@
    "1.6rem": 1,
    "1.2rem": 1
   },
-  "ban:keyframes-outside-animations": {
-   "@keyframes wipe-in": 1,
-   "@keyframes wipe-out": 1
-  },
   "duration": {
    "0.45s": 2,
    "80ms": 1,
-   "0.9s": 1,
-   "0.01ms": 2
+   "0.9s": 1
   }
  },
  "src/pages/404.astro": {
@@ -389,9 +352,6 @@
   },
   "duration": {
    "0.5s": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes wipeIn": 1
   }
  },
  "src/pages/blog.astro": {
@@ -433,11 +393,6 @@
    "rgba(var(--color-accent-rgb), 0.1)": 1,
    "rgba(var(--color-accent-rgb), 0.2)": 1,
    "rgba(var(--color-accent-rgb), 0.08)": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes slideUp": 1,
-   "@keyframes wipeIn": 1,
-   "@keyframes scaleIn": 1
   }
  },
  "src/pages/card.astro": {
@@ -479,10 +434,6 @@
    "-0.08em": 1,
    "0.04em": 1,
    "0.08em": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes slideLeft": 1,
-   "@keyframes slideRight": 1
   },
   "line-height": {
    "0.92": 1,
@@ -630,12 +581,6 @@
   "color": {
    "rgba(var(--color-accent-rgb), 0.1)": 1,
    "rgba(var(--color-accent-rgb), 0.2)": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes slideLeft": 1,
-   "@keyframes slideUp": 1,
-   "@keyframes wipeIn": 1,
-   "@keyframes scaleIn": 1
   }
  },
  "src/pages/projects/index.astro": {
@@ -657,24 +602,7 @@
  },
  "src/styles/animations.css": {
   "duration": {
-   "0.5s": 2,
-   "0.1s": 1,
-   "0.2s": 1,
-   "0.3s": 1,
-   "0.4s": 2,
-   "0.6s": 1,
-   "0.7s": 1,
-   "0.8s": 1,
    "0.01ms": 2
-  },
-  "easing": {
-   "ease-out": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 1
-  },
-  "color": {
-   "rgba(var(--color-text-rgb), 0.15)": 1
   }
  },
  "src/styles/print.css": {

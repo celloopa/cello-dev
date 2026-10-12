@@ -338,28 +338,6 @@ const menuLabel = activeNav?.label ?? "Menu";
     text-shadow: 0 2px 8px var(--scrim);
   }
 
-  @keyframes headerSlideLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes headerSlideRight {
-    from {
-      opacity: 0;
-      transform: translateX(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
   @media (max-width: 900px) {
     .site-header {
       margin-bottom: var(--space-24);

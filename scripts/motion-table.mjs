@@ -60,8 +60,12 @@ function readMotion() {
       const cs = getComputedStyle(el, pe);
       if (pe && cs.content === "none") continue;
       if (cs.animationName && cs.animationName !== "none") {
-        cs.animationName.split(",").forEach((n) => used.add(n.trim()));
-        add(`animation | ${label(el, pe)} | ${cs.animationName} | ${cs.animationDuration} | delay ${cs.animationDelay} | ${cs.animationTimingFunction} | ×${cs.animationIterationCount}`);
+        const names = cs.animationName.split(",").map((n) => n.trim());
+        names.forEach((n) => used.add(n));
+        // Keyframes that read a custom property (e.g. --enter-distance) resolve it per element.
+        const vars = [...new Set(names.flatMap((n) => [...(keyframes[n] ?? "").matchAll(/var\((--[\w-]+)/g)].map((m) => m[1])))];
+        const resolved = vars.map((v) => ` ${v}: ${cs.getPropertyValue(v).trim() || "(default)"}`).join(";");
+        add(`animation | ${label(el, pe)} | ${cs.animationName}${resolved ? ` [${resolved.trim()}]` : ""} | ${cs.animationDuration} | delay ${cs.animationDelay} | ${cs.animationTimingFunction} | ×${cs.animationIterationCount}`);
       }
       const durs = cs.transitionDuration.split(",").map((d) => parseFloat(d));
       if (durs.some((d) => d > 0)) {

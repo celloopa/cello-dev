@@ -453,24 +453,6 @@ const SOCIAL_ICONS: SocialIcon = {
         opacity: 0.82;
       }
 
-      @keyframes wipe-in {
-        from {
-          clip-path: inset(0 100% 0 0);
-        }
-        to {
-          clip-path: inset(0 0 0 0);
-        }
-      }
-
-      @keyframes wipe-out {
-        from {
-          clip-path: inset(0 0 0 0);
-        }
-        to {
-          clip-path: inset(0 0 0 100%);
-        }
-      }
-
       ::view-transition-new(root) {
         animation: wipe-in 0.45s var(--ease-out);
       }

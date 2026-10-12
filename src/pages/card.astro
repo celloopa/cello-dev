@@ -6,6 +6,7 @@ import "@fontsource/geist-mono/700.css";
 import "@fontsource/geist-mono/900.css";
 import "@fontsource-variable/national-park";
 import "@/styles/colors.css";
+import "@/styles/animations.css";
 import ThemeInit from "@/components/ThemeInit.astro";
 import Mail from "@/icons/Mail.astro";
 import Phone from "@/icons/Phone.astro";
@@ -315,7 +316,8 @@ const qrCodeSvg = await QRCode.toString(url, {
 
   .identity-panel {
     padding: 0;
-    animation: slideLeft 0.8s var(--ease-out) backwards;
+    animation: enter-from-left 0.8s var(--ease-out) backwards;
+    --enter-distance: 48px;
     contain: layout paint;
   }
 
@@ -325,7 +327,8 @@ const qrCodeSvg = await QRCode.toString(url, {
     align-items: flex-start;
     width: 100%;
     max-width: 18rem;
-    animation: slideRight 0.8s var(--ease-out) backwards;
+    animation: enter-from-right 0.8s var(--ease-out) backwards;
+    --enter-distance: 48px;
     contain: layout paint;
     content-visibility: auto;
     contain-intrinsic-size: 22rem;
@@ -360,30 +363,6 @@ const qrCodeSvg = await QRCode.toString(url, {
     object-fit: cover;
     display: block;
     filter: saturate(1.05) contrast(1.02);
-  }
-
-  @keyframes slideLeft {
-    from {
-      opacity: 0;
-      transform: translateX(-48px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes slideRight {
-    from {
-      opacity: 0;
-      transform: translateX(48px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
   }
 
   h1 {
