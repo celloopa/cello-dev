@@ -1,6 +1,6 @@
 # Component inventory: cello-dev (design-system audit)
 
-Repo: `/Users/cello_r/Documents/code/astro/cello-dev/.claude/worktrees/design-system-audit` (branch `claude/design-system-audit`, clean). Read-only audit; every file:line below was read, not inferred. All paths are relative to `src/`.
+Repo: this one (branch `claude/design-system-audit`, clean). Read-only audit; every file:line below was read, not inferred. All paths are relative to `src/`.
 
 ## Scope
 
