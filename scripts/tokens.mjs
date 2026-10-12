@@ -31,9 +31,9 @@ function generate() {
       const v = t.$value;
       const doc = t.$description ? ` /* ${t.$description.replace(/\*\//g, "* /")} */` : "";
       if (typeof v === "string") { rootLines.push(`  ${t.css}: ${v};${doc}`); continue; }
-      rootLines.push(`  ${t.css}: ${v.dark};${doc}`);
+      rootLines.push(`  ${t.css}: ${v.dusk ?? v.dark};${doc}`);
       if (!lightHeader) { lightLines.push("", `  /* ${g.name} */`); lightHeader = true; }
-      lightLines.push(`  ${t.css}: ${v.light};`);
+      lightLines.push(`  ${t.css}: ${v.day ?? v.light};`);
     }
   }
   return [

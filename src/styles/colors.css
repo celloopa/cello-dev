@@ -1,54 +1,5 @@
+/*
+  Kept so existing `import "@/styles/colors.css"` lines keep working. All color tokens, including
+  the legacy --color-* names, are generated into tokens.css from src/tokens/tokens.json.
+*/
 @import "./tokens.css";
-
-:root {
-	/* Legacy aliases backed by design-system tokens */
-	--color-midnight: var(--ds-color-ink-950);
-	--color-midnight-rgb: 0, 26, 17;
-	/* Deep midnight green */
-	--color-starlight: var(--ds-color-paper-200);
-	--color-starlight-rgb: 224, 224, 224;
-	/* Soft starlight gray */
-	--color-treescape: var(--ds-color-earth-500);
-	--color-treescape-rgb: 136, 120, 80;
-	/* Earthy treescape */
-	--color-treescape-deep: var(--ds-color-earth-600);
-	--color-treescape-deep-rgb: 111, 97, 62;
-	/* Higher-contrast earth for light surfaces */
-	--color-treescape-bright: var(--ds-color-earth-400);
-	--color-treescape-bright-rgb: 168, 151, 98;
-	/* Higher-contrast earth for dark surfaces */
-	--color-night-shine: var(--ds-color-signal-500);
-	--color-night-shine-rgb: 0, 188, 68;
-	/* Vibrant night-shine green */
-	--color-paper: var(--ds-color-paper-50);
-	--color-background-translucent: #001A11CC;
-	--color-background-opacity: 0.8;
-}
-
-:root[data-theme="light"] {
-	--color-background: var(--color-starlight);
-	--color-background-rgb: var(--color-starlight-rgb);
-	--color-text: var(--color-midnight);
-	--color-text-rgb: var(--color-midnight-rgb);
-	--color-accent: var(--color-treescape-deep);
-	--color-accent-rgb: var(--color-treescape-deep-rgb);
-	--color-accent-secondary: var(--color-night-shine);
-	--color-accent-secondary-rgb: var(--color-night-shine-rgb);
-	--color-visual-accent: var(--color-treescape-deep);
-	--color-visual-accent-rgb: var(--color-treescape-deep-rgb);
-	--color-background-translucent: rgba(var(--color-starlight-rgb), var(--color-background-opacity));
-}
-
-:root[data-theme="dark"] {
-	--color-background: var(--color-midnight);
-	--color-background-rgb: var(--color-midnight-rgb);
-	--color-text: var(--color-starlight);
-	--color-text-rgb: var(--color-starlight-rgb);
-	--color-accent: var(--color-night-shine);
-	--color-accent-rgb: var(--color-night-shine-rgb);
-	--color-accent-secondary: var(--color-treescape-bright);
-	--color-accent-secondary-rgb: var(--color-treescape-bright-rgb);
-	--color-visual-accent: var(--color-treescape-bright);
-	--color-visual-accent-rgb: var(--color-treescape-bright-rgb);
-	--color-background-translucent: rgba(var(--color-midnight-rgb), var(--color-background-opacity));
-}

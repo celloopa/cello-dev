@@ -224,3 +224,11 @@ Not family: green as action, earth as human tone, the C-ring/sun/triangle mark, 
 - **Q7 Family home (2026-10-12): its own tiny repo**, `~/Documents/code/cello-family` (family.json + README + CHANGELOG, tagged versions). Products vendor a pinned copy; their checks warn, never fail, when the local canonical is newer. Contents go to Cello in the proposal.
 - **Q8 Figma (2026-10-12): no maintained cello.dev file.** Cello's old files (now in Harmonic Convergence › Triage — from Marcelo, folder https://www.figma.com/files/folder/669562992) are predecessor identities: C10ud (2021, lavender/plum) and Cello.Design (dark-green forest, "dark mountain", the direct ancestor). History, not a reference. Figma is generated from code (proposal stage 9).
 - **Proposal approved (2026-10-12)**, as written in `proposal.md`. Migration runs on `claude/design-system-migration`, one stage at a time.
+
+## Known flicker in the screenshot check (2026-10-12)
+
+On phone widths, the header's menu button lands in one of two states 1 px apart (rows ~35–58,
+x ~312–366, 222–461 px). Which one is independent of the code: two baseline runs of the same
+build disagree on it. Until it's fixed at the source (suspected: subpixel width of the label
+fallback glyphs), stages are proved against two baseline runs (`--compare b0,b1`). A screen
+passes when it matches either run exactly. Every other pixel stays exact.

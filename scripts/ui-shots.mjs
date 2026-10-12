@@ -2,7 +2,7 @@
 // dark and light, with reduced motion, so a stage can prove it changed nothing (0 px) or
 // show exactly what it changed.
 //
-//   pnpm build && pnpm ui:shots <outDir> [--compare <baselineDir>] [--pages /,/resume/]
+//   pnpm build && pnpm ui:shots <outDir> [--compare <baselineDir>[,<baselineDir2>]] [--pages /,/resume/]
 //                                       [--tolerance <0-255 per channel>] [--noise <px per screen>]
 //
 // Uses the Chrome already installed on this Mac through playwright-core (no browser download).
@@ -30,7 +30,9 @@ const PAGES = arg("--pages")?.split(",") ?? [
 ];
 const WIDTHS = [[1440, 900], [390, 844]];
 const THEMES = ["dark", "light"];
-const compare = arg("--compare") ? path.resolve(arg("--compare")) : null;
+// --compare takes one baseline dir or several, comma-separated: a screen passes if it matches any.
+// Several runs of the same baseline cover known two-state flickers (see docs/design-system/audit.md).
+const compare = arg("--compare") ? arg("--compare").split(",").map((d) => path.resolve(d)) : null;
 const tolerance = Number(arg("--tolerance") ?? 0);
 const noise = Number(arg("--noise") ?? 0);
 
@@ -48,54 +50,43 @@ const base = `http://127.0.0.1:${server.address().port}`;
 const browser = await chromium.launch({ channel: "chrome", args: ["--font-render-hinting=none", "--disable-gpu", "--force-color-profile=srgb", "--hide-scrollbars", "--disable-lcd-text"] });
 const slug = (p) => (p === "/" ? "home" : p.replace(/^\/|\/$/g, "").replace(/\.html$/, "").replace(/\//g, "-"));
 const failures = [];
-let shots = 0;
+let shots = 0, retried = 0;
+function diff(prevFile, file) {
+  const a = PNG.sync.read(fs.readFileSync(prevFile)), b = PNG.sync.read(fs.readFileSync(file));
+  if (a.width !== b.width || a.height !== b.height) return `size ${a.width}×${a.height} → ${b.width}×${b.height}`;
+  const d = new PNG({ width: a.width, height: a.height });
+  const n = pixelmatch(a.data, b.data, d.data, a.width, a.height, { threshold: tolerance / 255, includeAA: true });
+  if (n > noise) { fs.writeFileSync(file.replace(/\.png$/, ".diff.png"), PNG.sync.write(d)); return `${n} px changed`; }
+  return null;
+}
 
 for (const [w, h] of WIDTHS) for (const theme of THEMES) {
   const ctx = await browser.newContext({ viewport: { width: w, height: h }, deviceScaleFactor: 1, reducedMotion: "reduce", colorScheme: theme, hasTouch: w < 700 });
-  await ctx.addInitScript((t) => { try { localStorage.setItem("theme", t); } catch {} Math.random = () => 0.5; }, theme);
+  await ctx.addInitScript((t) => {
+    try { localStorage.setItem("theme", t); } catch {}
+    Math.random = () => 0.5;
+    // Reduced motion promises final states; switching transitions off from the first frame keeps
+    // a late hover/scroll/class change from being caught mid-transition (a 1 px flicker otherwise).
+    const css = "*,*::before,*::after{transition:none!important}";
+    const add = () => { const s = document.createElement("style"); s.textContent = css; document.documentElement.append(s); };
+    if (document.documentElement) add(); else document.addEventListener("DOMContentLoaded", add);
+  }, theme);
   for (const p of PAGES) {
-    const page = await ctx.newPage();
-    await page.goto(base + p, { waitUntil: "load", timeout: 60000 });
-    await page.waitForLoadState("networkidle", { timeout: 5000 }).catch(() => {});
-    await page.evaluate(async () => {
-      document.querySelectorAll("img[loading=lazy]").forEach((i) => (i.loading = "eager"));
-      for (let y = 0; y < document.documentElement.scrollHeight; y += 600) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 40)); }
-      await Promise.all([...document.images].map((i) => (i.complete ? 0 : new Promise((r) => { i.onload = i.onerror = r; }))));
-      await Promise.all([...document.querySelectorAll("video")].map((v) => new Promise((r) => {
-        v.pause(); v.removeAttribute("autoplay");
-        const done = () => { v.pause(); v.currentTime = 0; v.addEventListener("seeked", r, { once: true }); setTimeout(r, 1500); };
-        if (v.readyState >= 2) done(); else { v.preload = "auto"; v.addEventListener("loadeddata", done, { once: true }); v.load(); setTimeout(r, 5000); }
-      })));
-      await document.fonts.ready;
-      window.scrollTo(0, 0);
-    });
-    // Settle every scroll reveal in its final state. Transitions are switched off first, because
-    // reveal delays survive reduced motion and would otherwise catch some elements mid-flight.
-    await page.addStyleTag({ content: "*,*::before,*::after{animation-play-state:paused!important;caret-color:transparent!important}[data-reveal],[data-reveal]::before{transition:none!important}" });
-    await page.evaluate(() => {
-      document.querySelectorAll("[data-reveal]").forEach((e) => e.classList.add("is-revealed"));
-      // Entry animations end in their final frame; loops (logo, texture, marquee) rest at frame 0.
-      for (const a of document.getAnimations()) {
-        const t = a.effect?.getComputedTiming?.();
-        if (t && Number.isFinite(t.endTime)) a.finish(); else { a.pause(); a.currentTime = 0; }
-      }
-    });
-    await page.waitForTimeout(300);
+    let page = await load(ctx, base + p);
     const name = `${slug(p)}-${w}-${theme}.png`;
     const file = path.join(out, name);
     await capture(page, file);
     shots++;
     if (compare) {
-      const prev = path.join(compare, name);
-      if (!fs.existsSync(prev)) failures.push(`${name}: no baseline`);
+      const prevs = compare.map((d) => path.join(d, name)).filter((f) => fs.existsSync(f));
+      if (!prevs.length) failures.push(`${name}: no baseline`);
       else {
-        const a = PNG.sync.read(fs.readFileSync(prev)), b = PNG.sync.read(fs.readFileSync(file));
-        if (a.width !== b.width || a.height !== b.height) failures.push(`${name}: size ${a.width}×${a.height} → ${b.width}×${b.height}`);
-        else {
-          const d = new PNG({ width: a.width, height: a.height });
-          const n = pixelmatch(a.data, b.data, d.data, a.width, a.height, { threshold: tolerance / 255, includeAA: true });
-          if (n > noise) { failures.push(`${name}: ${n} px changed`); fs.writeFileSync(file.replace(/\.png$/, ".diff.png"), PNG.sync.write(d)); }
-        }
+        const diffAny = (file) => { let v = null; for (const prev of prevs) { v = diff(prev, file); if (!v) return null; } return v; };
+        // A real change reproduces on every capture; a timing flicker doesn't. A changed screen is
+        // reloaded and re-shot up to twice, and passes only if a re-shot matches the baseline exactly.
+        let verdict = diffAny(file);
+        for (let retry = 0; verdict && retry < 2; retry++) { await page.close(); page = await load(ctx, base + p); await capture(page, file); verdict = diffAny(file); if (!verdict) retried++; }
+        if (verdict) failures.push(`${name}: ${verdict}`);
       }
     }
     await page.close();
@@ -104,6 +95,39 @@ for (const [w, h] of WIDTHS) for (const theme of THEMES) {
 }
 await browser.close();
 server.close();
+
+// Load a page and settle it: lazy media loaded, videos at frame 0, reveals and entry animations
+// in their final state, loops at frame 0.
+async function load(ctx, url) {
+  const page = await ctx.newPage();
+  await page.goto(url, { waitUntil: "load", timeout: 60000 });
+  await page.waitForLoadState("networkidle", { timeout: 5000 }).catch(() => {});
+  await page.evaluate(async () => {
+    document.querySelectorAll("img[loading=lazy]").forEach((i) => (i.loading = "eager"));
+    for (let y = 0; y < document.documentElement.scrollHeight; y += 600) { window.scrollTo(0, y); await new Promise((r) => setTimeout(r, 40)); }
+    await Promise.all([...document.images].map((i) => (i.complete ? 0 : new Promise((r) => { i.onload = i.onerror = r; }))));
+    await Promise.all([...document.querySelectorAll("video")].map((v) => new Promise((r) => {
+      v.pause(); v.removeAttribute("autoplay");
+      const done = () => { v.pause(); v.currentTime = 0; v.addEventListener("seeked", r, { once: true }); setTimeout(r, 1500); };
+      if (v.readyState >= 2) done(); else { v.preload = "auto"; v.addEventListener("loadeddata", done, { once: true }); v.load(); setTimeout(r, 5000); }
+    })));
+    await document.fonts.ready;
+    window.scrollTo(0, 0);
+  });
+  // Settle every scroll reveal in its final state. Transitions are switched off first, because
+  // reveal delays survive reduced motion and would otherwise catch some elements mid-flight.
+  await page.addStyleTag({ content: "*,*::before,*::after{animation-play-state:paused!important;caret-color:transparent!important}[data-reveal],[data-reveal]::before{transition:none!important}" });
+  await page.evaluate(() => {
+    document.querySelectorAll("[data-reveal]").forEach((e) => e.classList.add("is-revealed"));
+    // Entry animations end in their final frame; loops (logo, texture, marquee) rest at frame 0.
+    for (const a of document.getAnimations()) {
+      const t = a.effect?.getComputedTiming?.();
+      if (t && Number.isFinite(t.endTime)) a.finish(); else { a.pause(); a.currentTime = 0; }
+    }
+  });
+  await page.waitForTimeout(300);
+  return page;
+}
 
 // Chrome can't capture more than 16,384 px in one go (the long case studies are ~25,000 px),
 // so tall pages are captured in 8,000 px slices and stitched.
@@ -145,4 +169,4 @@ async function settle(page) {
 
 if (!compare) console.log(`${shots} screenshots in ${path.relative(process.cwd(), out)}`);
 else if (failures.length) { console.log(`${failures.length} of ${shots} screens changed${tolerance || noise ? ` (tolerance ${tolerance}, noise ${noise})` : ""}:\n  ` + failures.join("\n  ")); process.exitCode = 1; }
-else console.log(`0 px changed on all ${shots} screens${tolerance || noise ? ` (tolerance ${tolerance}, noise ${noise})` : ""}`);
+else console.log(`0 px changed on all ${shots} screens${retried ? ` (${retried} matched on a re-shot)` : ""}${tolerance || noise ? ` (tolerance ${tolerance}, noise ${noise})` : ""}`);
