@@ -9,7 +9,7 @@
 <script>
   (function () {
     var d = new URLSearchParams(location.search).get("d");
-    if (!/^(paper|construction|print|tokens)$/.test(d || "")) d = "tokens";
+    if (!/^(paper|construction|print|tokens|window)$/.test(d || "")) d = "window";
     var r = document.documentElement;
     r.dataset.direction = d;
     r.classList.add("js");
@@ -43,7 +43,7 @@
 </header>
 
 <main id="main">
-  <section class="opener" aria-labelledby="case-title">
+  <section class="opener" aria-labelledby="case-title" data-scene="ecola" data-screen="/images/projects/ad-assets/ad-assets-thumbnail.png">
     <div class="container">
       <div class="opener-copy">
         <p class="eyebrow reveal">Case study 01 · 2022–present</p>
@@ -63,7 +63,7 @@
     </div>
   </section>
 
-  <article class="prose container">
+  <article class="prose container" data-scene="ecola" data-screen="/stills/plantbar.jpg">
     <h2>One system, three brands</h2>
     <p>I lead design for three cannabis brands: Asheville Dispensary, Plantbar and Nightshade. Each one has to look like itself. They're all designed from one shared Figma system, and the rule is simple: the structure is shared, and each brand brings its own identity.</p>
     <figure>

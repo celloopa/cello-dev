@@ -1,0 +1,186 @@
+/*
+ * Direction "window": the desk and window are pinned behind the page; content scrolls in front on
+ * plates. Rule: text never sits on scene art. It sits on the wall (the canvas color) or on an
+ * opaque plate, so it reads the same over every place, day or night.
+ */
+html[data-direction="window"] {
+  --win-l: 42vw;
+  --win-w: 54vw;
+  --win-t: 84px;
+  --win-h: 52vh;
+  --desk-t: calc(var(--win-t) + var(--win-h) + 4.5vh);
+  --col: calc(var(--win-l) - var(--layout-gutter) * 2.2);
+  --frame: color-mix(in srgb, var(--paper-100) 55%, #ffffff);
+  --frame-shadow: color-mix(in srgb, var(--frame) 80%, var(--ink-950));
+  --wood: var(--earth-500);
+  --wood-edge: var(--earth-600);
+  --shade: color-mix(in srgb, var(--paper-100) 80%, var(--earth-400));
+  --bg-plate: var(--bg-canvas);
+}
+@media (prefers-color-scheme: dark) {
+  html[data-direction="window"]:not([data-theme="light"]) {
+    --frame: color-mix(in srgb, var(--ink-950) 78%, var(--paper-200));
+    --frame-shadow: color-mix(in srgb, var(--ink-950) 88%, var(--paper-200));
+    --wood: color-mix(in srgb, var(--earth-600) 55%, var(--ink-950));
+    --wood-edge: color-mix(in srgb, var(--earth-600) 35%, var(--ink-950));
+    --shade: color-mix(in srgb, var(--ink-950) 70%, var(--earth-400));
+  }
+}
+html[data-direction="window"][data-theme="dark"] {
+  --frame: color-mix(in srgb, var(--ink-950) 78%, var(--paper-200));
+  --frame-shadow: color-mix(in srgb, var(--ink-950) 88%, var(--paper-200));
+  --wood: color-mix(in srgb, var(--earth-600) 55%, var(--ink-950));
+  --wood-edge: color-mix(in srgb, var(--earth-600) 35%, var(--ink-950));
+  --shade: color-mix(in srgb, var(--ink-950) 70%, var(--earth-400));
+}
+@media (width <= 900px) {
+  html[data-direction="window"] {
+    --win-l: var(--layout-gutter);
+    --win-w: calc(100vw - var(--layout-gutter) * 2);
+    --win-t: 72px;
+    --win-h: 34svh;
+    --desk-t: calc(var(--win-t) + var(--win-h) + 3svh);
+    --col: calc(100vw - var(--layout-gutter) * 2);
+  }
+}
+
+/* ---------- the room (fixed, decorative) ---------- */
+.room { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
+.room-window {
+  position: absolute;
+  left: var(--win-l); top: var(--win-t); width: var(--win-w); height: var(--win-h);
+  border: 14px solid var(--frame);
+  box-shadow: 12px 12px 0 var(--accent-ground);
+}
+.room-glass { position: absolute; inset: 0; overflow: hidden; background: #8fb7df; }
+.room-still svg, .room-gl { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.room-gl { opacity: 0; transition: opacity 700ms var(--ease-out); }
+html.gl-on .room-gl { opacity: 1; }
+.room-mullions {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, transparent calc(33.33% - 5px), var(--frame) 0 calc(33.33% + 5px), transparent 0),
+    linear-gradient(90deg, transparent calc(66.66% - 5px), var(--frame) 0 calc(66.66% + 5px), transparent 0),
+    linear-gradient(180deg, transparent calc(24% - 5px), var(--frame) 0 calc(24% + 5px), transparent 0);
+}
+.room-shade-roll { position: absolute; left: -14px; right: -14px; top: -14px; height: 22px; background: var(--frame-shadow); }
+.room-blind { position: absolute; inset: 0; overflow: hidden; }
+.room-blind-shade {
+  position: absolute; inset: 0;
+  transform: scaleY(0.04); transform-origin: top;
+  background: repeating-linear-gradient(180deg, var(--shade) 0 18px, var(--frame-shadow) 18px 20px);
+  border-bottom: 8px solid var(--frame-shadow);
+  transition: transform 560ms var(--ease-out);
+}
+.room-blind.is-down .room-blind-shade { transform: scaleY(1); transition-duration: 420ms; }
+.room-sill {
+  position: absolute;
+  left: calc(var(--win-l) - 28px); width: calc(var(--win-w) + 56px);
+  top: calc(var(--win-t) + var(--win-h) - 2px); height: 16px;
+  background: var(--frame);
+  box-shadow: 0 6px 0 var(--frame-shadow);
+}
+.room-desk { position: absolute; left: calc(var(--win-l) - 5vw); right: 0; top: var(--desk-t); bottom: 0; background: var(--wood); border-top: 8px solid var(--wood-edge); }
+.room-monitor {
+  position: absolute;
+  left: calc(var(--win-l) + var(--win-w) * 0.72);
+  width: min(calc(var(--win-w) * 0.4), 44vh);
+  aspect-ratio: 2.35;
+  bottom: calc(100vh - var(--desk-t) + 4.5vh);
+  transform: translateX(-50%);
+  border: 9px solid #101512;
+  border-radius: 4px;
+  background: #0b100d;
+  box-shadow: 10px 10px 0 color-mix(in srgb, #000 35%, transparent);
+}
+.room-screen { position: absolute; inset: 0; overflow: hidden; }
+.room-screen img { width: 100%; height: 100%; object-fit: cover; }
+.room-code { position: absolute; inset: 10% 8%; display: grid; gap: 7%; align-content: start; }
+.room-code i { display: block; height: 5px; background: color-mix(in srgb, var(--signal-500) 70%, #0b100d); border-radius: 1px; }
+.room-code i:nth-child(3n) { background: color-mix(in srgb, var(--paper-200) 55%, #0b100d); }
+.room-stand { position: absolute; left: 50%; top: 100%; width: 12%; height: 4.6vh; transform: translateX(-50%); background: #1c221f; }
+.room-things { position: absolute; left: calc(var(--win-l) - 2vw); width: calc(var(--win-w) + 4vw); top: calc(var(--desk-t) + 2vh); height: 22vh; overflow: visible; }
+.t-ink { fill: #151a17; }
+.t-key { fill: #ecebe6; }
+.t-keys rect { fill: #151a17; }
+.t-mini { fill: #b9bdc0; }
+.t-mug { fill: #f4f1ea; }
+.t-mug-handle { stroke: #f4f1ea; stroke-width: 6; }
+.t-coffee { fill: #3a2414; }
+
+.location-card {
+  position: fixed;
+  z-index: 0;
+  left: calc(var(--win-l) + 22px);
+  top: calc(var(--win-t) + var(--win-h) - 22px);
+  transform: translateY(-100%);
+  margin: 0;
+  display: flex; gap: var(--space-12);
+  padding: var(--space-8) var(--space-12);
+  background: var(--bg-plate);
+  border: var(--stroke-control) solid var(--border-strong);
+  font-size: var(--type-label); font-weight: 700; letter-spacing: var(--track-wide); text-transform: uppercase;
+}
+.location-card .lc-month { color: var(--text-muted); }
+html:not(.room-ready) .location-card { opacity: 0; }
+
+@media (width <= 900px) {
+  .room-shade-roll { height: 16px; }
+  .room-monitor { width: 44vw; bottom: calc(100svh - var(--desk-t) + 2svh); border-width: 5px; }
+  .room-things { display: none; }
+  .room-monitor { left: calc(var(--win-l) + var(--win-w) * 0.7); }
+  .room-desk { left: 0; bottom: auto; height: 4svh; }
+  .room-window { border-width: 9px; box-shadow: 8px 8px 0 var(--accent-ground); }
+  .location-card { left: calc(var(--win-l) + 12px); top: calc(var(--win-t) + 12px); transform: none; }
+}
+
+/* ---------- content in front, on plates ---------- */
+html[data-direction="window"] .hero-art,
+html[data-direction="window"] .poster-art::after { display: none; }
+html[data-direction="window"] main .container {
+  width: var(--col);
+  margin-left: var(--layout-gutter);
+  margin-right: 0;
+}
+html[data-direction="window"] .hero .container { grid-template-columns: 1fr; min-height: calc(100svh - 4rem); padding-block: var(--space-48); }
+html[data-direction="window"] .hero-name { font-size: clamp(3.5rem, 8.5vw, 9rem); }
+html[data-direction="window"] .site-header { background: color-mix(in srgb, var(--bg-canvas) 88%, transparent); }
+
+.plate,
+html[data-direction="window"] .poster,
+html[data-direction="window"] .log li {
+  background: var(--bg-plate);
+  border: var(--stroke-frame) solid var(--border-strong);
+  box-shadow: 10px 10px 0 var(--accent-ground);
+}
+html[data-direction="window"] .poster {
+  display: block;
+  min-height: 0;
+  padding: var(--space-24);
+  margin: 0 0 60vh;
+}
+html[data-direction="window"] .poster-art { margin-bottom: var(--space-24); }
+html[data-direction="window"] .work { padding-top: 30vh; }
+html[data-direction="window"] .work .section-title,
+html[data-direction="window"] .log .section-title {
+  display: inline-block; padding: var(--space-8) var(--space-16); background: var(--bg-plate); border: var(--stroke-frame) solid var(--border-strong);
+}
+html[data-direction="window"] .log ul { border: 0; display: grid; gap: 40vh; padding-bottom: 30vh; }
+html[data-direction="window"] .log a { grid-template-columns: 1fr; gap: var(--space-8); padding: var(--space-24); }
+html[data-direction="window"] .site-footer { background: var(--bg-plate); position: relative; }
+
+@media (width <= 900px) {
+  html[data-direction="window"] .hero .container { padding-top: calc(var(--win-h) + 3svh); min-height: auto; }
+  html[data-direction="window"] .poster { margin-bottom: 30svh; }
+  html[data-direction="window"] .work { padding-top: 20svh; }
+}
+
+/* The window direction keeps every content image visible (the 3D lives in the glass only). */
+html[data-direction="window"].gl-on [data-gl] > img,
+html[data-direction="window"].gl-on [data-gl] > svg { opacity: 1; }
+.room-code[hidden], .room-screen img[hidden] { display: none; }
+
+/* Case-study page: the opener reads on the wall; the window already shows the case study's place. */
+html[data-direction="window"] .opener .container { grid-template-columns: 1fr; min-height: calc(100svh - 4rem); }
+html[data-direction="window"] .brands { max-width: 34rem; }
+html[data-direction="window"] .prose { background: var(--bg-plate); border: var(--stroke-frame) solid var(--border-strong); padding: var(--space-32); margin-bottom: var(--space-96); }

@@ -36,3 +36,6 @@ pnpm-debug.log*
 # pi local/global extension artifacts
 .pi/
 generated/
+
+# rewrite exploration: private references (Cello's photos), never committed
+docs/rewrite/private/

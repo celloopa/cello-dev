@@ -10,7 +10,7 @@
   // Before paint: direction from ?d=, theme only if the visitor chose one (else the system decides).
   (function () {
     var d = new URLSearchParams(location.search).get("d");
-    if (!/^(paper|construction|print|tokens)$/.test(d || "")) d = "tokens";
+    if (!/^(paper|construction|print|tokens|window)$/.test(d || "")) d = "window";
     var r = document.documentElement;
     r.dataset.direction = d;
     r.classList.add("js");
@@ -44,7 +44,7 @@
 </header>
 
 <main id="main">
-  <section class="hero" aria-labelledby="hero-name">
+  <section class="hero" aria-labelledby="hero-name" data-scene="random">
     <div class="container">
       <div class="hero-copy">
         <p class="eyebrow reveal" style="--i:0">Product Designer &amp; Design Engineer</p>
@@ -63,7 +63,7 @@
     <div class="container">
       <h2 class="section-title reveal" id="work-title">Work</h2>
 
-      <article class="poster">
+      <article class="poster" data-scene="ecola" data-screen="/images/projects/ad-assets/ad-assets-thumbnail.png">
         <a class="poster-art keep-d" href="asheville.html" data-gl="poster" tabindex="-1" aria-hidden="true" style="view-transition-name: case-art">
           <img src="/images/projects/ad-assets/ad-assets-thumbnail.png" width="1200" height="630" alt="" decoding="async">
         </a>
@@ -75,7 +75,7 @@
         </div>
       </article>
 
-      <article class="poster">
+      <article class="poster" data-scene="ramona" data-screen="/images/projects/ghosted/v3/og.png">
         <a class="poster-art" href="https://cello.design/projects/ghosted/" data-gl="poster" tabindex="-1" aria-hidden="true">
           <img src="/images/projects/ghosted/v3/og.png" width="1200" height="630" alt="" loading="lazy" decoding="async">
         </a>
@@ -87,7 +87,7 @@
         </div>
       </article>
 
-      <article class="poster">
+      <article class="poster" data-scene="sauvie" data-screen="/images/projects/veg-avengers-thumbnail.png">
         <a class="poster-art" href="https://cello.design/projects/vegavengers/" data-gl="poster" tabindex="-1" aria-hidden="true">
           <img src="/images/projects/veg-avengers-thumbnail.png" width="1200" height="630" alt="" loading="lazy" decoding="async">
         </a>
@@ -99,7 +99,7 @@
         </div>
       </article>
 
-      <article class="poster">
+      <article class="poster" data-scene="mirror-lake" data-screen="/images/projects/daybreak/today.png">
         <a class="poster-art" href="https://cello.design/projects/daybreak/" data-gl="poster" tabindex="-1" aria-hidden="true">
           <img src="/images/projects/daybreak/today.png" width="1820" height="1519" alt="" loading="lazy" decoding="async">
         </a>
@@ -117,8 +117,8 @@
     <div class="container">
       <h2 class="section-title reveal" id="log-title">Log</h2>
       <ul>
-        <li><a href="https://cello.design/blog/designing-for-the-second-user/"><time datetime="2026-10-11">Oct 11, 2026</time><span class="log-title">Designing for the Second User</span><span aria-hidden="true">→</span></a></li>
-        <li><a href="https://cello.design/blog/programmatic-resumes-you-can-chat-with/"><time datetime="2026-10-08">Oct 8, 2026</time><span class="log-title">Programmatic Resumes You Can Chat With</span><span aria-hidden="true">→</span></a></li>
+        <li data-scene="over-hood" data-screen="/images/projects/ghosted/v3/tour-look.webp"><a href="https://cello.design/blog/designing-for-the-second-user/"><time datetime="2026-10-11">Oct 11, 2026</time><span class="log-title">Designing for the Second User</span><span aria-hidden="true">→</span></a></li>
+        <li data-scene="meadows-lift" data-screen="/images/projects/ghosted/v3/proposal.webp"><a href="https://cello.design/blog/programmatic-resumes-you-can-chat-with/"><time datetime="2026-10-08">Oct 8, 2026</time><span class="log-title">Programmatic Resumes You Can Chat With</span><span aria-hidden="true">→</span></a></li>
       </ul>
     </div>
   </section>
