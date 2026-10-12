@@ -47,6 +47,33 @@ below the window. The mark was already this scene: a sun rising behind a mountai
   6 · mullion 4 · sill. Today's hard offset plate becomes the sill. The location card (month ·
   season, place in Switchback, what's at this stop, the ink strip; never coordinates) is a must
   component for the rewrite and a later one for today's site, which has no places yet.
+- **I6. Today's site gets whatever maps onto it (2026-10-12).** The staged migration carries the
+  identity wherever today's site has a matching thing:
+  - Geist Mono loads for real, and National Park sets titles (visible stages 2a and 2b).
+  - The toggle and the docs say Day/Dusk.
+  - The window frame replaces offset frames in the components stage.
+  - The seasonal inks, `bg-plate`, Switchback and the location card are defined in tokens now but
+    wait for the rewrite, because today's site has no scenes or places.
+
+## Seasonal inks (I3, from the photos)
+
+Pixel colors from Cello's ten landscape photos, read without metadata, then flattened the way
+a WPA print simplifies a view (saturation ×1.35).
+
+| Season | sky | far | snow | forest | ground |
+|---|---|---|---|---|---|
+| June · Meadow | `#6a9de8` | `#365ea0` | `#e6eef6` | `#1c2c1d` | `#737741` |
+| July · Coast fog | `#bed4e3` | `#9aa7ab` | `#e2ecf1` | `#202118` | `#656b61` |
+| August · Dry gold | `#93c7fa` | `#8e9dad` | `#dae6f1` | `#2b3026` | `#9a7d47` |
+| September · High light | `#4885e3` | `#38618c` | `#d4dce4` | `#323f44` | `#7c6145` |
+| October · Storm sky | `#a1abbf` | `#717172` | `#c0cee4` | `#3c3c2c` | `#8b7b66` |
+
+Dusk is one rule rather than a second palette: each ink is mixed 60% toward Midnight Ink
+(`color-mix(in oklab, <ink> 40%, #001a11)`, the snow at 55%).
+
+## Status
+
+All six decided on 2026-10-12. `proposal.md` carries them as amendment A1.
 
 ## Seasonal inks (I3, from the photos)
 

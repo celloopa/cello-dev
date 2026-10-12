@@ -247,3 +247,51 @@ Coordination: the rewrite-exploration branch (`claude/rewrite-exploration`) read
 4. The guards (§8), including running them inside `pnpm build`.
 5. The family layer v0.1.0 contents (§9).
 6. The stage order (§10).
+
+
+## Amendment A1: the identity revision (2026-10-12)
+
+Source: `identity.md`, decisions I1–I6. Each was asked one at a time and answered by Cello.
+Everything above still holds unless this section changes it.
+
+**Themes (I2).** The two modes are named **Day** (the light values) and **Dusk** (the dark
+values). The values themselves don't change. Rule: text only sits on Day or Dusk surfaces or on a
+plate, never on scene art.
+
+**New semantic role:**
+
+| Role | Day | Dusk | Use when · don't |
+|---|---|---|---|
+| `bg-plate` | paper-100 at 100% | ink-950 at 100% | An opaque panel carrying text over a scene or image. Never translucent: if a scene shows through, it isn't a plate. |
+
+**New art group (I3).** `art/season/<month>/{sky, far, snow, forest, ground}` at the values in
+`identity.md`, plus the dusk rule: `color-mix(in oklab, <ink> 40%, ink-950)`, with snow at 55%.
+Art never carries text or action, and it's exempt from text contrast because of the rule above.
+These tokens aren't semantic roles.
+
+**Type (I4).** Two display families are added; Geist Mono stays the body face:
+
+| Family | Roles | License |
+|---|---|---|
+| National Park (variable weight) | `display-hero`, `page-title`, `section-title` | OFL 1.1, self-hosted |
+| Switchback (Regular; Rough for weathered art) | new role `place-name`, used on location cards and scenes | OFL 1.1, self-hosted from github.com/national-park-service/fonts |
+
+`place-name`: for the name of a place, never for the name of a project or a page. Its size and
+tracking get set when the location card is built.
+
+**Shape (I5).** The window frame replaces the offset frame as the framing primitive: frame 6px ·
+mullion 4px · sill. `shadow-offset` becomes the sill plate. In §7, Media + OffsetFrame becomes
+**Media + WindowFrame**. LocationCard is added as a later-tier component for today's site and a
+must-tier one for the rewrite.
+
+**Mark (I1).** It reads as C + green sun + Mt Hood and belongs to cello.dev. Daybreak was told.
+
+**Stages (I6).** Stage 2 splits in two:
+- **2a.** Geist Mono loads (visible: the face).
+- **2b.** National Park sets titles (visible: the titles).
+
+Stage 3 also renames the toggle and the docs to Day/Dusk. Stage 6 builds WindowFrame in place of
+OffsetFrame (visible: the frames). The art tokens, `bg-plate`, `place-name` and LocationCard are
+defined but stay unused until the rewrite.
+
+**Family layer.** No change. The display faces belong to cello.dev, not to the family layer.
