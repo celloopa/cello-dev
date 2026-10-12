@@ -436,3 +436,15 @@ the made-up job-search persona; ghosted-app `web/public/landing/proposal.webp`),
 Ghosted's demo personas (ghosted-app `web/src/demo/personas.ts`, on its worktrees): four use cases ×
 an English person and a Spanish twin, all invented. Any further Ghosted visuals in the rewrite come
 from those personas, never real resumes or tester data.
+
+### Q22. The landscape gets built (2026-10-12)
+
+Cello: "rewrite only for now, keep site for now but allow me to see a demo of the new so we can start
+ironing it out and cutover this week", then "i like the landscape concept … its time to do it and
+make it fit in the design system".
+→ **D1 scope: rewrite only.** Today's site keeps I2/I5/`bg-plate` and stays as it is until cutover.
+→ **The landscape direction is picked as the build.** It is built on the design system (tokens,
+roles, components; DS-HANDOFF proposals go in as an amendment), not as a separate prototype look.
+→ **Cutover target: this week**, after Cello irons it out on a demo. Today's site stays live meanwhile.
+The build is now a part for the "Ship cello.dev" conductor; the design-system session
+("Continue the cello.dev design-system migration") owns how the proposals enter the system.
