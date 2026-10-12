@@ -343,6 +343,28 @@ approved.** It applies only to the rewrite and stays off today's site until Cell
 6. **Place label** (the `place-name` role in Switchback) and the **Admire** control.
 7. **Scene selector**: storyboarded, not built.
 
+How the landscape build (`claude/landscape-build`, S0–S1) encodes this, for review:
+- **Tokens**, group "Scene" in `tokens.json`, each with a use-line: focus recipe `--focus-blur`,
+  `--focus-brightness`, `--focus-saturate` (+ `-mobile`), `--focus-scale`, and the composed
+  `--focus-filter`/`--focus-filter-mobile` for the DOM still; copy scrim `--scrim-copy` 64%,
+  `--scrim-copy-mobile` 70%, `--scrim-copy-ecola`/`-ecola-mobile` 85%/80%, with
+  `--scrim-copy-fill` and `--scrim-copy-mask`; the ink atmosphere `--atmos-arrive` (+ mobile),
+  `--atmos-view`, `--atmos-read`; signature motion `--motion-arrival-stagger` 120ms,
+  `--motion-arrival-overshoot` 0.107 (≈11%, damping .58), `--motion-focus` 550ms,
+  `--motion-scene-fade` 700ms, `--motion-handoff` 400ms; `--scene-bar` and the copy insets
+  `--scene-copy-start/end/bottom`. The WebGL renderer reads the same tokens at runtime.
+- **Motion caps are not tokens.** They live in each scene's manifest (`public/scenes/<id>/scene.json`),
+  because they're measured per cut; still-first scenes get 0 travel.
+- **Type and color** it needed beyond the list above: `--type-display-scene`, `--type-hero-line`,
+  `--type-place-name`, `--type-place-label`, `--text-on-art`, `--text-on-art-muted`,
+  `--font-place-rough`. Switchback is declared from `tokens.json` ("faces"), so a family still only
+  enters through the type tokens.
+- **The contrast conflict (item 4) in the build:** scene pages use the rule here, and today's
+  pages keep I3 until Cello picks. Every line of text over art is measured against the
+  99th-percentile brightest pixel under it, at 1440 and 390, in Day and Dusk, WebGL and the still,
+  in arrival, Admire and reading (`docs/landscape/CHECKS.md`). A line that fails gets a stronger
+  scrim or an on-art color, never a weaker check.
+
 What the migration owes the rewrite:
 - National Park self-hosted (stage 2b).
 - Switchback self-hosted, which can land with 2b as a defined but unused face.
