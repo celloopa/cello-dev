@@ -18,23 +18,25 @@ highlights:
   - Built the editorial dashboard two non-technical editors use daily, from trimmed rich-text controls to per-photo credit tooling
   - Shipped an AI freshness checker that proposes content changes as drafts, so nothing goes live without an editor's approval
   - Designed the publish pipeline so a CMS outage can never break the public site
+summary:
+  - label: Problem
+    value: "The festival data behind vegavengers.com was rotting: dates changed, links died, and every fix was a developer task. Of 115 festivals with unconfirmed dates, 26 had dead links."
+  - label: Role
+    value: "Solo product designer and design engineer: the content model, the editorial workflow, the admin experience, and the automation around them."
+  - label: Key decision
+    value: "Put approval where editors already work. The AI checker writes ordinary Payload drafts, so its proposals look like a colleague's unpublished edit, evidence attached."
+  - label: Shipped
+    value: "A live Payload CMS that two non-technical editors run day to day, publish-triggered rebuilds that survive a CMS outage, and an AI checker that proposes but never publishes."
+  - label: Tools
+    value: "Payload 3, Next.js, PostgreSQL, Cloudflare R2, Astro, React, TypeScript, self-hosted on Coolify."
 featured: true
 complete: true
-order: 2
+order: 3
 ---
 
-import CaseMeta from '@/components/CaseMeta.astro';
 import FlowDiagram from '@/components/FlowDiagram.astro';
 import MediaFull from '@/components/media/MediaFull.astro';
 import MediaTwo from '@/components/media/MediaTwo.astro';
-
-<CaseMeta items={[
-  { label: "Role", value: "Solo product designer and design engineer: content model, editorial workflow, admin experience, and the automation around them." },
-  { label: "Users", value: "Two non-technical editors who own the content, and visitors searching for vegan festivals and animal sanctuaries worldwide." },
-  { label: "Constraints", value: "Real-world event data that arrives as messy free text, a nonprofit budget on self-hosted infrastructure, and editors who should never need a developer to publish." },
-  { label: "Tools", value: "Payload 3, Next.js, PostgreSQL, Cloudflare R2, Astro, React, TypeScript, self-hosted on Coolify." },
-  { label: "Outcome", value: "A live production platform: the CMS is the system of record, editors publish independently, and an AI checker keeps festival data fresh under human approval." }
-]} />
 
 ## Context
 

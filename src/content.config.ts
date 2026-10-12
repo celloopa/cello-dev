@@ -25,6 +25,8 @@ const projects = defineCollection({
 		techStack: z.array(z.string()),
 		role: z.string(),
 		highlights: z.array(z.string()),
+		// The case study's opening: problem, role, key decision, shipped result (rendered above the section links)
+		summary: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
 		featured: z.boolean().default(false),
 		complete: z.boolean().default(false),
 		order: z.number().default(0),

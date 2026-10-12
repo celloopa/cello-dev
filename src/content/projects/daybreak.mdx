@@ -16,45 +16,25 @@ highlights:
   - "Defined validation, idempotency, ownership, and receipt rules so every proposed change can be applied, refused, or explained honestly"
   - "Kept source-owned Calendar events fixed while allowing editable Daybreak-owned plans to adapt around them"
   - "Used live dogfooding to turn late starts, carry-over errors, and sync ambiguity into concrete product and trust improvements"
+summary:
+  - label: Problem
+    value: "Planning tools ask you to maintain them before they're useful, and an AI agent added to one is only trustworthy if it can't quietly get around the UI's rules."
+  - label: Role
+    value: "Solo product designer-builder, and the first user. I defined the product model, interaction rules, safety boundaries, visual direction and the native build."
+  - label: Key decision
+    value: "The agent gets no private write path. People and the AI change the plan through the same typed operations, and every change returns a receipt."
+  - label: Shipped
+    value: "Signed Mac and iPhone builds with private CloudKit sync, 42 typed operations (27 open to the agent, 15 deliberately not), in daily personal use. Not validated with other users yet."
+  - label: Tools
+    value: "SwiftUI, SwiftData, CloudKit, EventKit, MapKit, XCTest, Codex CLI."
 featured: true
 complete: true
 order: 4
 ---
 
-import CaseMeta from "@/components/CaseMeta.astro";
 import FlowDiagram from "@/components/FlowDiagram.astro";
 import MediaFull from "@/components/media/MediaFull.astro";
 import MediaTwo from "@/components/media/MediaTwo.astro";
-
-<CaseMeta
-  items={[
-    {
-      label: "Role",
-      value:
-        "Solo product designer-builder. I defined the product model, interaction rules, safety boundaries, visual direction, and native implementation.",
-    },
-    {
-      label: "User",
-      value:
-        "I am the first user. Daybreak is a working personal product under active dogfooding, not a claim of broad customer validation.",
-    },
-    {
-      label: "Constraints",
-      value:
-        "Local-first privacy, Mac and iPhone parity, private CloudKit sync, Calendar ownership, unreliable AI output, and a plan that must always remain hand-editable.",
-    },
-    {
-      label: "Tools",
-      value:
-        "SwiftUI, SwiftData, CloudKit, EventKit, MapKit, XCTest, Codex CLI.",
-    },
-    {
-      label: "Outcome",
-      value:
-        "Signed Mac and physical-iPhone builds with private sync, unattended planning workflows, and an agent that changes the plan only through the same typed operations as the UI.",
-    },
-  ]}
-/>
 
 ## Context
 

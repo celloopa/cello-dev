@@ -1,6 +1,6 @@
 ---
 title: Ghosted
-description: A live resume you edit by chatting. Every AI change arrives as a yellow proposal you keep or reject, each job gets a Fit report and research with real links, and a first-time job seeker can build a resume in an interview with the ghost. In private beta, shaped by its testers since day one.
+description: Tokens, component guidance and AI-assisted implementation, in a live resume you edit by chatting. Every AI change arrives as a yellow proposal you keep or reject. In private beta, shaped by its testers since day one.
 image: /images/projects/ghosted/v3/swipe-keep.webm
 ogImage: /images/projects/ghosted/v3/og.png
 url: https://ghosted.cello.design
@@ -24,29 +24,26 @@ highlights:
   - "Cut the AI's input tokens for a chat edit by 86% (25,470 to 3,621) by replacing a command-line wrapper with a direct request, and made replies stream in"
   - Designed a guided walkthrough over the real app, plus a look-don't-touch version for testers who already had work in it
   - Built openly with AI. I own the product decisions; coding agents carried out much of the implementation
+summary:
+  - label: Problem
+    value: "Job applications are repetitive and high-stakes. An AI can make tailoring a resume much faster, but only if you can see exactly what it changed and undo any of it."
+  - label: Role
+    value: "Product designer and owner. I set the flows, the product model, the brand, the design system, and every call about where the AI stops. Coding agents built most of it from my specs and decisions."
+  - label: Key decision
+    value: "Every AI change is a proposal, highlighted in yellow on the real page for the person to keep or reject. Yellow means only that, and the design system is built around protecting that one rule."
+  - label: Shipped
+    value: "Live at ghosted.cello.design in private beta since October 8, 2026, with 70 production releases in its first four days. A design system of 59 primitive and 43 semantic color tokens, eight components in code, and checks that keep coding agents inside it."
+  - label: Tools
+    value: "React, Vite, TypeScript, typst.ts, Node, Hono, SQLite, Codex (GPT on my ChatGPT subscription), Firecrawl, Figma."
 featured: true
 complete: true
-order: 3
+order: 2
 ---
 
-import CaseMeta from '@/components/CaseMeta.astro';
 import MediaFull from '@/components/media/MediaFull.astro';
 import MediaTwo from '@/components/media/MediaTwo.astro';
 import MediaThree from '@/components/media/MediaThree.astro';
 
-<CaseMeta items={[
-  { label: "Role", value: "Product designer and owner. I set the flows, the product model, the brand, and every call about where the AI stops. Coding agents built most of it from my specs and decisions." },
-  { label: "Users", value: "Invited testers tailoring real applications, including my own application to Nike and a high school student writing his first resume. CVs work in English and Spanish." },
-  { label: "Constraints", value: "Model output that can't be trusted blindly, resumes that must stay true to the person, PDFs that have to survive applicant-tracking systems, testers who've never seen an API key, and a phone screen." },
-  { label: "Tools", value: "React, Vite, TypeScript, typst.ts, Node, Hono, SQLite, Codex (GPT on my ChatGPT subscription), Firecrawl, Figma." },
-  { label: "Outcome", value: "Live at ghosted.cello.design in private beta. 70 production releases logged in its first four days, an identity built from the product's own highlight, and a phone layout that puts the resume 289 px higher on the first screen." }
-]} />
-
-## The Problem
-
-Job applications are repetitive, high-stakes and personal. You run the same tailoring loop dozens of times, and one invented claim can cost you the interview. An AI can make the loop much faster, but only if you can see exactly what it did to your resume and undo any of it.
-
-That's the question Ghosted keeps answering: how much should the model do, and how does the person stay in control while it does it?
 
 ## The Product: A Resume You Can Talk To
 
@@ -67,6 +64,69 @@ Ghosted is built around one surface: a live resume canvas with a chat beside it.
 - **In Spanish, for Latin America.** A CV follows the posting's language (its headings, dates and A4 paper in Peru), so someone in Lima can apply locally in Spanish and to a US remote job in English. My family in Peru reviews the wording before it opens to everyone.
 
 The [launch post](/blog/programmatic-resumes-you-can-chat-with) walks through the idea screen by screen.
+
+## The Design System
+
+Three days into building, the app had drifted: 18 font sizes, 19 ways of writing a border radius, 26 shadows, and five different left edges on one page. Coding agents wrote most of that, one reasonable edit at a time. On October 11 I had it counted, chose the system from a proposal of options in one sitting, and moved the app onto it the same day. Screenshot checks on every screen, in light and dark, proved that each step changed only what it was meant to.
+
+<MediaTwo items={[
+  { src: "/images/projects/ghosted/design-system/fit-five-edges.webp", alt: "The Fit tab with a guide line drawn at each of its five different left edges", caption: "Before: Fit had five left edges." },
+  { src: "/images/projects/ghosted/design-system/fit-one-edge.webp", alt: "The Fit tab after the move, with everything on one left edge", caption: "After: one left edge, from the layout tokens." }
+]} />
+
+### Tokens that carry their own rule
+
+One file, `tokens.json`, is the source of truth: 59 primitive colors, 43 semantic color tokens in Light and Dark, 14 spacing steps, 7 radii, and 8 type sizes in three Text size modes. Nothing uses a primitive directly. Every semantic token has a one-line rule, and that line is the guidance. Two of them:
+
+**`ai/highlight`** · Light `#ffe58a` · Dark `#ffe58a`
+- **Its usage line:** "Only 'the AI changed this' (plus the logo and the celebration highlighter). Always a background under ink; same in both themes."
+- **Never:** a button, text, selection, focus or progress.
+
+**`action/primary`** · Light `#2f4bd1` · Dark `#7d93ff`
+- **Its usage line:** "Primary buttons and links. Blue only ever means an action or focus."
+- **Never:** selection, progress, or "the AI changed this".
+
+The same line shows up in the generated guide, in the Figma variable's description, and next to the value in code, so a designer in Figma and an agent in code read the same rule.
+
+### Components with every state
+
+There are eight components in `web/src/ui`: `Button`, `ButtonLink`, `LinkButton`, `IconButton`, `Chip`, `Field`, `EmptyState` and `Dialog`.
+
+- **Button** replaced about 48 class combinations. Variants: Primary, Secondary, Quiet, Danger and Danger solid, in two sizes. States: default, hover, pressed, focus, selected, disabled and busy. One Primary per view, and never a yellow button.
+- **Field** is a label, the control (input, textarea or select), and a hint or an error under it. Before the system, no field in the app had an error state. Now an error turns the border red, replaces the hint with what to do next, and is announced: the control gets `aria-invalid` and points at the message.
+
+<MediaFull
+  src="/images/projects/ghosted/design-system/research-buttons-fields.webp"
+  alt="The Research tab after the move: one blue Apply now button, Find links and Find new topics as secondary buttons, and three cards, each with a labelled 'Your note' field and a hint under it"
+  caption="Research after the move: one Primary (Apply now), Secondary for Find links and Find new topics, and every note is a Field with a label and a hint. (Fictional job.)"
+/>
+
+<MediaFull
+  src="/images/projects/ghosted/design-system/dialog-danger.webp"
+  alt="A dialog asking 'Delete the look Classic?' with a red Delete button and a Cancel button"
+  caption="Danger solid is only for confirming something destructive, inside the one Dialog. It replaced the browser's confirm() box."
+/>
+
+### One named exception
+
+The highlight yellow stays a raw `#ffe58a` in the resume template. The resume is drawn by Typst, not CSS, and the app finds the highlights on the rendered page by that exact fill. So the literal stays, and the guide names it as an exception and says why. Everywhere else, it's `ai/highlight`.
+
+### How a change gets in
+
+1. **Edit `tokens.json` first:** the value, the alias, or the usage line.
+2. **Run `pnpm tokens`.** It writes the CSS, the motion values and the guide's token tables.
+3. **Then update Figma.** Never Figma first. If the two disagree, the JSON wins.
+4. **`pnpm check` runs before every push.** It's in the instructions every agent session reads, not a git hook. It fails when a generated file is stale, a new raw hex color appears, a button is styled by hand instead of coming from `web/src/ui`, a pill skips `<Chip>`, a modal skips `<Dialog>`, or code calls the browser's `confirm()`, `alert()` or `prompt()`.
+
+This is what an agent sees when it hand-writes a button:
+
+```
+web/src/App.tsx:407: use <Button>, <LinkButton> or <IconButton> from web/src/ui, not a classed <button>
+```
+
+The message names the fix, because the reader is usually an agent, and an agent that's told which component to use will use it.
+
+To be clear about scale: this system's users are coding agents and Ghosted's testers. No partner teams use it yet, and the system itself hasn't been usability-tested.
 
 ## Before You Apply: Fit And Research
 
@@ -106,13 +166,20 @@ A few decisions that show how I think about it:
 
 Ghosted went live to testers on October 8. The first tester used it that day, and her job notes were open in an interview the next morning. From then on, testers set the order of work. Here's what they said and what changed.
 
+This is watching and listening to a handful of testers, not formal research. One example, start to finish:
+
+- **What I saw.** On a call, Kim dismissed the new "your base resume changed" bar, then couldn't find her way back to it.
+- **What I decided.** Closing a bar shouldn't lose anything, and bringing changes in should be a choice, not all or nothing.
+- **What changed.** Dismiss became "Not now". A "Base updated" button reopens the bar, and "Choose what to bring in" lists the changes in the chat so you pick which ones to keep.
+
+The rest of what testers said, and what changed:
+
 - **Jacky couldn't load her resume.** Her PDF had gone from Google Docs through "Microsoft Print to PDF", so the letters were drawn as shapes with no text to extract, and the app failed silently. Picture-only PDFs are now read with OCR (about 4 seconds for three pages), and a failed upload says why, right under the button.
 - **Kim's test call** produced the longest list:
   - The page break looked like a spacing bug, so each page is now its own sheet labeled "Page 1 of 2".
   - She wanted to know when messages were sent, so chat has timestamps.
   - A half-typed message vanished when she switched jobs. Drafts now survive switching and reloading.
   - The job agent added an Operations skills group that never reached her base resume, so the next job started without it. Her idea was that the job "sends a request" to the base. That became two-way sync: copies notice when their source changed and can bring the change in, and new facts from a job chat go to the base as requests you can apply or decline.
-  - She dismissed the new "your base changed" bar and lost the way back. Dismiss became "Not now", with a "Base updated" button that reopens it, plus "Choose what to bring in", which lists the changes in the chat and lets you pick.
   - She asked for formatted job notes. They shipped that evening.
   - She proposed naming downloads by role, since "it's obviously for the company you're applying to." Downloads are now "First Last — Role.pdf".
 - **Sam asked for templates** after a demo, ones that apply with the live reload. That became Looks: five presets drawn from your own resume, applied live, with "Save as a look" for your own fine-tuning.
@@ -189,14 +256,6 @@ Speed counts as focus too. The Looks grid renders each look from your own resume
   caption="Style lives on the base resume and applies everywhere. Each look is your own resume, rendered live."
 />
 
-## A Leaner, Faster AI
-
-Ghosted's AI runs on my ChatGPT subscription. At first, every request went through the Codex command-line tool. When I added usage counts on October 10, I could finally see what that cost: the tool added about 17,000 tokens of its own instructions to every call, before Ghosted said anything. I asked whether we could cut it, because "every request is crazy."
-
-Now the server calls the same Codex endpoint directly, with Ghosted's own short instructions. A job-chat edit went from 25,470 input tokens to 3,621, 86% less. Chat replies now stream in as they're written, so you see the answer start instead of waiting for all of it. Resume edits still arrive whole at the end, highlighted for review, because a half-written proposal isn't something you can keep or reject.
-
-The same day, testers got an Effort picker next to Send (Low by default, then Medium and High for bigger edits) and their own usage under Your data: requests, tokens, and what it would have cost at API prices, which they aren't charged. The direct request is also the first step toward running Ghosted on a model of its own one day.
-
 ## Showing People Around
 
 On October 11 I asked for the tutorial to be rebuilt so the ghost would "hold your hand and explain things while trusting your intelligence," the way Adobe's hands-on tutorials and Logic's first run do. The tour runs in the real app, not a slideshow. The rest of the screen dims, the control that matters sits in a cutout with a blue ring, and the ghost talks from a card beside it. Every step has Next and Dismiss, and doing the real thing counts as Next.
@@ -220,6 +279,14 @@ Testers never see the landing page, but everyone else does first, and a page of 
 One fictional resume performs the whole product as you scroll, in five chapters: paste a link, review the proposal as it swipes in, keep or reject it, check fit and research, and track the job on the board. At the end of each chapter it hands you the controls. You can press Tailor, click a line to edit it, burst the highlights into sparks with Keep or break them into shards with Reject, switch Fit and Research, and drag the card to Applied. If you just keep scrolling, each step plays by itself.
 
 It's a showcase, so it gets its own motion tier, written down as a decision: no animation library, no scroll hijacking (snap points only catch a fling, so a trackpad can't skip a chapter), a Pause motion toggle for WCAG 2.2.2, and five still panels with reduced motion. Splitting the signed-in app into its own bundle took the landing's JavaScript from 288 kB to 81 kB gzipped. On mobile, Lighthouse performance went from 93 to 98 and page weight from 978 KiB to 349 KiB (the live page against the new build, measured locally). A phone audit afterwards found taps landing on faded layers and scrolling that re-styled about 300 elements every frame. Moving the scrubbed parts onto one scroll timeline cut frames over 33 ms from 21 to 3 on a throttled desktop, and every hands-on moment now works on a phone.
+
+## A Leaner, Faster AI
+
+Ghosted's AI runs on my ChatGPT subscription. At first, every request went through the Codex command-line tool. When I added usage counts on October 10, I could finally see what that cost: the tool added about 17,000 tokens of its own instructions to every call, before Ghosted said anything. I asked whether we could cut it, because "every request is crazy."
+
+Now the server calls the same Codex endpoint directly, with Ghosted's own short instructions. A job-chat edit went from 25,470 input tokens to 3,621, 86% less. Chat replies now stream in as they're written, so you see the answer start instead of waiting for all of it. Resume edits still arrive whole at the end, highlighted for review, because a half-written proposal isn't something you can keep or reject.
+
+The same day, testers got an Effort picker next to Send (Low by default, then Medium and High for bigger edits) and their own usage under Your data: requests, tokens, and what it would have cost at API prices, which they aren't charged. The direct request is also the first step toward running Ghosted on a model of its own one day.
 
 ## By The Numbers
 

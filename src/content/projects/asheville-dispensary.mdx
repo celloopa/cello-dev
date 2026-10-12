@@ -1,6 +1,6 @@
 ---
 title: Asheville Dispensary
-description: Leading design for three brands, and building the in-house AI automations that turn approved design work into finished assets — starting with a product-to-social video pipeline that replaced 3–5 hours of manual editing a week.
+description: One shared system, three distinct brands. I lead design for Asheville Dispensary, Plantbar and Nightshade on a shared Figma system, then build the tools that carry it into everyday assets, like a video pipeline that replaced 3–5 hours of manual editing a week.
 image: /images/projects/ad-assets/hero.webm
 ogImage: /images/projects/ad-assets/ad-assets-thumbnail.png
 techStack:
@@ -19,33 +19,56 @@ highlights:
   - Put the only step that reaches other people behind quiet hours and a completeness gate, after the one day it sent too early
   - Cut an idle day's running cost from about $12 to about $0.30 by letting a script decide whether a model needs to run at all
   - Built the internal asset directory the automations draw from — one searchable, multi-brand home for approved assets
+summary:
+  - label: Problem
+    value: "Three brands, one designer. Asheville Dispensary, Plantbar and Nightshade each need to look like themselves across web, print and packaging, and most of my hours were going into turning approved work into the small assets a retail business needs every week."
+  - label: Role
+    value: "Design lead for all three brands. I own the shared Figma system, design the work, then design and build the tools that make what's derived from it."
+  - label: Key decision
+    value: "Share the structure, swap the identity. The brands share components, spacing and layouts, and each brings its own look. Then code does the repeatable work, and a person approves anything the public sees."
+  - label: Shipped
+    value: "A multi-brand asset directory on one component system, and a video pipeline in production since July 2026: 37 drops delivered end to end, no failed runs, and 3–5 hours of manual work a week handed back."
+  - label: Tools
+    value: "Figma, Claude agents, TypeScript, zsh, ffmpeg, Slack and Asana APIs, React, Tailwind CSS, Supabase."
 featured: true
 complete: true
 order: 1
 ---
 
-import CaseMeta from '@/components/CaseMeta.astro';
 import FlowDiagram from '@/components/FlowDiagram.astro';
 import MediaFull from '@/components/media/MediaFull.astro';
 import MediaTwo from '@/components/media/MediaTwo.astro';
+import MediaThree from '@/components/media/MediaThree.astro';
 
-<CaseMeta items={[
-  { label: "Role", value: "Design lead for three brands. I design the work, then design and build the systems that produce what's derived from it." },
-  { label: "Users", value: "Me first, then the marketing, ecommerce, and operations teammates who review, approve, and post what these systems make." },
-  { label: "Constraints", value: "One designer across three brands, product pages that change until launch morning, drops announced before dawn, and a social channel where a wrong post is public." },
-  { label: "Tools", value: "Figma, Claude agents, TypeScript, zsh, ffmpeg, Slack and Asana APIs, React, Tailwind CSS, Supabase." },
-  { label: "Outcome", value: "A video pipeline in production since July 2026: 37 drops delivered end to end, no failed runs, and 3–5 hours of manual work a week handed back." }
+
+## One System, Three Brands
+
+I lead design for three cannabis brands: Asheville Dispensary, Plantbar and Nightshade. Each one has to look like itself. They're all designed from one shared Figma system, and the rule is simple: the structure is shared, and each brand brings its own identity.
+
+<MediaThree items={[
+  { src: "/images/projects/ad-assets/ad-portal.webm", alt: "The Asheville Dispensary portal of the asset directory, with asset categories and search", caption: "Asheville Dispensary" },
+  { src: "/images/projects/ad-assets/plantbar.webm", alt: "The same portal layout themed for Plantbar", caption: "Plantbar" },
+  { src: "/images/projects/ad-assets/nightshade.webm", alt: "The same portal layout themed for Nightshade", caption: "Nightshade" }
 ]} />
 
-## Context
+The same portal in all three brands: one layout, one set of components, one search. Each brand's color comes from its own tokens.
 
-I lead design for three cannabis brands — Asheville Dispensary, Plantbar, and Nightshade — across the web store, print, and packaging. Most of the craft is in the original work: a packaging system, a card template, a brand's type and color. Most of the hours were going somewhere else: turning that approved work into the many small, near-identical assets a retail business needs every week.
+**Stays shared across the brands:**
+- Spacing and layout patterns.
+- Components: cards, category tiles, search and forms.
+- How things are organized: brands, categories, tags.
 
-That second kind of work is where I build. Each system follows the same split. Code does everything it can do exactly. A model gets the narrowest piece that actually needs judgment. And a person approves anything that reaches other people.
+**Changes with each brand:** its color, set by the brand's own tokens (CSS custom properties in code).
+
+### From Figma to production
+
+- **The drop card.** The social story card is a component in the Figma system. The pipeline below fills its slots (strain, tier, sale wording, photo) and never touches the layout, so every card that goes out is the approved design.
+- **The web store.** I design UI components and ship them into WordPress as custom PHP and JavaScript plugins, so the mockup and what's live stay the same thing.
+- **The asset directory.** One searchable home for the brands' approved assets, which used to live across Drive folders, bookmarks and memory. Its portals share one component system and change identity through CSS custom properties, not duplicated code. Admins who aren't developers manage brands, categories and links themselves, and the data lives in Supabase with a JSON fallback so the directory works even when the database doesn't.
 
 ## The Flower Drop Pipeline
 
-Two or three times a week, the ecommerce team announces a flower drop: a few strains going live on the site that morning. Each one needs a branded story card and a short vertical video for social. By hand, that meant pulling each product's photo and video from the site, duplicating last week's card in Figma and swapping the image, strain name, and tier, bringing everything into Premiere to replace the masked clips, exporting, then creating the Asana task, attaching files, and posting for approval in Slack. Seven tools, 3–5 hours a week, usually on mornings when something else was also urgent.
+The system's biggest payoff so far is a tool built on it. Two or three times a week the ecommerce team announces a flower drop, and each strain needs a branded story card and a short vertical video. By hand that took seven tools and 3–5 hours a week. The approach is the same in everything I build here: code does everything it can do exactly, a model gets the narrow piece that needs judgment, and a person approves anything that reaches other people.
 
 <MediaFull
   src="/images/projects/asheville/product-page.webp"
@@ -102,26 +125,6 @@ Cost reporting reads the agents' own transcripts after the fact, so nothing in t
 ### Record
 
 From July 9 to October 8, 2026: 69 archived runs, 37 drops delivered end to end, and no failed runs. The partial runs are the go-live guard holding media for pages that weren't live yet, which is the guard doing its job.
-
-## The Asset Foundation
-
-Automations are only as good as the approved material they draw from. Before any of this, I designed and built the Ad Asset Directory: one searchable home for brand assets that used to live across Drive folders, bookmarks, and memory.
-
-<MediaFull
-  src="/images/projects/ad-assets/ad-portal.webm"
-  alt="Asheville Dispensary portal with organized asset categories"
-  caption="Each brand portal shows common categories first, and search handles the 'where was that file' problem."
-/>
-
-- **Explicit structure.** Brands, categories, links, and tags became real objects, so assets can be found by browsing or by search.
-- **One shell, three brands.** Portals share one component system and change identity through CSS custom properties rather than duplicated code.
-- **Search built for memory.** Client-side fuzzy search over titles, descriptions, brands, categories, and tags, with `!brand` and `#category` filters and a keyboard-first command palette.
-- **Self-service upkeep.** Non-technical admins manage brands, categories, and links themselves. Data lives in Supabase with a JSON fallback, so the directory stays usable if the database doesn't.
-
-<MediaTwo items={[
-  { src: "/images/projects/ad-assets/plantbar.webm", alt: "Plantbar portal using brand-specific theming", caption: "Plantbar: same product shell, its own identity through tokens." },
-  { src: "/images/projects/ad-assets/admin.webm", alt: "Admin dashboard with asset-management controls", caption: "The admin side makes upkeep a visible workflow instead of a favor." }
-]} />
 
 ## What's Next, At Its Real Stage
 
