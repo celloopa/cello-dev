@@ -1,6 +1,8 @@
 # Sauvie scene run — 2026-10-12
 
-Status: local three-plane cut candidate and Figma placement complete; exported round trip blocked. Aesthetic approval pending.
+Status: local three-plane cut candidate, Figma placement and native round trip complete; people removed from the art 2026-10-12 (see the last section; the hay wagons stay, empty). Aesthetic approval pending.
+
+Note: the sections from Inputs through Parent native export verification record the original cut (with people in the art) and are kept as history; the original master and expansion prompts, and the wording about people in them, were superseded by the people-removal section at the end. Current files are the people-free ones.
 
 ## Inputs and invariants
 
@@ -59,7 +61,7 @@ Artifacts: `scene.json`, `figma.json`, `figma-upload.json`, `figma-roundtrip.jso
 ## Limits for composition
 
 - The treated cloud contours and ground details differ from the photograph; this remains an AI style-treatment candidate, not a literal deterministic shader or approved final art.
-- Sky/clouds remain one plane; wagons/people remain grounded with farmland. Separate cloud depth or moving wagons would require intentional recutting.
+- Sky/clouds remain one plane; the (now empty) wagons remain grounded with farmland. Separate cloud depth or moving wagons would require intentional recutting.
 - Overscan and viewport clipping must hide the translated outer edges. Use small motion bounds above until larger disocclusion is reviewed.
 - Mobile motion remains proposed: gentle entry/release settle and small scroll depth, with a still reduced-motion presentation. No hover, orientation-permission or swipe-only navigation assumptions.
 - No project/location pairing is asserted. No production runtime changes, commits, push or deployment.
@@ -67,3 +69,33 @@ Artifacts: `scene.json`, `figma.json`, `figma-upload.json`, `figma-roundtrip.jso
 ## Parent native export verification
 
 Native isolated PNG renders recovered the Figma round trip after the empty202 download response. All three planes match source dimensions, alpha and visible RGB exactly; native restack maxdiff0. WebPs now derive from those renders. See `figma-roundtrip.json`. This changes export provenance, not visual or motion approval.
+
+
+## People removal — 2026-10-12
+
+Decision (Cello, verbatim): "remove the sauvie people too". The repo is public; people never appear in the public art. The treatment held a group of riders on two coupled hay wagons (center-right, heads rising above the tree line) and a standing group of three beside the fence post, left of the wagons. All of them were **removed** (not shrunk). The two wagons are **kept, empty**: with the riders gone the wagon beds, side rails, wheels and hitch still read as parked farm wagons on the track, so no further change was needed. The small yellow vehicle on the far horizon is not a person and stays.
+
+### Prompt 1 — people removal on the locked portrait master (codex-images edits, ref: master.png, 1 call after one transport retry, output 1086 × 1448 `nofigure-raw-v1.png`)
+
+Use case: precise-object-edit. Edit target image 1 is a finished screenprint-style landscape illustration of a stormy sky over a ploughed field, a dirt track, a leaning wooden fence post and a hay wagon train. Remove ALL people from the picture: (1) every passenger sitting on the two hay wagons at center-right, so the wagons are left completely empty (bare wooden wagon beds with their side rails, wheels and hitch, no passengers, no bales added), and (2) the small group of standing figures on the field just left of the wagons, between the fence post and the wagons, including their shadows. Fill ONLY the space those people occupied by naturally continuing the surroundings: the wagon beds and rails continue empty, the ploughed ochre field and muted brown earth continue behind them, with the same flat screenprint inks, same paper grain, same irregular solid edges and same lighting direction. The result must contain no person, no silhouette, no ghost outline, no new people, no animals, no new objects, no text. The hay wagons themselves, the small yellow vehicle on the far horizon, the fence post, the grass, the track, the trees, the hills and the entire storm sky must stay exactly as they are: same aspect ratio 3:4, same crop, same pixel positions.
+
+Result: people gone, wagons empty, no ghosts, no new people or text. The edit re-rendered the whole frame (mean abs RGB diff vs the locked portrait 8.9/255 over the frame, 5.2 in the top half; ground grain differs everywhere), so it is **not** used as the master. `tools/cut-sauvie.py --rebuild-master <backup-dir>` blends it into the locked portrait only inside a feathered patch: the change map (25 px smoothed diff > 22) is trusted only for the two components that sit where the people were (riders: about x 539-744, y 830-904; standing group: about x 396-457, y 873-950), dilated 28 px and feathered with a 9 px Gaussian (87,151 px, bbox x 332-808, y 766-1014 in portrait px, about 5.6% of the portrait). Outside the patch the new portrait is pixel-identical to the previous one (max diff **0**). Full-size and 2x inspection of the patch (both former positions and seams): no people, no ghost silhouettes, no text, seams invisible; the wagon beds, rails and wheels continue cleanly and the field behind them continues.
+
+### Wide master rebuild
+
+New portrait pasted into the same bounds [543, 0, 1629, 1448] of the previous wide master. Center crop vs new portrait max diff **0**; outpainted sides (x < 543, x >= 1629) vs previous wide master max diff **0**. The invented sides are unchanged. Sauvie does have an expansion, so this step applied. The pre-removal masters and planes are kept outside the repo; the pre-removal WebPs remain in git history.
+
+### Prompt 2 — land matte on the people-free wide (ref: 1536 × 1024 resize of the new master-wide.png, output 1536 × 1024 `land-raw-v2.png`)
+
+CUTTING MATTE on the exact source grid of this landscape 3:2 Sauvie screenprint. Keep ALL land from its real irregular skyline downward: distant hills, tree line, fields, dirt track, the two empty hay wagons, fence post, grass and foreground earth. Replace ONLY every sky and cloud pixel above the actual hills/tree tops with perfectly flat #FF00FF magenta, no grain in magenta. Preserve exact original irregular skyline silhouette, positions, scale and all source land art. There are no people in this picture and none may be added. No redraw, zoom, crop, or new objects; same canvas.
+
+The old land matte carried the riders' heads as skyline bumps over the tree line, so it was regenerated. The new matte is used only inside the former-people zone [850, 730, 1400, 1040] (wide source px); the previously inspected matte `land-raw.png` is kept elsewhere. The near matte (`near-raw.png`: bank and fence post only), the hidden-ground plate `clean.png` and the sky fill `sky-raw.png` carried no people and are reused (viewed to confirm).
+
+### Cut and checks
+
+- Restack vs new master-wide: max diff **0**, mean **0.0**. Tested motion unchanged: far ±2, near ±5 source px; isolated alphas, motion-left/right, post-motion-detail (regenerated, the old one still showed the standing group), crop-desktop (1440 × 900) and crop-mobile (390 × 844, center .53) re-inspected: empty wagons, no head or figure remnant in any plane, no gap at the former positions.
+- Changed vs the previous planes: sky 0 alpha px, 18,266 visible RGB px (bbox x 858-1421, y 785-867, hidden-sky continuation under the old riders' heads); far 880 alpha px, 40,905 RGB px (x 877-1399, y 794-990); near 0 alpha px, 2,881 RGB px (x 901-1024, y 896-996, the post's surroundings).
+- New plane sha256 (local): sky `b534a443f957e5760331e37043a1e346fbd3f8cdaee74b53f1e08e258ff2c0d4`, far `82ce5f8c7370b77463330b9c09c721546a75801409f61b60d0a7f90cd26df1f8`, near `f003be47b98c7ed4ba4c8e3aa1200bfbbfad6d043d4a2a08fcca5cb21bccf34b`; native Figma PNG sha256: see `figma-roundtrip.json`.
+- Figma (file BHwjRNFmaMra4MUhsSwUXC, Scenes page 1:48): fills replaced on the existing rectangles master-wide 19:10, portrait 19:20, sky 19:14, far 19:15, near 19:16 (raw PNG, image/png, fresh single-use URLs one at a time, all HTTP 200; new image hashes in `figma-upload.json`). Caption 19:5 updated. Native isolated renders (get_screenshot contentsOnly, maxDimension = source long edge, URL download worked): sky/far/near 2172 × 1448, alpha diff 0, visible RGB diff 0 vs local PNGs, native restack vs master diff 0; master-wide and portrait renders RGB diff 0. Section screenshot (19:3) inspected: empty wagons, no people. WebPs re-derived from the native PNGs by `tools/verify-figma-cuts.py sauvie`; master.webp / master-wide.webp re-encoded by the rebuild step.
+- Before/after review: `people-removed-review.jpg` (local, git-ignored; its left half still shows the people, so do not publish it).
+- Review sheets in `storyboards/arrival-v3/` regenerated 2026-10-12 from the people-free masters (see STORYBOARD.md).

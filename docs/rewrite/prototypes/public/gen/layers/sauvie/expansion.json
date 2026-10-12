@@ -10,5 +10,15 @@
     1448
   ],
   "center_max_diff": 0,
-  "expanded_sides": "AI invented continuation, not documented geography"
+  "sides_max_diff_vs_previous_wide": 0,
+  "portrait_outside_patch_max_diff_vs_previous_portrait": 0,
+  "patch_pixels": 87151,
+  "patch_bbox_portrait_px": [
+    332,
+    766,
+    808,
+    1014
+  ],
+  "expanded_sides": "AI invented continuation, not documented geography (unchanged by the people removal)",
+  "note": "portrait edited to remove the wagon riders and the standing group (patch region only); wide master rebuilt by pasting it into the same bounds"
 }

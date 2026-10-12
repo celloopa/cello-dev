@@ -9,7 +9,7 @@
       ],
       "alphaMaxDiff": 0,
       "visibleRgbMaxDiff": 0,
-      "pngSha256": "6a9bb65a6ed3402d88fa8c256eed5f51e82d3cc2e3e8006a3ae7da7b37bf29d6"
+      "pngSha256": "b0af93c896f018f9abeae5fc79ed20dfd204f53cf106a40ab8ce549d345ff005"
     },
     "far": {
       "size": [
@@ -18,7 +18,7 @@
       ],
       "alphaMaxDiff": 0,
       "visibleRgbMaxDiff": 0,
-      "pngSha256": "b21e10b2babe725a571bb304777660902972164961f9c33aefa134b758f753ce"
+      "pngSha256": "75974eae1d0c80a89b6dd7917369e4d77a38afac4306c2b139cd0e29a96c775e"
     },
     "near": {
       "size": [
@@ -27,7 +27,7 @@
       ],
       "alphaMaxDiff": 0,
       "visibleRgbMaxDiff": 0,
-      "pngSha256": "5084ea07f5491b3e8826a094c6310da1d8248dc4f3e75315fcabb58f0ba2fe6f"
+      "pngSha256": "aeacd14f1215754070a2d22ce38e33bdf12698e5e332d7b962cce7cef3eb1c6e"
     }
   },
   "restackRgbMaxDiff": 0,
@@ -35,5 +35,17 @@
     0.0,
     0.0,
     0.0
-  ]
+  ],
+  "peopleRemoval": {
+    "date": "2026-10-12",
+    "masterWideRenderVsLocal": {
+      "rgbMaxDiff": 0,
+      "alphaMin": 255
+    },
+    "portraitRenderVsLocal": {
+      "rgbMaxDiff": 0,
+      "alphaMin": 255
+    },
+    "note": "native renders re-taken after the people-removal re-upload (get_screenshot contentsOnly, maxDimension = source long edge, image URL download worked)"
+  }
 }

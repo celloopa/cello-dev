@@ -109,14 +109,14 @@ Eight individual agents completed Meadows, Ramona, Over Hood, Sauvie, Moss Falls
 | Ecola | 4 | Only far1/mid4/near6 source px inspected; larger travel needs fill cleanup |
 | Meadows | 4 | Only far1/mid3/near5 source px inspected |
 | Ramona | 3 | Only forest2/cascade4 source px inspected; waterfall/basalt remain together |
-| Sauvie | 3 | Only land2/foreground5 source px inspected; people/wagons stay with land |
+| Sauvie | 3 | Only land2/foreground5 source px inspected; the hay wagons (now empty) stay with land |
 | Bald Mountain | 3 | Only mountain1/trail4 source px inspected; exact trail unconfirmed |
 | Over Hood | 3 | Still preferred: wing edge ghost at5sourcepx |
 | Moss Falls | 3 | Still preferred: foreground hidden-fill halos |
 | Meadows Lift | 3 | Still preferred: thin cable kinks; mobile mountain crop excludes nearest chairs |
 | Salmon Ridge | 3 | Still preferred: visible outpaint join/edge residue; location/month unconfirmed |
 
-People were removed from Moss Falls, Bald Mountain and Salmon Ridge on 2026-10-12 (Cello's decision, GRILL Q21) by masked edits on the locked portrait masters; all three were re-cut and their native Figma round trips are exact.
+People were removed from Moss Falls, Bald Mountain, Salmon Ridge and Sauvie on 2026-10-12 (Cello's decision, GRILL Q21; Sauvie: "remove the sauvie people too") by masked edits on the locked portrait masters; all four were re-cut and their native Figma round trips are exact. Sauvie's two hay wagons stay, empty.
 
 **Style verdict:** palette and grain broadly relate, but foliage/rock simplification varies; Moss Falls, Bald Mountain and aerial detail can read more photographic than the Mirror Lake anchor. The batch is candidate art, not a finished visual identity. Before expanding production motion, review these side by side and decide whether to refine the treatment or evaluate a deterministic screenprint shader. No actual shader has been selected or implemented.
 

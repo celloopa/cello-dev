@@ -56,5 +56,42 @@
     "imageHash": "d410eb22c676e4cdc3237f70d407f1f1d482009c",
     "status": "image fill verified in Figma"
   },
-  "validation": "All five image fills, full-grid dimensions/origins and cutting-table screenshot inspected"
+  "validation": "All five image fills, full-grid dimensions/origins and cutting-table screenshot inspected",
+  "peopleRemovalReupload": {
+    "date": "2026-10-12",
+    "note": "fills replaced on the existing rectangles, raw PNG, image/png, fresh single-use URLs one at a time, all HTTP 200",
+    "uploads": [
+      {
+        "name": "master-wide",
+        "node": "19:10",
+        "imageHash": "9d9cb65f819f276eb84f214f88b3d99821b9d463",
+        "sizeBytes": 5550297
+      },
+      {
+        "name": "master",
+        "node": "19:20",
+        "imageHash": "c1a14bdfb0ad10f99ba015aad93766f8ca6c4fb4",
+        "sizeBytes": 2947567
+      },
+      {
+        "name": "sky",
+        "node": "19:14",
+        "imageHash": "6aba270f7d9858d3f67d747f6710bdfa05d3fbdc",
+        "sizeBytes": 5157800
+      },
+      {
+        "name": "far",
+        "node": "19:15",
+        "imageHash": "c7336644092ca3b50f0d2c782557434078da3d5d",
+        "sizeBytes": 5850751
+      },
+      {
+        "name": "near",
+        "node": "19:16",
+        "imageHash": "d8460d6b58fafbc738eb3db9ace495496af7fede",
+        "sizeBytes": 6207635
+      }
+    ],
+    "caption": "19:5 text updated to mention people removed and the verified round trip"
+  }
 }

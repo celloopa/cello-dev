@@ -1,5 +1,5 @@
 {
-  "status": "candidate; aesthetic selection pending",
+  "status": "candidate; people removed 2026-10-12; aesthetic selection pending",
   "source_size": [
     2172,
     1448
@@ -18,7 +18,7 @@
   "layers": [
     {
       "name": "sky",
-      "sha256": "7148a90a4874744062d68e7ebb1da84b92dc8768f30c31d0c025ddc3a21382e9",
+      "sha256": "b534a443f957e5760331e37043a1e346fbd3f8cdaee74b53f1e08e258ff2c0d4",
       "alpha_extrema": [
         255,
         255
@@ -26,7 +26,7 @@
     },
     {
       "name": "far",
-      "sha256": "66a7d619a500dc5b0eebba3a26a661f4347ace7c5ec6736960da92221a878da1",
+      "sha256": "82ce5f8c7370b77463330b9c09c721546a75801409f61b60d0a7f90cd26df1f8",
       "alpha_extrema": [
         0,
         255
@@ -34,7 +34,7 @@
     },
     {
       "name": "near",
-      "sha256": "bfba48a9c2f6772f0b1b36d7a0fc51e58802313b4218b4fa4f732e95118b6dbc",
+      "sha256": "f003be47b98c7ed4ba4c8e3aa1200bfbbfad6d043d4a2a08fcca5cb21bccf34b",
       "alpha_extrema": [
         0,
         255
@@ -43,8 +43,64 @@
   ],
   "limitations": [
     "AI mattes may drift at fine skyline and grass edges; inspect isolated and movement proofs",
-    "Sky/clouds are one plane; wagons/people stay attached to farmland",
+    "Sky/clouds are one plane; the empty wagons stay attached to farmland",
     "Large parallax needs additional hidden-fill review",
     "Overscan/viewport clipping required to hide translated outer image edges"
-  ]
+  ],
+  "peopleRemoval": {
+    "date": "2026-10-12",
+    "decision": "Cello: \"remove the sauvie people too\"",
+    "action": "removed (not shrunk): all riders on both hay wagons (two coupled wagons) and the standing group of three beside the fence post; the hay wagons are kept, empty",
+    "method": "one image edit of the locked portrait master, blended only inside a feathered patch around the former people; wide master rebuilt by pasting it into the same bounds; land matte regenerated inside the former-people zone only",
+    "patchBboxPortraitPx": [
+      332,
+      766,
+      808,
+      1014
+    ],
+    "pastBackups": "pre-removal masters and planes kept outside the repo; pre-removal WebPs are in git history",
+    "restackVsNewMaster": {
+      "maxDiff": 0,
+      "meanDiff": 0.0
+    },
+    "changedVsPreviousPlanes": {
+      "sky": {
+        "alphaPx": 0,
+        "visibleRgbPx": 18266,
+        "bbox": [
+          858,
+          785,
+          1421,
+          867
+        ]
+      },
+      "far": {
+        "alphaPx": 880,
+        "visibleRgbPx": 40905,
+        "bbox": [
+          877,
+          794,
+          1399,
+          990
+        ]
+      },
+      "near": {
+        "alphaPx": 0,
+        "visibleRgbPx": 2881,
+        "bbox": [
+          901,
+          896,
+          1024,
+          996
+        ]
+      }
+    },
+    "matteZoneSourcePx": [
+      850,
+      730,
+      1400,
+      1040
+    ],
+    "note": "land matte regenerated from the people-free wide (land-raw-v2.png) and used only inside the zone; land-raw.png / near-raw.png / clean.png / sky-raw.png reused elsewhere"
+  }
 }

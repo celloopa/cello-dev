@@ -102,7 +102,7 @@
         "far": "19:15",
         "near": "19:16"
       },
-      "exportStatus": "native isolated PNG roundtrip verified",
+      "exportStatus": "native isolated PNG roundtrip verified (re-verified 2026-10-12 after people removal; node IDs unchanged)",
       "exportTo": "docs/rewrite/prototypes/public/gen/layers/sauvie/figma/<name>.png"
     },
     "moss-falls": {
