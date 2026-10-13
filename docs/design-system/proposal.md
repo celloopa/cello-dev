@@ -388,6 +388,19 @@ How the landscape build (`claude/landscape-build`, S0–S2) encodes this, for re
   cover) and **StoryEnd** (the next story, then the previous one and the index; storyboard
   frame 08). Text on small labels over art uses `--text-on-art-muted`; anything else small and
   green (CaseMeta, FlowDiagram, table heads, quotes, inline code) sits on `bg-plate` (A1).
+- **Indexes, /card and 404 (S3).** SceneLayout `focus` (html.scene-focus-page) keeps an index
+  page's scene in the focus recipe from the first paint, like a reading page, with the bar left in
+  the exploring context. Reading and index pages now paint their focused still at first paint and
+  the settled renderer takes over without a visible change (the Slow 4G LCP fix). **SceneSelector**
+  (item 7) is built: /projects and /blog list today's stories with the swatch of their place
+  (`pnpm scenes:derive` flattens each scene's layers into a swatch, and the case-study scenes into
+  a web-size picture and a 9:16 phone crop); on /projects, hover or focus brings the place in
+  behind the list, focused. /card is the event landing page: the name and the two actions over
+  Mirror Lake's arrival, then each case study over its own place, revealed by scrolling (a window
+  onto a fixed picture, settling from `--focus-scale` to rest along a scroll timeline, never under
+  reduced motion). One new token, `--type-display-card` (the full name on one line from 769px), and
+  one shared keyframe, `sceneSettle`. The A1 art inks (`--art-<month>-*`) appear for the first
+  time, as each /card panel's placeholder while its picture loads.
 
 What the migration owes the rewrite:
 - National Park self-hosted (stage 2b).
