@@ -94,3 +94,5 @@ at 0 travel until the "raise scene motion caps" cleanup task.
   - /about SEO (title, description, canonical, OG image that resolves). Optional: fix the canonicals
     for /resume, /design-system and /watchlist, which point at home, and add the missing trailing slash.
   - Privacy grep from the local patterns file on the squashed tree; D2/D3 eye check of new artifacts.
+
+**Queue (Cello via the rig orchestrator, 2026-10-13):** heavyweight priority is Rig → Daybreak → cello-dev → AD Hub, with Ghosted in short light shipping windows. Start a chapters stage only when `rig` is OK/BUSY **and** no Rig or Daybreak heavy work is waiting. This is not a build or release approval. Never use native Archive on sessions or worktrees that hold unique or unfinished work (it removes managed checkouts).
