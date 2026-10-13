@@ -817,3 +817,192 @@ Padding the list by the ring's 9px would fix it; it's a layout change, so it's l
 - **Console:** zero errors and zero warnings across all 1,222 stops per run and all 12 screens.
 - `pnpm build`: 0 errors, 0 warnings, 0 hints (107 files); `tokens --check` clean, baseline
   unchanged (55).
+
+---
+
+# Home: the place behind the part in focus (2026-10-13)
+
+Cello: "when you scroll down from the hero i wanted the background to change to their respective
+one instead of the hero background just dimmed". Same setup: a production build served statically
+on this Mac, headless installed Chrome through `playwright-core` with the GPU on (so WebGL runs),
+and the reduced-motion runs with `reducedMotion: "reduce"`. The baseline for every before/after
+is dcbed21, built in this worktree. Shots: `shots/home-focus/` (JPEG q82). The scratch scripts
+are not committed.
+
+## How it works
+
+- **One backdrop layer, shared.** Scene gets `backdrops` (scene ids) and renders an empty
+  `.scene-backdrop` layer between the canvas and the reading atmosphere. SceneLayout puts each
+  place's reading still (`read.webp`: id, src, size, framing) in a JSON script after the footer,
+  and `scenery.js` builds one item per place, with no `src` until it's needed. Nothing about the
+  places comes before the hero's copy in the HTML, and no still is fetched at first paint.
+- **Which place.** While reading, the part on the reading line brings its place in. That's the
+  nearest `[data-scene-stop]` or `[data-scene-backdrop]` to 45% down the screen, the same measure
+  that sets the bar's title. A part with no place of its own (the Work header) shows the page's
+  scene. On a page with backdrops, the reading line slides to the bottom edge over the last
+  half-screen of scroll, so the short parts at the end (Let's Talk, then the footer) each get a turn.
+- **Keyboard.** A Tab that lands in a part pins it (its place and the bar) while the part is on
+  screen. The pin holds until the reader moves some other way: a key other than Tab, the pointer,
+  the wheel or a touch.
+- **The swap.** The new place fades in on top of the one showing, from transparent, over
+  `--motion-scene-fade` (700 ms) on `--ease-out`. Once it's in, the places under it drop at once.
+  The page's scene never shows between two places. Going back to the page's scene, the top place
+  fades out. Under reduced motion, the reduced-motion contract makes the swap a cut.
+- **The look.** Each still is under the focus recipe (`--focus-filter`, `--focus-filter-mobile`
+  on phones, `--focus-scale`) and the same `--atmos-read` as the scene. In Dusk with WebGL on (the
+  scene in the Dusk grade), each still also gets **`--atmos-dusk`**, a new Scene token: ink-950 at
+  60%, the grade's darkening as ink. It's matched on Mirror Lake while reading: under the token,
+  the brightest 1% of pixels is 0.023 (1440) and 0.018 (390) relative luminance, against 0.024
+  and 0.017 in WebGL Dusk. Under the still (no WebGL, so Day art in both themes) the places stay
+  Day art too.
+- **WebGL.** The renderer is untouched and draws only home's own scene. It settles focused and
+  stops drawing (0 frames) under the stills, and it's there again for the Work header and the footer.
+- **Loading.** The stills start loading after the first screen is complete (the page has loaded
+  and the renderer has drawn, or none is expected) or at the first scroll, whichever comes first.
+  Then each still loads as its part comes within one screen below. This is /card's panel gate,
+  moved out to `lib/scene/lazy.js` and shared.
+- **Pairings** (`scene-pairings.json`). The case studies use `projects`. The new `homeSections`
+  covers the rest: How I Build → Meadows Lift, About → Bald Mountain, Let's Talk → Ramona, and
+  the footer → Mirror Lake (home's own scene, bookending the hero). `homeSection()` validates the
+  ids the same way as the project pairings. Swapping a place is a one-line change.
+- **/projects** now uses the same layer: the hovered or focused story's place cross-fades in
+  (before, it faded out and then in). It loads the 14–46 KB reading still instead of the
+  135–313 KB flattened copy.
+
+## Each part's place (1440×900 and 390×844, Day and Dusk, WebGL and the still)
+
+Swept down the page 30 px at a time, then one shot at the middle of each part's range after
+1.1 s to settle. **72 of 72 parts right** (9 parts × 2 widths × 2 themes × 2 motion modes), with
+the bar matching each time. Each sweep has exactly **8 place changes**, one per boundary, with
+no flicking back and forth.
+
+| Part | Place | 1440 range (scrollY) | 390 range |
+|---|---|---|---|
+| Hero, Work header ("Selected Case Studies") | Mirror Lake (WebGL) | 0–750 | 0–810 |
+| Asheville Dispensary | Over Hood | 780–1410 | 840–1470 |
+| Ghosted | Ecola | 1440–2070 | 1500–2070 |
+| VegAvengers Marketing | Sauvie Island | 2100–2700 | 2100–2700 |
+| Daybreak | Mt Hood Meadows | 2730–3420 | 2730–3330 |
+| How I Build | Meadows Lift | 3450–3960 | 3360–4320 |
+| About | Bald Mountain | 3990–4110 | 4350–4680 |
+| Let's Talk | Ramona Falls | 4140–4290 | 4710–4890 |
+| Footer (the bar still says "Let's Talk") | Mirror Lake | 4320–4425 (the end) | 4920–5085 (the end) |
+
+Shots: `{1440,390}-{day,dusk}-NN-<part>.jpg` (36), plus the still as
+`{1440,390}-day-reduced-NN-<part>.jpg` (18). The still is Day art in both themes, so its Dusk
+shots would match the Day ones.
+
+## The swap, frame by frame (1440, Asheville → Ghosted, both stills loaded)
+
+| | WebGL | Reduced motion |
+|---|---|---|
+| Ecola fully in | 514 ms (0.56 at 103 ms, 0.86 at 220 ms, 0.98 at 420 ms: the house curve over 700 ms) | 9 ms (a cut) |
+| Over Hood dropped | 781 ms (under Ecola, so never seen) | 60 ms |
+| Lowest coverage of the base scene, any frame | **1.000** (Mirror Lake never shows between them) | 1.000 |
+| Renderer | requested, settled, 0 frames under the stills | never requested |
+
+## Loading (phone 390, 4× CPU, cache off)
+
+| | Fast 4G | Slow 4G |
+|---|---|---|
+| LCP (the hero summary) | 0.63 s | 1.78 s |
+| First still requested (Over Hood, 15 KB) | 2.22 s | 11.48 s |
+| The other stills | each as its part nears; every one had arrived before its part reached the line, scrolling 60 px per 120 ms | same |
+| Requests | 7 stills, one request each, **0 duplicates** | same |
+
+The backdrops request nothing before load. The first still waits for the first screen to be
+complete, and goes then only because Asheville is within a screen of the fold. All seven stills
+together: 208 KB.
+
+## Performance (home, phone 390×844, DevTools presets, 4× CPU, cache off, median of 7)
+
+| Profile | dcbed21 | Now | CLS (max), before → now |
+|---|---|---|---|
+| Fast 4G (8.1 Mbps, 165 ms) | LCP 0.552 s | **0.552 s** | 0 → 0 |
+| Slow 4G (1.44 Mbps, 562.5 ms) | LCP 1.776 s | **1.780 s** | 0 → 0 |
+
+The LCP element is the hero summary in every run of both builds.
+
+Found and fixed on the way. With the seven backdrop items inside the Scene, which comes before the
+hero's copy in the HTML, Slow 4G was 1.784 s against 1.768 s (7 runs each). A copy of the page
+with only that markup taken out came back to 1.772 s, so the places moved to JSON after the footer
+(`c3e4483`).
+
+Weight on home (gzip): HTML 12.27 → 12.48 KB, CSS 8.67 → 8.75 KB, and the scene's first-paint JS
+2.6 → 3.7 KB (the backdrop layer and the lazy gate). There's no new request: `lazy.js` ships in
+the scene's chunk, and /card takes it from there too.
+
+## Text over art: contrast (S1's measure)
+
+The measure is S1's. Every text line in `main` from the Work list down is checked against the
+99th-percentile brightest pixel under it:
+
+- **Lines:** each text node's Range client rects. Text on its own fill (the green buttons), media
+  and the footer are excluded.
+- **Background:** the same screen with the text, its link rules and the tag borders hidden. Text
+  colors are read through a canvas.
+- **Positions:** every 30% of the viewport across each part's scroll range, ends included, after
+  1 s to settle.
+
+The table gives the lowest **small / large** ratio for each part's place:
+
+| Place (part on the line) | 1440 Dusk | 1440 Day | 390 Dusk | 390 Day |
+|---|---|---|---|---|
+| Mirror Lake (Work header) | 12.70 / 5.70 | 8.08 / 3.60 | 13.53 / 6.15 | 9.58 / 4.40 |
+| Over Hood (Asheville) | 11.74 / 6.20 | 7.74 / 4.71 | 12.81 / 6.62 | 9.67 / 5.69 |
+| Ecola (Ghosted) | 11.47 / 12.49 | 7.47 / 8.13 | 12.35 / 13.45 | 9.12 / 9.82 |
+| Sauvie Island (VegAvengers) | 11.46 / 12.58 | 7.33 / 8.17 | 12.18 / 12.90 | 8.69 / 9.34 |
+| Mt Hood Meadows (Daybreak) | 12.96 / 6.56 | 10.81 / 5.57 | 13.27 / 6.64 | 9.49 / 5.78 |
+| Meadows Lift (How I Build) | 11.74 / 6.16 | 7.71 / 4.47 | 13.07 / 6.69 | 10.05 / 5.88 |
+| Bald Mountain (About) | 11.71 / 5.87 | 7.79 / 4.00 | 12.51 / 6.18 | 9.39 / 4.66 |
+| Ramona Falls (Let's Talk) | 12.45 / 6.49 | 7.94 / 5.39 | 13.27 / 6.18 | 9.60 / 4.60 |
+| Mirror Lake (footer) | 12.21 / 5.61 | 7.72 / 3.54 | 13.21 / 6.16 | 9.58 / 4.40 |
+
+That's WebGL. The still (reduced motion; Day and Dusk match) is within 0.15 of the Day column
+(lowest: 7.95 / 3.60 at 1440, 9.47 / 4.35 at 390). **0 failures** of 4.5:1 (small) / 3:1 (large)
+across 1,842 measured lines per run, 4 runs in each mode. The thinnest margin is the green section
+titles over Mirror Lake in Day (3.54–3.60, large text), as in S1. Over a new place it's About's
+and Let's Talk's titles over Bald Mountain in Day at 1440 (4.00). No per-scene scrim was needed.
+
+Found and fixed on the way (`1153fe9`). Each item's z-index, which makes it fade in on top of the
+last one, lifted the stills above `.scene-atmos`, so they showed without `--atmos-read`. Over Bald
+Mountain the section titles measured 2.67:1. The layer is now its own stacking context, under the
+atmosphere. That made the per-scene ink I'd added for Bald Mountain unnecessary, so it's gone.
+
+/projects with each row hovered (1440): lowest Day 7.53 / 4.08 (both WebGL and the still), Dusk
+11.58 / 5.90; dcbed21 measured 7.53 / 4.07 in Day. 0 failures.
+
+## Keyboard (Tab from the top, 1440 and 390, both motion modes)
+
+Each run has 21 stops inside a part: the case-study titles and live links, How I Build's three
+proofs, Email Me and View Resume, and the footer's 10 links. **84 of 84** show their part's place,
+and inside a named part the bar names it too. About has no focusable control. The footer's stops
+show Mirror Lake.
+
+## Also checked
+
+- **/card:** behaviour unchanged on the shared lazy gate. 0 panel pictures at load, and all four
+  in by the time their panels are reached (1440 `flat.webp`, 390 `flat-tall.webp`).
+- **Console:** zero errors and zero warnings in every run above (16 on home, 4 on /projects, 2 on /card).
+- **Build:** `node scripts/tokens.mjs --check` reports one problem only, the stage-9 Figma drift
+  guard (tokens.json now has `--atmos-dusk`; the migration thread re-syncs Figma). The raw-value
+  baseline is unchanged, the family check is green and `tokens.css` is up to date. `astro check`:
+  0 errors, 0 warnings, 0 hints (109 files). `astro build`: 0 warnings.
+
+## For Cello
+
+- **The end of the page goes by quickly.** At 1440 the last screen holds About (317 px), Let's
+  Talk (365 px) and the footer. Bald Mountain shows for about 120 px of scroll, Ramona for 150 px
+  and Mirror Lake for the last 105 px (at 390: 330, 180 and 165 px). It reads as a quick sequence
+  at the end. If that's too quick, the simplest fix is to drop one of the three places (for
+  example, About shares Let's Talk's).
+- **The footer is opaque**, so "the footer over Mirror Lake" means Mirror Lake shows behind Let's
+  Talk's last lines once the footer is up. The bar still says "Let's Talk" there, because the
+  footer isn't a reading stop.
+- **Dusk is an approximation.** The stills are Day art under ink, not the Dusk grade (which is
+  WebGL-only). The ink matches the grade's brightness but not its hue, so the places read a little
+  more neutral than Mirror Lake's green dusk. A Dusk-graded `read.webp` for each place
+  (`scenes:derive`) would match exactly.
+- **/projects changed a little too**, since it's on the same layer: a true cross-fade between
+  rows, the smaller still, and in Dusk the same `--atmos-dusk`, so it's darker than before (11.6+
+  against 7.5).
