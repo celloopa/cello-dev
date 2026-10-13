@@ -6,6 +6,9 @@
   It replaces the two conflicting global rings (animations.css's :focus-visible and the
   :where(...) rules in Layout and SceneLayout). Components don't redraw it: each one owns how it
   looks while focused (focus-visible mirrors hover), and the ring is added on top.
+
+  Scene pages add an ink halo either side of it (scene.css): the ring's green can't carry 3:1 on
+  its own against bright art.
 */
 :focus-visible {
 	outline: var(--stroke-frame) solid var(--focus-ring);

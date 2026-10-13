@@ -166,6 +166,7 @@
 
   /* Scene (amendment A3, pending Cello; the rewrite's landscape pages only. Motion caps live in each scene's manifest, not here) */
   --scene-bar: 4rem; /* The dark top bar's height; the scene starts under it. */
+  --focus-halo: var(--ink-950); /* Scene pages: the ink either side of the focus ring (3px in the offset gap, 3px outside the ring), so the green ring is read against ink, not against light sky, snow or cloud. Ink in both themes: the scene, not the theme, is the surface. */
   --scene-copy-start: 43vw; /* Desktop: where copy over a scene starts, so the scene's subject (Mirror Lake's Mt Hood) stays clear on the left. */
   --scene-copy-end: 7vw; /* Desktop: the copy's right inset over a scene. */
   --scene-copy-bottom: 10vh; /* Desktop: the copy's bottom inset over a scene (the place label sits below it). */

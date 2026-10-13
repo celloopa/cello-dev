@@ -47,6 +47,14 @@ html:root.scene-page[data-place="ecola"] {
   }
 }
 
+/* The focus ring over art. --focus-ring (signal-500) is 2.4:1 against a bright sky, cloud or snow,
+   under the 3:1 a focus indicator needs against what's next to it. So on scene pages the ring
+   (focus.css: 3px, offset 3px) gets ink either side: a 9px --focus-halo shadow, drawn under the
+   outline, fills the 3px offset gap and the 3px just outside the ring. The color stays. */
+html.scene-page :focus-visible {
+  box-shadow: 0 0 0 calc(var(--stroke-frame) * 3) var(--focus-halo);
+}
+
 /* Everything in main sits over the scene, so its text defaults to the on-art role; a plate
    (bg-plate: CaseMeta, tables, Panel, a secondary Button) sets --text-primary for its own.
    Components (ArrowLink, IconButton, Tag, Card) take the text color they sit in. */
