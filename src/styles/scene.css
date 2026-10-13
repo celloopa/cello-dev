@@ -47,6 +47,13 @@ html:root.scene-page[data-place="ecola"] {
   }
 }
 
+/* Everything in main sits over the scene, so its text defaults to the on-art role; a plate
+   (bg-plate: CaseMeta, tables, Panel, a secondary Button) sets --text-primary for its own.
+   Components (ArrowLink, IconButton, Tag, Card) take the text color they sit in. */
+html.scene-page main {
+  color: var(--text-on-art);
+}
+
 /* ---------- the scene (fixed, decorative) ---------- */
 .scene {
   position: fixed;
