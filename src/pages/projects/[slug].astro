@@ -243,10 +243,14 @@ const all = { href: "/projects", label: "All work" };
       padding-top: var(--space-32);
     }
 
+    /* the scroller clips overflow, so it pads by the focus ring + halo (12px) and pulls back by
+       the same amount: chips keep the column's left edge and their focus ring draws on all sides */
     .read-toc ul {
       flex-wrap: nowrap;
       overflow-x: auto;
-      padding-bottom: var(--space-8);
+      margin-inline: calc(var(--space-12) * -1);
+      padding: var(--space-12);
+      scroll-padding-inline: var(--space-12);
       scroll-snap-type: x proximity;
     }
 
