@@ -322,6 +322,15 @@ the projects index and the blog index at cutover. Cello answered two questions a
   studies, posts, /resume, /card, /design-system and 404.
 The same answer approved stage 2b's look.
 
+Later the same day, with the landscape build cut from this branch and rewriting those pages,
+Cello decided (2026-10-12):
+- **Stages 5 and 6 move into the landscape build:** one left edge for reading content, and the v1
+  components. This branch reviews them there instead of polishing templates the cutover replaces.
+- **This branch continues with stages 7–9:** the `/design-system` page and docs generated from
+  tokens.json, the family repo, and Figma from code.
+- **The landscape thread merges this branch** (stage 4 onward) using the migration's merge guide:
+  keep the landscape's markup, and take this branch's token names and rules.
+
 ## Amendment A3 (proposed, pending Cello): what the rewrite's landscape build adds
 
 Source: `docs/rewrite/DS-HANDOFF.md` at `7a96777` and the prototype at `f1b1e66`, both on
