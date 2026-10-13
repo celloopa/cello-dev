@@ -357,7 +357,7 @@
     font-size: var(--type-label);
     font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: var(--track-wide);
     color: var(--color-accent);
     margin: 0 0 var(--space-8) 0;
     padding: 0;
@@ -430,7 +430,7 @@
     font-size: var(--type-ui);
     font-weight: var(--weight-semibold);
     text-transform: uppercase;
-    letter-spacing: 0.03em;
+    letter-spacing: var(--track-caps);
     transition: color var(--motion-ui) var(--ease-out);
   }
 

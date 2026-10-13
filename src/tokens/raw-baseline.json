@@ -24,9 +24,6 @@
   "font-size": {
    "0.72rem": 1,
    "0.95rem": 1
-  },
-  "letter-spacing": {
-   "0.08em": 1
   }
  },
  "src/components/FlowDiagram.astro": {
@@ -38,9 +35,6 @@
    "0.95rem": 1,
    "0.92rem": 1,
    "0.88rem": 1
-  },
-  "letter-spacing": {
-   "0.08em": 1
   },
   "spacing": {
    "0.9rem": 1,
@@ -66,9 +60,6 @@
   "font-size": {
    "0.7rem": 1,
    "0.8rem": 1
-  },
-  "letter-spacing": {
-   "0.03em": 1
   }
  },
  "src/components/ProjectCard.astro": {
@@ -86,9 +77,6 @@
   "font-size": {
    "0.72rem": 1,
    "0.7rem": 1
-  },
-  "letter-spacing": {
-   "0.08em": 1
   },
   "line-height": {
    "1": 1,
@@ -129,9 +117,6 @@
   "font-size": {
    "clamp(2rem, 6vw, 3rem)": 1,
    "clamp(0.9rem, 2.5vw, 1.1rem)": 1
-  },
-  "letter-spacing": {
-   "-0.05rem": 1
   }
  },
  "src/components/sections/Projects.astro": {
@@ -176,10 +161,6 @@
   },
   "ban:keyframes-outside-animations": {
    "@keyframes menuSlideIn": 1
-  },
-  "letter-spacing": {
-   "0.15em": 1,
-   "0.03em": 1
   }
  },
  "src/components/svelte/ResumeSync.svelte": {
@@ -271,16 +252,13 @@
    "clamp(2.8rem, 10vw, 4.8rem)": 1,
    "clamp(2.6rem, 14vw, 4rem)": 1
   },
-  "letter-spacing": {
-   "0.18em": 1,
-   "-0.08em": 1,
-   "0.04em": 1,
-   "0.08em": 1
-  },
   "line-height": {
    "0.92": 1,
    "1.5": 1,
    "1.7": 1
+  },
+  "letter-spacing": {
+   "-0.08em": 1
   }
  },
  "src/pages/design-system.astro": {
@@ -402,9 +380,6 @@
   "line-height": {
    "1.8": 2,
    "1.7": 3
-  },
-  "letter-spacing": {
-   "0.08em": 1
   }
  },
  "src/pages/projects/index.astro": {
