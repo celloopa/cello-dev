@@ -440,13 +440,118 @@ still is now the half-size flattened copy). Home, `/resume` and `/design-system`
 - **Done:** the post "Programmatic Resumes You Can Chat With" no longer shows `v3/archetype.webp`
   (it showed a real resume). Its "Categories and archetypes" paragraph stays, with the category
   screenshot alone at full width, and the file is removed so it isn't served at its URL.
-- **Not done yet:** replacing the seven recaptured demo-persona shots (`style-looks`, `phones`,
-  `interview`, `tailored`, `history`, `edit-style`, `report`) and building `proposal.webp`,
-  `og.png` and `highlights.webp` from Ghosted's demo landing shot. The copy into this repo was
-  stopped by the session's permission check, so the alt and caption edits that go with the new
-  images wait too (they'd describe images that aren't there).
-- **OCR today** (tesseract, counting lines with "Marcelo", "Rondon", "cello@", the GitHub or
-  LinkedIn handle): `edit-style` 5, `style-looks` 3, `highlights` 2, `interview` 2, `report` 2,
-  `tailored` 2, `og.png` 2, `history` 1, `proposal` 1; `phones` reads 0 at this size but showed the
-  real resume in S2's check by eye. Clean: `board`, `board-dark`, `category`, `fit`, `intake`,
-  `research`, `tour-look`, `signin`, the Loop poster, and the four /card artifacts.
+- **OCR before the replacements** (tesseract, counting lines with "Marcelo", "Rondon", "cello@",
+  the GitHub or LinkedIn handle): `edit-style` 5, `style-looks` 3, `highlights` 2, `interview` 2,
+  `report` 2, `tailored` 2, `og.png` 2, `history` 1, `proposal` 1; `phones` read 0 at this size but
+  showed the real resume in S2's check by eye.
+
+# Stage 4 merge and D3 (2026-10-12)
+
+## The merge (claude/design-system-migration at 185c2b1, stage 4)
+
+The landscape keeps its markup and structure and takes stage 4's names, values and rules.
+
+| File | Resolution |
+|---|---|
+| CaseMeta, FlowDiagram | Ours. Already on stage 4's type, tracking and space roles; the plate recipe (`--bg-plate`, `--border-strong`/`--border-muted`, `--text-accent`, `--text-muted`) owns the surface, so it wins over stage 4's `--bg-raised`. |
+| MediaFull, MediaTwo, MediaThree | Ours: the entry animations stay dropped (the reading pages don't animate media in), and MediaVideo owns the media styles. |
+| 404, card, blog and project slugs | Ours (SceneLayout rewrites). No raw values left in them, so no token swaps were needed. |
+| animations.css | Stage 4's file, plus `sceneSettle` (card's scroll-linked settle) and `enter-fade` (opacity only, in the enter-* block). `enter-fade` replaces the removed `fadeIn` in scene.css (the Admire label) and ContextBar (the bar's reading context), both at `--motion-handoff`. |
+| tokens.json | The A3 signature motion tokens (`--motion-arrival-stagger` 120ms, `--motion-arrival-overshoot` 0.107, `--motion-focus` 550ms, `--motion-scene-fade` 700ms, `--motion-handoff` 400ms) move from the Scene group into Motion, beside stage 4's signature tokens. Same names and values. |
+| raw-baseline.json | Regenerated with `node scripts/tokens.mjs --baseline` last: **179 (ours) / 201 (stage 4) → 61**, deletions only against both sides. |
+
+Proof: `pnpm build` 0 errors, 0 warnings, 0 hints. `ui:shots` on /resume and /design-system vs
+185c2b1: **0 px on all 8 screens**. `motion:table` on those two pages vs 185c2b1: identical except
+one fewer `<link>`/`<style>` element in the head (CSS chunking); vs our pre-merge build: only stage
+4's changes (entries at `--motion-entry`, the header's stagger, named transition properties,
+`--ease-out` for `ease`). On /card, Ghosted, a post, /projects and 404 the motion table is unchanged
+from our pre-merge build under normal motion; `sceneSettle` still runs on /card's four panels.
+
+## D3: the Ghosted images, done (demo personas only)
+
+- **Seven recaptures** (`style-looks`, `phones`, `interview`, `tailored`, `history`, `edit-style`,
+  `report`): the demo persona Rowan Ellis in a local Ghosted, at the originals' names, formats and
+  sizes.
+- **Three built from Ghosted's demo landing shot** (1136×1250, Rowan Ellis with an AI proposal
+  pending), padded on Paper 100 (#f3ede2), never scaled or stretched:
+  - `proposal.webp` 1920×1200: the shot's top 1140 px (through Education), centered.
+  - `highlights.webp` 2000×1250: the same crop, centered.
+  - `og.png` 1200×630: the top 566 px (the proposal bar, the name and highlighted summary, the first
+    role), centered with a 32 px margin.
+
+### Alt text and captions, before → after
+
+Case study (`ghosted.mdx`):
+- `proposal.webp` alt: "A job workspace for a Product Designer, Design Systems role at Northwind
+  Labs. The chat on the left shows the request 'Lead the summary with design systems, and tighten
+  the Asheville Dispensary bullets' and the reply listing what changed. On the right, the live
+  resume has the new summary and four bullets highlighted in yellow under a bar reading 'AI proposal
+  awaiting your decision' with Reject and Keep buttons" → "A live resume under a bar reading 'AI
+  proposal awaiting your decision. Highlighted text is what changed.' with Reject and Keep buttons.
+  The new summary and four bullets are highlighted in yellow"
+- `proposal.webp` caption: "… (Demo data: my resume, a fictional job.)" → "… (Demo data: a
+  fictional resume.)"
+- `phones.webp` alt: "…; and the same job with an AI proposal highlighted in yellow above Reject and
+  Keep" → "…; and the same job's chat, with the request to tailor it and the reply"
+- `phones.webp` caption: "…, the resume near the top, and a proposal waiting for a decision." →
+  "…, the resume near the top, and the chat one tap away."
+- `style-looks.webp`, `og.png`: no text to change (the alt still matches; og has none).
+
+Post (`programmatic-resumes-you-can-chat-with.mdx`):
+- `interview.webp` alt: "Ghosted's base resume screen: the chat asks a specific question about one
+  job's thin bullets while the live resume preview sits on the right" → "Ghosted's base resume
+  screen: asked what's missing, the chat suggests two specific additions while the live resume
+  preview sits on the right"
+- `interview.webp` caption: "Asked to strengthen my bullets, the agent picks the thinnest job and
+  asks for specifics before writing anything." → "Asked what's missing, the agent names two
+  specifics, a project's numbers and a line on mentoring, instead of writing anything."
+- `tailored.webp` alt: "Tailoring notes in the chat listing what was emphasized and the gaps the
+  resume can't support, such as no Vercel AI SDK experience" → "Tailoring notes in the chat listing
+  what was emphasized, such as the WCAG 2.2 work, beside the one-page tailored resume"
+- `tailored.webp` caption: "The first tailoring pass names its gaps instead of filling them." →
+  "The first tailoring pass says what it changed, on one page."
+- `history.webp` alt: "History panel listing three versions: imported from the base resume,
+  tailored to Vercel by the AI, and trimmed by the AI on request" → "History panel listing two
+  versions: tailored to Fernwood Commerce by the AI, then a direct edit by you, now current"
+  (caption unchanged)
+- `edit-style.webp` alt: "The edit form on the left with header fields and contact items, and the
+  Style panel on the right with per-element size, weight and color controls above a centered resume
+  header" → "The Style panel on the left with Fine-tune open: header, font, body size, margin and
+  line spacing, then per-element size, weight and color controls. The live resume on the right has
+  a centered header"
+- `edit-style.webp` caption: "The form and the Style panel: control down to the line, without
+  touching code." → "The Style panel's Fine-tune: control down to the line, without touching code."
+- `report.webp` alt: "Report a problem dialog with Bug, Annoying, Weird and Idea options, a note
+  field and screenshot attachments" → "The feedback dialog, 'Tell Cello anything', with a note
+  field, an Add a screenshot button and what's sent with the note"
+- `report.webp` caption: "Bug, annoying, weird or idea: one button, screenshots included, never the
+  resume itself." → "Anything at all: one button, screenshots included, never the resume itself."
+- `highlights.webp` (the cover): its alt is the post title, so nothing to change.
+
+### Body sentences waiting on Cello's words (not edited)
+
+- Post, intro: "The screenshots use my own resume and three real Design Engineer postings." The
+  Ghosted screenshots now show a fictional resume and fictional jobs (the intake and category
+  shots still show real postings).
+- Post, step 3: "…the changed summary and bullets are highlighted, with Accept and Reject above the
+  page." The cover now shows Reject and Keep, and it isn't the "trim it to one page" result.
+- Also no longer matching their images (Cello's call whether to touch them): step 3's "It tells you
+  plainly what it couldn't back up" (the tailored shot names no gaps), and step 6's "A **Report a
+  problem** button" (the dialog is now "Tell Cello anything", the button "Leave feedback").
+
+### No real resume left
+
+Every file under `public/images/projects/ghosted/` (43 images at 2×, plain and inverted, and 1 fps
+of all 8 videos) was OCR'd for "Marcelo", "Rondon", "cello@", the GitHub and LinkedIn handles and
+"Portland": **0 matches**. The ten replaced images were also checked by eye: only Rowan Ellis
+(example.com, 555 numbers) and fictional employers.
+
+Left for Cello:
+- "Cello" still appears as **product copy and the account name**: the feedback dialog in `report`
+  ("Tell Cello anything", "Send to Cello"), and the sidebar's account name in `intake`, `category`,
+  `board-dark` (post) and the two Fit design-system shots. Not resume data.
+- The Rowan in the landing-shot images (Pixelmint, Orbit Health) and the Rowan in the recaptures
+  (Larkspur Labs, Tidewater Health) come from different seeds: same name, different jobs.
+- `ghosted-intro.webm`, `ghosted-end.webm` and `ghosted-agent.webm` show a terminal with a local
+  home-folder path and username. No page uses them, but `public/` still serves them at their URLs.
+- `v3/signin.webp` keeps the "e.g. kim-7x2qpd" placeholder (the app's own copy).
