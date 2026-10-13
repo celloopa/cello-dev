@@ -475,6 +475,7 @@ const PLACE = homeScene(); // Mirror Lake, as home
     align-items: end;
     min-height: calc(100svh - var(--scene-bar));
     clip-path: inset(0);
+    overflow-x: clip; /* the copy scrim must not widen the page (clip-path doesn't stop that) */
     view-timeline: --panel block;
   }
 
