@@ -136,6 +136,49 @@ html:is(.scene-reading, .scene-focus-page) .scene-still {
 html.scene-gl-on .scene-gl {
   opacity: 1;
 }
+
+/* ---------- backdrops: another place's reading still over the scene (scenery.js) ----------
+   Only while reading (home's Work list and sections) or pointing at a story (/projects), so
+   always in the focus recipe, under the same reading atmosphere as the scene. Each item fades in
+   on top of the last; the base scene (WebGL or the still) is under them all. */
+.scene-backdrop,
+.scene-backdrop-item {
+  position: absolute;
+  inset: 0;
+}
+.scene-backdrop-item {
+  opacity: 0;
+  transition: opacity var(--motion-scene-fade) var(--ease-out);
+}
+.scene-backdrop-item.is-on {
+  opacity: 1;
+}
+.scene-backdrop img {
+  filter: var(--focus-filter);
+  transform: scale(var(--focus-scale));
+}
+@media (max-width: 768px) {
+  .scene-backdrop img {
+    filter: var(--focus-filter-mobile);
+  }
+}
+/* Ink over a backdrop, under the reading atmosphere. The stills are Day art: in Dusk, while the
+   renderer draws the page's own place in the Dusk grade, each backdrop gets the grade's darkening
+   (--atmos-dusk), so a place doesn't brighten as it comes in; under the still (no WebGL: Day art
+   in both themes) they stay Day. A place too bright for the words over it in Day gets its own
+   ink (measured: home's section titles over Bald Mountain at 1440, 2.67:1 without it). */
+.scene-backdrop-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--backdrop-ink, none);
+}
+.scene-backdrop-item[data-backdrop="bald-mountain"] {
+  --backdrop-ink: var(--atmos-read-bald-mountain);
+}
+html.scene-gl-on:not([data-theme="light"]) .scene-backdrop-item {
+  --backdrop-ink: var(--atmos-dusk);
+}
 .scene-atmos,
 .scene-atmos i {
   position: absolute;

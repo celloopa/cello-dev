@@ -189,6 +189,8 @@
   --atmos-arrive-mobile: linear-gradient(0deg, color-mix(in srgb, var(--ink-950) 96%, transparent) 0%, color-mix(in srgb, var(--ink-950) 76%, transparent) 28%, color-mix(in srgb, var(--ink-950) 24%, transparent) 50%, transparent 68%); /* Ink atmosphere while arriving, phones. */
   --atmos-view: linear-gradient(0deg, color-mix(in srgb, var(--ink-950) 62%, transparent), transparent 32%); /* Ink atmosphere in Admire: just enough for the place name and the way back. */
   --atmos-read: color-mix(in srgb, var(--ink-950) 36%, transparent); /* Ink atmosphere while reading, over the focus recipe. */
+  --atmos-dusk: color-mix(in srgb, var(--ink-950) 60%, transparent); /* Dusk stand-in: over a Day-art reading still shown in place of the WebGL scene (a Scene backdrop) in Dusk, the Dusk grade's darkening. Matched on Mirror Lake reading: the brightest 1% under 60% ink is 0.023 (1440) and 0.018 (390) relative luminance, WebGL Dusk 0.024 and 0.017. */
+  --atmos-read-bald-mountain: color-mix(in srgb, var(--ink-950) 20%, transparent); /* Bald Mountain as a backdrop in Day (and under the still), extra ink under the reading atmosphere: home's green section titles over its bright slopes measured 2.67:1 at 1440 without it (large text needs 3). Raise it if a line fails the p99 check; never lower it below what passes. */
 
   /* Legacy aliases (old names kept so open branches build; removed once nothing uses them) */
   --ds-color-ink-950: var(--ink-950);

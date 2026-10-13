@@ -4,8 +4,13 @@
  * The still (stacked <img>s) is in the HTML; scenery.js runs the attention states and, when the
  * 3D gate allows, loads the WebGL renderer after paint (a dynamic import of three.js) and hands
  * over to it. Also renders the PlaceLabel (Switchback, the place-name role).
+ *
+ * Backdrops: other places the page brings in behind its focused content (scenery.js), each as its
+ * reading still over the scene, focused like it. Home: the place of the case study or section in
+ * view; /projects: the place of the story pointed at. Rendered without a src: scenery.js loads
+ * each one only as its part of the page nears (or on hover), so first paint is unchanged.
  */
-import { loadScene } from "@/lib/scene/catalog";
+import { loadScene, sceneBackdrop } from "@/lib/scene/catalog";
 
 interface Props {
   place: string;
@@ -16,12 +21,15 @@ interface Props {
    * first full layer gets through.
    */
   focused?: boolean;
+  /** Scene ids the page may bring in behind its content (the page's own place is skipped). */
+  backdrops?: string[];
 }
 
 const scene = loadScene(Astro.props.place);
 const read = Astro.props.focused ? scene.read : null;
 const anchor = scene.layers[0]?.anchor ?? [0.5, 0.5];
 const label = `${scene.place} · ${scene.month}`;
+const backdrops = [...new Set(Astro.props.backdrops ?? [])].filter((id) => id !== scene.id).map(sceneBackdrop);
 const pct = (v: number) => `${+(v * 100).toFixed(2)}%`;
 ---
 
@@ -55,6 +63,17 @@ const pct = (v: number) => `${+(v * 100).toFixed(2)}%`;
       ))
     }
   </div>
+  {
+    backdrops.length > 0 && (
+      <div class="scene-backdrop" data-scene-backdrops>
+        {backdrops.map((b) => (
+          <i class="scene-backdrop-item" data-backdrop={b.id}>
+            <img class="scene-read" data-src={b.src} width={b.width} height={b.height} alt="" decoding="async" style={b.position} />
+          </i>
+        ))}
+      </div>
+    )
+  }
   <div class="scene-atmos">
     <i class="scene-atmos-arrive"></i><i class="scene-atmos-view"></i><i
       class="scene-atmos-read"></i>
