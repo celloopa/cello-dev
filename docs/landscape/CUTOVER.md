@@ -5,6 +5,32 @@ cello.design. It doesn't build features; fixes go to "Rewrite cello.dev". The pu
 "Ship cello.dev" (`docs/ship/PROFILE.md` on `claude/ship-conductor`), and only after Cello's go
 in chat.
 
+## Status (2026-10-13, 09:30): cutover on hold for the chapters direction
+
+- Cello held the cutover (grill Q39) to rework the experience as "the scene owns the thresholds,
+  the work owns the middle". The decisions are Q23–Q47 in `docs/rewrite/GRILL.md` (rewrite branch):
+  - home becomes arrival → four full-screen project chapters with a scrub rail → Let's Talk;
+  - case studies open through a view-transition doorway, read calm, and end with the next chapter rising;
+  - a new **/about** page (one URL added to the contract, none removed);
+  - /projects and /blog become calm indexes;
+  - /card becomes the event pitch page (pitch screen, then mini chapters);
+  - "Take in the view" goes.
+
+  A storyboard comes first (a private Artifact from Rewrite), then the build, then this test plan again on that build.
+- Pin `250cd03` (tree `5212c4e`) is **withdrawn** as a cutover candidate. It was verified: the build with every guard, the Netlify
+  preview's URL contract, privacy, theme across navigation, ui:shots, motion, keyboard/contrast (results below).
+- "Ship cello.dev" archived while the cutover is held. At hand-off time, Cello starts a new session
+  named "Ship cello.dev", whose prompt is: read the `ship-conductor` skill plus `docs/ship/{PROFILE,board,handoff}.md` on
+  `origin/claude/ship-conductor` (`5940ad6` at the time of writing). The hand-off it expects has:
+  - the squashed sha on live master;
+  - the URL fates with `/about` added;
+  - the checks run;
+  - Cello's go, quoted.
+- The privacy grep reads its patterns from the local file named in `PROFILE.md` (outside the repo),
+  plus a real-valued `fileKey`. Clean on `250cd03`, the demo, landscape-build and master `060ad5b`.
+- The demo branch (PR #14) was purged to one commit (`d94e121`, the pin's tree on `060ad5b`), so
+  O9's "history left as is" is superseded.
+
 ## 1. Readiness inventory
 
 ### Branches
@@ -113,7 +139,14 @@ Pre-pin run on the moving tip (`1153fe9`..`063cf27`); everything re-runs on the 
 
 ## 4. Go/no-go
 
-(the message to Cello, his answers quoted)
+Not reached: Cello held the cutover before the go/no-go (see Status).
+
+Results on `250cd03` (= `d6eb7a3`'s site output) that carry over as a baseline:
+- **Keyboard and focus:** passes in 112 runs. ⌘K focus-return remains deferred, and the case-study TOC chips still clip the ring on phones.
+- **Focus-ring contrast:** passes; lowest 4.39 across 2,320 stops.
+- **Text over art, settled states:** passes.
+- **Text over art, newly measured between arrival and the reading line:** **fails**, Day art only, on home and /card. The hero copy and the green section title over the bright peak and flowers reach 2.03 at the lowest (3 needed). This predates `dcbed21`; the chapters direction removes that scroll range, so re-measure it there.
+- **iPhone (Simulator):** 9 of 11 pages pass. The 19 WebM-only, poster-less videos show as empty boxes (same on live; Cello checks on his phone). /design-system pans 5 pt (same on live). There's a sticky green tap state on the theme toggle and Pause/Play, and the Menu dot sits against the edge on reading pages.
 
 ## 5. Rollback
 
