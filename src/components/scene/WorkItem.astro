@@ -3,7 +3,7 @@
  * One case study in the scene's Work list: today's ProjectCard content as a poster row over the
  * focused scene: the media (decorative; the title is the link), then a Card (project, lg) with
  * the role, title, description, two tech tags + count and the live-site link. A reading stop:
- * the bar names it while it's in view.
+ * the bar names it while it's in view, and its paired place (`place`) comes in behind it.
  */
 import Card from "@/components/ui/Card.astro";
 
@@ -16,14 +16,16 @@ interface Props {
   role: string;
   slug: string;
   index?: number;
+  /** The scene this case study is paired with (a backdrop on home's Scene). */
+  place?: string;
 }
 
-const { title, description, image, url, techStack, role, slug, index = 0 } = Astro.props;
+const { title, description, image, url, techStack, role, slug, index = 0, place } = Astro.props;
 const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
 const href = `/projects/${slug}`;
 ---
 
-<li class="work-item" data-scene-stop={title} data-flip={index % 2 === 1 ? "" : undefined}>
+<li class="work-item" data-scene-stop={title} data-scene-backdrop={place} data-flip={index % 2 === 1 ? "" : undefined}>
   <a class="work-media" href={href} tabindex="-1" aria-hidden="true">
     {
       image ? (

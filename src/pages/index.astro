@@ -3,7 +3,9 @@
  * Home in the landscape (landscape build S1). The scene is Mirror Lake; the words are today's
  * home page, unchanged. Arrival: the hero copy over the scene, readable at first paint. Admire:
  * "Take in the view". Reading: once the Work section reaches the reading line, the scene
- * softens and dims and the bar names the project in view.
+ * softens and dims, the bar names the project in view, and the place behind the words follows
+ * the reading line: each case study's paired scene, then each section's own (scene-pairings.json
+ * `projects` and `homeSections`), and Mirror Lake again behind the footer.
  * Retired from today's home: the typewriter lock-in and the marquee (proposal §10), and the
  * hero photo (a rewrite moves it to About).
  */
@@ -15,7 +17,7 @@ import ArrowLink from "@/components/ui/ArrowLink.astro";
 import Eyebrow from "@/components/ui/Eyebrow.astro";
 import Section from "@/components/ui/Section.astro";
 import { loadScene } from "@/lib/scene/catalog";
-import { homeScene } from "@/lib/scene/pairing";
+import { homeScene, homeSection, sceneForProject } from "@/lib/scene/pairing";
 import { basics } from "@cv";
 
 const PLACE = homeScene(); // Mirror Lake (src/data/scene-pairings.json)
@@ -27,12 +29,22 @@ const featuredProjects = allProjects
   .filter((p) => p.data.featured && p.data.complete)
   .sort((a, b) => a.data.order - b.data.order);
 
+// the places behind the reading parts (backdrops): each case study's, then each section's
+const sections = { how: homeSection("how"), about: homeSection("about"), contact: homeSection("contact"), footer: homeSection("footer") };
+const backdrops = [...featuredProjects.map((p) => sceneForProject(p.slug)), ...Object.values(sections)];
+
 const homeTitle = "Cello — Digital Designer, Brand & Design Systems";
 const homeDescription =
   "I lead design across three brands through a shared Figma system, then build the components and tools that carry it into everyday use.";
 ---
 
-<SceneLayout title={homeTitle} description={homeDescription} place={PLACE}>
+<SceneLayout
+  title={homeTitle}
+  description={homeDescription}
+  place={PLACE}
+  backdrops={backdrops}
+  footerPlace={sections.footer}
+>
   <section class="hero" aria-labelledby="hero-name" data-scene-hero>
     <div class="hero-copy copy-scrim" data-scene-intro>
       <h1 class="hero-name" id="hero-name">Cello</h1>
@@ -84,6 +96,7 @@ const homeDescription =
               role={project.data.role}
               slug={project.slug}
               index={i}
+              place={sceneForProject(project.slug)}
             />
           ))
         }
@@ -97,6 +110,7 @@ const homeDescription =
     titleId="how-heading"
     intro="I build what I design, so the system reaches production intact. Code does everything it can, the model gets the smallest job it can be trusted with, and a person approves wherever the consequences are."
     data-scene-stop="How I Build"
+    data-scene-backdrop={sections.how}
   >
       <div class="proof-strip">
         <a class="proof-item" href="/projects/asheville-dispensary">
@@ -133,6 +147,7 @@ const homeDescription =
     titleId="about-heading"
     intro="I came to product design through visual journalism, brand systems, and front-end engineering. That range lets me translate creative intent into product rules, prototype behavior, make constraints legible, and speak the language of the team shipping it."
     data-scene-stop="About"
+    data-scene-backdrop={sections.about}
   />
 
   <Section
@@ -141,6 +156,7 @@ const homeDescription =
     titleId="contact-heading"
     intro="Open to design systems, brand and product design roles, remote in the US or in Portland. The fastest way to reach me is email."
     data-scene-stop="Let’s Talk"
+    data-scene-backdrop={sections.contact}
   >
       <div class="contact-actions">
         <Button href={`mailto:${email}`}>Email Me</Button>
