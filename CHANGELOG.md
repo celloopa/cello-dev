@@ -4,6 +4,11 @@ All notable changes to this portfolio site should be documented here.
 
 ## 2026-10-12
 
+### Design system, stage 8: the Cello family layer
+
+- The roots every Cello product shares now live in their own repo (`~/Documents/code/cello-family`, v0.1.0): Geist Mono and Geist, Midnight Ink and Paper, the house curve and the reduced-motion contract, and voice. cello.dev vendors a pinned copy at `src/tokens/family.json`.
+- `pnpm build` fails if the site's tokens drift from it (fonts, neutral endpoints, the curve, delays zeroed under reduced motion), and only warns when the family repo has a newer version, so no build depends on a local folder. No visible change.
+
 ### Design system, stage 7: the system documents itself
 
 - `/design-system` is rebuilt from `src/tokens/tokens.json` at build time, so it can't drift from the CSS: Day and Dusk side by side, every color role with both themes and its use-when line, primitives, the seasonal inks, the three faces and every type role, the space, layout, stroke and motion scales, and how a change gets in.
