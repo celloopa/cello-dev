@@ -67,6 +67,11 @@ const canonicalUrl = canonicalPath ? new URL(canonicalPath, url).toString() : ur
 const ogImage = image ? new URL(image, url).toString() : new URL(siteImage, url).toString();
 const currentYear = new Date().getFullYear();
 const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
+// the footer's current item (aria-current, §7): "page" on the page itself, "true" under it
+const current = (href: string) => {
+  const path = Astro.url.pathname.replace(/\/$/, "");
+  return path === href ? "page" : path.startsWith(`${href}/`) ? "true" : undefined;
+};
 ---
 
 <!doctype html>
@@ -142,12 +147,12 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
         <div class="footer-row">
           <a href="/" class="footer-logo" aria-label="Home"><Mark class="footer-mark" /></a>
           <nav class="footer-nav" aria-label="Footer navigation">
-            <a href="/projects">Work</a>
+            <a href="/projects" aria-current={current("/projects")}>Work</a>
             <ul class="footer-utils" aria-label="Utilities">
               <li><a href="/#about">About</a></li>
-              <li><a href="/blog">Writing</a></li>
+              <li><a href="/blog" aria-current={current("/blog")}>Writing</a></li>
               {email && <li><a href={`mailto:${email}`}>Contact</a></li>}
-              <li><a href="/resume">Resume</a></li>
+              <li><a href="/resume" aria-current={current("/resume")}>Resume</a></li>
             </ul>
           </nav>
         </div>

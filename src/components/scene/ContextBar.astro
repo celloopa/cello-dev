@@ -32,7 +32,11 @@ const utilities = [
   { label: "Resume", href: "/resume" },
 ];
 const path = Astro.url.pathname;
-const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page" : undefined);
+// the current item (aria-current, §7): "page" on the page itself, "true" under it
+const current = (href: string) => {
+  const p = path.replace(/\/$/, "");
+  return p === href ? "page" : p.startsWith(`${href}/`) ? "true" : undefined;
+};
 ---
 
 <header class="bar">
@@ -133,7 +137,7 @@ const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page
 
   .bar-link:hover,
   .bar-link:focus-visible,
-  .bar-link[aria-current="page"] {
+  .bar-link[aria-current] {
     border-bottom-color: var(--action-primary);
   }
 

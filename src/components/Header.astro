@@ -12,11 +12,11 @@ const navItems = [
 ];
 
 const currentPath = Astro.url.pathname;
-const activeNav = navItems.find(
-  (item) =>
-    currentPath === item.href ||
-    (item.href !== "/" && currentPath.startsWith(item.href)),
-);
+// the current nav item (aria-current, §7): "page" on the page itself, "true" under it
+const isCurrent = (href: string) => currentPath === href || (href !== "/" && currentPath.startsWith(href));
+const ariaCurrent = (href: string) =>
+  isCurrent(href) ? (currentPath.replace(/\/$/, "") === href ? "page" : "true") : undefined;
+const activeNav = navItems.find((item) => isCurrent(item.href));
 const menuLabel = activeNav?.label ?? "Menu";
 ---
 
@@ -32,14 +32,8 @@ const menuLabel = activeNav?.label ?? "Menu";
             <li class="nav-item" style={`--delay: ${i * 0.1}s`}>
               <a
                 href={item.href}
-                class:list={[
-                  "nav-link",
-                  {
-                    active:
-                      currentPath === item.href ||
-                      (item.href !== "/" && currentPath.startsWith(item.href)),
-                  },
-                ]}
+                class:list={["nav-link", { active: isCurrent(item.href) }]}
+                aria-current={ariaCurrent(item.href)}
               >
                 {item.label}
               </a>
