@@ -138,13 +138,13 @@ const PLACE = homeScene(); // Mirror Lake, as home
               <p class="panel-role">{p.role}</p>
               <h3 class="panel-title" id={`panel-${p.slug}`}>
                 <a href={`/projects/${p.slug}`}>
-                  {p.title} <span aria-hidden="true">→</span>
+                  {p.title} <span class="panel-arrow" aria-hidden="true">→</span>
                 </a>
               </h3>
               <p class="panel-line">{p.line}</p>
             </div>
             <a class="panel-artifact" href={`/projects/${p.slug}`} tabindex="-1" aria-hidden="true">
-              <img src={p.artifact} alt="" width="960" height="600" loading="lazy" decoding="async" />
+              <img data-src={p.artifact} alt="" width="960" height="600" decoding="async" />
             </a>
           </div>
         </article>
@@ -214,7 +214,10 @@ const PLACE = homeScene(); // Mirror Lake, as home
     </div>
   </section>
 
-  <!-- Share Card: today's card script, unchanged (Web Share API → clipboard → the bare link) -->
+  <!-- Share Card: today's card script (Web Share API → clipboard → the bare link). The only
+       change: the button is above it, so it binds at once instead of at DOMContentLoaded, which
+       waits for the page's module scripts. -->
+
   <script is:inline>
     function initCardShare() {
       const shareButton = document.querySelector("[data-share-button]");
@@ -272,21 +275,25 @@ const PLACE = homeScene(); // Mirror Lake, as home
       });
     }
 
-    if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initCardShare);
-    else initCardShare();
+    initCardShare();
+    document.addEventListener("DOMContentLoaded", initCardShare);
     document.addEventListener("astro:after-swap", initCardShare);
   </script>
 
   <script>
-    // Each panel's picture loads only as the panel nears (its <img> sits at a fixed position, so
-    // native lazy loading would fetch every one at once): after the page's own load, or at the
-    // first scroll, whichever comes first, so nothing competes with the first screen.
+    // Each panel's picture and artifact load only as the panel nears (the picture sits at a fixed
+    // position, so native lazy loading would fetch every one at once, and on a slow connection
+    // Chrome's lazy margin reaches the artifacts too). Nothing starts before the first scroll or
+    // before the first screen is complete (the page loaded and the scene's renderer in, or no
+    // renderer), so nothing competes with it.
     const panels = [...document.querySelectorAll<HTMLElement>(".panel")];
     const load = (panel: HTMLElement) => {
       const art = panel.querySelector<HTMLElement>("[data-panel-art]");
       if (!art || art.dataset.loaded) return;
       art.dataset.loaded = "1";
       art.querySelectorAll<HTMLSourceElement>("source[data-srcset]").forEach((s) => (s.srcset = s.dataset.srcset ?? ""));
+      const artifact = panel.querySelector<HTMLImageElement>(".panel-artifact img[data-src]");
+      if (artifact) artifact.src = artifact.dataset.src ?? "";
       const img = art.querySelector<HTMLImageElement>("img[data-src]");
       if (!img) return;
       const shown = () => art.classList.add("is-loaded");
@@ -311,8 +318,19 @@ const PLACE = homeScene(); // Mirror Lake, as home
       );
       panels.forEach((p) => io.observe(p));
     };
-    if (document.readyState === "complete") start();
-    else addEventListener("load", start, { once: true });
+    const root = document.documentElement;
+    const heroDone = () => !root.classList.contains("scene-3d") || root.classList.contains("scene-gl-on");
+    const whenHeroDone = () => {
+      if (heroDone()) return start();
+      const mo = new MutationObserver(() => {
+        if (!heroDone()) return;
+        mo.disconnect();
+        start();
+      });
+      mo.observe(root, { attributes: true, attributeFilter: ["class"] });
+    };
+    if (document.readyState === "complete") whenHeroDone();
+    else addEventListener("load", whenHeroDone, { once: true });
     addEventListener("scroll", start, { once: true, passive: true });
   </script>
 </SceneLayout>
@@ -412,7 +430,7 @@ const PLACE = homeScene(); // Mirror Lake, as home
 
   .card-action-title {
     font-size: var(--type-ui);
-    font-weight: var(--weight-extrabold);
+    font-weight: var(--weight-bold);
     line-height: var(--leading-ui);
     letter-spacing: var(--track-caps);
     text-transform: uppercase;
@@ -561,6 +579,11 @@ const PLACE = homeScene(); // Mirror Lake, as home
     background-repeat: no-repeat;
     background-position: 0 100%;
     transition: color var(--motion-ui) var(--ease-out);
+  }
+
+  /* the arrow in Geist Mono: National Park's latin subset has no arrows (one font file fewer) */
+  .panel-arrow {
+    font-family: var(--font-mono);
   }
 
   .panel-title a:hover,
