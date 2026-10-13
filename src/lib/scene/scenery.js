@@ -30,6 +30,8 @@
  * script in SceneLayout sets scene-3d / scene-still-on before first paint.
  */
 import { afterFirstScreen, whenNear } from "./lazy.js";
+// re-exported so a page script (/card) takes them from this chunk, not a request of their own
+export { afterFirstScreen, whenNear };
 
 const root = document.documentElement;
 const reduce = matchMedia("(prefers-reduced-motion: reduce)");
@@ -38,15 +40,33 @@ const isDark = () => (root.dataset.theme ? root.dataset.theme === "dark" : match
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 
 /**
- * The Scene's backdrop layer (Scene.astro renders one item per place, without a src). show(id)
- * brings that place in over the scene, on top of whatever is showing, and drops the others once
- * it's in; show("") (or an id the page has no backdrop for) returns to the page's own scene.
- * load(id) fetches a place's still ahead of time.
+ * The Scene's backdrop layer (Scene.astro renders it empty; the places are JSON at the end of the
+ * page, from SceneLayout). One item per place, its still without a src until load(id) or show(id).
+ * show(id) brings that place in over the scene, on top of whatever is showing, and drops the
+ * others once it's in; show("") (or an id the page has no backdrop for) returns to the page's
+ * own scene.
  */
 function createBackdrop(host) {
   const layer = host.querySelector("[data-scene-backdrops]");
-  if (!layer) return null;
-  const items = new Map([...layer.querySelectorAll("[data-backdrop]")].map((el) => [el.dataset.backdrop, el]));
+  const json = document.querySelector("script[data-scene-backdrops-json]");
+  if (!layer || !json) return null;
+  const items = new Map();
+  for (const b of JSON.parse(json.textContent)) {
+    const item = document.createElement("i");
+    item.className = "scene-backdrop-item";
+    item.dataset.backdrop = b.id;
+    const img = document.createElement("img");
+    img.className = "scene-read";
+    img.alt = "";
+    img.decoding = "async";
+    img.width = b.width;
+    img.height = b.height;
+    img.dataset.src = b.src;
+    img.style.cssText = b.position;
+    item.append(img);
+    layer.append(item);
+    items.set(b.id, item);
+  }
   let current = "", top = 0, settle = 0;
   const load = (id) => {
     const img = items.get(id)?.querySelector("img");

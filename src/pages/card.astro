@@ -285,7 +285,7 @@ const PLACE = homeScene(); // Mirror Lake, as home
   </script>
 
   <script>
-    import { afterFirstScreen, whenNear } from "@/lib/scene/lazy.js";
+    import { afterFirstScreen, whenNear } from "@/lib/scene/scenery.js";
     // Each panel's picture and artifact load only as the panel nears (the picture sits at a fixed
     // position, so native lazy loading would fetch every one at once, and on a slow connection
     // Chrome's lazy margin reaches the artifacts too). Nothing starts before the first scroll or

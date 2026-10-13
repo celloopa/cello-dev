@@ -27,6 +27,7 @@ import "@/styles/print.css";
 import "@/styles/scene.css";
 import ContextBar from "@/components/scene/ContextBar.astro";
 import Scene from "@/components/scene/Scene.astro";
+import { sceneBackdrop } from "@/lib/scene/catalog";
 import KeyboardManager from "@/components/KeyboardManager.astro";
 import ThemeInit from "@/components/ThemeInit.astro";
 import Mark from "@/components/scene/Mark.astro";
@@ -69,6 +70,8 @@ const siteDescription =
 const siteImage = "/images/thumbnail.png";
 
 const { title = siteName, description = siteDescription, image, canonicalPath, place, reading, focus, backdrops, footerPlace } = Astro.props;
+// the backdrop places' stills, as data at the end of the page (scenery.js builds their layer)
+const backdropData = [...new Set(backdrops ?? [])].filter((id) => id !== place).map(sceneBackdrop);
 const { url, email, profiles } = basics;
 const canonicalUrl = canonicalPath ? new URL(canonicalPath, url).toString() : url;
 const ogImage = image ? new URL(image, url).toString() : new URL(siteImage, url).toString();
@@ -198,6 +201,11 @@ const current = (href: string) => {
         </div>
       </div>
     </footer>
+    {
+      backdropData.length > 0 && (
+        <script is:inline type="application/json" data-scene-backdrops-json set:html={JSON.stringify(backdropData)} />
+      )
+    }
     <KeyboardManager />
     <script>
       import { bindThemeToggles } from "@/utils/themeToggle.js";
