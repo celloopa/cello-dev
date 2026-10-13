@@ -78,6 +78,25 @@ html:root.scene-page[data-place="ecola"] {
     object-position: var(--mx) var(--my);
   }
 }
+/* A reading or index page's still is the half-size flattened scene (Scene `focused`); the full
+   layers load hidden, for the renderer only, so they never become a late largest paint. */
+.scene-read {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: var(--ax) var(--ay);
+}
+@media (max-width: 768px) {
+  .scene-read {
+    object-position: var(--mx) var(--my);
+  }
+}
+.scene-still[data-read-still] .scene-layer {
+  visibility: hidden;
+}
 html.scene-3d:not(.scene-still-on) .scene-still {
   opacity: 0;
 }

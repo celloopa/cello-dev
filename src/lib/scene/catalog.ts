@@ -43,6 +43,9 @@ export interface SceneData {
   /** The source pixel grid the cuts (and their tested caps) are measured on. */
   grid: [number, number];
   layers: SceneLayer[];
+  /** The reading still (scripts/scene-derivatives.mjs): the layers flattened at half size, for the
+   * pages that only ever show the scene through the focus blur. Null if it hasn't been made. */
+  read: { src: string; width: number; height: number; mobileX: number } | null;
 }
 
 interface Settings {
@@ -134,7 +137,11 @@ export function loadScene(id: string): SceneData {
       touchesTop: cfg.touchesTop ? cfg.touchesTop.includes(l.name) : true,
     };
   });
-  return { id, place: entry.place ?? man.place ?? id, month: entry.month ?? man.month ?? "", grid, layers };
+  const readFile = path.join(process.cwd(), "public", "scenes", id, "read.webp");
+  const read = fs.existsSync(readFile)
+    ? { src: `/scenes/${id}/read.webp`, width: 768, height: Math.round((768 * webH) / webW), mobileX }
+    : null;
+  return { id, place: entry.place ?? man.place ?? id, month: entry.month ?? man.month ?? "", grid, layers, read };
 }
 
 export interface SceneArt {

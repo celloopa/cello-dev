@@ -9,15 +9,38 @@ import { loadScene } from "@/lib/scene/catalog";
 
 interface Props {
   place: string;
+  /**
+   * A reading or index page: the still it paints is the half-size flattened scene (it's only
+   * ever seen through the focus blur), fetched first, while the full layers load hidden for the
+   * renderer. On a slow link the page's largest paint then lands early instead of whenever the
+   * first full layer gets through.
+   */
+  focused?: boolean;
 }
 
 const scene = loadScene(Astro.props.place);
+const read = Astro.props.focused ? scene.read : null;
+const anchor = scene.layers[0]?.anchor ?? [0.5, 0.5];
 const label = `${scene.place} · ${scene.month}`;
 const pct = (v: number) => `${+(v * 100).toFixed(2)}%`;
 ---
 
 <div class="scene" data-scene aria-hidden="true">
-  <div class="scene-still">
+  <div class="scene-still" data-read-still={read ? "" : undefined}>
+    {
+      read && (
+        <img
+          class="scene-read"
+          src={read.src}
+          width={read.width}
+          height={read.height}
+          alt=""
+          fetchpriority="high"
+          decoding="async"
+          style={`--ax:${pct(anchor[0])};--ay:${pct(anchor[1])};--mx:${pct(read.mobileX)};--my:50%`}
+        />
+      )
+    }
     {
       scene.layers.map((l) => (
         <img

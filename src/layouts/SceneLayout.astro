@@ -131,7 +131,7 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
   <body>
     <a class="skip" href="#main">Skip to content</a>
     <ContextBar context={reading?.title} all={reading?.all} />
-    <Scene place={place} />
+    <Scene place={place} focused={!!reading || !!focus} />
     <main id="main">
       <slot />
     </main>

@@ -7,6 +7,8 @@
 // For every scene in src/data/scene-library.json:
 //   public/scenes/<id>/swatch.webp      480×320, the layers flattened back → front (the
 //                                       SceneSelector swatch on /projects and /blog)
+//   public/scenes/<id>/read.webp        the layers flattened at half size: the still that reading
+//                                       and index pages paint first, under the focus blur
 // For every scene a case study is paired with (src/data/scene-pairings.json `projects`):
 //   public/scenes/<id>/flat.webp        the flattened scene at its web size (desktop /card
 //                                       panel, /projects preview)
@@ -54,7 +56,11 @@ for (const entry of library.scenes) {
   const { buf, width, height } = await flatten(id);
   const swatch = pub(`scenes/${id}/swatch.webp`);
   await sharp(buf).resize(480, 320, { fit: "cover" }).webp({ quality: 72 }).toFile(swatch);
-  let line = `${id}: swatch ${kb(swatch)}`;
+  // the reading still: half size, since reading and index pages only ever show it through the
+  // focus recipe's blur; it paints early on a slow link, and the full layers stay for the renderer
+  const read = pub(`scenes/${id}/read.webp`);
+  await sharp(buf).resize(768).blur(1.2).webp({ quality: 60 }).toFile(read);
+  let line = `${id}: swatch ${kb(swatch)}, read ${kb(read)}`;
   if (paired.has(id)) {
     const flat = pub(`scenes/${id}/flat.webp`);
     await sharp(buf).webp({ quality: 64 }).toFile(flat);
