@@ -75,7 +75,7 @@ Cello reviews is byte-for-byte the tree that ships.
 | O6 | 41 unlinked files in `public/`, all already unlinked on live (none added by the landscape apart from the scene manifests and a font licence). Housekeeping only: OCR finds no real name, email or handle in any of the 30 images; the avatar is an illustration; the Ghosted web shots use a demo persona (Sam Rivera) | Cello decides: keep for now, or remove in their own ship after cutover | Ask |
 | O7 | Post copy that no longer matched the D3 images | Cello | **Done** on master (`b92f443`, his approved lines), merged into landscape at `e257e59` |
 | O8 | SEO already wrong on live, not regressions: `/resume`, `/design-system`, `/watchlist` set their canonical to home; canonicals have no trailing slash (each 301s); no sitemap or robots.txt | Rewrite (small) or after | Ask |
-| O9 | The public demo branch (`claude/landscape-demo`, PR #14) still carries the scene manifests with the Figma cutting-table file key and node IDs that `063cf27` removed from landscape-build. Refreshing the demo removes them from the tip only; they stay in its pushed history unless the branch is deleted | Cello decides | Ask |
+| O9 | The public demo branch (`claude/landscape-demo`, PR #14): its tip (`c19a7f6`) no longer carries the scene cutting-table Figma IDs, but its 12 earlier commits do. Deleting the branch wouldn't remove them, because GitHub keeps them reachable through `refs/pull/14/head` | Cello | **Decided: leave the history as is** (his call to the rewrite thread; "your call" here, same answer). The cutover commit to master is squashed, so the IDs never reach master |
 
 ## 2. Test plan
 
