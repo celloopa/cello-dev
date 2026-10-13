@@ -103,7 +103,7 @@ const github = profiles.find(({ network }) => network === "GitHub")?.url;
     z-index: 0;
     align-items: center;
     gap: var(--space-8);
-    padding: 0.8rem var(--space-24);
+    padding: var(--space-12) var(--space-24);
     background: transparent;
     color: var(--text-primary);
     border: 3px solid var(--text-primary);
@@ -112,7 +112,10 @@ const github = profiles.find(({ network }) => network === "GitHub")?.url;
     text-transform: uppercase;
     letter-spacing: var(--track-caps);
     cursor: pointer;
-    transition: all var(--motion-ui) var(--ease-out);
+    transition:
+      background-color var(--motion-ui) var(--ease-out),
+      border-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
   }
 
   .download-btn::before {
@@ -125,7 +128,11 @@ const github = profiles.find(({ network }) => network === "GitHub")?.url;
     z-index: -1;
     border: 3px solid var(--color-accent);
     pointer-events: none;
-    transition: all var(--motion-ui) var(--ease-out);
+    transition:
+      top var(--motion-ui) var(--ease-out),
+      right var(--motion-ui) var(--ease-out),
+      bottom var(--motion-ui) var(--ease-out),
+      left var(--motion-ui) var(--ease-out);
   }
 
   .download-btn:hover::before,

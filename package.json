@@ -11,6 +11,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "ui:shots": "node scripts/ui-shots.mjs",
+    "motion:table": "node scripts/motion-table.mjs",
     "sync-projects": "npx tsx scripts/sync-projects.ts",
     "resume:pdf": "node scripts/generate-resume-pdf.mjs",
     "scenes:derive": "node scripts/scene-derivatives.mjs"

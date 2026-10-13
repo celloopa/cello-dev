@@ -133,14 +133,17 @@ function scan() {
     where[`${fr}|${key}|${v}`] ??= line;
   };
   for (const f of liveFiles()) {
+    let inMotion = false; // inside a transition/animation value that continues over several lines
     for (const { line, text, css } of cssLines(f)) {
+      const motionLine = inMotion || /(?:transition|animation)[\w-]*\s*:/.test(text);
+      inMotion = motionLine && !text.includes(";") && !text.includes("}");
       for (const [k, b] of Object.entries(BANS)) {
         if ((!css && !b.ctxAll) || b.skip?.(f)) continue;
         for (const m of text.matchAll(b.re)) bump(f, "ban:" + k, m[0], line);
       }
       if (!css || /^\s*--[\w-]+\s*:/.test(text)) continue; // token definitions are not uses
       for (const [k, r] of Object.entries(RULES)) {
-        if (r.ctx && !r.ctx.test(text)) continue;
+        if (r.ctx && !r.ctx.test(text) && !(css && motionLine)) continue;
         if (r.prop) for (const m of text.matchAll(r.prop)) {
           const val = (m[1] ?? m[2] ?? "").trim();
           if (r.split) for (const part of val.split(/\s+(?![^(]*\))/)) bump(f, k, part, line);

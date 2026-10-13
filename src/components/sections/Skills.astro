@@ -95,18 +95,21 @@ const getIconName = (name: string) => {
     display: inline-flex;
     align-items: center;
     gap: var(--space-8);
-    font-size: 0.8rem;
+    font-size: var(--type-small);
     font-weight: var(--weight-bold);
     text-transform: uppercase;
     letter-spacing: var(--track-caps);
     color: var(--text-primary);
     background: transparent;
     border: 3px solid var(--text-primary);
-    padding: 0.4rem var(--space-12);
+    padding: var(--space-8) var(--space-12);
     cursor: default;
-    transition: all var(--motion-ui) var(--ease-out);
-    animation: skillSlideUp 0.5s var(--ease-out) backwards;
-    animation-delay: calc(var(--i) * 0.03s);
+    transition:
+      background-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out),
+      transform var(--motion-ui) var(--ease-out);
+    animation: skillSlideUp var(--motion-entry) var(--ease-out) backwards;
+    animation-delay: calc(var(--i) * var(--motion-stagger-dense));
   }
 
   li:hover {
@@ -118,7 +121,7 @@ const getIconName = (name: string) => {
   li :global(svg) {
     width: 18px;
     height: 18px;
-    transition: transform var(--motion-ui) ease;
+    transition: transform var(--motion-ui) var(--ease-out);
   }
 
   li:hover :global(svg) {
@@ -126,21 +129,10 @@ const getIconName = (name: string) => {
   }
 
   span {
-    font-size: 0.8rem;
+    font-size: var(--type-small);
     padding: 0;
     margin: 0;
-    line-height: 1;
-  }
-
-  @keyframes skillSlideUp {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    line-height: var(--leading-tight);
   }
 
   @media (width <= 700px) {
@@ -149,8 +141,8 @@ const getIconName = (name: string) => {
     }
 
     li {
-      font-size: 0.7rem;
-      padding: 0.35rem 0.6rem;
+      font-size: var(--type-label);
+      padding: var(--space-4) var(--space-8);
     }
 
     li :global(svg) {
@@ -159,7 +151,7 @@ const getIconName = (name: string) => {
     }
 
     span {
-      font-size: 0.7rem;
+      font-size: var(--type-label);
     }
   }
 </style>

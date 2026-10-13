@@ -113,17 +113,17 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		display: flex;
 		flex-direction: column;
 		align-items: left;
-		padding-right: 32px;
+		padding-right: var(--space-32);
 	}
 
 	.info h1 {
-		font-size: clamp(2rem, 6vw, 3rem);
+		font-size: var(--type-page-title);
 		margin: 0;
 	}
 
 	.info h2 {
 		font-family: var(--font-mono); /* A label, not a title: stays Geist Mono (I4). */
-		font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+		font-size: var(--type-ui);
 		font-weight: var(--weight-semibold);
 		text-transform: uppercase;
 		letter-spacing: var(--track-caps);
@@ -155,7 +155,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		width: 240px;
 		display: block;
 		filter: grayscale(30%);
-		transition: filter var(--motion-ui) ease;
+		transition: filter var(--motion-ui) var(--ease-out);
 	}
 
 	.image-frame:hover img {
@@ -169,7 +169,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		align-items: center;
 		gap: var(--space-4);
 		font-size: var(--type-ui);
-		letter-spacing: -0.05rem;
+		letter-spacing: var(--track-tight);
 	}
 
 	button {
@@ -183,7 +183,10 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		height: 36px;
 		width: 36px;
 		cursor: pointer;
-		transition: all var(--motion-ui) var(--ease-out);
+		transition:
+			background-color var(--motion-ui) var(--ease-out),
+			border-color var(--motion-ui) var(--ease-out),
+			color var(--motion-ui) var(--ease-out);
 	}
 
 	button:hover {
@@ -209,7 +212,10 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		padding: 0;
 		height: 36px;
 		width: 36px;
-		transition: all var(--motion-ui) var(--ease-out);
+		transition:
+			background-color var(--motion-ui) var(--ease-out),
+			border-color var(--motion-ui) var(--ease-out),
+			color var(--motion-ui) var(--ease-out);
 	}
 
 	footer a:hover {

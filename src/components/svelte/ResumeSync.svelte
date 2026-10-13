@@ -117,7 +117,7 @@
     gap: var(--space-16);
     margin-top: var(--space-20);
     padding: var(--space-16);
-    border: 2px dashed rgba(var(--color-text-rgb), 0.35);
+    border: 2px dashed var(--border-muted);
     font-size: var(--type-small);
   }
 
@@ -129,10 +129,10 @@
   }
 
   .tag {
-    padding: 0.15rem var(--space-8);
+    padding: var(--space-4) var(--space-8);
     border: 2px solid var(--color-accent);
     color: var(--color-accent);
-    font-size: 0.7rem;
+    font-size: var(--type-label);
     font-weight: var(--weight-bold);
     text-transform: uppercase;
     letter-spacing: var(--track-caps);
@@ -148,7 +148,10 @@
     text-transform: uppercase;
     letter-spacing: var(--track-caps);
     cursor: pointer;
-    transition: all var(--motion-ui) var(--ease-out);
+    transition:
+      background-color var(--motion-ui) var(--ease-out),
+      border-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
   }
 
   button:hover:not(:disabled),
@@ -180,7 +183,7 @@
   .preview ul {
     padding-left: var(--space-20);
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: var(--type-small);
   }
 
   summary {

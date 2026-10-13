@@ -57,7 +57,7 @@ import "@/styles/colors.css";
 
   li {
     padding-top: var(--space-16);
-    border-top: 2px solid rgba(var(--color-accent-rgb), 0.5);
+    border-top: 2px solid var(--accent-ground);
   }
 
   li:first-child {
@@ -87,7 +87,7 @@ import "@/styles/colors.css";
 
   article a {
     color: var(--text-primary);
-    transition: color 0.2s ease;
+    transition: color var(--motion-ui) var(--ease-out);
   }
 
   article a:hover {
@@ -100,7 +100,7 @@ import "@/styles/colors.css";
     color: var(--text-primary);
     margin: var(--space-8) 0 0 0;
     padding: 0;
-    line-height: 1.5;
+    line-height: var(--leading-small);
     opacity: 0.9;
   }
 
@@ -108,9 +108,9 @@ import "@/styles/colors.css";
     position: relative;
     font-weight: var(--weight-regular);
     font-size: var(--type-small);
-    line-height: 1.6;
+    line-height: var(--leading-small);
     margin: var(--space-4) 0;
-    padding: 0 0 0 1.35rem;
+    padding: 0 0 0 var(--space-20);
     border: none;
     opacity: 0.85;
   }
@@ -130,7 +130,7 @@ import "@/styles/colors.css";
   .highlights {
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    gap: var(--space-4);
     margin: 0 0 var(--space-12) 0;
   }
 
@@ -141,7 +141,7 @@ import "@/styles/colors.css";
   }
 
   .keyword {
-    font-size: 0.7rem;
+    font-size: var(--type-label);
     font-weight: var(--weight-semibold);
     text-transform: uppercase;
     letter-spacing: var(--track-caps);
@@ -155,7 +155,7 @@ import "@/styles/colors.css";
     align-items: center;
     justify-content: center;
     color: var(--color-accent);
-    font-size: 0.8rem;
+    font-size: var(--type-small);
     font-weight: var(--weight-black);
     white-space: nowrap;
     padding: var(--space-4) var(--space-8);

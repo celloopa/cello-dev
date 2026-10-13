@@ -245,7 +245,7 @@ html.scene-admire [data-scene-intro] {
   bottom: var(--scene-copy-bottom);
   z-index: 1;
   color: var(--text-on-art);
-  animation: fadeIn var(--motion-handoff) var(--ease-out) calc(var(--motion-ui) / 2) both;
+  animation: enter-fade var(--motion-handoff) var(--ease-out) calc(var(--motion-ui) / 2) both;
 }
 .admire-view[hidden] {
   display: none;

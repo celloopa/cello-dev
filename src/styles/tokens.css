@@ -154,6 +154,16 @@
   --motion-ui: 300ms; /* Hover, color, press, menu. */
   --motion-entry: 600ms; /* Reveal, slide, wipe, scale. */
   --motion-stagger: 60ms; /* Per item in a staggered entry. */
+  --motion-stagger-dense: 30ms; /* Per item in a long staggered list (more than about ten items, e.g. skill chips). */
+  --motion-page-wipe: 450ms; /* Signature: the page-to-page wipe (view transitions). */
+  --motion-logo-loop: 12s; /* Signature: the logo's assemble-and-break loop. */
+  --motion-logo-break: 700ms; /* Signature: the logo breaking apart on hover. */
+  --motion-arrival-stagger: 120ms; /* Signature (the landscape scenes, A3): the arrival's stagger, sky → far → mid → near (the far layer leads by 20ms more). Text never waits for it. */
+  --motion-arrival-overshoot: 0.107; /* Signature (the landscape scenes, A3): the nearest layer's spring overshoot on arrival (≈11%, damping 0.58); farther layers overshoot less. Half the drop on phones. */
+  --motion-focus: 550ms; /* Signature (the landscape scenes, A3): exploring ⇄ reading (≈95% of the focus recipe at this time). */
+  --motion-scene-fade: 700ms; /* Signature (the landscape scenes, A3): the ink atmosphere and the still's focus filter cross-fading between attention states. */
+  --motion-handoff: 400ms; /* Signature (the landscape scenes, A3): still ⇄ WebGL hand-off, and the place label and the bar's reading context coming and going. */
+  --motion-none: 0s; /* No wait. The reduced-motion contract zeroes every delay with it, so content never waits on motion. */
 
   /* Scene (amendment A3, pending Cello; the rewrite's landscape pages only. Motion caps live in each scene's manifest, not here) */
   --scene-bar: 4rem; /* The dark top bar's height; the scene starts under it. */
@@ -179,11 +189,6 @@
   --atmos-arrive-mobile: linear-gradient(0deg, color-mix(in srgb, var(--ink-950) 96%, transparent) 0%, color-mix(in srgb, var(--ink-950) 76%, transparent) 28%, color-mix(in srgb, var(--ink-950) 24%, transparent) 50%, transparent 68%); /* Ink atmosphere while arriving, phones. */
   --atmos-view: linear-gradient(0deg, color-mix(in srgb, var(--ink-950) 62%, transparent), transparent 32%); /* Ink atmosphere in Admire: just enough for the place name and the way back. */
   --atmos-read: color-mix(in srgb, var(--ink-950) 36%, transparent); /* Ink atmosphere while reading, over the focus recipe. */
-  --motion-arrival-stagger: 120ms; /* Signature tier: the arrival's stagger, sky → far → mid → near (the far layer leads by 20ms more). Text never waits for it. */
-  --motion-arrival-overshoot: 0.107; /* Signature tier: the nearest layer's spring overshoot on arrival (≈11%, damping 0.58); farther layers overshoot less. Half the drop on phones. */
-  --motion-focus: 550ms; /* Signature tier: exploring ⇄ reading (≈95% of the focus recipe at this time). */
-  --motion-scene-fade: 700ms; /* Signature tier: the ink atmosphere and the still's focus filter cross-fading between attention states. */
-  --motion-handoff: 400ms; /* Signature tier: still ⇄ WebGL hand-off, and the place label and the bar's reading context coming and going. */
 
   /* Legacy aliases (old names kept so open branches build; removed once nothing uses them) */
   --ds-color-ink-950: var(--ink-950);

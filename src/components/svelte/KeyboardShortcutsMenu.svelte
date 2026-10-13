@@ -244,7 +244,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: var(--scrim);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -295,7 +295,7 @@
     }
 
     h3 {
-      font-size: 0.65rem;
+      font-size: var(--type-label);
       margin-bottom: var(--space-4);
     }
 
@@ -304,12 +304,12 @@
     }
 
     button {
-      padding: 0.35rem var(--space-8);
+      padding: var(--space-4) var(--space-8);
     }
 
     .key {
-      font-size: 0.7rem;
-      padding: 0.15rem 0.35rem;
+      font-size: var(--type-label);
+      padding: var(--space-4) var(--space-4);
       margin-right: var(--space-8);
     }
 
@@ -357,7 +357,7 @@
     font-size: var(--type-label);
     font-weight: var(--weight-bold);
     text-transform: uppercase;
-    letter-spacing: 0.15em;
+    letter-spacing: var(--track-wide);
     color: var(--color-accent);
     margin: 0 0 var(--space-8) 0;
     padding: 0;
@@ -395,7 +395,9 @@
     cursor: pointer;
     color: inherit;
     font: inherit;
-    transition: all 0.2s var(--ease-out);
+    transition:
+      background-color var(--motion-ui) var(--ease-out),
+      border-color var(--motion-ui) var(--ease-out);
   }
 
   button:hover,
@@ -413,12 +415,14 @@
     background-color: var(--text-primary);
     color: var(--bg-canvas);
     font-weight: var(--weight-bold);
-    font-size: 0.8rem;
+    font-size: var(--type-small);
     padding: var(--space-4) var(--space-8);
     margin-right: var(--space-12);
     text-transform: uppercase;
     letter-spacing: var(--track-caps);
-    transition: all 0.2s ease;
+    transition:
+      background-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
   }
 
   .label {
@@ -426,8 +430,8 @@
     font-size: var(--type-ui);
     font-weight: var(--weight-semibold);
     text-transform: uppercase;
-    letter-spacing: 0.03em;
-    transition: color 0.2s ease;
+    letter-spacing: var(--track-caps);
+    transition: color var(--motion-ui) var(--ease-out);
   }
 
   button:hover .key,

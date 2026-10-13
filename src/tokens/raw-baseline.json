@@ -1,210 +1,37 @@
 {
  "src/components/AnimatedLogo.astro": {
-  "ban:keyframes-outside-animations": {
-   "@keyframes logoSlideFromLeft": 1,
-   "@keyframes logoSlideFromTopRight": 1,
-   "@keyframes logoSlideFromBottom": 1,
-   "@keyframes breakC": 1,
-   "@keyframes breakSun": 1,
-   "@keyframes breakTriangle": 1
-  },
   "duration": {
-   "12s": 3,
    "0.18s": 1,
    "0.34s": 1,
-   "0.7s": 3,
    "0.05s": 1,
    "0.1s": 1
   }
  },
  "src/components/Header.astro": {
   "color": {
-   "color-mix(in srgb, var(--bg-canvas) 58%, transparent)": 1,
    "color-mix(in srgb, var(--bg-canvas) 10%, transparent)": 1
   },
   "ban:container-literal": {
    "max-width: 1100px": 1
-  },
-  "duration": {
-   "0.5s": 2,
-   "0.2s": 1
-  },
-  "spacing": {
-   "0.4rem": 1,
-   "0.15rem": 1,
-   "0.35rem": 1,
-   "0.65rem": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 1
-  },
-  "font-size": {
-   "0.7rem": 1,
-   "0.8rem": 1
-  },
-  "letter-spacing": {
-   "0.03em": 1
-  },
-  "easing": {
-   "ease": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes headerSlideLeft": 1,
-   "@keyframes headerSlideRight": 1
   }
  },
  "src/components/Section.astro": {
   "ban:container-literal": {
    "max-width: 1100px": 1
-  },
-  "spacing": {
-   "32px": 1
-  }
- },
- "src/components/sections/Education.astro": {
-  "color": {
-   "rgba(var(--color-accent-rgb), 0.5)": 1
-  },
-  "font-size": {
-   "0.8rem": 1
-  }
- },
- "src/components/sections/Experience.astro": {
-  "color": {
-   "rgba(var(--color-accent-rgb), 0.5)": 1
-  },
-  "duration": {
-   "0.2s": 1
-  },
-  "easing": {
-   "ease": 1
-  },
-  "line-height": {
-   "1.5": 1,
-   "1.6": 2
-  },
-  "font-size": {
-   "0.8rem": 1
-  },
-  "spacing": {
-   "0.35rem": 1,
-   "1.35rem": 1
   }
  },
  "src/components/sections/Hero.astro": {
   "spacing": {
-   "32px": 1,
    "-0.4rem": 1
-  },
-  "font-size": {
-   "clamp(2rem, 6vw, 3rem)": 1,
-   "clamp(0.9rem, 2.5vw, 1.1rem)": 1
-  },
-  "easing": {
-   "ease": 1
-  },
-  "letter-spacing": {
-   "-0.05rem": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 2
-  }
- },
- "src/components/sections/Projects.astro": {
-  "color": {
-   "rgba(var(--color-accent-rgb), 0.5)": 1
-  },
-  "duration": {
-   "0.2s": 1
-  },
-  "easing": {
-   "ease": 1
-  },
-  "line-height": {
-   "1.5": 1,
-   "1.6": 1
-  },
-  "spacing": {
-   "1.35rem": 1,
-   "0.35rem": 1
-  },
-  "font-size": {
-   "0.7rem": 1,
-   "0.8rem": 1
-  }
- },
- "src/components/sections/Skills.astro": {
-  "font-size": {
-   "0.8rem": 2,
-   "0.7rem": 2
-  },
-  "spacing": {
-   "0.4rem": 1,
-   "0.35rem": 1,
-   "0.6rem": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 1
-  },
-  "duration": {
-   "0.5s": 1,
-   "0.03s": 1
-  },
-  "easing": {
-   "ease": 1
-  },
-  "line-height": {
-   "1": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes skillSlideUp": 1
   }
  },
  "src/components/svelte/KeyboardShortcutsMenu.svelte": {
-  "color": {
-   "rgba(0, 0, 0, 0.7)": 1
-  },
-  "font-size": {
-   "0.65rem": 1,
-   "0.7rem": 1,
-   "0.8rem": 1
-  },
   "spacing": {
    "0.125rem": 1,
-   "0.35rem": 2,
-   "0.15rem": 1,
    "-1px": 1
   },
   "ban:keyframes-outside-animations": {
    "@keyframes menuSlideIn": 1
-  },
-  "letter-spacing": {
-   "0.15em": 1,
-   "0.03em": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 2
-  },
-  "duration": {
-   "0.2s": 3
-  },
-  "easing": {
-   "ease": 2
-  }
- },
- "src/components/svelte/ResumeSync.svelte": {
-  "color": {
-   "rgba(var(--color-text-rgb), 0.35)": 1
-  },
-  "spacing": {
-   "0.15rem": 1
-  },
-  "font-size": {
-   "0.7rem": 1,
-   "0.8rem": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 1
   }
  },
  "src/components/watchlist_project/watchlistHeader.astro": {
@@ -219,22 +46,6 @@
   },
   "ban:container-literal": {
    "max-width: 1100px": 1
-  },
-  "font-size": {
-   "0.8rem": 2,
-   "clamp(3.5rem, 10vw, 6rem)": 1,
-   "1.6rem": 1,
-   "1.2rem": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes wipe-in": 1,
-   "@keyframes wipe-out": 1
-  },
-  "duration": {
-   "0.45s": 2,
-   "80ms": 1,
-   "0.9s": 1,
-   "0.01ms": 2
   }
  },
  "src/pages/design-system.astro": {
@@ -246,37 +57,16 @@
   }
  },
  "src/pages/resume.astro": {
-  "spacing": {
-   "0.8rem": 1,
-   "clamp(2rem, 5vh, 3.5rem)": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 2
-  },
   "ban:container-literal": {
    "max-width: 1100px": 1
+  },
+  "spacing": {
+   "clamp(2rem, 5vh, 3.5rem)": 1
   }
  },
  "src/styles/animations.css": {
   "duration": {
-   "0.5s": 2,
-   "0.1s": 1,
-   "0.2s": 1,
-   "0.3s": 1,
-   "0.4s": 2,
-   "0.6s": 1,
-   "0.7s": 1,
-   "0.8s": 1,
    "0.01ms": 2
-  },
-  "easing": {
-   "ease-out": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 1
-  },
-  "color": {
-   "rgba(var(--color-text-rgb), 0.15)": 1
   }
  },
  "src/styles/print.css": {
