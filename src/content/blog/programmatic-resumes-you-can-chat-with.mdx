@@ -17,7 +17,7 @@ import MediaTwo from '@/components/media/MediaTwo.astro';
 
 The last version of Ghosted worked, but only for me. Testers found it too complicated. So I went back to the flow, mapped every step from "here's my resume" to "I applied," and rebuilt the product around one surface: a live resume you can chat with.
 
-Here's the tour, with the reasoning behind each piece. The screenshots use my own resume and three real Design Engineer postings.
+Here's the tour, with the reasoning behind each piece. The screenshots use a made-up demo resume (Rowan Ellis) and sample Design Engineer postings.
 
 ## 1. Bring your resume, then get interviewed
 
@@ -49,7 +49,7 @@ Paste a link and Ghosted reads the posting from the hiring platform's own data f
 
 Ghosted files the job under a category, then cuts a one-page version from your base resume. It tells you plainly what it couldn't back up. From there you chat: "trim it to one page," "lead with design systems." Every change the AI makes is highlighted on the page, and you accept or reject it.
 
-The screenshot at the top of this post shows it: after "trim it to one page," the changed summary and bullets are highlighted, with Accept and Reject above the page.
+The screenshot at the top of this post shows it: the changed summary and bullets are highlighted, with Keep and Reject above the page.
 
 The preview is Typst compiled in the browser, and the PDF comes from the same compiler, so what you see is what you download. Before writing any code I measured it: an edit re-renders in about 7 milliseconds.
 
@@ -88,7 +88,7 @@ Every job gets filed into your own job families. Once a category has three jobs,
 
 ## 6. Built for testers
 
-Testers sign in with a personal code, and their work syncs to the server. A **Report a problem** button takes a note and screenshots and sends them straight to my Discord. My first tester asked for formatting in her job notes, and it shipped that evening. She planned to have those notes open in her interview the next day.
+Testers sign in with a personal code, and their work syncs to the server. A **Leave feedback** button (it was Report a problem when I wrote this) takes a note and screenshots and sends them straight to my Discord. My first tester asked for formatting in her job notes, and it shipped that evening. She planned to have those notes open in her interview the next day.
 
 <MediaFull
   src="/images/projects/ghosted/v3/report.webp"
