@@ -14,6 +14,7 @@
 import Mark from "./Mark.astro";
 import Sun from "@/icons/Sun.astro";
 import Button from "@/components/ui/Button.astro";
+import IconButton from "@/components/ui/IconButton.astro";
 
 interface Props {
   /** A reading page's title, shown from the first paint (else scenery.js names the stop in view). */
@@ -69,9 +70,9 @@ const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page
         <span class="bar-key" data-bar-key></span>
         <span>Menu</span>
       </Button>
-      <button class="bar-btn bar-theme" type="button" data-theme-toggle aria-label="Switch between Day and Dusk">
+      <IconButton data-theme-toggle label="Switch between Day and Dusk">
         <Sun />
-      </button>
+      </IconButton>
     </div>
   </nav>
 </header>
@@ -159,34 +160,6 @@ const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page
     gap: var(--space-8);
   }
 
-  .bar-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--space-8);
-    min-width: var(--touch-target);
-    height: var(--touch-target);
-    padding-inline: var(--space-12);
-    border: var(--stroke-control) solid var(--border-strong);
-    background: transparent;
-    color: inherit;
-    font: inherit;
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
-    cursor: pointer;
-    transition:
-      background-color var(--motion-ui) var(--ease-out),
-      color var(--motion-ui) var(--ease-out);
-  }
-
-  .bar-btn:hover,
-  .bar-btn:focus-visible {
-    background: var(--text-primary);
-    color: var(--bg-canvas);
-  }
-
   .bar-key {
     padding-inline: var(--space-4);
     background: var(--text-primary);
@@ -216,10 +189,6 @@ const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page
 
   :global(html.touch) .bar-key::before {
     content: none;
-  }
-
-  .bar-theme {
-    padding-inline: 0;
   }
 
   /* reading: the project in view + All work; Work and the utilities step aside */

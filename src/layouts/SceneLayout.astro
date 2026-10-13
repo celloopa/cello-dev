@@ -30,6 +30,7 @@ import Scene from "@/components/scene/Scene.astro";
 import KeyboardManager from "@/components/KeyboardManager.astro";
 import ThemeInit from "@/components/ThemeInit.astro";
 import Mark from "@/components/scene/Mark.astro";
+import IconButton from "@/components/ui/IconButton.astro";
 import Mail from "@/icons/Mail.astro";
 import GitHub from "@/icons/GitHub.astro";
 import LinkedIn from "@/icons/LinkedIn.astro";
@@ -155,9 +156,9 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
             {
               email && (
                 <li>
-                  <a href={`mailto:${email}`} title="Email" aria-label="Email Marcelo Rondon">
+                  <IconButton href={`mailto:${email}`} title="Email" label="Email Marcelo Rondon">
                     <Mail />
-                  </a>
+                  </IconButton>
                 </li>
               )
             }
@@ -167,15 +168,15 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
                 if (!Icon) return null;
                 return (
                   <li>
-                    <a
+                    <IconButton
                       href={url}
                       title={network}
-                      aria-label={network === "Bsky" ? "Bluesky" : network}
+                      label={network === "Bsky" ? "Bluesky" : network}
                       target="_blank"
                       rel="noopener noreferrer"
                     >
                       <Icon />
-                    </a>
+                    </IconButton>
                   </li>
                 );
               })
@@ -333,24 +334,6 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
         list-style: none;
       }
 
-      .footer-socials a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: var(--touch-target);
-        height: var(--touch-target);
-        border: var(--stroke-control) solid var(--border-strong);
-        transition:
-          background-color var(--motion-ui) var(--ease-out),
-          color var(--motion-ui) var(--ease-out);
-      }
-
-      .footer-socials a:hover,
-      .footer-socials a:focus-visible {
-        background: var(--action-primary);
-        border-color: var(--action-primary);
-        color: var(--text-inverse);
-      }
 
       .footer-meta {
         color: var(--text-muted);
