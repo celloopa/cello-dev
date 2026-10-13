@@ -88,12 +88,12 @@ const PLACE = homeScene(); // Mirror Lake, as home
 >
   <section class="card-hero" aria-labelledby="card-name" data-scene-hero>
     <div class="card-intro copy-scrim" data-scene-intro>
-      {locationLabel && <p class="card-where">{locationLabel}</p>}
       <h1 class="card-name" id="card-name">{name}</h1>
       <p class="card-role">
         {roleLine}
         {roleSub && <span class="card-role-sub">{roleSub}</span>}
       </p>
+      {locationLabel && <p class="card-where">{locationLabel}</p>}
       <div class="card-actions" aria-label="Primary actions">
         <a class="card-action card-action-save" href="/contact.vcf">
           <span class="card-action-title">Save Contact</span>
@@ -351,8 +351,10 @@ const PLACE = homeScene(); // Mirror Lake, as home
     color: var(--text-on-art);
   }
 
+  /* Portland, Oregon: under the role line, inside the scrim's flat middle (as the copy's first line
+     it sat in the scrim's top feather and measured 4.0:1 over the still on phones) */
   .card-where {
-    margin: 0 0 var(--space-12);
+    margin: 0 0 var(--space-24);
     font-size: var(--type-label);
     font-weight: var(--weight-bold);
     line-height: var(--leading-ui);
@@ -371,7 +373,7 @@ const PLACE = homeScene(); // Mirror Lake, as home
   }
 
   .card-role {
-    margin: 0 0 var(--space-24);
+    margin: 0 0 var(--space-12);
     font-family: var(--font-title);
     font-size: var(--type-hero-line);
     font-weight: var(--weight-semibold);
@@ -497,22 +499,25 @@ const PLACE = homeScene(); // Mirror Lake, as home
     opacity: 1;
   }
 
-  /* the ink that grounds the copy (the arrival atmosphere), and in Dusk the reading ink over the
-     whole place, since the flattened picture is the Day art */
-  .panel-art::before,
+  /* The ink that grounds the copy (the arrival atmosphere) belongs to the panel, not to the fixed
+     picture, so it travels with the copy: fixed to the viewport, it stayed at the bottom while the
+     copy scrolled up over the bright sky (measured 1.2:1). In Dusk, the reading ink over the whole
+     place too, since the flattened picture is the Day art. */
+  .panel::before,
   .panel-art::after {
     content: "";
     position: absolute;
     inset: 0;
-    z-index: 1;
     pointer-events: none;
   }
 
-  .panel-art::before {
+  .panel::before {
+    z-index: 0;
     background: var(--atmos-arrive);
   }
 
   :global(html:not([data-theme="light"])) .panel-art::after {
+    z-index: 1;
     background: var(--atmos-read);
   }
 
@@ -528,6 +533,8 @@ const PLACE = homeScene(); // Mirror Lake, as home
   }
 
   .panel-body {
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
     gap: var(--space-48);
@@ -731,11 +738,10 @@ const PLACE = homeScene(); // Mirror Lake, as home
       padding-block: var(--space-96);
     }
 
+    /* the artifact first, so the words sit lowest, in the panel's darkest ink */
+    .panel-artifact,
     .panel-body[data-flip] .panel-artifact {
-      order: 0;
-    }
-
-    .panel-artifact {
+      order: -1;
       width: 78%;
       margin-left: auto;
     }
