@@ -12,6 +12,7 @@ import SceneLayout from "@/layouts/SceneLayout.astro";
 import Prose from "@/components/ui/Prose.astro";
 import Button from "@/components/ui/Button.astro";
 import Eyebrow from "@/components/ui/Eyebrow.astro";
+import Panel from "@/components/ui/Panel.astro";
 import CaseMeta from "@/components/CaseMeta.astro";
 import MediaFull from "@/components/media/MediaFull.astro";
 import MediaTwo from "@/components/media/MediaTwo.astro";
@@ -140,9 +141,9 @@ const all = { href: "/projects", label: "All work" };
             <h2 id="highlights-title">Highlights</h2>
             <ul>
               {highlights.map((highlight) => (
-                <li>
+                <Panel as="li">
                   <p>{highlight}</p>
-                </li>
+                </Panel>
               ))}
             </ul>
           </section>
@@ -229,13 +230,6 @@ const all = { href: "/projects", label: "All work" };
     margin: 0;
     padding: 0;
     list-style: none;
-  }
-
-  .read-highlights li {
-    padding: var(--space-16);
-    border: var(--stroke-frame) solid var(--border-strong);
-    background: var(--bg-plate);
-    color: var(--text-primary);
   }
 
   .read-highlights p {

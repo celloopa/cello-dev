@@ -1,8 +1,10 @@
 ---
 /*
- * CaseMeta: a case study's opening facts (problem, role, decision, result) as labeled panels.
- * Each panel is a plate (A1 bg-plate): opaque, so its labels and text never sit on scene art.
+ * CaseMeta: a case study's opening facts (problem, role, decision, result) as Labeled Panels.
+ * Each Panel is a plate (A1 bg-plate): opaque, so its labels and text never sit on scene art.
  */
+import Panel from "@/components/ui/Panel.astro";
+
 interface MetaItem {
   label: string;
   value: string;
@@ -18,10 +20,9 @@ const { items } = Astro.props;
 <aside class="case-meta" aria-label="Case study summary">
   {
     items.map((item) => (
-      <div class="meta-item">
-        <span>{item.label}</span>
+      <Panel label={item.label}>
         <p>{item.value}</p>
-      </div>
+      </Panel>
     ))
   }
 </aside>
@@ -34,27 +35,9 @@ const { items } = Astro.props;
     margin: var(--space-32) 0;
   }
 
-  .meta-item {
-    padding: var(--space-16);
-    border: var(--stroke-control) solid var(--border-strong);
-    background: var(--bg-plate);
-  }
-
-  span {
-    display: block;
-    margin-bottom: var(--space-8);
-    color: var(--text-accent);
-    font-size: var(--type-label);
-    font-weight: var(--weight-extrabold);
-    letter-spacing: var(--track-wide);
-    line-height: var(--leading-heading);
-    text-transform: uppercase;
-  }
-
   p {
     margin: 0;
     padding: 0;
-    color: var(--text-primary);
     font-size: var(--type-ui);
     line-height: var(--leading-small);
   }

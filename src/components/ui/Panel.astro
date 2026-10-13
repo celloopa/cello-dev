@@ -1,0 +1,48 @@
+---
+/*
+ * Panel (proposal §7): a static framed box on a plate. Never interactive, so no hover (the old
+ * highlights lifted on hover: a false affordance). Replaces CaseMeta's `.meta-item`, the
+ * case-study highlights and FlowDiagram's frame.
+ *
+ *   label   Labeled: an accent Eyebrow on top, then the body (CaseMeta, FlowDiagram)
+ *           Plain: no label (the highlights)
+ *   labelAs the label's element: span (the default) or figcaption (when the panel is a figure)
+ *   as      div (the default), li, figure or aside
+ *
+ * The plate (A1 bg-plate) is opaque, so its small text never sits on scene art. Its content is
+ * the one named indent inside a framed box (§4 rule 3).
+ */
+import type { HTMLAttributes } from "astro/types";
+import Eyebrow from "./Eyebrow.astro";
+
+type Props = HTMLAttributes<"div"> & {
+  label?: string;
+  labelAs?: "span" | "figcaption";
+  as?: "div" | "li" | "figure" | "aside";
+};
+
+const { label, labelAs = "span", as: Tag = "div", class: className, ...rest } = Astro.props;
+---
+
+<Tag class:list={["panel", className]} {...rest}>
+  {label && <Eyebrow as={labelAs} tone="accent" class="panel-label">{label}</Eyebrow>}
+  <slot />
+</Tag>
+
+<style>
+  /* margin in :where(), so a parent can space it without a specificity fight */
+  :where(.panel) {
+    margin: 0;
+  }
+
+  .panel {
+    padding: var(--space-16);
+    border: var(--stroke-frame) solid var(--border-strong);
+    background: var(--bg-plate);
+    color: var(--text-primary);
+  }
+
+  .panel-label {
+    margin-bottom: var(--space-8);
+  }
+</style>

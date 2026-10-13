@@ -1,9 +1,11 @@
 ---
 /*
  * FlowDiagram: a titled sequence of steps (label + detail), with an optional caption.
- * The figure is a plate (A1 bg-plate), so its labels and text never sit on scene art.
+ * The figure is a Labeled Panel (a plate, A1 bg-plate), so its labels and text never sit on
+ * scene art.
  */
 import AccentBar from "@/components/ui/AccentBar.astro";
+import Panel from "@/components/ui/Panel.astro";
 
 interface FlowItem {
   label: string;
@@ -19,8 +21,7 @@ interface Props {
 const { title, items, caption } = Astro.props;
 ---
 
-<figure class="flow-diagram">
-  <figcaption>{title}</figcaption>
+<Panel as="figure" label={title} labelAs="figcaption" class="flow-diagram">
   <ol>
     {
       items.map((item) => (
@@ -33,24 +34,11 @@ const { title, items, caption } = Astro.props;
     }
   </ol>
   {caption && <p class="caption">{caption}</p>}
-</figure>
+</Panel>
 
 <style>
   .flow-diagram {
     margin: var(--space-32) 0;
-    padding: var(--space-16);
-    border: var(--stroke-frame) solid var(--border-strong);
-    background: var(--bg-plate);
-  }
-
-  figcaption {
-    margin-bottom: var(--space-16);
-    color: var(--text-accent);
-    font-size: var(--type-label);
-    font-weight: var(--weight-extrabold);
-    letter-spacing: var(--track-wide);
-    line-height: var(--leading-title);
-    text-transform: uppercase;
   }
 
   ol {
