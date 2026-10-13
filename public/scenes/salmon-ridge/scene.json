@@ -1,0 +1,82 @@
+{
+  "id": "salmon-ridge",
+  "place": "Salmon ridge (exact location unconfirmed)",
+  "month": "Unconfirmed",
+  "status": "photo treatment and cut candidate; anonymous figure removed 2026-10-12; still-first until expansion seam and hidden-fill cleanup",
+  "sourceSize": [
+    2172,
+    1448
+  ],
+  "webSize": [
+    1536,
+    1024
+  ],
+  "master": "/scenes/salmon-ridge/master-wide.webp",
+  "portrait": "/scenes/salmon-ridge/master.webp",
+  "originalPortraitBounds": [
+    543,
+    0,
+    1629,
+    1448
+  ],
+  "expandedSides": "AI outpainted; original stylized center mechanically preserved",
+  "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
+  "layers": [
+    {
+      "name": "sky",
+      "src": "/scenes/salmon-ridge/sky.webp",
+      "depth": 0.97,
+      "testedHorizontalSourcePx": 0,
+      "recommendedHorizontalSourcePx": 0
+    },
+    {
+      "name": "far",
+      "src": "/scenes/salmon-ridge/far.webp",
+      "depth": 0.6,
+      "testedHorizontalSourcePx": 1,
+      "recommendedHorizontalSourcePx": 0
+    },
+    {
+      "name": "near",
+      "src": "/scenes/salmon-ridge/near.webp",
+      "depth": 0.12,
+      "testedHorizontalSourcePx": 3,
+      "recommendedHorizontalSourcePx": 0
+    }
+  ],
+  "checks": {
+    "restack": "cut-check.json",
+    "center": "expansion.json",
+    "motion": [
+      "motion-left.jpg",
+      "motion-right.jpg"
+    ],
+    "isolated": [
+      "isolated-sky.jpg",
+      "isolated-far.jpg",
+      "isolated-near.jpg"
+    ],
+    "crops": [
+      "crop-desktop.jpg",
+      "crop-mobile.jpg"
+    ],
+    "peopleRemovedReview": "people-removed-review.jpg"
+  },
+  "mobileCenter": 0.4,
+  "limitations": [
+    "Exact location and month unconfirmed; no project-place claim.",
+    "AI treatment alters fine grass/branch/tree detail; the portrait was re-edited 2026-10-12 to remove the anonymous figure (no people in the scene); aesthetic approval pending.",
+    "Wide outpaint has a noticeable left vertical join beside deadwood; center diff0 does not prove seamless extension. Prefer original portrait/mobile crop or still until corrected.",
+    "Near matte dilation removes most fringe ghosts but small edge residuals and sky continuation outlines remain; tiny far±1/near±3 source-pixel extremes inspected, no production motion clearance.",
+    "Three planes: near slope and framing trees stay connected. Near plane RGB/alpha changed only in the former figure zone (x 603-1252, y 795-1447); sky unchanged.",
+    "Centered desktop clips near trail base; mobile .40 center keeps the empty trail and ridge. Actual responsive canvas arrangement pending."
+  ],
+  "peopleRemoval": {
+    "date": "2026-10-12",
+    "decision": "Cello: \"Make them tiny or remove\"",
+    "action": "removed (not shrunk)",
+    "method": "image edit of locked portrait master, blended only inside a feathered patch around the former figure; wide master rebuilt by pasting into the same bounds; near matte regenerated in the former figure zone only",
+    "raw": "before-figure-removal/nofigure-raw-v1.png (local, ignored)",
+    "previousMasters": "before-figure-removal/ (local, ignored)"
+  }
+}

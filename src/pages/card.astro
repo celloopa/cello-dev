@@ -1,636 +1,679 @@
 ---
-import cv from "@cv";
+/*
+ * /card: the landing page for people Cello meets at events (landscape build S3). The URL is the
+ * one on his QR code and in "Share Card", so it stays. Phone first: someone opens it seconds
+ * after a scan.
+ *
+ *   1. Who he is and the two fast actions (Save Contact, Share Card) over Mirror Lake, readable
+ *      and usable at first paint; the scene assembles behind them (the arrival) once the
+ *      renderer is in, and is a still under reduced motion.
+ *   2. The four case studies, each over its own paired scene (src/data/scene-pairings.json): a
+ *      flattened copy of the place, loaded only as its panel nears, revealed as the page scrolls
+ *      (each panel is a window onto a fixed picture) and settling from the focus scale to rest.
+ *   3. About, the links, and the QR code (today's card).
+ *
+ * Words: cv.json (name, label, location, email, profiles), today's card (the action labels and
+ * notes, the share payload, "Scan To Visit", "Direct contact file"), today's home page ("Selected
+ * Case Studies", the About paragraph, "View Resume"), and each case study's frontmatter (role,
+ * title, the first sentence of the description). Nothing new.
+ * Save Contact and Share Card behave exactly as today's card: /contact.vcf, and the Web Share
+ * API with the clipboard and then the bare link as fallbacks.
+ */
+import "@fontsource-variable/geist";
+import { getCollection } from "astro:content";
 import QRCode from "qrcode";
-import "@fontsource/geist-mono/400.css";
-import "@fontsource/geist-mono/700.css";
-import "@fontsource/geist-mono/900.css";
-import "@fontsource-variable/national-park";
-import "@/styles/colors.css";
-import "@/styles/animations.css";
-import ThemeInit from "@/components/ThemeInit.astro";
+import cv from "@cv";
+import SceneLayout from "@/layouts/SceneLayout.astro";
+import Button from "@/components/ui/Button.astro";
+import ArrowLink from "@/components/ui/ArrowLink.astro";
+import Eyebrow from "@/components/ui/Eyebrow.astro";
+import Section from "@/components/ui/Section.astro";
+import { homeScene, sceneForProject } from "@/lib/scene/pairing";
+import { sceneArt } from "@/lib/scene/catalog";
 import Mail from "@/icons/Mail.astro";
 import Phone from "@/icons/Phone.astro";
 import LinkedIn from "@/icons/LinkedIn.astro";
 import GitHub from "@/icons/GitHub.astro";
 
 const { basics } = cv;
-const { name, label, summary, email, phone, url, location, profiles } = basics;
+const { name, label, email, phone, url, location, profiles } = basics;
 
 const cardUrl = new URL("/card", url).toString();
 const vCardUrl = new URL("/contact.vcf", url).toString();
 const siteHost = new URL(url).hostname.replace(/^www\./, "");
 const phoneDigits = phone ? phone.replace(/\D/g, "") : "";
-const phoneHref = phoneDigits
-  ? `tel:${phoneDigits.length === 10 ? `+1${phoneDigits}` : `+${phoneDigits}`}`
-  : "";
-const locationLabel = [location.city, location.region]
-  .filter(Boolean)
-  .join(", ");
+const phoneHref = phoneDigits ? `tel:${phoneDigits.length === 10 ? `+1${phoneDigits}` : `+${phoneDigits}`}` : "";
+const locationLabel = [location.city, location.region].filter(Boolean).join(", ");
 const linkedin = profiles.find(({ network }) => network === "LinkedIn")?.url;
 const github = profiles.find(({ network }) => network === "GitHub")?.url;
+// cv.json's label, set as the scene hero sets home's role line: the role, then its focus
+const [roleLine, roleSub] = label.split(" — ");
 
-const qrCodeSvg = await QRCode.toString(url, {
-  type: "svg",
-  errorCorrectionLevel: "H",
-  margin: 1,
-  color: {
-    dark: "#001A11",
-    light: "#FFF8ED",
-  },
-});
+// Today's QR code (the portfolio URL), in the page's colors: modules in currentColor on the frame
+const qrCodeSvg = (await QRCode.toString(url, { type: "svg", errorCorrectionLevel: "H", margin: 1 }))
+  .replace(/fill="#[0-9a-fA-F]{3,8}"/g, 'fill="none"')
+  .replace(/stroke="#[0-9a-fA-F]{3,8}"/g, 'stroke="currentColor"');
+
+/** One line from today's description: its first sentence, or the part before a dash if that runs long. */
+const oneLine = (d: string) => {
+  const sentence = d.match(/^.*?[.!?](?=\s|$)/)?.[0] ?? d;
+  return sentence.length > 120 ? sentence.split(/\s+[—–]\s*|—/)[0].trim() : sentence;
+};
+const MONTHS = ["june", "july", "august", "september", "october"];
+const projects = (await getCollection("projects"))
+  .filter((p) => p.data.featured && p.data.complete)
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((p) => {
+    const art = sceneArt(sceneForProject(p.slug));
+    const month = art.month.toLowerCase();
+    // the panel's placeholder while its picture loads: the place's month inks (A1 art tokens)
+    const inks = MONTHS.includes(month)
+      ? `--panel-sky: var(--art-${month}-sky); --panel-far: var(--art-${month}-far); --panel-forest: var(--art-${month}-forest);`
+      : "";
+    return {
+      slug: p.slug,
+      title: p.data.title,
+      role: p.data.role,
+      line: oneLine(p.data.description),
+      art,
+      style: `${inks} --art-x: ${art.anchor[0] * 100}%; --art-y: ${art.anchor[1] * 100}%;`,
+      artifact: `/images/card/${p.slug}.webp`,
+    };
+  });
+
+const PLACE = homeScene(); // Mirror Lake, as home
 ---
 
-<!doctype html>
-<html lang="en" data-theme="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, viewport-fit=cover"
-    />
-    <meta
-      name="description"
-      content="Conference card for Marcelo Rondon. Scan the QR code for the portfolio, save the contact card, or share via AirDrop."
-    />
-    <meta name="theme-color" content="#001A11" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#F3EDE2" media="(prefers-color-scheme: light)" />
-    <meta name="color-scheme" content="dark light" />
-    <link rel="canonical" href={cardUrl} />
-    <meta property="og:url" content={cardUrl} />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={`${name} | Conference Card`} />
-    <meta
-      property="og:description"
-      content="Conference-ready contact page with QR, contact save, and quick share actions."
-    />
-    <meta property="og:image" content={`${url}/images/thumbnail.png`} />
-    <title>{name} | Conference Card</title>
-    <ThemeInit />
-  </head>
-  <body>
-    <div class="page-shell">
-      <main class="card-shell">
-        <section class="identity-panel">
-          <p class="eyebrow">Conference Card</p>
-          <div class="intro">
-            <div class="avatar-wrap">
-              <img src="/images/profile.webp" alt={name} class="avatar" />
-            </div>
-            <div class="intro-copy">
-              <h1>{name}</h1>
-              <p class="role">{label}</p>
-              <p class="meta">{locationLabel}</p>
-            </div>
+<SceneLayout
+  title={`${name} | Conference Card`}
+  description="Conference card for Marcelo Rondon. Scan the QR code for the portfolio, save the contact card, or share via AirDrop."
+  canonicalPath="/card"
+  place={PLACE}
+>
+  <section class="card-hero" aria-labelledby="card-name" data-scene-hero>
+    <div class="card-intro copy-scrim" data-scene-intro>
+      <h1 class="card-name" id="card-name">{name}</h1>
+      <p class="card-role">
+        {roleLine}
+        {roleSub && <span class="card-role-sub">{roleSub}</span>}
+      </p>
+      {locationLabel && <Eyebrow class="card-where">{locationLabel}</Eyebrow>}
+      <div class="card-actions" aria-label="Primary actions">
+        <Button class="card-action" href="/contact.vcf" detail="VCF for phone or desktop">Save Contact</Button>
+        <Button
+          class="card-action"
+          variant="secondary"
+          detail="AirDrop or copy link"
+          data-share-button
+          data-share-url={cardUrl}
+          data-share-title={`${name} | Conference Card`}
+          data-share-text={`Connect with ${name}.`}
+        >
+          <span data-share-label>Share Card</span>
+        </Button>
+      </div>
+      <p class="card-note" data-share-status aria-live="polite">
+        Open on iPhone to AirDrop, or copy the link anywhere else.
+      </p>
+    </div>
+  </section>
+
+  <Section
+    class="card-work"
+    title="Selected Case Studies"
+    titleId="card-work-title"
+    stop="Selected Case Studies"
+    contained={false}
+    data-scene-focus
+  >
+    {
+      projects.map((p, i) => (
+        <article class="panel" data-scene-stop={p.title} aria-labelledby={`panel-${p.slug}`} style={p.style}>
+          <div class="panel-art" aria-hidden="true" data-panel-art>
+            <picture>
+              {p.art.flatTall && <source media="(max-aspect-ratio: 4/5)" data-srcset={p.art.flatTall} />}
+              <img data-src={p.art.flat ?? p.art.swatch} alt="" width="1536" height="1024" decoding="async" />
+            </picture>
           </div>
-
-          <p class="summary">{summary}</p>
-
-          <div class="primary-actions" aria-label="Primary actions">
-            <a
-              class="action action-primary"
-              href={url}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <span class="action-title">Visit Portfolio</span>
-              <span class="action-copy">{siteHost}</span>
+          <div class="panel-body container" data-flip={i % 2 === 1 ? "" : undefined}>
+            <div class="panel-copy copy-scrim">
+              <p class="panel-place">
+                {p.art.place} · {p.art.month}
+              </p>
+              <Eyebrow tone="on-art" class="panel-role">
+                {p.role}
+              </Eyebrow>
+              <h3 class="panel-title" id={`panel-${p.slug}`}>
+                <a href={`/projects/${p.slug}`}>
+                  {p.title} <span class="panel-arrow" aria-hidden="true">→</span>
+                </a>
+              </h3>
+              <p class="panel-line">{p.line}</p>
+            </div>
+            <a class="panel-artifact" href={`/projects/${p.slug}`} tabindex="-1" aria-hidden="true">
+              <img data-src={p.artifact} alt="" width="960" height="600" decoding="async" />
             </a>
-            <a class="action" href="/contact.vcf">
-              <span class="action-title">Save Contact</span>
-              <span class="action-copy">VCF for phone or desktop</span>
-            </a>
-            <button
-              type="button"
-              class="action action-share"
-              data-share-button
-              data-share-url={cardUrl}
-              data-share-title={`${name} | Conference Card`}
-              data-share-text={`Connect with ${name}.`}
-            >
-              <span class="action-title" data-share-label>Share Card</span>
-              <span class="action-copy">AirDrop or copy link</span>
-            </button>
           </div>
+        </article>
+      ))
+    }
+  </Section>
 
-          <div class="secondary-links" aria-label="Contact links">
-            <a class="detail-link" href={`mailto:${email}`}>
+  <Section class="card-about" title="About" titleId="card-about-title" data-scene-stop="About">
+    <div class="card-about-grid">
+      <div class="card-about-copy">
+        <p class="card-about-text">
+          I came to product design through visual journalism, brand systems, and front-end
+          engineering. That range lets me translate creative intent into product rules, prototype
+          behavior, make constraints legible, and speak the language of the team shipping it.
+        </p>
+        <ul class="card-links" aria-label="Contact links">
+          <li>
+            <a class="card-link" href={`mailto:${email}`}>
               <Mail />
               <span>{email}</span>
             </a>
-            {
-              phone && (
-                <a class="detail-link" href={phoneHref}>
+          </li>
+          {
+            phone && (
+              <li>
+                <a class="card-link" href={phoneHref}>
                   <Phone />
                   <span>{phone}</span>
                 </a>
-              )
-            }
-            {
-              linkedin && (
-                <a
-                  class="detail-link"
-                  href={linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+              </li>
+            )
+          }
+          {
+            linkedin && (
+              <li>
+                <a class="card-link" href={linkedin} target="_blank" rel="noopener noreferrer">
                   <LinkedIn />
                   <span>LinkedIn</span>
                 </a>
-              )
-            }
-            {
-              github && (
-                <a
-                  class="detail-link"
-                  href={github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+              </li>
+            )
+          }
+          {
+            github && (
+              <li>
+                <a class="card-link" href={github} target="_blank" rel="noopener noreferrer">
                   <GitHub />
                   <span>GitHub</span>
                 </a>
-              )
-            }
-          </div>
-
-          <p class="share-note" data-share-status aria-live="polite">
-            Open on iPhone to AirDrop, or copy the link anywhere else.
-          </p>
-        </section>
-
-        <aside class="qr-panel">
-          <p class="eyebrow">Scan To Visit</p>
-          <a
-            class="qr-frame"
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Open ${siteHost}`}
-            set:html={qrCodeSvg}
-          />
-          <p class="qr-note">Scan for the portfolio, or use the actions alongside it.</p>
-          <a class="mini-link" href={vCardUrl}>Direct contact file</a>
-        </aside>
-      </main>
+              </li>
+            )
+          }
+        </ul>
+        <div class="card-more">
+          <ArrowLink href="/resume">View Resume</ArrowLink>
+          <ArrowLink href={url} variant="external">Visit Portfolio · {siteHost}</ArrowLink>
+        </div>
+      </div>
+      <aside class="card-qr" aria-labelledby="card-qr-title">
+        <Eyebrow id="card-qr-title">Scan To Visit</Eyebrow>
+        <a class="card-qr-frame" href={url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${siteHost}`} set:html={qrCodeSvg} />
+        <a class="card-qr-link" href={vCardUrl}>Direct contact file</a>
+      </aside>
     </div>
+  </Section>
 
-    <script is:inline>
-      function initCardShare() {
-        const shareButton = document.querySelector("[data-share-button]");
-        const shareStatus = document.querySelector("[data-share-status]");
-        const shareLabel = document.querySelector("[data-share-label]");
+  <!-- Share Card: today's card script (Web Share API → clipboard → the bare link). The only
+       change: the button is above it, so it binds at once instead of at DOMContentLoaded, which
+       waits for the page's module scripts. -->
 
-        if (
-          !(shareButton instanceof HTMLButtonElement) ||
-          !(shareStatus instanceof HTMLElement)
-        ) {
+  <script is:inline>
+    function initCardShare() {
+      const shareButton = document.querySelector("[data-share-button]");
+      const shareStatus = document.querySelector("[data-share-status]");
+      const shareLabel = document.querySelector("[data-share-label]");
+
+      if (!(shareButton instanceof HTMLButtonElement) || !(shareStatus instanceof HTMLElement)) {
+        return;
+      }
+
+      if (shareButton.dataset.bound === "true") {
+        return;
+      }
+
+      shareButton.dataset.bound = "true";
+
+      const shareUrl = shareButton.dataset.shareUrl;
+      const shareTitle = shareButton.dataset.shareTitle;
+      const shareText = shareButton.dataset.shareText;
+
+      if (!navigator.share && shareLabel instanceof HTMLElement) {
+        shareLabel.textContent = "Copy Card Link";
+      }
+
+      shareButton.addEventListener("click", async () => {
+        if (!shareUrl) {
           return;
         }
 
-        if (shareButton.dataset.bound === "true") {
-          return;
-        }
-
-        shareButton.dataset.bound = "true";
-
-        const shareUrl = shareButton.dataset.shareUrl;
-        const shareTitle = shareButton.dataset.shareTitle;
-        const shareText = shareButton.dataset.shareText;
-
-        if (!navigator.share && shareLabel instanceof HTMLElement) {
-          shareLabel.textContent = "Copy Card Link";
-        }
-
-        shareButton.addEventListener("click", async () => {
-          if (!shareUrl) {
+        try {
+          if (navigator.share) {
+            await navigator.share({
+              title: shareTitle,
+              text: shareText,
+              url: shareUrl,
+            });
+            shareStatus.textContent = "Share sheet opened.";
             return;
           }
 
-          try {
-            if (navigator.share) {
-              await navigator.share({
-                title: shareTitle,
-                text: shareText,
-                url: shareUrl,
-              });
-              shareStatus.textContent = "Share sheet opened.";
-              return;
-            }
-
-            if (navigator.clipboard?.writeText) {
-              await navigator.clipboard.writeText(shareUrl);
-              shareStatus.textContent = "Card link copied to the clipboard.";
-              return;
-            }
-
-            shareStatus.textContent = shareUrl;
-          } catch (error) {
-            if (error instanceof DOMException && error.name === "AbortError") {
-              return;
-            }
-
-            shareStatus.textContent = "Share failed on this browser.";
+          if (navigator.clipboard?.writeText) {
+            await navigator.clipboard.writeText(shareUrl);
+            shareStatus.textContent = "Card link copied to the clipboard.";
+            return;
           }
-        });
-      }
 
-      document.addEventListener("DOMContentLoaded", initCardShare);
-      document.addEventListener("astro:after-swap", initCardShare);
-    </script>
-  </body>
-</html>
+          shareStatus.textContent = shareUrl;
+        } catch (error) {
+          if (error instanceof DOMException && error.name === "AbortError") {
+            return;
+          }
 
-<style is:global>
-  html {
-    font-family: var(--font-mono);
-    background:
-      linear-gradient(
-        180deg,
-        color-mix(in srgb, var(--color-accent) 9%, var(--bg-canvas)),
-        var(--bg-canvas) 18rem
-      );
-    color: var(--text-primary);
-  }
+          shareStatus.textContent = "Share failed on this browser.";
+        }
+      });
+    }
 
-  body {
-    margin: 0;
-    min-height: 100vh;
-    background:
-      linear-gradient(
-        150deg,
-        rgba(var(--color-accent-rgb), 0.05) 0,
-        transparent 28%
-      ),
-      repeating-linear-gradient(
-        60deg,
-        rgba(var(--color-text-rgb), 0.03) 0,
-        rgba(var(--color-text-rgb), 0.03) 2px,
-        transparent 2px,
-        transparent 28px
-      ),
-      repeating-linear-gradient(
-        -60deg,
-        rgba(var(--color-text-rgb), 0.02) 0,
-        rgba(var(--color-text-rgb), 0.02) 2px,
-        transparent 2px,
-        transparent 28px
-      ),
-      var(--bg-canvas);
-  }
+    initCardShare();
+    document.addEventListener("DOMContentLoaded", initCardShare);
+    document.addEventListener("astro:after-swap", initCardShare);
+  </script>
 
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
-  a,
-  button {
-    font: inherit;
-  }
-</style>
+  <script>
+    import { afterFirstScreen, whenNear } from "@/lib/scene/scenery.js";
+    // Each panel's picture and artifact load only as the panel nears (the picture sits at a fixed
+    // position, so native lazy loading would fetch every one at once, and on a slow connection
+    // Chrome's lazy margin reaches the artifacts too). Nothing starts before the first scroll or
+    // before the first screen is complete (the page loaded and the scene's renderer in, or no
+    // renderer), so nothing competes with it.
+    const panels = [...document.querySelectorAll<HTMLElement>(".panel")];
+    const load = (panel: HTMLElement) => {
+      const art = panel.querySelector<HTMLElement>("[data-panel-art]");
+      if (!art || art.dataset.loaded) return;
+      art.dataset.loaded = "1";
+      art.querySelectorAll<HTMLSourceElement>("source[data-srcset]").forEach((s) => (s.srcset = s.dataset.srcset ?? ""));
+      const artifact = panel.querySelector<HTMLImageElement>(".panel-artifact img[data-src]");
+      if (artifact) artifact.src = artifact.dataset.src ?? "";
+      const img = art.querySelector<HTMLImageElement>("img[data-src]");
+      if (!img) return;
+      const shown = () => art.classList.add("is-loaded");
+      img.addEventListener("load", shown, { once: true });
+      img.src = img.dataset.src ?? "";
+      if (img.complete && img.naturalWidth) shown();
+    };
+    afterFirstScreen(() => whenNear(panels, load));
+  </script>
+</SceneLayout>
 
 <style>
-  .page-shell {
+  /* ---------- 1. who he is + the two actions, over the scene at first paint ---------- */
+  .card-hero {
     position: relative;
-    z-index: 2;
-    min-height: 100vh;
-    padding: max(1.5rem, env(safe-area-inset-top)) var(--space-20)
-      max(1.5rem, env(safe-area-inset-bottom));
+    overflow-x: clip; /* the copy scrim must not widen the page */
     display: grid;
-    place-items: center;
+    align-items: end;
+    min-height: calc(100svh - var(--scene-bar));
+    padding: var(--space-48) var(--scene-copy-end) var(--scene-copy-bottom) var(--scene-copy-start);
   }
 
-  .card-shell {
-    width: min(100%, 1120px);
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) clamp(14rem, 24vw, 18rem);
-    gap: var(--space-48);
-    align-items: start;
+  .card-intro {
+    max-width: 44rem;
+    color: var(--text-on-art);
   }
 
-  .identity-panel,
-  .qr-panel {
-    position: relative;
+  /* Portland, Oregon: under the role line, inside the scrim's flat middle (as the copy's first line
+     it sat in the scrim's top feather and measured 4.0:1 over the still on phones) */
+  .card-where {
+    margin-bottom: var(--space-24);
   }
 
-  .identity-panel {
-    padding: 0;
-    animation: enter-from-left var(--motion-entry) var(--ease-out) backwards;
-    --enter-distance: 48px;
-    contain: layout paint;
-  }
-
-  .qr-panel {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    max-width: 18rem;
-    animation: enter-from-right var(--motion-entry) var(--ease-out) backwards;
-    --enter-distance: 48px;
-    contain: layout paint;
-    content-visibility: auto;
-    contain-intrinsic-size: 22rem;
-  }
-
-  .eyebrow {
+  .card-name {
     margin: 0 0 var(--space-16);
-    font-size: var(--type-small);
+    font-family: var(--font-title);
+    font-size: var(--type-display-card);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-display);
+    letter-spacing: var(--track-tight);
+    white-space: nowrap;
+  }
+
+  .card-role {
+    margin: 0 0 var(--space-12);
+    font-family: var(--font-title);
+    font-size: var(--type-hero-line);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+  }
+
+  .card-role-sub {
+    display: block;
+    margin-top: var(--space-8);
+    font-family: var(--font-mono);
+    font-size: var(--type-ui);
     font-weight: var(--weight-bold);
-    letter-spacing: var(--track-wide);
+    letter-spacing: var(--track-caps);
     text-transform: uppercase;
-    color: var(--color-accent);
   }
 
-  .intro {
+  .card-actions {
     display: grid;
-    grid-template-columns: auto 1fr;
-    gap: var(--space-20);
-    align-items: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-12);
+    max-width: 36rem;
   }
 
-  .avatar-wrap {
-    width: clamp(5rem, 18vw, 7rem);
-    aspect-ratio: 1;
-    border: 3px solid var(--text-primary);
-    box-shadow: 10px 10px 0 var(--color-accent);
+  /* the two actions fill their grid cells, a little taller than the touch target */
+  .card-action {
+    min-height: calc(var(--touch-target) + var(--space-24));
   }
 
-  .avatar {
+  .card-note {
+    max-width: 36rem;
+    margin: var(--space-16) 0 0;
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  /* ---------- 2. the case studies, each over its own place ---------- */
+  .card-work {
+    padding-top: var(--space-96);
+  }
+
+  /* the title block's space below it, before the first place */
+  .card-work .panel:first-of-type {
+    margin-top: var(--space-48);
+  }
+
+  /* Each panel is a window onto a picture fixed to the viewport (clip-path clips its fixed
+     child), so scrolling reveals one place over the last. Nothing here may create a containing
+     block for the fixed art (no transform, filter or contain on .panel). */
+  .panel {
+    position: relative;
+    display: grid;
+    align-items: end;
+    min-height: calc(100svh - var(--scene-bar));
+    clip-path: inset(0);
+    overflow-x: clip; /* the copy scrim must not widen the page (clip-path doesn't stop that) */
+    view-timeline: --panel block;
+  }
+
+  .panel-art {
+    position: fixed;
+    inset: var(--scene-bar) 0 0 0;
+    z-index: -1;
+    background: linear-gradient(to bottom, var(--panel-sky, var(--bg-canvas)), var(--panel-far, var(--bg-canvas)) 55%, var(--panel-forest, var(--bg-canvas)));
+  }
+
+  .panel-art img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: var(--art-x) var(--art-y);
+    opacity: 0;
+    transition: opacity var(--motion-scene-fade) var(--ease-out);
+  }
+
+  .panel-art.is-loaded img {
+    opacity: 1;
+  }
+
+  /* The ink that grounds the copy (the arrival atmosphere) belongs to the panel, not to the fixed
+     picture, so it travels with the copy: fixed to the viewport, it stayed at the bottom while the
+     copy scrolled up over the bright sky (measured 1.2:1). In Dusk, the reading ink over the whole
+     place too, since the flattened picture is the Day art. */
+  .panel::before,
+  .panel-art::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .panel::before {
+    z-index: 0;
+    background: var(--atmos-arrive);
+  }
+
+  :global(html:not([data-theme="light"])) .panel-art::after {
+    z-index: 1;
+    background: var(--atmos-read);
+  }
+
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .panel-art img {
+        animation: sceneSettle linear both;
+        animation-timing-function: var(--ease-out);
+        animation-timeline: --panel;
+        animation-range: entry 0% entry 100%;
+      }
+    }
+  }
+
+  .panel-body {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: var(--space-48);
+    align-items: end;
+    padding-block: var(--space-96) var(--scene-copy-bottom);
+  }
+
+  .panel-body[data-flip] .panel-artifact {
+    order: -1;
+  }
+
+  .panel-copy {
+    max-width: 34rem;
+    color: var(--text-on-art);
+  }
+
+  .panel-place {
+    margin: 0 0 var(--space-16);
+    font-family: var(--font-place);
+    font-size: var(--type-place-label);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-ui);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+
+  .panel-role {
+    margin-bottom: var(--space-8);
+  }
+
+  .panel-title {
+    margin: 0 0 var(--space-16);
+    font-family: var(--font-title);
+    font-size: var(--type-section-title);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--track-tight);
+  }
+
+  .panel-title a {
+    background-image: linear-gradient(var(--action-primary), var(--action-primary));
+    background-size: 100% var(--stroke-control);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: color var(--motion-ui) var(--ease-out);
+  }
+
+  /* the arrow in Geist Mono: National Park's latin subset has no arrows (one font file fewer) */
+  .panel-arrow {
+    font-family: var(--font-mono);
+  }
+
+  .panel-title a:hover,
+  .panel-title a:focus-visible {
+    color: var(--action-primary);
+  }
+
+  .panel-line {
+    margin: 0;
+    font-family: var(--font-read);
+    font-size: var(--type-body-lg);
+    line-height: var(--leading-small);
+  }
+
+  .panel-artifact {
+    display: block;
+    aspect-ratio: 16 / 10;
+    background: var(--bg-plate);
+    border: var(--stroke-frame) solid var(--text-on-art);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--accent-ground);
+  }
+
+  .panel-artifact img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    display: block;
-    filter: saturate(1.05) contrast(1.02);
+    object-position: top;
   }
 
-  h1 {
-    margin: 0;
-    font-family: var(--font-title);
-    font-size: clamp(2.6rem, 9vw, 5.5rem);
-    line-height: 0.92;
-    letter-spacing: -0.08em;
-    text-transform: uppercase;
+  /* ---------- 3. about, links and the QR code, over the focused scene ---------- */
+  .card-about {
+    padding-block: var(--space-96);
   }
 
-  .role,
-  .meta,
-  .summary,
-  .share-note,
-  .qr-note,
-  .qr-link,
-  .qr-label,
-  .mini-link {
-    margin: 0;
-  }
-
-  .role {
-    margin-top: var(--space-12);
-    font-size: var(--type-body);
-    font-weight: var(--weight-bold);
-    line-height: var(--leading-small);
-    color: var(--color-accent);
-    text-transform: uppercase;
-    letter-spacing: var(--track-caps);
-  }
-
-  .meta {
-    margin-top: var(--space-8);
-    font-size: var(--type-ui);
-    color: var(--text-muted);
-  }
-
-  .summary {
+  .card-about-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-64);
+    align-items: start;
     margin-top: var(--space-24);
-    max-width: 44ch;
-    font-size: var(--type-body);
+  }
+
+  .card-about-text {
+    max-width: var(--layout-measure-read);
+    margin: 0 0 var(--space-32);
+    font-family: var(--font-read);
+    font-size: var(--type-body-lg);
     line-height: var(--leading-read);
-    color: var(--text-muted);
   }
 
-  .primary-actions {
-    margin-top: var(--space-32);
+  .card-links {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-12);
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+    gap: var(--space-8) var(--space-24);
+    margin: 0 0 var(--space-24);
+    padding: 0;
+    list-style: none;
   }
 
-  .action {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    justify-content: center;
-    min-height: 4.5rem;
-    padding: var(--space-16) var(--space-16);
-    border: 2px solid var(--text-primary);
-    background: transparent;
-    color: var(--text-primary);
-    text-align: left;
-    text-decoration: none;
-    cursor: pointer;
-    transition:
-      transform var(--motion-ui) var(--ease-out),
-      border-color var(--motion-ui) var(--ease-out),
-      background var(--motion-ui) var(--ease-out),
-      color var(--motion-ui) var(--ease-out);
-  }
-
-  .action:hover,
-  .action:focus-visible {
-    transform: translateY(-2px);
-    border-color: var(--color-accent);
-    background: var(--color-accent);
-    color: var(--bg-canvas);
-  }
-
-  .action-primary {
-    border-color: var(--color-accent);
-  }
-
-  .action-title {
-    display: block;
-    font-size: var(--type-small);
-    font-weight: var(--weight-extrabold);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
-  }
-
-  .action-copy {
-    display: block;
-    font-size: var(--type-small);
-    line-height: var(--leading-ui);
-    color: var(--text-muted);
-  }
-
-  .action:hover .action-copy,
-  .action:focus-visible .action-copy {
-    color: inherit;
-  }
-
-  .secondary-links {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, max-content));
-    gap: var(--space-12) var(--space-20);
-    margin-top: var(--space-24);
-  }
-
-  .detail-link {
+  .card-link {
     display: inline-flex;
     align-items: center;
-    gap: var(--space-8);
-    min-height: 44px;
-    color: var(--text-muted);
-    font-size: var(--type-small);
+    gap: var(--space-12);
+    min-height: var(--touch-target);
+    color: var(--text-on-art);
+    font-size: var(--type-ui);
     line-height: var(--leading-ui);
-    text-decoration: none;
+    overflow-wrap: anywhere;
   }
 
-  .detail-link :global(svg) {
-    width: 1rem;
-    height: 1rem;
-    flex-shrink: 0;
+  .card-link :global(svg) {
+    flex: none;
+    width: var(--space-20);
+    height: var(--space-20);
   }
 
-  .share-note {
-    margin-top: var(--space-20);
-    font-size: var(--type-small);
-    line-height: var(--leading-small);
-    color: var(--text-muted);
+  .card-link:hover,
+  .card-link:focus-visible {
+    color: var(--action-primary);
   }
 
-  .qr-frame {
+  .card-more {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-16) var(--space-32);
+  }
+
+  .card-qr {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    width: 13rem;
+  }
+
+  .card-qr-link {
+    margin: 0;
+    color: var(--text-on-art);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-ui);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+  }
+
+  .card-qr-link {
+    align-self: flex-start;
+    padding-bottom: var(--space-4);
+    border-bottom: var(--stroke-control) solid var(--action-primary);
+  }
+
+  .card-qr-frame {
     display: block;
-    width: 100%;
-    max-width: 16rem;
-    aspect-ratio: 1;
-    padding: var(--space-16);
-    margin-top: var(--space-8);
-    border: 2px solid var(--text-primary);
-    background: var(--color-paper);
+    padding: var(--space-12);
+    border: var(--stroke-frame) solid var(--text-on-art);
+    background: var(--bg-inverse);
+    color: var(--text-inverse);
   }
 
-  .qr-frame :global(svg) {
+  .card-qr-frame :global(svg) {
     display: block;
     width: 100%;
     height: auto;
   }
 
-  .qr-note {
-    margin-top: var(--space-12);
-    max-width: 22ch;
-    font-size: var(--type-small);
-    line-height: var(--leading-small);
-    color: var(--text-muted);
-  }
+  /* ---------- phones ---------- */
+  @media (max-width: 768px) {
+    .card-hero {
+      padding: var(--space-32) var(--layout-gutter) var(--space-96);
+    }
 
-  .mini-link {
-    margin-top: var(--space-12);
-    color: var(--color-accent);
-    font-size: var(--type-small);
-    font-weight: var(--weight-bold);
-    text-transform: uppercase;
-    letter-spacing: var(--track-wide);
-    text-decoration: none;
-  }
+    .card-name {
+      font-size: var(--type-display-scene);
+      white-space: normal;
+      text-wrap: balance;
+    }
 
-  @media (max-width: 960px) {
-    .card-shell {
+    .card-note {
+      font-size: var(--type-label);
+    }
+
+    .panel-body {
       grid-template-columns: 1fr;
-      gap: var(--space-40);
+      gap: var(--space-32);
+      padding-block: var(--space-96);
     }
 
-    .qr-panel {
-      order: 2;
-      max-width: none;
-      display: grid;
-      grid-template-columns: auto minmax(0, 1fr);
-      gap: var(--space-16) var(--space-24);
-      align-items: start;
+    /* the artifact first, so the words sit lowest, in the panel's darkest ink */
+    .panel-artifact,
+    .panel-body[data-flip] .panel-artifact {
+      order: -1;
+      width: 78%;
+      margin-left: auto;
     }
 
-    .qr-panel .eyebrow {
-      grid-column: 1 / -1;
-      margin-bottom: 0;
-    }
-
-    .qr-frame {
-      grid-row: 2 / span 2;
-      max-width: 14rem;
-      margin-top: 0;
-    }
-
-    .qr-note {
-      margin-top: 0;
-      max-width: 28ch;
-    }
-
-    .mini-link {
-      margin-top: var(--space-4);
-      align-self: start;
-    }
-
-    h1 {
-      font-size: clamp(2.8rem, 10vw, 4.8rem);
-    }
-
-    .primary-actions {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .action-share {
-      grid-column: 1 / -1;
+    .card-about-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-48);
     }
   }
 
-  @media (max-width: 700px) {
-    .page-shell {
-      padding-inline: var(--space-16);
-    }
-
-    .intro {
-      grid-template-columns: 1fr;
-    }
-
-    h1 {
-      font-size: clamp(2.6rem, 14vw, 4rem);
-    }
-
-    .secondary-links {
-      grid-template-columns: 1fr;
-      gap: var(--space-8);
-    }
-
-    .primary-actions {
-      grid-template-columns: 1fr;
-    }
-
-    .qr-panel {
-      display: flex;
-      gap: 0;
-    }
-
-    .qr-panel .eyebrow {
-      margin-bottom: var(--space-16);
-    }
-
-    .qr-frame {
-      max-width: 15rem;
-      margin-top: var(--space-8);
-    }
-
-    .qr-note,
-    .mini-link {
-      margin-top: var(--space-12);
-    }
-  }
-
+  /* the same art, no movement: each picture scrolls with its panel instead of staying put */
   @media (prefers-reduced-motion: reduce) {
-    .identity-panel,
-    .qr-panel,
-    .action {
-      animation: none !important;
-      transition: none !important;
+    .panel-art {
+      position: absolute;
+      inset: 0;
     }
   }
 </style>

@@ -10,6 +10,7 @@ import WorldMap from "@/icons/WorldMap.astro";
 import Sun from "@/icons/Sun.astro";
 import type { SocialIcon } from "@/types";
 import Bsky from "@/icons/Bsky.astro";
+import IconButton from "@/components/ui/IconButton.astro";
 
 const { name, label, location, profiles, phone, email } = basics;
 const { city, region } = location;
@@ -42,56 +43,47 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 			<footer class="no-print">
 				{
 					email && (
-						<a
+						<IconButton
 							href={`mailto:${email}`}
+							label={`Send an email to ${name} at ${email}`}
 							title={`Send an email to ${name} at ${email}`}
 							target="_blank"
 							rel="noopener noreferrer"
 						>
 							<Mail />
-						</a>
+						</IconButton>
 					)
 				}
 				{
 					phone && (
-						<a
+						<IconButton
 							href={`tel:${phone}`}
+							label={`Call ${name} at ${phone}`}
 							title={`Call ${name} at ${phone}`}
 							target="_blank"
 							rel="noopener noreferrer"
 						>
 							<Phone />
-						</a>
+						</IconButton>
 					)
 				}
 				{
-					profiles.map(
-						({
-							network,
-							url,
-							username,
-						}) => {
-							const Icon =
-								SOCIAL_ICONS[
-									network
-								];
-
-							return (
-								<a
-									href={
-										url
-									}
-									title={`Visit ${name}'s profile in ${network} at ${username}`}
-									target="_blank"
-									rel="noopener noreferrer"
-								>
-									<Icon />
-								</a>
-							);
-						},
-					)
+					profiles.map(({ network, url, username }) => {
+						const Icon = SOCIAL_ICONS[network];
+						return (
+							<IconButton
+								href={url}
+								label={`Visit ${name}'s profile in ${network} at ${username}`}
+								title={`Visit ${name}'s profile in ${network} at ${username}`}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								<Icon />
+							</IconButton>
+						);
+					})
 				}
-				<button type="button" data-theme-toggle aria-label="Switch between Day and Dusk"><Sun /></button>
+				<IconButton data-theme-toggle label="Switch between Day and Dusk"><Sun /></IconButton>
 			</footer>
 		</div>
 		<figure class="image-frame">
@@ -172,29 +164,6 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		letter-spacing: var(--track-tight);
 	}
 
-	button {
-		background: var(--bg-canvas);
-		color: var(--text-primary);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border: 2px solid var(--text-primary);
-		padding: 0;
-		height: 36px;
-		width: 36px;
-		cursor: pointer;
-		transition:
-			background-color var(--motion-ui) var(--ease-out),
-			border-color var(--motion-ui) var(--ease-out),
-			color var(--motion-ui) var(--ease-out);
-	}
-
-	button:hover {
-		background: var(--color-accent);
-		border-color: var(--color-accent);
-		color: var(--bg-canvas);
-	}
-
 	footer {
 		color: var(--color-accent);
 		font-size: var(--type-label);
@@ -203,25 +172,9 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 		margin-top: var(--space-12);
 	}
 
-	footer a {
+	/* the icon links (IconButton) read in the text color, not the footer accent */
+	footer.no-print {
 		color: var(--text-primary);
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		border: 2px solid var(--text-primary);
-		padding: 0;
-		height: 36px;
-		width: 36px;
-		transition:
-			background-color var(--motion-ui) var(--ease-out),
-			border-color var(--motion-ui) var(--ease-out),
-			color var(--motion-ui) var(--ease-out);
-	}
-
-	footer a:hover {
-		background: var(--color-accent);
-		border-color: var(--color-accent);
-		color: var(--bg-canvas);
 	}
 
 	@media (width <= 700px) {

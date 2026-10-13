@@ -14,7 +14,8 @@
     "motion:table": "node scripts/motion-table.mjs",
     "figma:sync": "node scripts/figma-sync.mjs",
     "sync-projects": "npx tsx scripts/sync-projects.ts",
-    "resume:pdf": "node scripts/generate-resume-pdf.mjs"
+    "resume:pdf": "node scripts/generate-resume-pdf.mjs",
+    "scenes:derive": "node scripts/scene-derivatives.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
@@ -26,6 +27,7 @@
     "astro": "^5.16.8",
     "qrcode": "^1.5.4",
     "svelte": "^5.28.2",
+    "three": "^0.186.1",
     "typescript": "^5.5.4"
   },
   "devDependencies": {

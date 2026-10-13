@@ -1,0 +1,104 @@
+---
+/*
+ * StoryEnd: the end of a reading page, over the focused scene (storyboard frame 08, "Ending":
+ * finish the story, then offer the next one; About, contact and Resume stay separate, in the
+ * site footer). The next story leads; the previous one and the index follow as small links.
+ */
+import ArrowLink from "@/components/ui/ArrowLink.astro";
+import Eyebrow from "@/components/ui/Eyebrow.astro";
+
+interface Story {
+  href: string;
+  title: string;
+  eyebrow?: string;
+  description?: string;
+}
+
+interface Props {
+  next: Story;
+  previous?: Story;
+  all: { href: string; label: string };
+}
+
+const { next, previous, all } = Astro.props;
+---
+
+<nav class="story-end" aria-label="Next story">
+  <Eyebrow tone="on-art" class="story-end-label">Next story</Eyebrow>
+  <a class="story-end-next" href={next.href}>
+    {
+      next.eyebrow && (
+        <Eyebrow as="span" tone="on-art" class="story-end-eyebrow">
+          {next.eyebrow}
+        </Eyebrow>
+      )
+    }
+    <span class="story-end-title">{next.title} <span aria-hidden="true">→</span></span>
+    {next.description && <span class="story-end-desc">{next.description}</span>}
+  </a>
+  <div class="story-end-more">
+    {
+      previous && previous.href !== next.href && (
+        <ArrowLink href={previous.href} variant="back">
+          {previous.title}
+        </ArrowLink>
+      )
+    }
+    <ArrowLink href={all.href}>{all.label}</ArrowLink>
+  </div>
+</nav>
+
+<style>
+  .story-end {
+    margin-top: var(--space-64);
+    padding-top: var(--space-32);
+    border-top: var(--stroke-frame) solid var(--border-strong);
+    color: var(--text-on-art);
+  }
+
+  .story-end-label {
+    margin-bottom: var(--space-16);
+  }
+
+  .story-end-next {
+    display: block;
+    max-width: var(--layout-measure);
+  }
+
+  .story-end-eyebrow {
+    margin-bottom: var(--space-8);
+  }
+
+  .story-end-title {
+    display: block;
+    font-family: var(--font-title);
+    font-size: var(--type-section-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: var(--stroke-frame);
+    text-underline-offset: var(--space-8);
+    transition: text-decoration-color var(--motion-ui) var(--ease-out);
+  }
+
+  .story-end-next:hover .story-end-title,
+  .story-end-next:focus-visible .story-end-title {
+    text-decoration-color: var(--action-primary);
+  }
+
+  .story-end-desc {
+    display: block;
+    max-width: var(--layout-measure-narrow);
+    margin-top: var(--space-12);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .story-end-more {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-16) var(--space-32);
+    margin-top: var(--space-32);
+  }
+</style>

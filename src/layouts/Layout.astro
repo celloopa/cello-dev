@@ -13,6 +13,7 @@ import "@fontsource-variable/national-park";
 import nationalParkLatin from "@fontsource-variable/national-park/files/national-park-latin-wght-normal.woff2?url";
 import "@/styles/colors.css";
 import "@/styles/animations.css";
+import "@/styles/focus.css";
 import "@/styles/print.css";
 import Header from "@/components/Header.astro";
 import ThemeInit from "@/components/ThemeInit.astro";
@@ -300,13 +301,6 @@ const SOCIAL_ICONS: SocialIcon = {
         cursor: pointer;
       }
 
-      .card,
-      .lab-card,
-      .path-card,
-      .proof-item {
-        cursor: cell;
-      }
-
       button,
       input,
       select,
@@ -317,11 +311,6 @@ const SOCIAL_ICONS: SocialIcon = {
       img,
       video {
         max-width: 100%;
-      }
-
-      :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-        outline: 3px solid var(--color-accent);
-        outline-offset: 4px;
       }
 
       ul {
@@ -338,7 +327,7 @@ const SOCIAL_ICONS: SocialIcon = {
       }
 
       .footer-inner {
-        max-width: 1100px;
+        max-width: var(--layout-container);
         margin: 0 auto;
       }
 

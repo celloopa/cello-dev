@@ -1,0 +1,153 @@
+---
+/*
+ * Button (proposal §7): the site's one button. Replaces the hand-built `.hero-cta`, `.read-btn`,
+ * `.card-action` and the bar's `.bar-btn`.
+ *
+ *   variant   primary    filled with --action-primary: the one main action in a group
+ *             secondary  outline on a plate (--bg-plate), so it reads over scene art too
+ *   size      md         the `ui` type role (§3), 44px touch target
+ *             sm         the `label` type role, same 44px target: compact bars and toolbars
+ *   href      renders an <a>; without it, a <button type="button">
+ *   detail    an optional second line under the label (the /card actions)
+ *   slot      the label, and an icon after it if it has one (an inline <svg aria-hidden>)
+ *   disabled  buttons only (a link can't be disabled; leave the href off instead)
+ *
+ * States: hover and focus-visible look the same (primary inverts to a plate with green text,
+ * secondary fills green), active presses 1px, disabled drops to the muted roles. The ring is
+ * the global one (src/styles/focus.css), offset outside the fill so it never merges with it.
+ * Every other attribute (data-*, aria-*, target, rel, download, id) passes through to the root.
+ * Reads semantic roles only.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+type Props = Omit<HTMLAttributes<"a"> & HTMLAttributes<"button">, "type"> & {
+  variant?: "primary" | "secondary";
+  size?: "md" | "sm";
+  href?: string;
+  detail?: string;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+};
+
+const { variant = "primary", size = "md", href, detail, disabled, type = "button", class: className, ...rest } = Astro.props;
+const Tag = href ? "a" : "button";
+---
+
+<Tag
+  class:list={["button", `button--${variant}`, `button--${size}`, detail && "button--detail", className]}
+  href={href}
+  type={href ? undefined : type}
+  disabled={href ? undefined : disabled}
+  {...rest}
+>
+  {
+    detail ? (
+      <>
+        <span class="button-label">
+          <slot />
+        </span>
+        <span class="button-detail">{detail}</span>
+      </>
+    ) : (
+      <slot />
+    )
+  }
+</Tag>
+
+<style>
+  /* margin and the 44px minimum in :where(), so a parent can space or enlarge it without a specificity fight */
+  :where(.button) {
+    min-width: var(--touch-target);
+    min-height: var(--touch-target);
+    margin: 0;
+  }
+
+  .button[hidden] {
+    display: none;
+  }
+
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-8);
+    border: var(--stroke-control) solid;
+    font: inherit;
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    line-height: var(--leading-ui);
+    text-align: left;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      background-color var(--motion-ui) var(--ease-out),
+      border-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
+  }
+
+  .button--md {
+    padding: var(--space-12) var(--space-16);
+    font-size: var(--type-ui);
+  }
+
+  .button--sm {
+    padding: 0 var(--space-12);
+    font-size: var(--type-label);
+  }
+
+  /* a second line under the label: the label keeps the role, the detail is plain small copy */
+  .button--detail {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: var(--space-4);
+  }
+
+  .button-detail {
+    font-size: var(--type-label);
+    font-weight: var(--weight-regular);
+    letter-spacing: normal;
+    text-transform: none;
+  }
+
+  .button :global(svg) {
+    flex: none;
+  }
+
+  .button--primary {
+    border-color: var(--action-primary);
+    background: var(--action-primary);
+    color: var(--text-inverse);
+  }
+
+  .button--primary:hover,
+  .button--primary:focus-visible {
+    background: var(--bg-plate);
+    color: var(--action-primary);
+  }
+
+  .button--secondary {
+    border-color: var(--border-strong);
+    background: var(--bg-plate);
+    color: var(--text-primary);
+  }
+
+  .button--secondary:hover,
+  .button--secondary:focus-visible {
+    border-color: var(--action-primary);
+    background: var(--action-primary);
+    color: var(--text-inverse);
+  }
+
+  .button:active {
+    transform: translateY(1px);
+  }
+
+  .button:disabled {
+    border-color: var(--border-muted);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: not-allowed;
+    transform: none;
+  }
+</style>

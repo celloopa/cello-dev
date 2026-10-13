@@ -1,0 +1,187 @@
+---
+/*
+ * Prose (proposal §7): the one style for MDX article bodies, used by case studies and posts.
+ * Replaces the two drifted `.content` copies in the [slug] pages.
+ *
+ * Long reading (A2, stage 2c, unchanged): the article's own paragraphs, lists and quotes (the
+ * direct children) are set in Geist Sans (--font-read) at --layout-measure-read (31em, about 69
+ * characters). Headings and media keep the wider column; embedded components (CaseMeta,
+ * FlowDiagram, media captions), h3 and code stay Geist Mono; h2 is National Park. The pages
+ * import the Geist face themselves (2c: only the two [slug] pages load it).
+ *
+ * Body links get an underline (§7: case-study links looked like text). Tables and code sit on
+ * plates, so their small text never sits on scene art. Text color comes from the page.
+ */
+---
+
+<div class="prose">
+  <slot />
+</div>
+
+<style>
+  .prose {
+    max-width: var(--layout-measure);
+  }
+
+  .prose > :global(p),
+  .prose > :global(ul),
+  .prose > :global(ol),
+  .prose > :global(blockquote) {
+    font-family: var(--font-read);
+    max-width: var(--layout-measure-read);
+  }
+
+  .prose :global(h2) {
+    margin: var(--space-48) 0 var(--space-16);
+    color: var(--text-accent);
+    font-family: var(--font-title);
+    font-size: var(--type-heading);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--leading-heading);
+    text-transform: uppercase;
+  }
+
+  .prose :global(h2:first-child) {
+    margin-top: 0;
+  }
+
+  .prose :global(h3) {
+    margin: var(--space-32) 0 var(--space-12);
+    font-size: var(--type-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-title);
+  }
+
+  .prose :global(p) {
+    margin: 0 0 var(--space-20);
+    font-size: var(--type-body);
+    line-height: var(--leading-read);
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin: 0 0 var(--space-20);
+    padding-left: var(--space-24);
+  }
+
+  /* One left edge (§4): the dash hangs on the column's edge and the item's text takes the one
+     named indent, so bulleted and numbered items start their words at the same x. */
+  .prose :global(ul) {
+    padding-left: 0;
+    list-style: none;
+  }
+
+  .prose :global(ul li) {
+    position: relative;
+    padding-left: var(--space-24);
+  }
+
+  .prose :global(ul li::before) {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--action-primary);
+    font-weight: var(--weight-bold);
+  }
+
+  .prose :global(ol) {
+    list-style: decimal;
+  }
+
+  .prose :global(li) {
+    margin-bottom: var(--space-8);
+    line-height: var(--leading-read);
+  }
+
+  .prose :global(strong) {
+    font-weight: var(--weight-bold);
+  }
+
+  .prose :global(a) {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: var(--action-primary);
+    text-decoration-thickness: var(--stroke-control);
+    text-underline-offset: var(--space-4);
+    transition: text-decoration-color var(--motion-ui) var(--ease-out);
+  }
+
+  .prose :global(a:hover),
+  .prose :global(a:focus-visible) {
+    text-decoration-color: currentColor;
+  }
+
+  .prose :global(code) {
+    padding: var(--space-4);
+    border: var(--stroke-rule) solid var(--border-muted);
+    background: var(--bg-plate);
+    font-family: var(--font-mono);
+    font-size: var(--type-small);
+  }
+
+  .prose :global(pre) {
+    margin: 0 0 var(--space-24);
+    padding: var(--space-24);
+    overflow-x: auto;
+    border: var(--stroke-frame) solid var(--bg-inverse);
+    background: var(--bg-inverse);
+    color: var(--text-inverse);
+  }
+
+  .prose :global(pre code) {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+  }
+
+  .prose :global(blockquote) {
+    margin: var(--space-24) 0;
+    padding: var(--space-16) var(--space-20);
+    border: var(--stroke-control) solid var(--action-primary);
+    background: var(--bg-plate);
+    font-style: italic;
+  }
+
+  .prose :global(blockquote p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .prose :global(table) {
+    display: block;
+    max-width: 100%;
+    margin: 0 0 var(--space-24);
+    overflow-x: auto;
+    border-collapse: collapse;
+    background: var(--bg-plate);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    padding: var(--space-8) var(--space-12);
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .prose :global(th) {
+    color: var(--text-accent);
+    font-size: var(--type-label);
+    font-weight: var(--weight-extrabold);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+  }
+
+  .prose :global(hr) {
+    margin: var(--space-48) 0;
+    border: 0;
+    border-top: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .prose :global(h2),
+  .prose :global(h3) {
+    scroll-margin-top: var(--space-96);
+  }
+</style>

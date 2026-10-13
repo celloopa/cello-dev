@@ -7,29 +7,9 @@
    "0.1s": 1
   }
  },
- "src/components/FlowDiagram.astro": {
-  "color": {
-   "rgba(var(--color-accent-rgb), 0.12)": 1
-  }
- },
  "src/components/Header.astro": {
   "color": {
    "color-mix(in srgb, var(--bg-canvas) 10%, transparent)": 1
-  },
-  "ban:container-literal": {
-   "max-width: 1100px": 1
-  }
- },
- "src/components/ProjectCard.astro": {
-  "color": {
-   "rgba(var(--color-accent-rgb), 0.16)": 1,
-   "rgba(var(--color-text-rgb), 0.12)": 1,
-   "rgba(var(--color-text-rgb), 0.04)": 1
-  }
- },
- "src/components/Section.astro": {
-  "ban:container-literal": {
-   "max-width: 1100px": 1
   }
  },
  "src/components/sections/Hero.astro": {
@@ -55,164 +35,9 @@
  "src/layouts/Layout.astro": {
   "spacing": {
    "8rem": 1
-  },
-  "ban:container-literal": {
-   "max-width: 1100px": 1
-  }
- },
- "src/pages/404.astro": {
-  "font-size": {
-   "clamp(8rem, 30vw, 22rem)": 1
-  },
-  "line-height": {
-   "0.9": 1
-  }
- },
- "src/pages/blog.astro": {
-  "font-size": {
-   "2.5rem": 1
-  }
- },
- "src/pages/blog/[slug].astro": {
-  "spacing": {
-   "0.8rem": 5
-  },
-  "font-size": {
-   "0.9em": 1
-  }
- },
- "src/pages/card.astro": {
-  "color": {
-   "color-mix(in srgb, var(--color-accent) 9%, var(--bg-canvas))": 1,
-   "rgba(var(--color-accent-rgb), 0.05)": 1,
-   "rgba(var(--color-text-rgb), 0.03)": 2,
-   "rgba(var(--color-text-rgb), 0.02)": 2
-  },
-  "spacing": {
-   "max(1.5rem,": 1,
-   "env(safe-area-inset-top))": 1
-  },
-  "font-size": {
-   "clamp(2.6rem, 9vw, 5.5rem)": 1,
-   "clamp(2.8rem, 10vw, 4.8rem)": 1,
-   "clamp(2.6rem, 14vw, 4rem)": 1
-  },
-  "line-height": {
-   "0.92": 1
-  },
-  "letter-spacing": {
-   "-0.08em": 1
-  }
- },
- "src/pages/index.astro": {
-  "spacing": {
-   "clamp(2rem, 5vw, 4.5rem)": 1,
-   "clamp(1.5rem, 4vh, 3rem)": 1,
-   "clamp(1rem, 4vh, 3rem)": 1,
-   "clamp(2rem, 5vh, 3.5rem)": 1,
-   "-0.5ch": 2,
-   "0.8rem": 2,
-   "4px": 1,
-   "0.6rem": 1,
-   "0.55rem": 1,
-   "0.35rem": 1,
-   "0.65rem": 1,
-   "0.85rem": 2,
-   "clamp(2.5rem, 7vh, 4.5rem)": 1,
-   "clamp(2.5rem, 6vh, 4rem)": 2,
-   "1.1rem": 1,
-   "clamp(1.5rem, 3vw, 2.75rem)": 2,
-   "calc(50% - 50vw)": 1,
-   "max(2rem,": 1,
-   "calc((100vw - 1500px) / 2))": 1,
-   "clamp(3rem, 8vh, 5rem)": 1,
-   "1.15rem": 1
-  },
-  "ban:container-literal": {
-   "max-width: 1100px": 5
-  },
-  "duration": {
-   "0.8s": 2,
-   "0.4s": 3,
-   "1s": 1,
-   "0.9s": 1,
-   "0.25s": 2,
-   "0.55s": 1,
-   "0.24s": 1,
-   "0.7s": 1,
-   "0.5s": 2,
-   "0.3s": 12,
-   "0.42s": 1,
-   "0.2s": 2,
-   "2.4s": 1,
-   "0.45s": 2,
-   "32s": 1
-  },
-  "ban:keyframes-outside-animations": {
-   "@keyframes drawPath": 1,
-   "@keyframes blink": 1,
-   "@keyframes typeSettle": 1,
-   "@keyframes barLockSweep": 1,
-   "@keyframes kickerPulse": 1,
-   "@keyframes marqueeScroll": 1,
-   "@keyframes slideLeft": 1,
-   "@keyframes slideRight": 1,
-   "@keyframes slideUp": 1,
-   "@keyframes wipeIn": 1,
-   "@keyframes slideFromRight": 1,
-   "@keyframes slideFromLeft": 1
-  },
-  "font-size": {
-   "clamp(4.5rem, 10vw, 10rem) !important": 1,
-   "inherit !important": 2,
-   "2rem": 1,
-   "0.55em": 1,
-   "clamp(1rem, 2vw, 1.2rem)": 1,
-   "clamp(1.5rem, 3.2vw, 2.6rem)": 1,
-   "0.7rem": 1,
-   "clamp(2.2rem, 6vw, 4rem)": 1,
-   "clamp(4.25rem, 13vw, 7rem) !important": 1,
-   "1.45rem": 1,
-   "clamp(3.2rem, 18vw, 4.5rem) !important": 1,
-   "1.15rem": 1
-  },
-  "line-height": {
-   "1": 2,
-   "1 !important": 1,
-   "1.12": 1,
-   "1.7": 4,
-   "1.15": 1,
-   "1.6": 1
-  },
-  "easing": {
-   "ease-in-out": 1,
-   "ease": 1
-  },
-  "ban:transition-all": {
-   "transition: all": 1
-  },
-  "letter-spacing": {
-   "0.08em": 1,
-   "0.02em": 2
-  }
- },
- "src/pages/projects/[slug].astro": {
-  "spacing": {
-   "0.8rem": 7
-  },
-  "font-size": {
-   "0.9em": 1
-  }
- },
- "src/pages/projects/index.astro": {
-  "font-size": {
-   "2.5rem": 1
   }
  },
  "src/pages/resume.astro": {
-  "ban:container-literal": {
-   "max-width: 1100px": 1
-  },
   "spacing": {
    "clamp(2rem, 5vh, 3.5rem)": 1
   }

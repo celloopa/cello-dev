@@ -1,0 +1,90 @@
+{
+  "id": "sauvie",
+  "place": "Sauvie Island",
+  "month": "October",
+  "status": "photo-treatment and cut candidate; people removed 2026-10-12 (wagons kept, empty); aesthetic approval pending",
+  "sourceSize": [
+    2172,
+    1448
+  ],
+  "webSize": [
+    1536,
+    1024
+  ],
+  "master": "/scenes/sauvie/master-wide.webp",
+  "portrait": "/scenes/sauvie/master.webp",
+  "originalPortraitBounds": [
+    543,
+    0,
+    1629,
+    1448
+  ],
+  "expandedSides": "AI outpainted; treated portrait center restored with zero pixel difference",
+  "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
+  "layers": [
+    {
+      "name": "sky",
+      "src": "/scenes/sauvie/sky.webp",
+      "depth": 0.97,
+      "testedHorizontalSourcePx": 0
+    },
+    {
+      "name": "far",
+      "src": "/scenes/sauvie/far.webp",
+      "depth": 0.65,
+      "testedHorizontalSourcePx": 2
+    },
+    {
+      "name": "near",
+      "src": "/scenes/sauvie/near.webp",
+      "depth": 0.05,
+      "testedHorizontalSourcePx": 5
+    }
+  ],
+  "mobileCropCenter": [
+    0.53,
+    0.5
+  ],
+  "checks": {
+    "restack": "cut-check.json",
+    "center": "expansion.json",
+    "isolated": [
+      "isolated-sky.jpg",
+      "isolated-far.jpg",
+      "isolated-near.jpg"
+    ],
+    "motion": [
+      "motion-left.jpg",
+      "motion-right.jpg",
+      "post-motion-detail.jpg"
+    ],
+    "crops": [
+      "crop-desktop.jpg",
+      "crop-mobile.jpg"
+    ],
+    "figmaUpload": "figma-upload.json",
+    "figmaRoundtrip": "figma-roundtrip.json",
+    "peopleRemovedReview": "people-removed-review.jpg"
+  },
+  "limitations": [
+    "Storm clouds remain one sky plane; hills/field/empty wagons remain one land plane",
+    "AI treatment simplifies cloud contours and fine ground details; the portrait was re-edited 2026-10-12 to remove the wagon riders and the standing group (no people in the scene); it is not a deterministic shader",
+    "Only ±2 px far and ±5 px near source-pixel movement inspected; larger travel unproven",
+    "Outer translated image edges require overscan/viewport clipping",
+    "Scene/project association not selected"
+  ],
+  "peopleRemoval": {
+    "date": "2026-10-12",
+    "decision": "Cello: \"remove the sauvie people too\"",
+    "action": "removed (not shrunk): all riders on both hay wagons (two coupled wagons) and the standing group of three beside the fence post; the hay wagons are kept, empty",
+    "method": "one image edit of the locked portrait master, blended only inside a feathered patch around the former people; wide master rebuilt by pasting it into the same bounds; land matte regenerated inside the former-people zone only",
+    "raw": "nofigure-raw-v1.png (local, ignored)",
+    "patchBboxPortraitPx": [
+      332,
+      766,
+      808,
+      1014
+    ],
+    "pastBackups": "pre-removal masters and planes kept outside the repo; pre-removal WebPs are in git history"
+  }
+}

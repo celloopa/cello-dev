@@ -1,81 +1,76 @@
 ---
+/* MediaTwo: two images or videos side by side (one column on phones). Videos go through
+   MediaVideo (Pause / Play, reduced motion keeps the still). */
+import MediaVideo from "./MediaVideo.astro";
+
 interface MediaItem {
-	src: string;
-	alt?: string;
-	caption?: string;
+  src: string;
+  alt?: string;
+  caption?: string;
 }
 
 interface Props {
-	items: MediaItem[];
+  items: MediaItem[];
 }
 
 const { items } = Astro.props;
-const isVideo = (src: string) => src?.endsWith('.webm') || src?.endsWith('.mp4');
+const isVideo = (src: string) => src?.endsWith(".webm") || src?.endsWith(".mp4");
 ---
 
 <div class="media-gallery media-two">
-	{items.map((item, index) => (
-		<figure class="media-item" style={`--i: ${index}`}>
-			{isVideo(item.src) ? (
-				<video src={item.src} class="project-media" autoplay loop muted playsinline />
-			) : (
-				<img src={item.src} alt={item.alt || ""} class="project-media" />
-			)}
-			{item.caption && <figcaption>{item.caption}</figcaption>}
-		</figure>
-	))}
+  {
+    items.map((item) => (
+      <figure class="media-item">
+        {isVideo(item.src) ? (
+          <MediaVideo src={item.src} label={item.alt} class="project-media" />
+        ) : (
+          <img src={item.src} alt={item.alt || ""} class="project-media" loading="lazy" decoding="async" />
+        )}
+        {item.caption && <figcaption>{item.caption}</figcaption>}
+      </figure>
+    ))
+  }
 </div>
 
 <style>
-	.media-gallery {
-		margin: var(--space-32) 0;
-		animation: enter-scale var(--motion-entry) var(--ease-out) backwards;
-	}
+  .media-gallery {
+    margin: var(--space-32) 0;
+  }
 
-	.media-two {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: var(--space-16);
-	}
+  .media-two {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-16);
+  }
 
-	.media-item {
-		margin: 0;
-		animation: enter-rise var(--motion-entry) var(--ease-out) backwards;
-		animation-delay: calc(var(--i) * var(--motion-stagger));
-	}
+  .media-item {
+    margin: 0;
+  }
 
-	.media-item figcaption {
-		font-size: var(--type-small);
-		font-weight: var(--weight-semibold);
-		text-transform: uppercase;
-		letter-spacing: var(--track-caps);
-		color: var(--text-primary);
-		padding: var(--space-12) 0;
-		border-bottom: 2px solid var(--color-accent);
-		margin: 0;
-	}
+  .media-item figcaption {
+    margin: 0;
+    padding: var(--space-12) 0;
+    border-bottom: var(--stroke-control) solid var(--action-primary);
+    color: var(--text-primary);
+    font-size: var(--type-small);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
 
-	.project-media {
-		width: 100%;
-		border: 4px solid var(--text-primary);
-		filter: grayscale(20%);
-		transition: filter var(--motion-ui) var(--ease-out);
-		aspect-ratio: 16/10;
-		object-fit: cover;
-	}
+  .media-item :global(.project-media) {
+    width: 100%;
+    border: var(--stroke-bar) solid var(--border-strong);
+  }
 
-	video.project-media {
-		height: auto;
-		aspect-ratio: auto;
-	}
+  img.project-media {
+    aspect-ratio: 16/10;
+    object-fit: cover;
+  }
 
-	.project-media:hover {
-		filter: grayscale(0%);
-	}
-
-	@media (width <= 700px) {
-		.media-two {
-			grid-template-columns: 1fr;
-		}
-	}
+  @media (width <= 700px) {
+    .media-two {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

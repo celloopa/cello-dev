@@ -1,0 +1,286 @@
+---
+/*
+ * ContextBar (amendment A3; D5): the dark green top bar on scene pages.
+ *   exploring  identity + Work, with About and the other utilities kept separate
+ *   reading    the project in view + "All work" (scenery.js fills the title and sets
+ *              html.scene-reading)
+ * A reading page (a case study or a post) is in the reading context from the first paint: its
+ * title and "All" link are server-rendered here, and the menu and theme buttons stay, since
+ * the page never returns to exploring.
+ * The menu button and ⌘K open today's KeyboardShortcutsMenu. The theme button is a plain
+ * <button data-theme-toggle>, bound and labelled by SceneLayout through src/utils/themeToggle.js
+ * (it picks the scene's Day or Dusk grade; the bar stays dark either way).
+ */
+import Mark from "./Mark.astro";
+import Sun from "@/icons/Sun.astro";
+import Button from "@/components/ui/Button.astro";
+import IconButton from "@/components/ui/IconButton.astro";
+
+interface Props {
+  /** A reading page's title, shown from the first paint (else scenery.js names the stop in view). */
+  context?: string;
+  /** Where the reading context's "All" link goes: All work, or All posts on a post. */
+  all?: { href: string; label: string };
+}
+
+const { context = "", all = { href: "/projects", label: "All work" } } = Astro.props;
+
+const utilities = [
+  { label: "About", href: "/#about" },
+  { label: "Writing", href: "/blog" },
+  { label: "Design System", href: "/design-system" },
+  { label: "Resume", href: "/resume" },
+];
+const path = Astro.url.pathname;
+// the current item (aria-current, §7): "page" on the page itself, "true" under it
+const current = (href: string) => {
+  const p = path.replace(/\/$/, "");
+  return p === href ? "page" : p.startsWith(`${href}/`) ? "true" : undefined;
+};
+---
+
+<header class="bar">
+  <nav class="bar-inner container" aria-label="Main">
+    <a class="bar-brand" href="/" aria-label="Cello, home">
+      <Mark class="bar-mark" />
+      <span>Cello</span>
+    </a>
+    <a class="bar-link bar-work" href="/projects" aria-current={current("/projects")}>Work</a>
+    <div class="bar-context" data-scene-context>
+      <span class="bar-context-title" data-scene-context-title>{context}</span>
+      <a class="bar-allwork" href={all.href}>{all.label}</a>
+    </div>
+    <ul class="bar-utils">
+      {
+        utilities.map((u) => (
+          <li>
+            <a class="bar-link" href={u.href} aria-current={current(u.href)}>
+              {u.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="bar-actions">
+      <Button
+        class="bar-menu"
+        variant="secondary"
+        size="sm"
+        data-bar-menu
+        aria-haspopup="dialog"
+        aria-controls="keyboard-shortcuts-menu"
+        aria-keyshortcuts="Meta+K Control+K"
+      >
+        <span class="bar-key" data-bar-key></span>
+        <span>Menu</span>
+      </Button>
+      <IconButton data-theme-toggle label="Switch between Day and Dusk">
+        <Sun />
+      </IconButton>
+    </div>
+  </nav>
+</header>
+
+<script>
+  // The key label (⌘K / Ctrl+K, or a dot on touch screens) is set before paint by SceneLayout's
+  // head script (html.touch and --bar-kbd), so the bar never shifts when this runs.
+  const menu = document.querySelector<HTMLButtonElement>("[data-bar-menu]");
+  menu?.addEventListener("click", () => window.dispatchEvent(new CustomEvent("toggleKeyboardMenu")));</script>
+
+<style>
+  .bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: var(--scene-bar);
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .bar-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-24);
+    height: 100%;
+  }
+
+  .bar-brand {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--space-12);
+    font-size: var(--type-ui);
+    font-weight: var(--weight-extrabold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+
+  .bar-brand :global(.bar-mark) {
+    width: 32px;
+    height: 34px;
+  }
+
+  .bar-link,
+  .bar-allwork {
+    display: block;
+    padding-block: var(--space-8);
+    border-bottom: var(--stroke-control) solid transparent;
+    font-size: var(--type-ui);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    transition:
+      border-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
+  }
+
+  .bar-link:hover,
+  .bar-link:focus-visible,
+  .bar-link[aria-current] {
+    border-bottom-color: var(--action-primary);
+  }
+
+  .bar-utils {
+    display: flex;
+    gap: var(--space-24);
+    margin: 0 0 0 auto;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bar-utils .bar-link {
+    color: var(--text-muted);
+  }
+
+  .bar-utils .bar-link:hover,
+  .bar-utils .bar-link:focus-visible {
+    color: var(--text-primary);
+  }
+
+  .bar-actions {
+    display: flex;
+    flex: none;
+    gap: var(--space-8);
+  }
+
+  .bar-key {
+    padding-inline: var(--space-4);
+    background: var(--text-primary);
+    color: var(--bg-canvas);
+  }
+
+  .bar-menu:hover .bar-key,
+  .bar-menu:focus-visible .bar-key {
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+  }
+
+  .bar-key::before {
+    content: var(--bar-kbd, "");
+  }
+
+  :global(html:not(.js)) .bar-key {
+    display: none;
+  }
+
+  :global(html.touch) .bar-key {
+    width: var(--space-8);
+    height: var(--space-8);
+    padding: 0;
+    background: var(--action-primary);
+  }
+
+  :global(html.touch) .bar-key::before {
+    content: none;
+  }
+
+  /* reading: the project in view + All work; Work and the utilities step aside */
+  .bar-context {
+    display: none;
+    flex: 1;
+    min-width: 0;
+    align-items: center;
+    gap: var(--space-16);
+  }
+
+  .bar-context-title {
+    margin-inline: auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+    color: var(--text-on-art-muted);
+  }
+
+  .bar-allwork {
+    flex: none;
+    border-bottom-color: var(--action-primary);
+  }
+
+  :global(html.scene-reading) .bar-context {
+    display: flex;
+    animation: enter-fade var(--motion-handoff) var(--ease-out);
+  }
+
+  :global(html.scene-reading) .bar-work,
+  :global(html.scene-reading) .bar-utils,
+  :global(html.scene-reading) .bar-actions {
+    display: none;
+  }
+
+  /* a reading page opens in this context and stays in it: no hand-off to fade, and the menu and
+     theme buttons stay (home gets them back by scrolling up; a reading page never does) */
+  :global(html.scene-read-page) .bar-context {
+    animation: none;
+  }
+
+  :global(html.scene-read-page) .bar-actions {
+    display: flex;
+  }
+
+  @media (width <= 900px) {
+    .bar-utils {
+      display: none;
+    }
+
+    .bar-actions {
+      margin-left: auto;
+    }
+  }
+
+  @media (width <= 700px) {
+    .bar-inner {
+      gap: var(--space-16);
+    }
+
+    .bar-brand span {
+      display: none;
+    }
+
+    .bar-context-title {
+      font-size: var(--type-label);
+    }
+
+    .bar-allwork {
+      font-size: var(--type-label);
+    }
+
+    /* reading page on a phone: the menu button keeps its dot and its name, not its word */
+    :global(html.scene-read-page) .bar-menu {
+      padding-inline: 0;
+    }
+
+    :global(html.scene-read-page) .bar-menu span:not(.bar-key) {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+</style>

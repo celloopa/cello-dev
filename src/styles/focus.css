@@ -1,0 +1,16 @@
+/*
+  The one focus ring (proposal §7; the --focus-ring role): keyboard focus on everything, on every
+  page (both layouts import this file). 3px, offset 3px, so on a filled control (a primary
+  Button, a hovered IconButton) it sits outside the fill and never merges with it.
+
+  It replaces the two conflicting global rings (animations.css's :focus-visible and the
+  :where(...) rules in Layout and SceneLayout). Components don't redraw it: each one owns how it
+  looks while focused (focus-visible mirrors hover), and the ring is added on top.
+
+  Scene pages add an ink halo either side of it (scene.css): the ring's green can't carry 3:1 on
+  its own against bright art.
+*/
+:focus-visible {
+	outline: var(--stroke-frame) solid var(--focus-ring);
+	outline-offset: var(--stroke-frame);
+}

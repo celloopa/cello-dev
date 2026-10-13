@@ -1,0 +1,1008 @@
+# Landscape build: checks (S0–S3, 2026-10-12)
+
+Branch `claude/landscape-build`. Production build served by `astro preview` on this Mac; browser
+checks in headless installed Chrome through `playwright-core` (GPU on, so WebGL runs). The scratch
+scripts that produced these numbers are not committed. Shots: `shots/` (JPEG q82).
+
+## Build
+
+`pnpm build` (= `tokens --check` + `astro check` + `astro build`): **green**. Tokens up to date, no
+new raw values or hand-built patterns, `astro check` 89 files with 0 errors, 0 warnings and 0 hints, and the
+build itself has 0 warnings. `raw-baseline.json` ratcheted down (index.astro's old literals gone,
+nothing added).
+
+## URL contract (`docs/ship/PROFILE.md` on `claude/ship-conductor`)
+
+| Check | Result |
+|---|---|
+| 16 URLs | all **200** |
+| `/projects/ad-asset-directory`, `/projects/ascendant-traders` | 404 on `astro preview`, which doesn't serve Netlify's `_redirects`. `public/_redirects` is unchanged on this branch, so the 301s are Netlify's to serve (check on the branch preview) |
+| 8 expected 404s | all **404** |
+| `/cv.json` | parses; label unchanged |
+| resume PDF | starts `%PDF-`; `cv.json`, `public/files`, `_redirects` untouched |
+
+## Behavior (home, Mirror Lake)
+
+| Check | 1440×900 | 390×844 |
+|---|---|---|
+| Arrival | text at first paint; the renderer assembles behind it, sky → far → mid → near (`1440-arrival-0.3s.jpg`); settled by ≈2 s | same, half the drop |
+| Pointer extremes | every plane exactly at its cap, then springs back to rest: sky 1.2/0.6, far 5.99/2.99, mid 17.96/8.98, near 37.92/18.96 screen px (x/y), the prototype's numbers | no pointer depth; scroll depth on the same caps |
+| Admire | "Take in the view" hides the intro (inert), the view names the place; focus goes to "Back to Cello"; Esc or the button returns focus to "Take in the view" (both motion modes) | same |
+| Reading | engages as the Work section crosses 62% of the viewport (out at 72%); the focus recipe reaches 1; the place label goes (opacity 0); the bar shows the project in view ("Asheville Dispensary", then "Ghosted") + All work | same (the section header names itself first) |
+| Loop | 0 frames in 1.5 s of still reading; 0 frames 18 s after the last input | same |
+| Reduced motion | the still with the CSS focus recipe; text at once; the renderer chunk is never requested | same |
+| `?gl=0` (no WebGL), Day | the still | same |
+| Texture failure (near.webp blocked) | the still; one `[scene] 3D disabled` warning (expected) plus the blocked request's own error | — |
+| Loaded in a hidden tab (hidden from before load, 8 s) | the still stays on screen, 0 frames, no 6 s fallback; on visible the canvas takes over already settled (near layer fade 1) | — |
+| Keyboard | Tab order: skip link, Cello (home), Work, About, Writing, Design System, Resume, Menu, theme, View Case Studies, View Resume, Take in the view, then the case studies | — |
+
+**Console:** zero errors and zero warnings from this code in every run above (the only entries are
+the two induced by the texture-failure test).
+
+## Text over art: contrast (each line vs the 99th-percentile brightest pixel under it)
+
+Method: every text line over the scene (Range client rects of each text node; text on its own
+fill, like the green button, and text on media excluded), measured with the text hidden and
+everything else as rendered. The lowest ratio per state (states: arrival, Admire, reading at
+every viewport step down the page, settled):
+
+| State | 1440 small | 1440 large | 390 small | 390 large |
+|---|---|---|---|---|
+| Dusk, WebGL: arrival | 11.04 | 10.10 | 11.02 | 9.86 |
+| Dusk, WebGL: Admire | 14.05 | 12.19 | 12.73 | 11.70 |
+| Dusk, WebGL: reading | 10.78 | 5.59 | 11.08 | 6.15 |
+| Day, WebGL: arrival | 10.00 | 5.00 | 8.44 | 5.06 |
+| Day, WebGL: Admire | 11.41 | 7.02 | 8.46 | 7.85 |
+| Day, WebGL: reading | 7.72 | 3.53 | 9.48 | 4.40 |
+| Still (reduced motion, no WebGL; Day art in both themes): arrival | 9.83 | 4.91 | 8.14 | 4.21 |
+| Still: Admire | 11.24 | 7.13 | 8.64 | 7.95 |
+| Still: reading | 7.71 | 3.54 | 9.38 | 4.35 |
+
+**0 failures** of 4.5:1 (small) / 3:1 (large) across 1,136 measured lines. One failure found and
+fixed on the way: How I Build's green "Proof: …" links measured 4.46:1 over the focused still;
+they now use `--text-on-art-muted`. Thinnest margin: the green section titles while reading in
+Day (3.53:1, large text, needs 3).
+
+## Performance (home)
+
+Throttling: Chrome DevTools presets through CDP, 4× CPU, cache off, median of 5.
+
+| Profile | LCP | FCP | CLS (max) | LCP element |
+|---|---|---|---|---|
+| **Phone 390, Fast 4G** (9 Mbps, 60 ms) | **0.30 s** | 0.30 s | **0.000** | the hero summary |
+| Desktop 1440, Fast 4G | 0.31 s | 0.31 s | 0.000 | the hero summary |
+| Phone 390, Slow 4G (1.6 Mbps, 150 ms) | 0.64 s | 0.64 s | 0.0005 | the hero summary |
+| Desktop 1440, Slow 4G | 0.63 s | 0.63 s | 0.0003 | the hero summary |
+
+Targets: LCP ≤ 2.0 s and CLS ≤ 0.05, both met. Slow 4G CLS was 0.079 before the fix (the menu key
+label and the Admire button now settle before paint). On Fast 4G the WebGL scene takes over at
+≈0.9 s, and at ≈4.4 s on Slow 4G (the still never shows meanwhile: the copy sits on the ink).
+
+## Weight (home, production build)
+
+| | gzip |
+|---|---|
+| First-paint JS (module scripts) | **16.2 KB**: ⌘K menu + Svelte runtime 13.2, Scene DOM half 2.5, bar 0.2, theme util 0.1 |
+| Inline scripts | head script (theme, 3D gate, menu key) 0.7 KB; Astro's island loader for the ⌘K menu 1.5 KB |
+| CSS | 8.0 KB |
+| After paint, only when the 3D gate allows: three.js + renderer | **128.9 KB** (512 KB min) |
+| Scene images (Mirror Lake, 4 WebPs, shared by the still and the textures) | 574 KB transferred |
+| Fonts transferred on home | 111 KB (Geist Mono 400/700/800, National Park Variable latin, Switchback) |
+| HTML | 11.0 KB |
+
+## ui:shots (`scripts/ui-shots.mjs`, exact)
+
+Against the migration's head (`58b4c81`, built from a clean export): **4 of 48 screens changed,
+all home** (1440 and 390, dark and light). The other 44 (projects, case studies, blog, post,
+resume, design-system, card, 404) are 0 px.
+
+## Known limits
+
+- The still is Day art in both themes (the Dusk grade is WebGL only), as in the prototype.
+- Not tested on a real phone GPU.
+- D3 (demo personas only): see S2 below. The swipe-keep clips are now demo-only; several
+  Ghosted stills still show a real resume.
+
+---
+
+# S2: case studies and posts in the landscape (2026-10-12)
+
+Same setup as above (production build on `astro preview`, headless installed Chrome with the GPU
+on). Pages: the four case studies (Asheville Dispensary → Over Hood, Ghosted → Ecola,
+VegAvengers → Sauvie, Daybreak → Meadows) and the two live posts (Designing for the Second User
+→ Moss Falls, Programmatic Resumes → Bald Mountain; the rotation hash picks them). Shots:
+`shots/s2/`.
+
+## Merges before S2
+
+- `claude/design-system-migration` @ 01c79e4 (2c + stage 3 Day), then @ e1e313e (the
+  public-docs strip, which contains `master` e10cc19; merging `origin/master` afterwards was
+  already up to date). The conductor's strip check (local paths, private Figma and board links,
+  the team name) over `docs/` and `src/` comes back empty.
+- Home after the merge, Day and Dusk: contrast re-run, **0 failures**, the same minimums as the
+  S1 table above (e.g. Day WebGL reading 7.72 small / 3.53 large at 1440).
+
+## Build and URL contract
+
+`pnpm build` green: tokens up to date, no new raw values; `astro check` 95 files, 0 errors,
+0 warnings, 0 hints. `raw-baseline.json` ratchets 401 → 277 (the old [slug] templates' and media
+components' literals). The 16 URLs are 200; the 8 expected 404s are 404 (the two drafts
+included); `cv.json` parses, the PDF starts `%PDF-`; the two 301s are Netlify's (unchanged
+`_redirects`).
+
+## Behavior (6 pages × 1440/390 × Day/Dusk = 24 runs)
+
+| Check | Result |
+|---|---|
+| Reading state at first paint | `html.scene-reading scene-read-page` from the server; still filter `blur(7px) brightness(0.45) saturate(0.65)` (390: 5px, .36, .6); `--atmos-read` 1; place label opacity 0 |
+| Renderer | arrives settled and focused: focus 1, every plane's travel 0,0, every layer faded in (no assembly) |
+| Nearly still | **0 frames** in 1.5 s idle and **0 frames** while the pointer sweeps the window and the page scrolls 600 px, in all 24 runs |
+| Bar | the h1's title + "All work" → /projects (posts: "All posts" → /blog); context not inert; Work and the utility links hidden; menu and theme kept ("Switch to Day" / "Switch to Dusk") |
+| Prose (2c) | direct-child paragraphs in Geist Variable at 31em (1440; full column at 390); h2 National Park; h3, captions and CaseMeta Geist Mono; body links underlined |
+| End | next story (case studies by order, wrapping; posts newest first), the previous one, the index; footer Work + About · Writing · Contact · Resume |
+| Horizontal overflow | 0 px everywhere |
+| Reduced motion | the still with the CSS focus recipe; the renderer chunk is never requested |
+| `?gl=0`, Day | the still; no renderer request |
+| Hidden tab (Daybreak, hidden from before load, 8 s) | the still on screen, 0 frames; on visible the canvas takes over already focused (2 frames) |
+| Day across navigation | Day picked on /projects/ghosted → "All work" (full load of a Layout page) → /resume (ClientRouter swap, same window) → /projects/vegavengers (full load): `data-theme="light"` throughout |
+
+**Console:** none (zero errors, zero warnings, no failed requests) across every run above and the
+contrast runs.
+
+## Ghosted: the Loop video (MediaVideo)
+
+| Check | 1440 | 390 |
+|---|---|---|
+| Plays on screen | `ghosted-loop.webm`, readyState 4, time advancing | same |
+| Pause / Play | Pause → paused, time holds, label "Play" ("Play video"); scrolling away and back keeps it paused; Play resumes; Enter on the focused button toggles | same |
+| Reduced motion | paused at 0 s on `ghosted-loop-poster.webp`, no `autoplay` attribute, button reads "Play"; 0 videos playing on the page | same |
+
+## Text over art: contrast (S2 pages, top to bottom)
+
+Same measure as S1 (each line vs the 99th-percentile brightest pixel under it; text on its own
+fill or on a plate excluded; videos paused). Every viewport step down all six pages:
+
+| State | 1440 small | 1440 large | 390 small | 390 large |
+|---|---|---|---|---|
+| Dusk, WebGL | 9.83 | 5.70 | 9.83 | 6.28 |
+| Dusk, still | 6.92 | 3.60 | 8.35 | 4.42 |
+| Day, WebGL | 6.93 | 3.60 | 8.36 | 4.48 |
+| Day, still | 6.92 | 3.60 | 8.35 | 4.42 |
+
+**0 failures** of 4.5:1 / 3:1 across 15,316 measured lines. Thinnest margin: VegAvengers' green
+h2 "Publishing Without F…" in Day (3.60:1, large text, needs 3). Small green text never sits on
+art: labels over art use `--text-on-art-muted`, and CaseMeta, FlowDiagram, tables, quotes and
+inline code sit on `bg-plate`.
+
+## Performance (Ghosted, the longest case study)
+
+Phone 390, Fast 4G, 4× CPU, cache off, median of 5: **LCP 0.38 s** (the lede), FCP 0.38 s,
+**CLS 0.0008**. Desktop 1440 Fast 4G: LCP 0.39 s, CLS 0.019. The renderer (129.9 KB) arrives at
+≈1.3–1.7 s.
+
+Slow 4G (1.6 Mbps): FCP 0.80 s, but LCP 7.6 s (390) / 8.0 s (1440), and the LCP element is the
+scene's near layer. The page's own media (the cover video and nearby images) share the slow
+link, so the renderer arrives after the 6 s give-up; the still then fades in and becomes the
+largest paint. Text is readable from 0.8 s. Not fixed in S2: see the note for Cello.
+
+## ui:shots (exact, baseline = the migration tip e1e313e from a clean export, two runs)
+
+**28 of 48 screens changed**, all expected: home (the footer's utilities), the four case
+studies and the post (the landscape), and `/projects` (86,547 px at 1440: only the Ghosted
+card, whose video is now the demo clip). Resume, design-system, card, blog index and 404 are
+0 px.
+
+## D3: demo personas only (Ghosted)
+
+Every Ghosted image was OCR'd (tesseract at 2×) and every video frame-sampled (1–2 fps), then
+checked by eye.
+
+- **Fixed:** `v3/swipe-keep.webm` (cover and card) and `v3/swipe-keep-full.webm` showed Cello's
+  real resume (name, email, LinkedIn, GitHub, city). Both are now Ghosted's own landing clip of
+  the made-up "Rowan Ellis" (example.com contact lines), re-encoded to VP9 at the same paths.
+  OCR of every frame: only the demo persona. The new `ghosted-loop` video: the same.
+- **Still showing the real resume**, left for Cello (no demo replacements exist yet):
+  - in the Ghosted case study: `v3/proposal.webp`, `v3/phones.webp`, `v3/style-looks.webp`,
+    and `v3/og.png` (the social image);
+  - in "Programmatic Resumes You Can Chat With": `v3/highlights.webp` (its cover),
+    `v3/interview.webp`, `v3/tailored.webp`, `v3/history.webp`, `v3/edit-style.webp`,
+    `v3/archetype.webp`, `v3/report.webp`.
+- Possible tester data: `v3/signin.webp`'s access-code placeholder reads "e.g. kim-7x2qpd".
+- Clean: the brand and design-system images, `board`, `board-dark`, `category`, `fit`,
+  `intake`, `research`, `tour-look`, and every `web/*` image (demo "Sam Rivera").
+- The old files stay in git history.
+
+---
+
+# S3: /card, the indexes, 404, and the reading pages' slow-network fix (2026-10-12)
+
+Same setup as above: production build on `astro preview` (port 4622), headless installed Chrome
+through `playwright-core`, GPU on. Throttling is Chrome DevTools' own presets through CDP: **Slow
+4G** = 1.44 Mbps down (1.6 × 0.9), 562.5 ms RTT; **Fast 4G** = 8.1 Mbps (9 × 0.9), 165 ms; 4× CPU,
+cache off, median of 5. That RTT is the DevTools preset's, so these numbers run slower than S1/S2's
+and compare only with each other (the Ghosted before/after below is one harness). Shots:
+`shots/s3/` (JPEG q82).
+
+## What changed
+
+| Page | Now |
+|---|---|
+| `/card` | The event landing page (below). Same URL, same Save Contact and Share Card. |
+| `/projects` | SceneSelector (A3 item 7): today's list, copy and order, each with its place's swatch; hover or focus brings the place in behind the list. Archived and retired case studies stay off, as today. |
+| `/blog` | Today's published posts, newest first, each with its place's swatch (the post rotation). Drafts stay off. |
+| 404 | Today's words ("404", "Page Not Found", "Back to home") over home's scene, arriving as home does. |
+| Case studies, posts, `/projects`, `/blog` | Paint a half-size focused still at first paint (the slow-network fix). |
+| `/watchlist`, `/design-system` | Unchanged, on today's Layout. `/design-system` shows the Day and Dusk swatches, which a scene page's Dusk-in-both-themes roles would misstate, and the watchlist is a stub the inventory marks "Never". Not cheap and safe, so they wait. |
+| `/resume` | Unchanged (stage 3 owns it). |
+
+New pieces, all on tokens: SceneLayout `focus` (html.scene-focus-page), Scene `focused` (the
+reading still), SceneSelector, `pnpm scenes:derive` (swatches, the reading still, the case-study
+panels' flattened copies, the /card artifacts). One new token, `--type-display-card`; one shared
+keyframe, `sceneSettle`. `raw-baseline.json` ratchets 277 → 179 (deletions only).
+
+## /card
+
+1. **First screen:** the name (National Park, one line from 769 px up; two lines on phones),
+   cv.json's role line, Portland, Oregon, then **Save Contact** and **Share Card**, two-up, 88 px
+   tall, their bottom edge at 695 of 844 px on a phone, and today's share note. Over Mirror Lake:
+   the arrival assembles the scene behind the words once the renderer is in.
+2. **The case studies:** Asheville Dispensary over Over Hood, Ghosted over Ecola, VegAvengers over
+   Sauvie Island, Daybreak over Mt Hood Meadows (`scene-pairings.json`). Each panel is a window onto
+   a picture fixed to the viewport, so scrolling reveals one place over the last, and the picture
+   settles from `--focus-scale` to rest along the panel's scroll timeline (`--ease-out`). Each has
+   the place name (Switchback), the role, the title linking to the case study, one line, and a
+   demo-only artifact. The bar names the panel in view.
+3. **About** (Geist), email, LinkedIn, GitHub, View Resume, Visit Portfolio, and today's QR code
+   ("Scan To Visit", "Direct contact file").
+
+Reduced motion: the same art, no movement (the hero is the still, the renderer is never
+requested, each panel's picture scrolls with its panel, no settle).
+
+### Where every word on /card comes from
+
+| Words | Source |
+|---|---|
+| Marcelo Rondon | `cv.json` basics.name (today's card h1) |
+| Product Designer & Design Engineer / Design Systems & AI Tools | `cv.json` basics.label, split at its " — " (today's card role line) |
+| Portland, Oregon | `cv.json` location (today's card) |
+| Save Contact · VCF for phone or desktop | today's card |
+| Share Card · AirDrop or copy link · Copy Card Link (no Web Share) | today's card |
+| Open on iPhone to AirDrop, or copy the link anywhere else. · Share sheet opened. · Card link copied to the clipboard. · Share failed on this browser. | today's card (the share script) |
+| Share payload: "Marcelo Rondon \| Conference Card", "Connect with Marcelo Rondon.", https://cello.design/card | today's card |
+| Selected Case Studies | home |
+| Each panel's role and title | the case study's frontmatter (`role`, `title`) |
+| Each panel's line | the first sentence of the frontmatter `description`; VegAvengers' and Daybreak's single long sentences are cut at their dash: "Designed and shipped the content platform behind vegavengers.com", "Designed and built a local-first Mac and iPhone planner where people and AI use the same typed, receipt-backed operations" |
+| Place names (Over Hood · September …) | `scene-library.json` (as home's place label) |
+| About + its paragraph | home's About section |
+| email, LinkedIn, GitHub | `cv.json` (today's card) |
+| View Resume | home |
+| Visit Portfolio · cello.design | today's card |
+| Scan To Visit · Direct contact file | today's card |
+| Page title, description, og | today's card |
+
+No `[Cello's words]` slot was needed. Dropped from today's card: the "Conference Card" eyebrow, the
+summary paragraph on the first screen (it's still the vCard's NOTE), and the QR note.
+
+### The actions (phone 390×844, `isMobile`, touch)
+
+| Check | Result |
+|---|---|
+| Save Contact | links to `/contact.vcf`; a tap opens it (200). `astro preview` serves the prerendered file with an empty Content-Type, so Chrome shows it inline there; served with the endpoint's own headers (text/vcard, attachment), the tap downloads `marcelo-rondon.vcf`: vCard 3.0, CRLF lines, FN, N, TITLE, EMAIL, URL ×2, ADR, NOTE, REV. `contact.vcf.ts` is unchanged. **Check the headers Netlify serves on the branch preview** (today's card links the same file). |
+| Share (Web Share stubbed) | `navigator.share({ title: "Marcelo Rondon \| Conference Card", text: "Connect with Marcelo Rondon.", url: "https://cello.design/card" })`; the note reads "Share sheet opened." |
+| Share dismissed (AbortError) | the note stays as it was |
+| No Web Share, clipboard | the label reads "Copy Card Link"; the tap copies `https://cello.design/card`; "Card link copied to the clipboard." |
+| No Web Share, no clipboard | the note shows the link |
+| Links | the four case studies and /resume 200; email, LinkedIn, GitHub, the portfolio, the vCard |
+| One change to today's share script | it binds as soon as it's parsed (it sits below the button) instead of at DOMContentLoaded, which waits for every module script: Share is usable at 1.44 s on Slow 4G instead of 3.44 s |
+
+### Behaviour
+
+| Check | 1440 | 390 |
+|---|---|---|
+| Arrival | the renderer takes over (scene-gl-on); exploring at the top | same |
+| Panels | no panel picture or artifact requested at load; after the first screen is complete (loaded, renderer in) the next one preloads; every picture loaded by the time its panel is in view (`flat.webp`) | same, with the 9:16 crops (`flat-tall.webp`) |
+| Reading | engages over the projects; the bar names the panel in view ("Daybreak" at the last) | same |
+| Horizontal overflow | 0 | 0 (63 px before the panels clipped their copy scrim) |
+| Settle | `sceneSettle` on a scroll timeline | same |
+| Reduced motion | the still, renderer never requested, panels `position: absolute` (scroll with the page), no settle | same |
+
+## /projects, /blog, 404
+
+| Check | Result |
+|---|---|
+| /projects hover | Ghosted's row brings `ecola/flat.webp` in behind the list; keyboard focus on VegAvengers brings `sauvie/flat.webp`; a click opens the case study; a tap on a phone opens it directly |
+| Index pages | the half-size still on at load (layers hidden), the renderer takes over settled and focused, 0 draws in 1.5 s idle |
+| 404 | arrives like home; a focus target just above the hero's end dims the scene before its short scroll runs out |
+| Reduced motion (card, projects, blog, 404, Ghosted) | the still; the renderer chunk is never requested |
+| Home | unchanged: no reading still, the still waits under the ink for the arrival |
+
+## Reading pages: the slow-network fix (Task 2)
+
+As briefed (the full layered still at first paint) it wasn't enough: the four full layers share
+the link with the page's own media, so on Slow 4G the first of them still landed at about 7.8 s and
+was the LCP, and on Fast 4G painting them moved the LCP from the lede (0.61 s) to the layer
+(1.30 s). So a reading or index page now paints `read.webp`, the scene's layers flattened at 768 px
+and lightly pre-blurred (14–45 KB, `fetchpriority=high`), which is only ever seen through the focus
+recipe's blur anyway; the full layers load hidden, for the renderer only, which arrives settled and
+focused and takes over without a visible change. Home's arrival is unchanged.
+
+Ghosted (the longest case study), median of 5:
+
+| Profile | Before (S2) | Layered still at first paint | **Now (half-size still)** |
+|---|---|---|---|
+| Phone 390, Slow 4G | 8.54 s (a scene layer) | 7.78 s (a scene layer) | **2.14 s** (`read.webp`); FCP 1.70 s |
+| Desktop 1440, Slow 4G | 8.32 s | 8.32 s | **2.13 s**; FCP 1.63 s |
+| Phone 390, Fast 4G | 0.61 s (the lede) | 1.30 s (a layer) | **0.64 s** (`read.webp`) |
+| Desktop 1440, Fast 4G | 0.59 s | 1.28 s | **0.62 s** |
+
+CLS 0.0008 (390) / 0.019 (1440), as before. The renderer takes over at ≈3.8 s on Fast 4G and ≈19 s
+on Slow 4G (the page's media share the link); the still holds until then. "Before" is the same
+build with the head script's old condition, served from a copy of the page.
+
+## Performance: /card
+
+| Profile | LCP | FCP | CLS | Share usable | Renderer in | LCP element |
+|---|---|---|---|---|---|---|
+| **Phone 390, Slow 4G** | **1.54 s** | 1.54 s | 0 | 1.44 s | 6.79 s | the name |
+| Desktop 1440, Slow 4G | 1.52 s | 1.52 s | 0.0002 | 1.44 s | 6.87 s | the name |
+| Phone 390, Fast 4G | 0.54 s | 0.54 s | 0 | 0.46 s | 1.73 s | the name |
+| Desktop 1440, Fast 4G | 0.52 s | 0.52 s | 0 | 0.45 s | 1.82 s | the name |
+
+Target LCP ≤ 2.5 s on Slow 4G with the actions usable before any WebGL: met (Save Contact is a plain
+link, usable at first paint; Share binds before first paint).
+
+### Weight (phone, transferred)
+
+| | KB |
+|---|---|
+| HTML | 11.9 |
+| CSS | 10.3 |
+| Fonts | 140.9: Geist Mono 400 and 700 and National Park latin (preloaded, 73), Switchback 21, Geist 29, Geist Mono 600 18 (the fallback face Chrome fetches for National Park semibold while it loads). Desktop adds Geist Mono 800 (the bar's "Cello") |
+| JS | 148.9: ≈20 before paint (the ⌘K menu, the scene's DOM half, the bar, the theme), then three.js + the renderer 129 after paint, only when the 3D gate allows |
+| Mirror Lake's layers (the hero; still and textures) | 574 |
+| **First screen** | **≈886** |
+| Later, one panel at a time: pictures | phone 355 for all four (65, 115, 96, 79); desktop 873 (132, 313, 224, 204) |
+| Later: artifacts | 69 for all four |
+
+Two font files fewer than the first cut: the action titles use the preloaded bold (not 800), and
+the panel arrows are set in Geist Mono (National Park's latin subset has no arrows, so it pulled
+its latin-ext file).
+
+## Text over art: contrast
+
+Same measure as S1/S2: each line against the 99th-percentile brightest pixel under it, with the
+text (and its decorations: link underlines) hidden; text on its own opaque fill or plate excluded
+(the actions, the bar, the footer, the QR frame, swatches and artifacts). Every step of 60% of the
+viewport down each page; on /projects also with each row hovered (its place in behind the list).
+Text colors are read through a canvas, so `--text-on-art-muted` (an oklab mix) is measured as
+rendered.
+
+| Page · state | 1440 Dusk | 1440 Day | 390 Dusk | 390 Day |
+|---|---|---|---|---|
+| /card · WebGL | 7.92 / 7.28 | 5.29 / 6.69 | 9.24 / 7.31 | 6.43 / 5.30 |
+| /card · still | 7.86 / 6.69 | 5.90 / 6.69 | 9.13 / 4.37 | 7.80 / 4.37 |
+| /projects · WebGL | 11.22 / 7.42 | 7.09 / 7.02 | 12.30 / 7.17 | 8.80 / 6.00 |
+| /projects · each row hovered | 7.53 / 5.40 | 7.53 / 5.40 | 12.30 / 7.46 | 8.80 / 7.13 |
+| /projects · still | 7.09 / 7.15 | 7.09 / 7.15 | 8.80 / 5.93 | 8.80 / 5.93 |
+| /blog · WebGL | 11.22 / 7.42 | 7.09 / 7.02 | 12.43 / 7.16 | 8.80 / 5.99 |
+| /blog · still | 7.09 / 7.20 | 7.09 / 7.20 | 8.83 / 5.92 | 8.83 / 5.92 |
+| 404 · WebGL | 13.53 / 13.68 | 9.98 / 10.27 | 14.68 / 14.50 | 13.41 / 12.56 |
+| 404 · still | 10.32 / 10.05 | 10.32 / 10.05 | 13.39 / 12.38 | 13.39 / 12.38 |
+| Ghosted (reading still) · WebGL | 9.83 / 7.48 | 6.93 / 7.17 | 9.83 / 7.59 | 8.61 / 7.30 |
+| Ghosted · still | 6.95 / 7.17 | 6.95 / 7.17 | 8.51 / 7.35 | 8.51 / 7.35 |
+
+(lowest small / lowest large.) **0 failures** of 4.5:1 / 3:1 across about 11,900 measured lines.
+Thinnest margin: the name on /card over the phone still (4.37:1, large, needs 3).
+
+Failures found and fixed on the way:
+- /card panels: the grounding ink was fixed to the viewport with the picture, so when a panel's
+  copy scrolled up it sat on bright sky (1.2:1). The ink now belongs to the panel and travels with
+  the copy; on phones the artifact comes first so the words sit lowest.
+- /card hero: Portland, Oregon was the copy's first line, in the scrim's top feather (4.0:1 over
+  the phone still). It now sits under the role line.
+- 404: scrolled to its end, "404" sat over the sky (2.8:1). It now dims like home's Work list.
+
+## Build, URL contract, console
+
+- `pnpm build`: green. Tokens up to date, no new raw values; `astro check` 0 errors, 0 warnings,
+  0 hints; the build itself 0 warnings.
+- The 16 URLs: all **200**. The 8 expected 404s plus `/visuals/graphic-design`: **404**. The two
+  301s are Netlify's (`_redirects` unchanged; `astro preview` answers 404). `/cv.json` parses
+  (label unchanged), the PDF starts `%PDF-`; `cv.json`, `contact.vcf.ts`, `public/files`,
+  `_redirects` and `/resume` untouched.
+- **Console:** zero errors and zero warnings across every run above (/card, /projects, /blog,
+  404, Ghosted, home; both themes, both widths, both motion modes). The only failed requests are
+  Ghosted's videos (webm/mp4 range requests), cancelled when a run closed the page.
+
+## ui:shots (exact; baseline = S2's head f159e05 built in this worktree, two runs)
+
+**36 of 48 screens changed**, all expected: `/card` (4, the new page), `/projects` (4), `/blog` (4),
+404 (4), and the four case studies and the post (20: under the reduced motion ui:shots uses, their
+still is now the half-size flattened copy). Home, `/resume` and `/design-system` are **0 px** (12).
+
+## For Cello
+
+- **Ecola's seams:** the sharp, flattened Ecola on /card's Ghosted panel shows the outpaint seams at
+  the original portrait's edges (x ≈ 384 and 1152 of 1536), most visibly in the sky at 1440. They're
+  in the layers (S2's reading pages hide them under the blur). A cleanup pass on Ecola, or a
+  different crop, would fix it.
+- **Pairings:** /projects, /blog and 404 sit over home's Mirror Lake (no new pairing was claimed).
+  Each could get its own place.
+- **The panels are Day art in both themes;** in Dusk they get the reading ink over them.
+- **/contact.vcf on the deploy:** check that Netlify serves it as a vCard (iOS opens the contact
+  sheet then). It's the same file and link as today's card.
+- On Slow 4G /card's scene assembles at about 6.8 s; the words and both actions are there from
+  1.5 s.
+- `ProjectCard` and `BlogCard` are now reachable only from the hidden pages (dead on the live site).
+
+## D3 follow-up (Ghosted images, partly done)
+
+- **Done:** the post "Programmatic Resumes You Can Chat With" no longer shows `v3/archetype.webp`
+  (it showed a real resume). Its "Categories and archetypes" paragraph stays, with the category
+  screenshot alone at full width, and the file is removed so it isn't served at its URL.
+- **OCR before the replacements** (tesseract, counting lines with "Marcelo", "Rondon", "cello@",
+  the GitHub or LinkedIn handle): `edit-style` 5, `style-looks` 3, `highlights` 2, `interview` 2,
+  `report` 2, `tailored` 2, `og.png` 2, `history` 1, `proposal` 1; `phones` read 0 at this size but
+  showed the real resume in S2's check by eye.
+
+# Stage 4 merge and D3 (2026-10-12)
+
+## The merge (claude/design-system-migration at 185c2b1, stage 4)
+
+The landscape keeps its markup and structure and takes stage 4's names, values and rules.
+
+| File | Resolution |
+|---|---|
+| CaseMeta, FlowDiagram | Ours. Already on stage 4's type, tracking and space roles; the plate recipe (`--bg-plate`, `--border-strong`/`--border-muted`, `--text-accent`, `--text-muted`) owns the surface, so it wins over stage 4's `--bg-raised`. |
+| MediaFull, MediaTwo, MediaThree | Ours: the entry animations stay dropped (the reading pages don't animate media in), and MediaVideo owns the media styles. |
+| 404, card, blog and project slugs | Ours (SceneLayout rewrites). No raw values left in them, so no token swaps were needed. |
+| animations.css | Stage 4's file, plus `sceneSettle` (card's scroll-linked settle) and `enter-fade` (opacity only, in the enter-* block). `enter-fade` replaces the removed `fadeIn` in scene.css (the Admire label) and ContextBar (the bar's reading context), both at `--motion-handoff`. |
+| tokens.json | The A3 signature motion tokens (`--motion-arrival-stagger` 120ms, `--motion-arrival-overshoot` 0.107, `--motion-focus` 550ms, `--motion-scene-fade` 700ms, `--motion-handoff` 400ms) move from the Scene group into Motion, beside stage 4's signature tokens. Same names and values. |
+| raw-baseline.json | Regenerated with `node scripts/tokens.mjs --baseline` last: **179 (ours) / 201 (stage 4) → 61**, deletions only against both sides. |
+
+Proof: `pnpm build` 0 errors, 0 warnings, 0 hints. `ui:shots` on /resume and /design-system vs
+185c2b1: **0 px on all 8 screens**. `motion:table` on those two pages vs 185c2b1: identical except
+one fewer `<link>`/`<style>` element in the head (CSS chunking); vs our pre-merge build: only stage
+4's changes (entries at `--motion-entry`, the header's stagger, named transition properties,
+`--ease-out` for `ease`). On /card, Ghosted, a post, /projects and 404 the motion table is unchanged
+from our pre-merge build under normal motion; `sceneSettle` still runs on /card's four panels.
+
+## D3: the Ghosted images, done (demo personas only)
+
+- **Seven recaptures** (`style-looks`, `phones`, `interview`, `tailored`, `history`, `edit-style`,
+  `report`): the demo persona Rowan Ellis in a local Ghosted, at the originals' names, formats and
+  sizes.
+- **Three built from Ghosted's demo landing shot** (1136×1250, Rowan Ellis with an AI proposal
+  pending), padded on Paper 100 (#f3ede2), never scaled or stretched:
+  - `proposal.webp` 1920×1200: the shot's top 1140 px (through Education), centered.
+  - `highlights.webp` 2000×1250: the same crop, centered.
+  - `og.png` 1200×630: the top 566 px (the proposal bar, the name and highlighted summary, the first
+    role), centered with a 32 px margin.
+
+### Alt text and captions, before → after
+
+Case study (`ghosted.mdx`):
+- `proposal.webp` alt: "A job workspace for a Product Designer, Design Systems role at Northwind
+  Labs. The chat on the left shows the request 'Lead the summary with design systems, and tighten
+  the Asheville Dispensary bullets' and the reply listing what changed. On the right, the live
+  resume has the new summary and four bullets highlighted in yellow under a bar reading 'AI proposal
+  awaiting your decision' with Reject and Keep buttons" → "A live resume under a bar reading 'AI
+  proposal awaiting your decision. Highlighted text is what changed.' with Reject and Keep buttons.
+  The new summary and four bullets are highlighted in yellow"
+- `proposal.webp` caption: "… (Demo data: my resume, a fictional job.)" → "… (Demo data: a
+  fictional resume.)"
+- `phones.webp` alt: "…; and the same job with an AI proposal highlighted in yellow above Reject and
+  Keep" → "…; and the same job's chat, with the request to tailor it and the reply"
+- `phones.webp` caption: "…, the resume near the top, and a proposal waiting for a decision." →
+  "…, the resume near the top, and the chat one tap away."
+- `style-looks.webp`, `og.png`: no text to change (the alt still matches; og has none).
+
+Post (`programmatic-resumes-you-can-chat-with.mdx`):
+- `interview.webp` alt: "Ghosted's base resume screen: the chat asks a specific question about one
+  job's thin bullets while the live resume preview sits on the right" → "Ghosted's base resume
+  screen: asked what's missing, the chat suggests two specific additions while the live resume
+  preview sits on the right"
+- `interview.webp` caption: "Asked to strengthen my bullets, the agent picks the thinnest job and
+  asks for specifics before writing anything." → "Asked what's missing, the agent names two
+  specifics, a project's numbers and a line on mentoring, instead of writing anything."
+- `tailored.webp` alt: "Tailoring notes in the chat listing what was emphasized and the gaps the
+  resume can't support, such as no Vercel AI SDK experience" → "Tailoring notes in the chat listing
+  what was emphasized, such as the WCAG 2.2 work, beside the one-page tailored resume"
+- `tailored.webp` caption: "The first tailoring pass names its gaps instead of filling them." →
+  "The first tailoring pass says what it changed, on one page."
+- `history.webp` alt: "History panel listing three versions: imported from the base resume,
+  tailored to Vercel by the AI, and trimmed by the AI on request" → "History panel listing two
+  versions: tailored to Fernwood Commerce by the AI, then a direct edit by you, now current"
+  (caption unchanged)
+- `edit-style.webp` alt: "The edit form on the left with header fields and contact items, and the
+  Style panel on the right with per-element size, weight and color controls above a centered resume
+  header" → "The Style panel on the left with Fine-tune open: header, font, body size, margin and
+  line spacing, then per-element size, weight and color controls. The live resume on the right has
+  a centered header"
+- `edit-style.webp` caption: "The form and the Style panel: control down to the line, without
+  touching code." → "The Style panel's Fine-tune: control down to the line, without touching code."
+- `report.webp` alt: "Report a problem dialog with Bug, Annoying, Weird and Idea options, a note
+  field and screenshot attachments" → "The feedback dialog, 'Tell Cello anything', with a note
+  field, an Add a screenshot button and what's sent with the note"
+- `report.webp` caption: "Bug, annoying, weird or idea: one button, screenshots included, never the
+  resume itself." → "Anything at all: one button, screenshots included, never the resume itself."
+- `highlights.webp` (the cover): its alt is the post title, so nothing to change.
+
+### Body sentences waiting on Cello's words (not edited)
+
+- Post, intro: "The screenshots use my own resume and three real Design Engineer postings." The
+  Ghosted screenshots now show a fictional resume and fictional jobs (the intake and category
+  shots still show real postings).
+- Post, step 3: "…the changed summary and bullets are highlighted, with Accept and Reject above the
+  page." The cover now shows Reject and Keep, and it isn't the "trim it to one page" result.
+- Also no longer matching their images (Cello's call whether to touch them): step 3's "It tells you
+  plainly what it couldn't back up" (the tailored shot names no gaps), and step 6's "A **Report a
+  problem** button" (the dialog is now "Tell Cello anything", the button "Leave feedback").
+
+### No real resume left
+
+Every file under `public/images/projects/ghosted/` (43 images at 2×, plain and inverted, and 1 fps
+of all 8 videos) was OCR'd for "Marcelo", "Rondon", "cello@", the GitHub and LinkedIn handles and
+"Portland": **0 matches**. The ten replaced images were also checked by eye: only Rowan Ellis
+(example.com, 555 numbers) and fictional employers.
+
+Left for Cello:
+- "Cello" still appears as **product copy and the account name**: the feedback dialog in `report`
+  ("Tell Cello anything", "Send to Cello"), and the sidebar's account name in `intake`, `category`,
+  `board-dark` (post) and the two Fit design-system shots. Not resume data.
+- The Rowan in the landing-shot images (Pixelmint, Orbit Health) and the Rowan in the recaptures
+  (Larkspur Labs, Tidewater Health) come from different seeds: same name, different jobs.
+- ~~Three unlinked Ghosted terminal videos showed a local home-folder path and username.~~
+  Removed on master (f06cec5, Cello's go) and merged here.
+- `v3/signin.webp` keeps the "e.g. kim-7x2qpd" placeholder (the app's own copy).
+
+---
+
+# S5–S6: design-system stages 5 and 6 in the landscape (2026-10-12)
+
+Cello moved stages 5 (layout rules) and 6 (the v1 components, proposal §7) from the migration
+branch into this build. The landscape keeps its markup and structure; the components read
+semantic roles only. Same setup as above: production build on `astro preview` (port 4623),
+headless installed Chrome through `playwright-core`. Shots: `shots/s56/` (before | after,
+JPEG q82).
+
+## Merge first: master @ f06cec5
+
+Merged as `bc17427` (stage 7: `/design-system` read from tokens.json, coral removed; the three
+unlinked Ghosted videos removed). tokens.json merged cleanly: the Scene and A3 tokens stay,
+`coral-500`, `ds-color-coral-500` and `accent-warning` are gone, and nothing here used them.
+The one conflict, `raw-baseline.json`, was regenerated after the merge: **55**, below both sides
+(ours 57, master 199). `git grep` finds no reference to the removed videos.
+`/design-system` after the merge = 9ea55ab's page built with our tokens.json: **0 px on all 4
+screens**. (Against 9ea55ab's own tokens.json the page is longer, because it now lists the
+Scene and A3 tokens: data, not style.)
+
+## Stage 5: layout rules
+
+| Rule | What changed |
+|---|---|
+| One container token | The scene bar and footer carry the one `.container` (they repeated its formula); Header, Section, Layout's footer and /resume's divider read `var(--layout-container)` instead of `1100px` (0 px; four ratchet entries gone) |
+| One left edge | Every text and media block's left x measured at 1440 and 390 on every page. Reading pages already had one edge (S2 dropped the 0.8rem inset). Two drifts fixed: on phones the scene heroes (home, /card, 404), the Admire view and the place label started at 24 px while every section, the bar and the footer start at the gutter (16 px); and Prose's bulleted lists indented twice (ul 24 + li 24), so their words started 24 px right of a numbered item's |
+| Shared Prose | `ui/Prose.astro` (S2), 2c's scoping unchanged: `--font-read` and `--layout-measure-read` on the article's own p/ul/ol/blockquote; components stay Geist Mono |
+
+## Stage 6: the v1 components (`src/components/ui/`)
+
+| Component | Variants | Replaced |
+|---|---|---|
+| Focus ring (`src/styles/focus.css`) | one, global | animations.css's ring and the `:where()` rings in Layout and SceneLayout |
+| Button | primary, secondary · md, sm · `href` → `<a>` · optional `detail` line | home's `.hero-cta` ×2, a case study's View Live / GitHub, /card's Save Contact / Share Card, the bar's Menu, MediaVideo's Pause/Play |
+| ArrowLink | forward, back, external (new tab, announced), + down (Admire's in-page jump) | every `.scene-arrow` (home ×4, 404, /card ×2, StoryEnd ×2); the global rule is gone |
+| IconButton | 44px, `label` required | the bar's theme button, the scene footer's socials, WorkItem's and SceneSelector's live links, /resume's hero icons (36 → 44px) |
+| Tag | tech, count, role, date | WorkItem's, SceneSelector's and ReadHead's tag lists, ReadHead's role/date badge |
+| Eyebrow + AccentBar | inherit, on-art, accent · bar sm, md | StoryEnd's labels, the TOC label, /card's role/where/QR labels, home's kicker, FlowDiagram's step bar |
+| Panel | plain, labeled | CaseMeta's boxes, the case-study highlights, FlowDiagram's frame |
+| Card | project, post · lg, md · stretch | the copy of home's Work rows (WorkItem) and of the index rows (SceneSelector) |
+| Section | with title, without · contained or full-bleed | home's four section heads, /card's two |
+
+Each component owns hover = focus-visible (and active and disabled where they apply); the
+global ring draws on top. One shared change makes `color: inherit` safe: on scene pages, text in
+`main` defaults to `--text-on-art` (plates keep `--text-primary`).
+
+Riding fixes: `aria-current` on every nav's current item (`page` on the page, `true` under it:
+Header, the bar, the scene footer). Already in place and checked: underlined case-study body
+links and blog table styles (Prose, S2); the resume theme button's name ("Switch to Day/Dusk").
+Not done: the ⌘K menu's Tab/focus-return pass (§7 "Later").
+
+Left hand-built on purpose: /resume's Download PDF / Export cv.json (the offset-frame motif;
+WindowFrame isn't in this pass), Layout's 40px footer socials and Header (they also render on
+`/design-system`, which must not change here), the Admire buttons (the A3 control), /card's
+contact links, QR link and panel titles, home's proof cards, the TOC chips, the skip link.
+
+## ui:shots (exact)
+
+Stage 5 vs 2c2c1be (at b37b0eb): **26 of 48 changed**, all expected: the four case studies and
+the post at both widths (the lists rewrap; pages 28–532 px shorter) and home, /card and 404 at
+390 (the hero's 8 px). Home, /card and 404 at 1440, the indexes, /resume, /design-system: 0 px.
+
+Stage 6 vs the post-merge build (bc17427, two runs), at d52187a: **44 of 48 changed**;
+`/design-system` is **0 px** (4). Each change, named:
+
+| Screens | Why |
+|---|---|
+| home (4) | Buttons take the ui role (.9rem/700, was .85rem/800) and the 2px control stroke (was 3px), so the bottom-aligned hero copy sits 5–6 px lower; Work rows: the role 8 px above the title (was 12), the +N count green-outlined, meta gap 12/16 |
+| /card (4) | the actions' 2px stroke, Share's border `--border-strong`; Visit Portfolio is external (↗); About: the QR now sits under the title, level with the paragraph (the page is 17 px taller at 1440) |
+| /projects, /blog (8) | the +N count green-outlined (≤ 1,326 px) |
+| case studies, the post (20) | tags and the role/date badge lose 4 px of side padding and take leading-ui; CaseMeta 3px frames and bold labels; FlowDiagram's title bold and 8 px closer; View Live 8 px narrower; StoryEnd's index link gains → and its labels leading-ui (pages 8–44 px shorter) |
+| 404 (4) | ArrowLink's arrow sits at the flex gap (≤ 362 px) |
+| /resume (4) | the hero's icon links and theme button grow 36 → 44 px (390: the page is 8 px taller) |
+
+## Motion table (vs bc17427)
+
+Every animation line is identical on every page. Transitions differ only by element name
+(`.hero-cta` → `.button--primary`, `.scene-arrow` → `.arrow-link`, `.work-external` →
+`.icon-button`…) and by `border-color` joining Button's and IconButton's lists; all at
+`--motion-ui` 300 ms on the house curve, 0.01 ms under reduced motion.
+
+## Text over art: contrast (each line vs the 99th-percentile brightest pixel under it)
+
+The S1–S3 measure, every 60% viewport step down 11 pages (home, /card, /projects also with each
+row hovered, /blog, 404, the four case studies, both posts) × 1440/390 × Day/Dusk × WebGL/still.
+Lowest small / large:
+
+| Page | WebGL 1440 Dusk · Day | WebGL 390 Dusk · Day | Still 1440 | Still 390 |
+|---|---|---|---|---|
+| home | 11.21/6.54 · 7.06/5.12 | 12.30/7.16 · 8.61/5.15 | 6.98/5.13 | 8.56/4.79 |
+| /card | 7.92/7.28 · 5.29/6.69 | 9.24/7.31 · 6.43/5.77 | 5.90/6.69 | 7.79/4.97 |
+| /projects | 11.22/7.42 · 7.09/7.02 | 12.30/7.17 · 8.80/6.00 | 7.09/7.15 | 8.80/5.93 |
+| /projects, rows hovered | 7.53/5.40 · 7.53/5.40 | 12.30/7.46 · 8.80/7.13 | — | — |
+| /blog | 11.22/7.42 · 7.09/7.02 | 12.43/7.16 · 8.80/5.99 | 7.09/7.20 | 8.83/5.92 |
+| 404 | 13.53/13.68 · 9.98/10.27 | 14.68/14.50 · 13.54/12.56 | 10.32/10.05 | 13.39/12.38 |
+| Ghosted | 9.83/7.42 · 6.93/6.98 | 9.83/7.63 · 8.50/7.46 | 6.93/6.97 | 8.50/7.35 |
+| Asheville Dispensary | 11.27/6.92 · 7.15/5.34 | 12.08/7.17 · 8.60/6.07 | 7.16/5.34 | 8.63/6.07 |
+| VegAvengers | 9.83/6.77 · 7.04/4.84 | 9.83/7.04 · 8.73/5.69 | 7.01/4.84 | 8.73/5.62 |
+| Daybreak | 12.89/7.23 · 9.09/6.38 | 12.59/7.17 · 9.08/6.00 | 9.23/6.31 | 9.49/6.00 |
+| Designing for the Second User | 11.54/7.47 · 7.15/7.14 | 12.38/7.57 · 8.73/7.31 | 7.15/7.07 | 8.73/7.21 |
+| Programmatic Resumes | 11.37/6.93 · 7.31/5.48 | 12.23/6.87 · 8.75/5.09 | 7.23/5.41 | 8.71/5.02 |
+
+(The still is the Day art in both themes, so its two columns match.) **0 failures** of 4.5:1 /
+3:1 across about 24,700 measured lines. One measurement fix on the way: ArrowLink external's
+screen-reader note "(opens in a new tab)" is a 1 px box clipped to nothing and paints no pixels,
+but the first pass measured its text rectangle (2.18:1 on /card); the script now skips visually
+hidden text. Thinnest margins: home's "Cello" over the phone still (4.79:1, large, needs 3) and
+VegAvengers' green h2 "Context" in Day (4.84:1, large).
+
+## Keyboard (reduced motion)
+
+| Page | Tab order |
+|---|---|
+| home 1440 | skip link, Cello, Work, About, Writing, Design System, Resume, Menu, Switch to Dusk, View Case Studies, View Resume →, Take in the view, the four case-study titles (Ghosted's and VegAvengers' live links after their titles), All Case Studies →, the three proof cards, Email Me, View Resume →, the footer. At 390 the utilities step aside; the rest is the same |
+| /card 1440 | skip, the bar, Save Contact, Share Card, the four panel titles, email, LinkedIn, GitHub, View Resume →, Visit Portfolio ↗ (announced as opening a new tab), the QR, Direct contact file, the footer |
+| Ghosted 1440 | skip, Cello, All work, Menu, Switch to Dusk, View Live, Play video, the 16 section links, the body's launch-post link (underlined), the code block, the next Play video |
+
+Every stop draws the one ring (3 px, offset 3 px, `--focus-ring`): **0 stops without it**.
+`aria-current`: Work = page on /projects, Writing = page on /blog, Resume = page on /resume
+(Header), Work = true on a case study, Writing = true on a post, none on home. IconButton names:
+"Switch to Dusk"/"Switch to Day", "Visit live site for …", "Email Marcelo Rondon", GitHub,
+LinkedIn, Bluesky; on /resume the hero's four links keep their full names.
+
+## Build, URL contract, console
+
+- `pnpm build` (`tokens --check` + `astro check` + `astro build`): 0 errors, 0 warnings, 0 hints
+  (107 files); the build itself 0 warnings. `raw-baseline.json` 61 → 57 (stage 5a) → 55 (the
+  merge); the components add none.
+- The 16 URLs: **200**. The 8 expected 404s plus `/visuals/graphic-design`: **404**. The two
+  301s are Netlify's (`_redirects` unchanged). `/cv.json` parses (label unchanged), the PDF
+  starts `%PDF-`.
+- **Console:** zero errors and zero warnings in every run (the keyboard passes and the contrast
+  runs). The only failed requests are home's and the case studies' videos (webm range requests)
+  cancelled when a run closed the page, as in S3.
+
+## For Cello and the migration reviewer
+
+- **Hover changes you only see by pointing:** /card's two actions, the bar's Menu and theme
+  button and Pause/Play now fill green on hover (they turned paper). One state language: a
+  primary inverts to a plate with green text; everything outlined fills green.
+- **ArrowLink `down`** is a fourth variant §7 didn't list (Admire's "View Case Studies ↓").
+- **Two `Section`s:** /resume keeps `components/Section.astro` (its 1.5rem mono heading);
+  folding it into `ui/Section` would restyle /resume.
+- **Layout's footer socials stay 40 px** (under the touch target) because they also render on
+  `/design-system`; moving them to IconButton is a named /design-system change for stage 7's
+  owner.
+- **Guard idea, not built:** §8's class-name ban (`btn|button|cta|tag|…` outside `ui/`) isn't in
+  `scripts/tokens.mjs`; adding it now would add baseline entries for the hand-builds left above,
+  and the baseline only shrinks here.
+
+# Later (after cutover)
+
+Known, deliberately not done on this branch; pick these up once the landscape build is the site.
+
+- **§8 class-name guard.** `scripts/tokens.mjs` has no ban on hand-built `btn|button|cta|tag|…` class
+  names outside `ui/`. Adding it now would put baseline entries in for the controls left hand-built
+  on purpose (see "Left hand-built on purpose" in S5–S6), and the baseline only shrinks on this
+  branch. Build the guard once those controls have moved onto the components.
+- **The ⌘K menu's Tab/focus-return fix.** `KeyboardShortcutsMenu.svelte` (a `role="dialog"`) needs its
+  Tab order and focus return checked and fixed: Tab stays inside it while open, Esc and every action
+  return focus to the control that opened it (or to the page when it was opened by the keys). Not
+  touched in S5–S6 (§7 "Later").
+
+# DS review follow-ups (2026-10-12)
+
+Three small accessibility items from the design-system review, plus the two later items logged
+above. Same setup: production build, installed Chrome through `playwright-core`.
+
+## 1. Card's live link announces the new tab
+
+`ui/Card.astro`: the live IconButton's name is now "Visit live site for {title} (opens in a new
+tab)", the same cue as ArrowLink external. Card renders the link in exactly two places, both through
+the one component: home's Work rows (`WorkItem`: Ghosted, VegAvengers) and the /projects index
+(`SceneSelector`: the same two). Posts have no live link. Checked in the built HTML (all four
+labels carry the cue) and in the Tab pass below.
+Seen, not changed: other new-tab icon links (the scene footer's socials, /resume's hero icons, the
+legacy `ProjectCard`, which no page imports) don't say so either.
+
+## 2. A current nav item on child pages: already in place
+
+Nothing to change. d52187a (S6 riding fixes) already marks the parent: Work = `aria-current="true"`
+on `/projects/*`, Writing = `true` on `/blog/*`, and `page` only on the exact page, in every nav that
+renders there: the bar (`ContextBar`) and the scene footer (`SceneLayout`). `Header` does the same
+for /resume and the other non-scene pages. Re-checked in the built HTML: Ghosted, Daybreak and the
+post each carry `true` on the bar's and the footer's parent link; /projects and /blog carry `page`.
+The bar underlines a current item (`.bar-link[aria-current]`, "true" included); the scene footer has
+no visual for it (the attribute only).
+
+## 3. Focus ring contrast over scenes
+
+`--focus-ring` is signal-500 (#00bc44, luminance 0.364) on every scene page. Contrast needed: 3:1
+against what's next to the ring.
+
+**Method.** 12 screens (home, home in Admire, /card, /projects, /blog, 404, the four case studies,
+both posts) × 1440×900 and 390×844 × Day and Dusk × WebGL (Chrome with `--use-angle=metal`) and the
+reduced-motion still: Tab through every stop (1,222 per run), screenshot with the ring, again with
+the ring hidden. The band is the 3px just outside the ring (6–9px from the control's box), with
+neighbouring text and controls masked out. Contrast = ring color against each band pixel; the
+headline is the 5th percentile (the worst 5% of the band), lowest over a screen's stops. The scripts
+are not committed.
+
+**Before** (no halo): **70 of 1,222 stops under 3:1 in WebGL, 76 in the still**. Which controls:
+
+| Control | Lowest | Where |
+|---|---|---|
+| Skip to content | 1.31 (Day WebGL; 1.29 still) | its ring's lower edge leaves the dark bar onto bright sky: home, /card, 404 at 1440 and 390 |
+| Pause / Play video | 1.08 | the button sits over bright app screenshots in the video: Ghosted, Asheville, VegAvengers, the Programmatic Resumes post, both widths, both themes |
+| View Case Studies ↓ (Admire) | 2.66 | 390, over the Day sky |
+| "Ghosted →" (/card) | 2.94 | 1440 Day |
+
+Everything else (the home hero, the Work rows, the bar, the footer) was already 3.6–7.2 because the
+copy scrim and the ink bar sit under it. Dusk WebGL fails only on the video buttons; Day fails on
+those and on the skip link.
+
+**Fix** (`5bcf3c8`). The color stays. On scene pages `:focus-visible` gains an ink halo: a new Scene
+token `--focus-halo` (= ink-950) and one rule in `scene.css`, `box-shadow: 0 0 0 calc(var(--stroke-frame) * 3) var(--focus-halo)`.
+The 9px shadow paints under the 3px outline, so ink fills the 3px offset gap and the 3px outside the
+ring: ink | green | ink. Ring vs ink-950 is 7.16:1. No raw values (`tokens --check` clean,
+`raw-baseline.json` untouched).
+
+**After**, lowest 5th-percentile contrast per screen, before → after, WebGL:
+
+| Page | 1440 Dusk | 1440 Day | 390 Dusk | 390 Day |
+|---|---|---|---|---|
+| / | 3.87 → 7.16 | 1.31 → 6.52 | 3.99 → 7.16 | 1.31 → 7.16 |
+| / (Admire) | 6.30 → 7.16 | 4.70 → 6.52 | 5.14 → 7.16 | 2.66 → 7.16 |
+| /card/ | 3.87 → 5.63 | 1.31 → 4.75 | 3.99 → 7.16 | 1.31 → 7.16 |
+| /projects/ | 3.83 → 7.16 | 3.65 → 7.16 | 3.67 → 7.16 | 3.67 → 7.16 |
+| /blog/ | 5.68 → 7.16 | 3.65 → 7.16 | 7.09 → 7.16 | 5.82 → 7.00 |
+| /404.html | 3.87 → 7.16 | 1.31 → 7.16 | 3.99 → 7.16 | 1.31 → 7.16 |
+| Ghosted | 1.92 → 7.16 | 1.92 → 7.16 | 1.92 → 6.30 | 1.92 → 4.48 |
+| Daybreak | 6.69 → 7.16 | 5.00 → 7.16 | 6.59 → 7.03 | 4.91 → 5.76 |
+| Asheville Dispensary | 1.10 → 7.16 | 1.10 → 7.16 | 1.08 → 6.88 | 1.08 → 5.37 |
+| VegAvengers | 1.20 → 7.16 | 1.20 → 7.16 | 1.19 → 6.81 | 1.19 → 4.94 |
+| Designing for the Second User | 7.09 → 7.16 | 5.94 → 7.16 | 6.51 → 7.16 | 4.56 → 7.16 |
+| Programmatic Resumes | 1.69 → 6.53 | 1.69 → 4.51 | 1.92 → 7.02 | 1.92 → 5.56 |
+
+Still (reduced motion; the Day art in both themes, so Dusk and Day match): lowest 1.07 → **4.39**
+(1440: 1.31 → 6.60 on home, 1.20 → 7.16 on VegAvengers, 1.67 → 4.39 on the Programmatic Resumes
+post; 390: 1.29 → 7.16 on home, 1.19 → 4.77 on VegAvengers). **After: 0 of 1,222 stops under 3:1 in
+both runs; the lowest screen is 4.39 (still) and 4.48 (WebGL).**
+
+Two measurement notes. The lowest single pixel in a band is still 1.00 on three multi-line title
+links (the 5th percentile is 4.5+): a wrapped link draws a ring per line, so the second line's ring
+falls inside the first line's band. And the "before" column is the same screenshots with the halo
+hidden, so the two columns share pixels.
+
+Seen, not changed: at 390 a case study's table-of-contents chips (`.read-toc ul`, `overflow-x:
+auto` on phones) clip the ring and the halo on two sides (28 stops, ring drawn on 2 of 4 sides).
+Padding the list by the ring's 9px would fix it; it's a layout change, so it's left for Cello.
+
+## 4. Keyboard pass, build, console
+
+- **Tab pass** on home (34 stops at 1440, 30 at 390), /card (32, 28) and /projects/ghosted (40, 40)
+  in Day and Dusk, WebGL and the still: every stop draws the ring and the halo, except the 6 phone
+  TOC chips on each case study (clipped, above). Home's Ghosted and VegAvengers live links read
+  "Visit live site for … (opens in a new tab)". Order unchanged from S6.
+- **Console:** zero errors and zero warnings across all 1,222 stops per run and all 12 screens.
+- `pnpm build`: 0 errors, 0 warnings, 0 hints (107 files); `tokens --check` clean, baseline
+  unchanged (55).
+
+---
+
+# Home: the place behind the part in focus (2026-10-13)
+
+Cello: "when you scroll down from the hero i wanted the background to change to their respective
+one instead of the hero background just dimmed". Same setup: a production build served statically
+on this Mac, headless installed Chrome through `playwright-core` with the GPU on (so WebGL runs),
+and the reduced-motion runs with `reducedMotion: "reduce"`. The baseline for every before/after
+is dcbed21, built in this worktree. Shots: `shots/home-focus/` (JPEG q82). The scratch scripts
+are not committed.
+
+## How it works
+
+- **One backdrop layer, shared.** Scene gets `backdrops` (scene ids) and renders an empty
+  `.scene-backdrop` layer between the canvas and the reading atmosphere. SceneLayout puts each
+  place's reading still (`read.webp`: id, src, size, framing) in a JSON script after the footer,
+  and `scenery.js` builds one item per place, with no `src` until it's needed. Nothing about the
+  places comes before the hero's copy in the HTML, and no still is fetched at first paint.
+- **Which place.** While reading, the part on the reading line brings its place in. That's the
+  nearest `[data-scene-stop]` or `[data-scene-backdrop]` to 45% down the screen, the same measure
+  that sets the bar's title. A part with no place of its own (the Work header) shows the page's
+  scene. On a page with backdrops, the reading line slides to the bottom edge over the last
+  half-screen of scroll, so the short parts at the end (Let's Talk, then the footer) each get a turn.
+- **Keyboard.** A Tab that lands in a part pins it (its place and the bar) while the part is on
+  screen. The pin holds until the reader moves some other way: a key other than Tab, the pointer,
+  the wheel or a touch.
+- **The swap.** The new place fades in on top of the one showing, from transparent, over
+  `--motion-scene-fade` (700 ms) on `--ease-out`. Once it's in, the places under it drop at once.
+  The page's scene never shows between two places. Going back to the page's scene, the top place
+  fades out. Under reduced motion, the reduced-motion contract makes the swap a cut.
+- **The look.** Each still is under the focus recipe (`--focus-filter`, `--focus-filter-mobile`
+  on phones, `--focus-scale`) and the same `--atmos-read` as the scene. In Dusk with WebGL on (the
+  scene in the Dusk grade), each still also gets **`--atmos-dusk`**, a new Scene token: ink-950 at
+  60%, the grade's darkening as ink. It's matched on Mirror Lake while reading: under the token,
+  the brightest 1% of pixels is 0.023 (1440) and 0.018 (390) relative luminance, against 0.024
+  and 0.017 in WebGL Dusk. Under the still (no WebGL, so Day art in both themes) the places stay
+  Day art too.
+- **WebGL.** The renderer is untouched and draws only home's own scene. It settles focused and
+  stops drawing (0 frames) under the stills, and it's there again for the Work header and the footer.
+- **Loading.** The stills start loading after the first screen is complete (the page has loaded
+  and the renderer has drawn, or none is expected) or at the first scroll, whichever comes first.
+  Then each still loads as its part comes within one screen below. This is /card's panel gate,
+  moved out to `lib/scene/lazy.js` and shared.
+- **Pairings** (`scene-pairings.json`). The case studies use `projects`. The new `homeSections`
+  covers the rest: How I Build → Meadows Lift, About → Bald Mountain, Let's Talk → Ramona, and
+  the footer → Mirror Lake (home's own scene, bookending the hero). `homeSection()` validates the
+  ids the same way as the project pairings. Swapping a place is a one-line change.
+- **/projects** now uses the same layer: the hovered or focused story's place cross-fades in
+  (before, it faded out and then in). It loads the 14–46 KB reading still instead of the
+  135–313 KB flattened copy.
+
+## Each part's place (1440×900 and 390×844, Day and Dusk, WebGL and the still)
+
+Swept down the page 30 px at a time, then one shot at the middle of each part's range after
+1.1 s to settle. **72 of 72 parts right** (9 parts × 2 widths × 2 themes × 2 motion modes), with
+the bar matching each time. Each sweep has exactly **8 place changes**, one per boundary, with
+no flicking back and forth.
+
+| Part | Place | 1440 range (scrollY) | 390 range |
+|---|---|---|---|
+| Hero, Work header ("Selected Case Studies") | Mirror Lake (WebGL) | 0–750 | 0–810 |
+| Asheville Dispensary | Over Hood | 780–1410 | 840–1470 |
+| Ghosted | Ecola | 1440–2070 | 1500–2070 |
+| VegAvengers Marketing | Sauvie Island | 2100–2700 | 2100–2700 |
+| Daybreak | Mt Hood Meadows | 2730–3420 | 2730–3330 |
+| How I Build | Meadows Lift | 3450–3960 | 3360–4320 |
+| About | Bald Mountain | 3990–4110 | 4350–4680 |
+| Let's Talk | Ramona Falls | 4140–4290 | 4710–4890 |
+| Footer (the bar still says "Let's Talk") | Mirror Lake | 4320–4425 (the end) | 4920–5085 (the end) |
+
+Shots: `{1440,390}-{day,dusk}-NN-<part>.jpg` (36), plus the still as
+`{1440,390}-day-reduced-NN-<part>.jpg` (18). The still is Day art in both themes, so its Dusk
+shots would match the Day ones.
+
+## The swap, frame by frame (1440, Asheville → Ghosted, both stills loaded)
+
+| | WebGL | Reduced motion |
+|---|---|---|
+| Ecola fully in | 514 ms (0.56 at 103 ms, 0.86 at 220 ms, 0.98 at 420 ms: the house curve over 700 ms) | 9 ms (a cut) |
+| Over Hood dropped | 781 ms (under Ecola, so never seen) | 60 ms |
+| Lowest coverage of the base scene, any frame | **1.000** (Mirror Lake never shows between them) | 1.000 |
+| Renderer | requested, settled, 0 frames under the stills | never requested |
+
+## Loading (phone 390, 4× CPU, cache off)
+
+| | Fast 4G | Slow 4G |
+|---|---|---|
+| LCP (the hero summary) | 0.63 s | 1.78 s |
+| First still requested (Over Hood, 15 KB) | 2.22 s | 11.48 s |
+| The other stills | each as its part nears; every one had arrived before its part reached the line, scrolling 60 px per 120 ms | same |
+| Requests | 7 stills, one request each, **0 duplicates** | same |
+
+The backdrops request nothing before load. The first still waits for the first screen to be
+complete, and goes then only because Asheville is within a screen of the fold. All seven stills
+together: 208 KB.
+
+## Performance (home, phone 390×844, DevTools presets, 4× CPU, cache off, median of 7)
+
+| Profile | dcbed21 | Now | CLS (max), before → now |
+|---|---|---|---|
+| Fast 4G (8.1 Mbps, 165 ms) | LCP 0.552 s | **0.552 s** | 0 → 0 |
+| Slow 4G (1.44 Mbps, 562.5 ms) | LCP 1.776 s | **1.780 s** | 0 → 0 |
+
+The LCP element is the hero summary in every run of both builds.
+
+Found and fixed on the way. With the seven backdrop items inside the Scene, which comes before the
+hero's copy in the HTML, Slow 4G was 1.784 s against 1.768 s (7 runs each). A copy of the page
+with only that markup taken out came back to 1.772 s, so the places moved to JSON after the footer
+(`c3e4483`).
+
+Weight on home (gzip): HTML 12.27 → 12.48 KB, CSS 8.67 → 8.75 KB, and the scene's first-paint JS
+2.6 → 3.7 KB (the backdrop layer and the lazy gate). There's no new request: `lazy.js` ships in
+the scene's chunk, and /card takes it from there too.
+
+## Text over art: contrast (S1's measure)
+
+The measure is S1's. Every text line in `main` from the Work list down is checked against the
+99th-percentile brightest pixel under it:
+
+- **Lines:** each text node's Range client rects. Text on its own fill (the green buttons), media
+  and the footer are excluded.
+- **Background:** the same screen with the text, its link rules and the tag borders hidden. Text
+  colors are read through a canvas.
+- **Positions:** every 30% of the viewport across each part's scroll range, ends included, after
+  1 s to settle.
+
+The table gives the lowest **small / large** ratio for each part's place:
+
+| Place (part on the line) | 1440 Dusk | 1440 Day | 390 Dusk | 390 Day |
+|---|---|---|---|---|
+| Mirror Lake (Work header) | 12.70 / 5.70 | 8.08 / 3.60 | 13.53 / 6.15 | 9.58 / 4.40 |
+| Over Hood (Asheville) | 11.74 / 6.20 | 7.74 / 4.71 | 12.81 / 6.62 | 9.67 / 5.69 |
+| Ecola (Ghosted) | 11.47 / 12.49 | 7.47 / 8.13 | 12.35 / 13.45 | 9.12 / 9.82 |
+| Sauvie Island (VegAvengers) | 11.46 / 12.58 | 7.33 / 8.17 | 12.18 / 12.90 | 8.69 / 9.34 |
+| Mt Hood Meadows (Daybreak) | 12.96 / 6.56 | 10.81 / 5.57 | 13.27 / 6.64 | 9.49 / 5.78 |
+| Meadows Lift (How I Build) | 11.74 / 6.16 | 7.71 / 4.47 | 13.07 / 6.69 | 10.05 / 5.88 |
+| Bald Mountain (About) | 11.71 / 5.87 | 7.79 / 4.00 | 12.51 / 6.18 | 9.39 / 4.66 |
+| Ramona Falls (Let's Talk) | 12.45 / 6.49 | 7.94 / 5.39 | 13.27 / 6.18 | 9.60 / 4.60 |
+| Mirror Lake (footer) | 12.21 / 5.61 | 7.72 / 3.54 | 13.21 / 6.16 | 9.58 / 4.40 |
+
+That's WebGL. The still (reduced motion; Day and Dusk match) is within 0.15 of the Day column
+(lowest: 7.95 / 3.60 at 1440, 9.47 / 4.35 at 390). **0 failures** of 4.5:1 (small) / 3:1 (large)
+across 1,842 measured lines per run, 4 runs in each mode. The thinnest margin is the green section
+titles over Mirror Lake in Day (3.54–3.60, large text), as in S1. Over a new place it's About's
+and Let's Talk's titles over Bald Mountain in Day at 1440 (4.00). No per-scene scrim was needed.
+
+Found and fixed on the way (`1153fe9`). Each item's z-index, which makes it fade in on top of the
+last one, lifted the stills above `.scene-atmos`, so they showed without `--atmos-read`. Over Bald
+Mountain the section titles measured 2.67:1. The layer is now its own stacking context, under the
+atmosphere. That made the per-scene ink I'd added for Bald Mountain unnecessary, so it's gone.
+
+/projects with each row hovered (1440): lowest Day 7.53 / 4.08 (both WebGL and the still), Dusk
+11.58 / 5.90; dcbed21 measured 7.53 / 4.07 in Day. 0 failures.
+
+## Keyboard (Tab from the top, 1440 and 390, both motion modes)
+
+Each run has 21 stops inside a part: the case-study titles and live links, How I Build's three
+proofs, Email Me and View Resume, and the footer's 10 links. **84 of 84** show their part's place,
+and inside a named part the bar names it too. About has no focusable control. The footer's stops
+show Mirror Lake.
+
+## Also checked
+
+- **/card:** behaviour unchanged on the shared lazy gate. 0 panel pictures at load, and all four
+  in by the time their panels are reached (1440 `flat.webp`, 390 `flat-tall.webp`).
+- **Console:** zero errors and zero warnings in every run above (16 on home, 4 on /projects, 2 on /card).
+- **Build:** `node scripts/tokens.mjs --check` reports one problem only, the stage-9 Figma drift
+  guard (tokens.json now has `--atmos-dusk`; the migration thread re-syncs Figma). The raw-value
+  baseline is unchanged, the family check is green and `tokens.css` is up to date. `astro check`:
+  0 errors, 0 warnings, 0 hints (109 files). `astro build`: 0 warnings.
+
+## For Cello
+
+- **The end of the page goes by quickly.** At 1440 the last screen holds About (317 px), Let's
+  Talk (365 px) and the footer. Bald Mountain shows for about 120 px of scroll, Ramona for 150 px
+  and Mirror Lake for the last 105 px (at 390: 330, 180 and 165 px). It reads as a quick sequence
+  at the end. If that's too quick, the simplest fix is to drop one of the three places (for
+  example, About shares Let's Talk's).
+- **The footer is opaque**, so "the footer over Mirror Lake" means Mirror Lake shows behind Let's
+  Talk's last lines once the footer is up. The bar still says "Let's Talk" there, because the
+  footer isn't a reading stop.
+- **Dusk is an approximation.** The stills are Day art under ink, not the Dusk grade (which is
+  WebGL-only). The ink matches the grade's brightness but not its hue, so the places read a little
+  more neutral than Mirror Lake's green dusk. A Dusk-graded `read.webp` for each place
+  (`scenes:derive`) would match exactly.
+- **/projects changed a little too**, since it's on the same layer: a true cross-fade between
+  rows, the smaller still, and in Dusk the same `--atmos-dusk`, so it's darker than before (11.6+
+  against 7.5).

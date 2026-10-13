@@ -1,76 +1,70 @@
 ---
+/*
+ * MediaFull: one image or video across the article column, with an optional caption.
+ * Videos go through MediaVideo: `mp4` adds a fallback source, `poster` a still (also what
+ * reduced motion shows), `alt` the video's accessible name, and every video gets Pause / Play.
+ * Existing single-`src` uses render as before.
+ */
+import MediaVideo from "./MediaVideo.astro";
+
 interface Props {
-	src: string;
-	alt?: string;
-	caption?: string;
+  src: string;
+  alt?: string;
+  caption?: string;
+  poster?: string;
+  mp4?: string;
 }
 
-const { src, alt = "", caption } = Astro.props;
-const isVideo = src?.endsWith('.webm') || src?.endsWith('.mp4');
+const { src, alt = "", caption, poster, mp4 } = Astro.props;
+const isVideo = src?.endsWith(".webm") || src?.endsWith(".mp4");
 ---
 
 <div class="media-gallery media-full">
-	<figure class="media-item">
-		{isVideo ? (
-			<video src={src} class="project-media" autoplay loop muted playsinline />
-		) : (
-			<img src={src} alt={alt} class="project-media" />
-		)}
-		{caption && <figcaption>{caption}</figcaption>}
-	</figure>
+  <figure class="media-item">
+    {
+      isVideo ? (
+        <MediaVideo src={src} mp4={mp4} poster={poster} label={alt} class="project-media" />
+      ) : (
+        <img src={src} alt={alt} class="project-media" loading="lazy" decoding="async" />
+      )
+    }
+    {caption && <figcaption>{caption}</figcaption>}
+  </figure>
 </div>
 
 <style>
-	.media-gallery {
-		margin: var(--space-32) 0;
-		animation: enter-scale var(--motion-entry) var(--ease-out) backwards;
-	}
+  .media-gallery {
+    margin: var(--space-32) 0;
+  }
 
-	.media-full {
-		display: block;
-	}
+  .media-item {
+    margin: 0;
+  }
 
-	.media-item {
-		margin: 0;
-	}
+  .media-item figcaption {
+    margin: 0;
+    padding: var(--space-12) 0;
+    border-bottom: var(--stroke-control) solid var(--action-primary);
+    color: var(--text-primary);
+    font-size: var(--type-small);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
 
-	.media-item figcaption {
-		font-size: var(--type-small);
-		font-weight: var(--weight-semibold);
-		text-transform: uppercase;
-		letter-spacing: var(--track-caps);
-		color: var(--text-primary);
-		padding: var(--space-12) 0;
-		border-bottom: 2px solid var(--color-accent);
-		margin: 0;
-	}
+  .media-item :global(.project-media) {
+    width: 100%;
+    border: var(--stroke-bar) solid var(--border-strong);
+  }
 
-	.project-media {
-		width: 100%;
-		border: 4px solid var(--text-primary);
-		filter: grayscale(20%);
-		transition: filter var(--motion-ui) var(--ease-out);
-	}
+  .media-full img.project-media {
+    max-height: 600px;
+    object-fit: cover;
+  }
 
-	.media-full img.project-media {
-		max-height: 600px;
-		object-fit: cover;
-	}
-
-	.media-full video.project-media {
-		height: auto;
-		aspect-ratio: auto;
-		max-height: none;
-		object-fit: contain;
-	}
-
-	.project-media:hover {
-		filter: grayscale(0%);
-	}
-
-	@media (width <= 700px) {
-		.media-full img.project-media {
-			max-height: 300px;
-		}
-	}
+  @media (width <= 700px) {
+    .media-full img.project-media {
+      max-height: 300px;
+    }
+  }
 </style>

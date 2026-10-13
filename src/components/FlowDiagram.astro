@@ -1,5 +1,11 @@
 ---
-import "@/styles/colors.css";
+/*
+ * FlowDiagram: a titled sequence of steps (label + detail), with an optional caption.
+ * The figure is a Labeled Panel (a plate, A1 bg-plate), so its labels and text never sit on
+ * scene art.
+ */
+import AccentBar from "@/components/ui/AccentBar.astro";
+import Panel from "@/components/ui/Panel.astro";
 
 interface FlowItem {
   label: string;
@@ -15,12 +21,12 @@ interface Props {
 const { title, items, caption } = Astro.props;
 ---
 
-<figure class="flow-diagram">
-  <figcaption>{title}</figcaption>
+<Panel as="figure" label={title} labelAs="figcaption" class="flow-diagram">
   <ol>
     {
-      items.map((item, index) => (
-        <li style={`--i: ${index}`}>
+      items.map((item) => (
+        <li>
+          <AccentBar class="flow-bar" />
           <strong>{item.label}</strong>
           <p>{item.detail}</p>
         </li>
@@ -28,29 +34,11 @@ const { title, items, caption } = Astro.props;
     }
   </ol>
   {caption && <p class="caption">{caption}</p>}
-</figure>
+</Panel>
 
 <style>
   .flow-diagram {
     margin: var(--space-32) 0;
-    padding: var(--space-16);
-    border: 3px solid var(--text-primary);
-    background: linear-gradient(
-        135deg,
-        rgba(var(--color-accent-rgb), 0.12),
-        transparent 42%
-      ),
-      var(--bg-raised);
-  }
-
-  figcaption {
-    margin-bottom: var(--space-16);
-    color: var(--color-accent);
-    font-size: var(--type-label);
-    font-weight: var(--weight-extrabold);
-    letter-spacing: var(--track-wide);
-    line-height: var(--leading-title);
-    text-transform: uppercase;
   }
 
   ol {
@@ -64,18 +52,13 @@ const { title, items, caption } = Astro.props;
 
   li {
     min-height: 100%;
-    padding: var(--space-16);
-    border: 2px solid var(--border-strong);
-    background: var(--bg-canvas);
+    padding: var(--space-12);
+    border: var(--stroke-control) solid var(--border-muted);
+    background: var(--bg-raised);
   }
 
-  li::before {
-    content: "";
-    display: block;
-    width: 2.5rem;
-    height: 4px;
+  .flow-bar {
     margin-bottom: var(--space-12);
-    background: var(--color-accent);
   }
 
   strong {
@@ -96,9 +79,9 @@ const { title, items, caption } = Astro.props;
   .caption {
     margin-top: var(--space-16);
     padding-top: var(--space-16);
-    border-top: 1px solid var(--border-muted);
+    border-top: var(--stroke-rule) solid var(--border-muted);
+    color: var(--text-muted);
     font-size: var(--type-small);
     line-height: var(--leading-small);
-    opacity: 0.85;
   }
 </style>

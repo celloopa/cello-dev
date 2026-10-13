@@ -1,0 +1,33 @@
+---
+/*
+ * AccentBar (proposal §7): the short green bar that marks the start of a block. Decorative
+ * (aria-hidden). Replaces FlowDiagram's `li::before` bar (the old title underline bars went with
+ * today's home and slug pages).
+ *
+ *   size  sm  40 × 4 px (a step, a card)
+ *         md  64 × 4 px (a section)
+ */
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"span"> & { size?: "sm" | "md" };
+
+const { size = "sm", class: className, ...rest } = Astro.props;
+---
+
+<span class:list={["accent-bar", `accent-bar--${size}`, className]} aria-hidden="true" {...rest}></span>
+
+<style>
+  .accent-bar {
+    display: block;
+    height: var(--stroke-bar);
+    background: var(--action-primary);
+  }
+
+  .accent-bar--sm {
+    width: var(--space-40);
+  }
+
+  .accent-bar--md {
+    width: var(--space-64);
+  }
+</style>
