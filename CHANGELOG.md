@@ -4,6 +4,19 @@ All notable changes to this portfolio site should be documented here.
 
 ## 2026-10-12
 
+### Design system, stage 4 (motion): one contract, one keyframes file, tiers
+
+- Reduced motion now follows the Cello family contract in one block: animations and transitions finish at once and every delay is zeroed (new `--motion-none`), so content never waits on motion. Before, reduced-motion visitors still waited up to 1s on staggered entries.
+- Keyframes live once, in `src/styles/animations.css`, with unique names. Astro doesn't scope `@keyframes`, so same-named definitions used to fight page by page (`slideUp` had 9 definitions in 3 variants). Shared entry motion is `enter-rise`, `enter-from-left`, `enter-from-right`, `enter-scale` and `enter-wipe`, with each component's travel kept through `--enter-distance`. The dead animation utilities are gone. The 404 bar runs its own wipe instead of a site-wide one that overrode it.
+- Durations and easing snap to the tiers: hovers and presses at 300ms (`--motion-ui`), entries at 600ms (`--motion-entry`), staggers at 60ms (`--motion-stagger`; 30ms for long chip lists), every `ease` replaced by the house curve. The page wipe (450ms) and the logo (12s loop, 700ms break) keep their values as named signature tokens. Home's own hero choreography is unchanged; home is replaced at the landscape cutover.
+- No `transition: all` left outside home: each one names the properties its hover and focus states change.
+- New `pnpm motion:table`: every animation and transition each page runs, read from Chrome, with normal and reduced motion. Motion changes are proved by diffing it. The token guard now also reads transition and animation values that span several lines.
+
+### Design system, stage 3: Day
+
+- Light mode is Day: the Paper 100 canvas (`#f3ede2`), green as the action color in both themes (`#007a33` in Day, 4.70:1 on paper), earth for grounding. Dark mode (Dusk) is unchanged.
+- One theme module (`ThemeInit.astro` + `src/utils/themeToggle.js`) fixes three bugs: client-side navigation flipped Day back to Dusk, `/resume` forced and saved Dusk, and the home toggle's first click did nothing for light-preferring visitors. The toggle is named "Switch to Day" / "Switch to Dusk".
+
 ### Design system, stages 0–2a: tokens underneath, and Geist Mono for real
 
 - Stage 0: one token source (`src/tokens/tokens.json`) generates `src/styles/tokens.css`. Guards run first in `pnpm build`: the token CSS is current, no new raw values (a per-file ratchet), and no hand-built keyframes, fonts, transitions, containers or theme storage. `pnpm ui:shots` screenshots 12 pages at 1440 and 390 px in both themes and compares them pixel for pixel.
