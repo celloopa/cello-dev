@@ -552,6 +552,6 @@ Left for Cello:
   `board-dark` (post) and the two Fit design-system shots. Not resume data.
 - The Rowan in the landing-shot images (Pixelmint, Orbit Health) and the Rowan in the recaptures
   (Larkspur Labs, Tidewater Health) come from different seeds: same name, different jobs.
-- `ghosted-intro.webm`, `ghosted-end.webm` and `ghosted-agent.webm` show a terminal with a local
-  home-folder path and username. No page uses them, but `public/` still serves them at their URLs.
+- ~~Three unlinked Ghosted terminal videos showed a local home-folder path and username.~~
+  Removed on master (f06cec5, Cello's go) and merged here.
 - `v3/signin.webp` keeps the "e.g. kim-7x2qpd" placeholder (the app's own copy).

@@ -35,9 +35,8 @@ A product designer as a builder of clear structures: rings, frames, bars, slices
 
 ### Existing strengths
 
-- Dark-first, high-contrast identity
-- Deep midnight green background
-- Warm paper text
+- High-contrast identity in two themes: Dusk (midnight green) and Day (warm paper)
+- Deep midnight green Dusk canvas, warm paper Day canvas
 - Bright green signal accent
 - Earth-tone secondary accent
 - Heavy geometric strokes and offset borders
@@ -55,37 +54,41 @@ A product designer as a builder of clear structures: rings, frames, bars, slices
 
 ## Palette
 
-Dark mode is the primary physical scene: a hiring manager browsing a distinctive portfolio on a desktop or laptop, likely in a focused review context. The dark green canvas should feel like a studio wall, code editor, and print poster at once.
+Dusk is the hero scene: a hiring manager browsing a distinctive portfolio on a desktop or laptop, likely in a focused review context. The dark green canvas should feel like a studio wall, code editor, and print poster at once. Day is first-class too: warm paper, same structure, and the site follows the visitor's system setting. The source of truth is `src/tokens/tokens.json`; `/design-system` shows every role in both themes.
 
-| Role | Token | Hex | Use |
+| Name | Token | Hex | Use |
 | --- | --- | --- | --- |
-| Midnight Ink | `--ds-color-ink-950` | `#001a11` | Primary dark background |
-| Ink Raised | `--ds-color-ink-900` | `#05271b` | Raised dark surfaces, hover fields |
-| Paper | `--ds-color-paper-50` | `#fff8ed` | Warm light-mode paper, occasional accents |
-| Starlight | `--ds-color-paper-200` | `#e0e0e0` | Primary dark-mode text |
-| Earth | `--ds-color-earth-500` | `#887850` | Logo triangle, grounded secondary accent |
-| Deep Earth | `--ds-color-earth-600` | `#6f613e` | Light-mode accent |
-| Bright Earth | `--ds-color-earth-400` | `#a89762` | Dark-mode secondary accent |
-| Signal Green | `--ds-color-signal-500` | `#00bc44` | Primary action, logo sun, active states |
-| Blueprint Blue | `--ds-color-blueprint-500` | `#42a5ff` | Sparing technical annotation accent |
-| Coral | `--ds-color-coral-500` | `#ff6b4a` | Sparing warning, process, or editorial accent |
+| Midnight Ink | `--ink-950` | `#001a11` | Dusk canvas, Day text |
+| Paper 100 | `--paper-100` | `#f3ede2` | Day canvas |
+| Starlight | `--paper-200` | `#e0e0e0` | Dusk text |
+| Bright Earth | `--earth-400` | `#a89762` | Grounding at Dusk |
+| Earth | `--earth-500` | `#887850` | Logo triangle |
+| Deep Earth | `--earth-600` | `#6f613e` | Grounding in Day |
+| Signal Green | `--signal-500` | `#00bc44` | Action at Dusk, logo sun |
+| Deep Signal | `--signal-700` | `#007a33` | Action in Day (4.70:1 on Paper 100) |
+| Blueprint Blue | `--blueprint-500` | `#42a5ff` | Construction lines and annotations only |
+
+Components use the semantic roles built on these (`--bg-canvas`, `--action-primary`, `--accent-ground`…), never the primitives. Seasonal poster inks are art only.
 
 ### Palette strategy
 
-Committed dark palette. The surface is mostly midnight ink, with signal green acting as a small but unmistakable live/current/buildable cue. Earth tones keep the system human and prevent it from becoming neon developer-tool cliché.
+Committed palette in both themes. At Dusk the surface is mostly midnight ink, in Day warm paper; with signal green acting as a small but unmistakable live/current/buildable cue. Earth tones keep the system human and prevent it from becoming neon developer-tool cliché.
 
 ## Typography
 
-Current type system: Geist Mono across the site.
+Current type system:
 
-Keep the monospace as a brand signature, but use it deliberately:
+- **National Park**: page and section titles, the hero name (routed park-sign lettering).
+- **Geist Mono**: the signature for everything else: labels, nav, metadata, data, code and short copy.
+- **Geist Sans**: long reading only, in case-study and blog bodies.
+- **Switchback**: place names, arriving with the landscape.
+
+Use them deliberately:
 
 - Display: uppercase, heavy, tight, poster-like.
-- Body: regular or medium, generous line-height, max 65 to 75 characters.
+- Body: generous line-height, max 65 to 75 characters.
 - Labels: uppercase, tracked, short.
 - Avoid all-caps paragraphs.
-
-Future evolution option: introduce one non-default grotesk or condensed display face for major editorial moments while preserving Geist Mono for labels, metadata, diagrams, and technical captions. Do not add a generic design-blog serif unless the page concept specifically requires it.
 
 ## Shape Language
 
@@ -170,13 +173,13 @@ Hide navigation and homepage entry points for now. Keep the route only as an int
 
 Use this prompt with an image/brandkit generator to create a future-facing visual board based on the current site:
 
-> Create a premium brand-kit overview image for “Cello.dev”. Category: product design portfolio for design systems, technical prototyping, and design-dev collaboration. Audience: product design hiring managers, design systems teams, design tools teams, developer tools teams. Personality: earthy, technical, geometric, poster-like, precise, human. Core metaphor: a designer who turns ambiguity into buildable structure, expressed through C-rings, signal sun, grounded triangle, frames, bars, construction lines, and prototype artifacts. Layout: 3×3 grid on a dark charcoal/midnight-green presentation canvas with strong gutters, sparse labels, and refined negative space. Panels: logo cover, logo construction from C-ring/sun/triangle primitives, homepage/browser application, tagline panel reading “Design judgment made buildable.”, palette chips, Geist Mono type specimen, case-study artifact mockup, visual archive/gallery direction, UI/detail component strip. Visual mode: dark developer/builder meets Saul Bass poster. Palette: midnight green #001A11, starlight #E0E0E0, signal green #00BC44, earth #887850, paper #FFF8ED, sparing blueprint blue #42A5FF and coral #FF6B4A. Style: premium identity deck, sparse, cinematic, tactile, print texture, halftone/grain, thick geometric strokes, no generic SaaS gradients, no glassmorphism, no fake stock people, no copied real-world logos. Typography: Geist Mono-inspired monospace, uppercase labels, heavy display scale, readable sparse text.
+> Create a premium brand-kit overview image for “Cello.dev”. Category: product design portfolio for design systems, technical prototyping, and design-dev collaboration. Audience: product design hiring managers, design systems teams, design tools teams, developer tools teams. Personality: earthy, technical, geometric, poster-like, precise, human. Core metaphor: a designer who turns ambiguity into buildable structure, expressed through C-rings, signal sun, grounded triangle, frames, bars, construction lines, and prototype artifacts. Layout: 3×3 grid on a dark charcoal/midnight-green presentation canvas with strong gutters, sparse labels, and refined negative space. Panels: logo cover, logo construction from C-ring/sun/triangle primitives, homepage/browser application, tagline panel reading “Design judgment made buildable.”, palette chips, Geist Mono type specimen, case-study artifact mockup, visual archive/gallery direction, UI/detail component strip. Visual mode: dark developer/builder meets Saul Bass poster. Palette: midnight green #001A11, starlight #E0E0E0, signal green #00BC44, earth #887850, paper #F3EDE2, sparing blueprint blue #42A5FF. Style: premium identity deck, sparse, cinematic, tactile, print texture, halftone/grain, thick geometric strokes, no generic SaaS gradients, no glassmorphism, no fake stock people, no copied real-world logos. Typography: Geist Mono-inspired monospace, uppercase labels, heavy display scale, readable sparse text.
 
 ## Evolution Guardrails
 
 When evolving the site, preserve:
 
-- Dark-first midnight green canvas
+- Midnight green Dusk and warm paper Day, both first-class
 - Signal green as action/build cue
 - Earth tone as human grounding
 - Geometric logo primitives

@@ -4,6 +4,12 @@ All notable changes to this portfolio site should be documented here.
 
 ## 2026-10-12
 
+### Design system, stage 7: the system documents itself
+
+- `/design-system` is rebuilt from `src/tokens/tokens.json` at build time, so it can't drift from the CSS: Day and Dusk side by side, every color role with both themes and its use-when line, primitives, the seasonal inks, the three faces and every type role, the space, layout, stroke and motion scales, and how a change gets in.
+- The unused Coral color and its aliases are gone.
+- `DESIGN.md` and the brand kit describe the system as shipped: Day and Dusk both first-class, green as action in both themes, earth as grounding, National Park / Geist Mono / Geist Sans, the motion tiers.
+
 ### Design system, stage 4 (values): roles and scales instead of one-offs
 
 - Tints → color roles: inline code and quotes in articles use the neutral `bg-muted` / `border-muted` instead of green tints (green stays for action); the ⌘K overlay and the header backdrop use `scrim` (paper in Day, not black); the resume's section rules are earth (`accent-ground`); case-meta panels use `bg-raised`.
