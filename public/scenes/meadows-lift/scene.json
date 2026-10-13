@@ -14,19 +14,6 @@
   "master": "/scenes/meadows-lift/master-wide.webp",
   "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
   "expandedSides": "None: original landscape4:3 aspect retained",
-  "figma": {
-    "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
-    "page": "1:48",
-    "section": "24:2",
-    "root": "24:3",
-    "master": "24:4",
-    "layersFrame": "24:5",
-    "layers": {
-      "sky": "24:6",
-      "terrain": "24:7",
-      "lift": "24:8"
-    }
-  },
   "mobileCropCenter": [
     0.72,
     0.5

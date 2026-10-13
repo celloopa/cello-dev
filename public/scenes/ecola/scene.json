@@ -21,20 +21,6 @@
   ],
   "expandedSides": "AI outpainted; original stylized center mechanically preserved",
   "exportOrigin": "Figma native isolated PNG renders; contentsOnly true at source resolution; visible RGB within3/255 and alpha exact",
-  "figma": {
-    "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
-    "page": "1:48",
-    "section": "6:2",
-    "master": "6:10",
-    "portrait": "6:21",
-    "layersFrame": "6:13",
-    "layers": {
-      "sky": "6:14",
-      "far": "6:15",
-      "mid": "6:16",
-      "near": "6:17"
-    }
-  },
   "layers": [
     {
       "name": "sky",

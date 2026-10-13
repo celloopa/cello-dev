@@ -22,20 +22,6 @@
   "expandedSides": "AI outpainted; treated portrait center mechanically preserved",
   "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
   "mobileObjectPosition": "46% 50%",
-  "figma": {
-    "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
-    "page": "1:48",
-    "section": "22:2",
-    "root": "22:3",
-    "master": "22:27",
-    "portrait": "22:31",
-    "layersFrame": "22:18",
-    "layers": {
-      "sky": "22:28",
-      "far": "22:29",
-      "near": "22:30"
-    }
-  },
   "layers": [
     {
       "name": "sky",

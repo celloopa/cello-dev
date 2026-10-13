@@ -61,21 +61,6 @@
         "sides": "invented outpaint",
         "figures": "none: an anonymous figure and a dog were removed from the art (Cello, 2026-10-12)"
       },
-      "figma": {
-        "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
-        "page": "1:48",
-        "section": "20:2",
-        "root": "20:3",
-        "stack": "22:10",
-        "masterWide": "22:22",
-        "portrait": "22:26",
-        "layers": {
-          "sky": "22:23",
-          "mid": "22:24",
-          "near": "22:25"
-        },
-        "status": "Uploaded and native isolated PNG round trip verified"
-      },
       "checks": {
         "restackMaxDifference": 0,
         "restackMeanDifference": 0,
@@ -137,21 +122,6 @@
       ],
       "expandedSides": "AI outpainted; original stylized center mechanically preserved",
       "exportOrigin": "Figma native isolated PNG renders at full source resolution; alpha exact and visible RGB checked",
-      "figma": {
-        "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
-        "page": "1:48",
-        "section": "15:26",
-        "root": "15:27",
-        "master": "15:31",
-        "portrait": "15:37",
-        "layersFrame": "15:32",
-        "layers": {
-          "sky": "15:33",
-          "far": "15:34",
-          "mid": "15:35",
-          "near": "15:36"
-        }
-      },
       "layers": [
         {
           "name": "sky",
@@ -223,19 +193,6 @@
       "master": "/scenes/meadows-lift/master-wide.webp",
       "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
       "expandedSides": "None: original landscape4:3 aspect retained",
-      "figma": {
-        "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
-        "page": "1:48",
-        "section": "24:2",
-        "root": "24:3",
-        "master": "24:4",
-        "layersFrame": "24:5",
-        "layers": {
-          "sky": "24:6",
-          "terrain": "24:7",
-          "lift": "24:8"
-        }
-      },
       "mobileCropCenter": [
         0.72,
         0.5
@@ -313,20 +270,6 @@
       ],
       "expandedSides": "AI outpainted; original stylized center mechanically preserved",
       "exportOrigin": "Figma native isolated PNG renders; contentsOnly true at source resolution; visible RGB within3/255 and alpha exact",
-      "figma": {
-        "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
-        "page": "1:48",
-        "section": "6:2",
-        "master": "6:10",
-        "portrait": "6:21",
-        "layersFrame": "6:13",
-        "layers": {
-          "sky": "6:14",
-          "far": "6:15",
-          "mid": "6:16",
-          "near": "6:17"
-        }
-      },
       "layers": [
         {
           "name": "sky",
@@ -392,20 +335,6 @@
       ],
       "expandedSides": "AI outpainted; original stylized center mechanically preserved",
       "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
-      "figma": {
-        "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
-        "page": "1:48",
-        "section": "24:13",
-        "root": "24:14",
-        "master": "24:15",
-        "portrait": "24:20",
-        "layersFrame": "24:16",
-        "layers": {
-          "sky": "24:17",
-          "far": "24:18",
-          "near": "24:19"
-        }
-      },
       "layers": [
         {
           "name": "sky",
@@ -489,19 +418,6 @@
       ],
       "expandedSides": "AI outpainted; original stylized center mechanically preserved",
       "exportOrigin": "Figma native isolated PNG renders at full source resolution; alpha exact and visible RGB checked",
-      "figma": {
-        "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
-        "page": "1:48",
-        "section": "15:2",
-        "master": "15:10",
-        "portrait": "15:20",
-        "layersFrame": "15:13",
-        "layers": {
-          "sky": "15:14",
-          "mid": "15:15",
-          "near": "15:16"
-        }
-      },
       "layers": [
         {
           "name": "sky",
@@ -538,7 +454,6 @@
           "desktop-crop.jpg",
           "mobile-crop.jpg"
         ],
-        "figma": "figma-download-check.json",
         "figmaRoundtrip": "figma-roundtrip.json"
       },
       "limitations": [
@@ -576,19 +491,6 @@
       ],
       "expandedSides": "AI outpainted; original stylized portrait center mechanically preserved with zero difference",
       "exportOrigin": "Figma native isolated PNG renders at full source resolution; alpha exact and visible RGB checked",
-      "figma": {
-        "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
-        "page": "1:48",
-        "section": "14:2",
-        "root": "14:3",
-        "master": "15:21",
-        "layersFrame": "15:22",
-        "layers": {
-          "sky": "15:23",
-          "terrain": "15:24",
-          "wing": "15:25"
-        }
-      },
       "layers": [
         {
           "name": "sky",
@@ -663,20 +565,6 @@
       "expandedSides": "AI outpainted; treated portrait center mechanically preserved",
       "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
       "mobileObjectPosition": "46% 50%",
-      "figma": {
-        "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
-        "page": "1:48",
-        "section": "22:2",
-        "root": "22:3",
-        "master": "22:27",
-        "portrait": "22:31",
-        "layersFrame": "22:18",
-        "layers": {
-          "sky": "22:28",
-          "far": "22:29",
-          "near": "22:30"
-        }
-      },
       "layers": [
         {
           "name": "sky",
@@ -779,20 +667,6 @@
       ],
       "expandedSides": "AI outpainted; treated portrait center restored with zero pixel difference",
       "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
-      "figma": {
-        "fileKey": "BHwjRNFmaMra4MUhsSwUXC",
-        "page": "1:48",
-        "section": "19:2",
-        "root": "19:3",
-        "master": "19:10",
-        "portrait": "19:20",
-        "layersFrame": "19:13",
-        "layers": {
-          "sky": "19:14",
-          "far": "19:15",
-          "near": "19:16"
-        }
-      },
       "layers": [
         {
           "name": "sky",
