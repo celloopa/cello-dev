@@ -38,7 +38,7 @@ const { items, preview = false, label, kind = "project" } = Astro.props;
 <ol class="selector" aria-label={label} data-selector={preview ? "preview" : undefined}>
   {
     items.map((item) => (
-      <li class="selector-item" data-preview={preview ? (item.scene.flat ?? item.scene.swatch) : undefined}>
+      <li class="selector-item" data-preview={preview ? item.scene.id : undefined}>
         <a class="selector-swatch" href={item.href} tabindex="-1" aria-hidden="true">
           <img src={item.scene.swatch} alt="" width="480" height="320" loading="lazy" decoding="async" />
         </a>
@@ -62,32 +62,15 @@ const { items, preview = false, label, kind = "project" } = Astro.props;
     ))
   }
 </ol>
-{
-  preview && (
-    <div class="selector-preview" aria-hidden="true" data-selector-preview>
-      <img alt="" decoding="async" />
-    </div>
-  )
-}
 
 <script>
-  // Preview: the place of the story under the pointer or keyboard focus fades in behind the
-  // list. Only on devices that hover; a tap opens the story.
+  import { setBackdrop } from "@/lib/scene/scenery.js";
+  // Preview: the place of the story under the pointer or keyboard focus cross-fades in behind
+  // the list, on the Scene's backdrop layer (the page passes the places as SceneLayout
+  // `backdrops`), as home's reading parts do. Only on devices that hover; a tap opens the story.
   const list = document.querySelector<HTMLElement>("[data-selector=preview]");
-  const layer = document.querySelector<HTMLElement>("[data-selector-preview]");
-  const img = layer?.querySelector("img");
-  if (list && layer && img && matchMedia("(hover: hover) and (pointer: fine)").matches) {
-    let current = "";
-    const show = (src: string) => {
-      if (src === current) return;
-      current = src;
-      layer.classList.remove("is-on");
-      if (!src) return;
-      const on = () => current === src && layer.classList.add("is-on");
-      img.onload = on;
-      img.src = src;
-      if (img.complete && img.naturalWidth) on();
-    };
+  if (list && matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    const show = (id: string) => setBackdrop(id);
     const from = (t: EventTarget | null) => (t instanceof Element ? (t.closest<HTMLElement>("[data-preview]")?.dataset.preview ?? "") : "");
     list.addEventListener("pointerover", (e) => show(from(e.target)));
     list.addEventListener("pointerleave", () => show(from(document.activeElement)));
@@ -153,37 +136,6 @@ const { items, preview = false, label, kind = "project" } = Astro.props;
     line-height: var(--leading-ui);
     letter-spacing: var(--track-caps);
     text-transform: uppercase;
-  }
-
-  /* the previewed place, behind the list and focused like the page's own scene */
-  .selector-preview {
-    position: fixed;
-    inset: var(--scene-bar) 0 0 0;
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity var(--motion-scene-fade) var(--ease-out);
-  }
-
-  .selector-preview.is-on {
-    opacity: 1;
-  }
-
-  .selector-preview img {
-    width: 100%;
-    height: 100%;
-    max-width: none;
-    object-fit: cover;
-    filter: var(--focus-filter);
-    transform: scale(var(--focus-scale));
-  }
-
-  .selector-preview::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: var(--atmos-read);
   }
 
   @media (width <= 700px) {
