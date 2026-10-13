@@ -6,15 +6,14 @@
   /* Primitives: color (raw values, no meaning; components never use these directly) */
   --ink-950: #001a11; /* Midnight Ink. The Dusk canvas, Day text. Cello family neutral. */
   --paper-50: #fff8ed; /* Legacy: /card only, goes with the card's migration. */
-  --paper-100: #f3ede2; /* Paper 100. The Day canvas from stage 3 (Q3). Cello family neutral. */
-  --paper-200: #e0e0e0; /* Starlight. Dusk text; today's Day canvas until stage 3. */
-  --earth-400: #a89762;
+  --paper-100: #f3ede2; /* Paper 100. The Day canvas. Cello family neutral. */
+  --paper-200: #e0e0e0; /* Starlight. Dusk text. */
+  --earth-400: #a89762; /* Earth. Grounding at Dusk. */
   --earth-500: #887850;
-  --earth-600: #6f613e;
+  --earth-600: #6f613e; /* Deep earth. Grounding in Day. */
   --signal-500: #00bc44; /* The green sun. Action in Dusk. */
-  --signal-700: #007a33; /* Action in Day from stage 3 (Q4). 4.70:1 on Paper 100. */
-  --blueprint-500: #42a5ff;
-  --coral-500: #ff6b4a; /* Legacy: removed in stage 3 (Q6). */
+  --signal-700: #007a33; /* Action in Day. 4.70:1 on Paper 100. */
+  --blueprint-500: #42a5ff; /* Construction lines and annotations. */
 
   /* Roles: color (Dusk is the :root default; Day applies under [data-theme=light]) */
   --bg-canvas: var(--ink-950); /* The page. Never inside a component. */
@@ -144,7 +143,6 @@
   --ds-color-earth-400: var(--earth-400);
   --ds-color-signal-500: var(--signal-500);
   --ds-color-blueprint-500: var(--blueprint-500);
-  --ds-color-coral-500: var(--coral-500);
   --ds-font-family-mono: var(--font-mono);
   --ds-font-weight-regular: var(--weight-regular);
   --ds-font-weight-medium: var(--weight-medium);
@@ -200,7 +198,6 @@
   --accent-primary: var(--action-primary);
   --accent-secondary: var(--accent-ground);
   --accent-blueprint: var(--accent-construction);
-  --accent-warning: var(--coral-500);
   --color-midnight: var(--ink-950);
   --color-midnight-rgb: 0, 26, 17;
   --color-starlight: var(--paper-200);

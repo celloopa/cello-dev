@@ -104,14 +104,6 @@
    "-0.08em": 1
   }
  },
- "src/pages/design-system.astro": {
-  "font-size": {
-   "clamp(4rem, 10vw, 8rem)": 1
-  },
-  "line-height": {
-   ".9": 1
-  }
- },
  "src/pages/index.astro": {
   "spacing": {
    "clamp(2rem, 5vw, 4.5rem)": 1,

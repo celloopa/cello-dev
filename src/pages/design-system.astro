@@ -1,112 +1,683 @@
 ---
+// The design system, read from src/tokens/tokens.json at build time: the same file the site's
+// CSS is generated from, so this page can't drift from the code. Nothing here is typed twice
+// except the role compositions (which size, leading, weight and face make a type role) and the
+// season names, which are documentation.
 import Layout from "@/layouts/Layout.astro";
-import "@/styles/colors.css";
+import "@fontsource-variable/geist";
+import tokenSource from "@/tokens/tokens.json";
 
-const colors = [
-  ["Ink 950", "--ds-color-ink-950"],
-  ["Paper 200", "--ds-color-paper-200"],
-  ["Signal 500", "--ds-color-signal-500"],
-  ["Earth 600", "--ds-color-earth-600"],
-  ["Earth 400", "--ds-color-earth-400"],
-  ["Blueprint", "--ds-color-blueprint-500"],
-  ["Coral", "--ds-color-coral-500"],
-];
+type Token = { css: string; $value: string | { dusk: string; day: string }; $description?: string };
+type Group = { name: string; tokens: Token[] };
+const groups = (tokenSource as { groups: Group[] }).groups;
+const group = (prefix: string) => groups.find((g) => g.name.startsWith(prefix))?.tokens ?? [];
+const describe = (t?: Token) => t?.$description ?? "";
+const byName = (prefix: string, name: string) => group(prefix).find((t) => t.css === name);
 
-const tokens = [
-  ["Display", "--ds-text-hero", "Hero name / campaign moments"],
-  ["Title", "--ds-text-2xl", "Page and section headers"],
-  ["Body", "--ds-text-base", "Case-study narrative copy"],
-  ["Caption", "--ds-text-sm", "Tags, labels, metadata"],
-  ["Stroke", "--ds-stroke-lg", "Primary geometric borders"],
-  ["Ease", "--ds-ease-out", "Shared interaction curve"],
+// Color roles. Each theme specimen re-declares every role on its own element, so both themes
+// render side by side whatever the visitor's theme is. Role values only reference primitives
+// (global) and other roles (resolved on the same element).
+const roles = group("Roles: color");
+const themeValue = (t: Token, theme: "dusk" | "day") => (typeof t.$value === "string" ? t.$value : t.$value[theme]);
+const themeVars = (theme: "dusk" | "day") => roles.map((t) => `${t.css}: ${themeValue(t, theme)}`).join("; ");
+const chip = (value: string) => `background: ${value}`;
+const legacy = /^Legacy/;
+const primitives = group("Primitives: color").filter((t) => !legacy.test(describe(t)));
+
+// Seasonal poster inks (A1/I3). Dusk is one rule, not a second palette.
+const seasons = [
+  ["june", "June", "Meadow"],
+  ["july", "July", "Coast fog"],
+  ["august", "August", "Dry gold"],
+  ["september", "September", "High light"],
+  ["october", "October", "Storm sky"],
+] as const;
+const inks = ["sky", "far", "snow", "forest", "ground"] as const;
+const duskInk = (ink: string, layer: string) =>
+  `background: color-mix(in oklab, var(--art-${ink}-${layer}) ${layer === "snow" ? 45 : 40}%, var(--ink-950))`;
+
+// Type: three faces in use today, and the roles built from the size tokens.
+const faces = [
+  { name: "National Park", token: "--font-title", sample: "Mt Hood at daybreak", use: "Page and section titles, the hero name." },
+  { name: "Geist Mono", token: "--font-mono", sample: "Labels, nav, data and code", use: "Everything else. The site's voice." },
+  { name: "Geist Sans", token: "--font-read", sample: "Long reading, at about 69 characters a line.", use: "Case-study and blog body text only." },
 ];
+const typeRoles = [
+  { role: "display-hero", face: "--font-title", weight: "--weight-extrabold", leading: "--leading-display", track: "--track-tight", caps: true, sample: "Cello" },
+  { role: "page-title", face: "--font-title", weight: "--weight-extrabold", leading: "--leading-tight", caps: true, sample: "Design system" },
+  { role: "section-title", face: "--font-title", weight: "--weight-extrabold", leading: "--leading-tight", track: "--track-caps", caps: true, accent: true, sample: "Color roles" },
+  { role: "heading", face: "--font-mono", weight: "--weight-bold", leading: "--leading-heading", sample: "One file, every value" },
+  { role: "title", face: "--font-mono", weight: "--weight-bold", leading: "--leading-title", sample: "Card and h3 titles" },
+  { role: "body-lg", face: "--font-mono", weight: "--weight-regular", leading: "--leading-read", sample: "Ledes on listings and the homepage." },
+  { role: "body", face: "--font-mono", weight: "--weight-regular", leading: "--leading-read", sample: "Cards, the resume and every paragraph outside an article." },
+  { role: "body", face: "--font-read", weight: "--weight-regular", leading: "--leading-read", sample: "Inside an article, the same size reads in Geist Sans.", note: "with --font-read" },
+  { role: "ui", face: "--font-mono", weight: "--weight-bold", leading: "--leading-ui", track: "--track-caps", caps: true, sample: "Buttons and back links" },
+  { role: "small", face: "--font-mono", weight: "--weight-regular", leading: "--leading-small", sample: "Captions, card descriptions and metadata." },
+  { role: "label", face: "--font-mono", weight: "--weight-bold", leading: "--leading-tight", track: "--track-wide", caps: true, sample: "Eyebrows · tags · badges" },
+];
+const faceStyle = (token: string) => `font-family: var(${token})`;
+const typeStyle = (r: (typeof typeRoles)[number]) =>
+  [
+    `font-family: var(${r.face})`,
+    `font-size: var(--type-${r.role})`,
+    `font-weight: var(${r.weight})`,
+    `line-height: var(${r.leading})`,
+    r.track ? `letter-spacing: var(${r.track})` : "",
+    r.caps ? "text-transform: uppercase" : "",
+    r.accent ? "color: var(--text-accent)" : "",
+  ].filter(Boolean).join("; ");
+
+const space = group("Space");
+const layout = group("Layout").filter((t) => t.css !== "--touch-target");
+const strokes = group("Shape and stroke").filter((t) => t.css.startsWith("--stroke"));
+const motion = group("Motion");
+const barWidth = (t: Token) => `width: var(${t.css})`;
+const strokeStyle = (t: Token) => `border-top-width: var(${t.css})`;
+const ease = byName("Motion", "--ease-out");
 ---
 
 <Layout
   title="Design System - Cello"
-  description="Design tokens, colors, typography, and component principles for Cello's product design portfolio."
+  description="cello.dev's design system, read from its one token file: Day and Dusk, color roles, seasonal inks, type, space, stroke and motion."
 >
   <section class="ds-hero">
-    <p class="eyebrow">Cello Design System</p>
-    <h1>Geometric, tactile, and buildable.</h1>
+    <p class="eyebrow">Cello design system</p>
+    <h1>Built from one file</h1>
     <p class="lede">
-      A focused system for a technical product designer: high-contrast mono type,
-      paper-grain texture, hard-edged cards, kinetic bars, and practical tokens
-      that map directly to implementation.
+      Every value on this page is read from <code>src/tokens/tokens.json</code> when the site
+      builds, the same file its CSS is generated from. Two themes, Day and Dusk. Text only ever
+      sits on a surface. Green means action, earth means ground.
     </p>
   </section>
 
-  <section class="ds-section">
-    <h2>Color Tokens</h2>
-    <div class="swatches">
-      {colors.map(([label, token]) => <article class="swatch"><span style={`background: var(${token})`}></span><strong>{label}</strong><code>{token}</code></article>)}
+  <section class="ds-section" aria-labelledby="themes">
+    <h2 id="themes">Day and Dusk</h2>
+    <p class="section-lede">Both themes, side by side. The site follows your system setting until you pick one.</p>
+    <div class="themes">
+      {
+        (["day", "dusk"] as const).map((theme) => (
+          <article class="theme" style={themeVars(theme)}>
+            <p class="theme-name">{theme === "day" ? "Day" : "Dusk"}</p>
+            <h3>A window at daybreak</h3>
+            <p class="theme-body">Body text sits on the canvas at full strength.</p>
+            <p class="theme-muted">Metadata and captions use the muted role.</p>
+            <div class="theme-actions">
+              <span class="theme-button">Primary action</span>
+              <span class="theme-link">A link →</span>
+              <span class="theme-tag">Tag</span>
+            </div>
+            <span class="theme-ground" aria-hidden="true"></span>
+          </article>
+        ))
+      }
     </div>
   </section>
 
-  <section class="ds-section split">
-    <div>
-      <h2>Typography</h2>
-      <div class="type-card">
-        <span class="type-display">Cello</span>
-        <span class="type-title">Product Designer</span>
-        <p>Systems, technical prototypes, design-dev collaboration, and clear product storytelling.</p>
+  <section class="ds-section" aria-labelledby="roles">
+    <h2 id="roles">Color roles</h2>
+    <p class="section-lede">Components use roles, never raw colors. Each one carries the line that says when to use it.</p>
+    <div class="role-table" role="table" aria-label="Color roles in Day and Dusk">
+      <div class="role-row role-head" role="row">
+        <span role="columnheader">Role</span><span role="columnheader">Day</span><span role="columnheader">Dusk</span><span role="columnheader">Use when</span>
       </div>
-    </div>
-    <div>
-      <h2>Core Tokens</h2>
-      <dl class="token-list">
-        {tokens.map(([name, token, use]) => <div><dt>{name}</dt><dd><code>{token}</code><span>{use}</span></dd></div>)}
-      </dl>
+      {
+        roles.map((t) => (
+          <div class="role-row" role="row">
+            <code role="cell">{t.css}</code>
+            {(["day", "dusk"] as const).map((theme) => (
+              <span role="cell" class="role-tile" style={themeVars(theme)}>
+                <span class="role-chip" style={chip(`var(${t.css})`)}></span>
+              </span>
+            ))}
+            <span role="cell" class="role-use">{describe(t)}</span>
+          </div>
+        ))
+      }
     </div>
   </section>
 
-  <section class="ds-section">
-    <h2>Component Language</h2>
-    <div class="components">
-      <a class="button-demo" href="/projects">View Case Studies</a>
-      <article class="mini-card has-texture-hover">
-        <span>Role Badge</span>
-        <h3>Feature Prototype</h3>
-        <p>Cards use strong borders, direct hierarchy, restrained texture, and a full-surface accent interaction.</p>
-      </article>
-      <article class="principles">
-        <h3>Principles</h3>
-        <ul>
-          <li>Use accent color to signal action or proof, not decoration.</li>
-          <li>Prefer square edges and visible structure over soft generic UI.</li>
-          <li>Keep motion directional: wipe, slide, reveal, settle.</li>
-        </ul>
-      </article>
+  <section class="ds-section" aria-labelledby="primitives">
+    <h2 id="primitives">Primitives</h2>
+    <p class="section-lede">The raw ramps the roles are built from. Components never use these directly.</p>
+    <div class="swatches">
+      {
+        primitives.map((t) => (
+          <article class="swatch">
+            <span class="swatch-color" style={chip(`var(${t.css})`)}></span>
+            <code>{t.css}</code>
+            <span class="swatch-hex">{String(t.$value)}</span>
+            {describe(t) && <span class="swatch-note">{describe(t)}</span>}
+          </article>
+        ))
+      }
     </div>
+  </section>
+
+  <section class="ds-section" aria-labelledby="inks">
+    <h2 id="inks">Seasonal inks</h2>
+    <p class="section-lede">
+      Art only: sky, far ridge, snow, forest and ground, pulled from Pacific Northwest photos and
+      flattened like a WPA print. Never text, never action. At Dusk each ink mixes 60% toward
+      Midnight Ink.
+    </p>
+    <div class="seasons">
+      {
+        seasons.map(([key, month, name]) => (
+          <article class="season">
+            <p class="season-name">{month} <span>· {name}</span></p>
+            <div class="season-strip" aria-hidden="true">
+              {inks.map((layer) => <span style={chip(`var(--art-${key}-${layer})`)} />)}
+            </div>
+            <div class="season-strip season-strip--dusk" aria-hidden="true">
+              {inks.map((layer) => <span style={duskInk(key, layer)} />)}
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="ds-section" aria-labelledby="type">
+    <h2 id="type">Type</h2>
+    <div class="faces">
+      {
+        faces.map((f) => (
+          <article class="face">
+            <p class="face-name">{f.name}</p>
+            <p class="face-sample" style={faceStyle(f.token)}>{f.sample}</p>
+            <p class="face-use">{f.use} <code>{f.token}</code></p>
+          </article>
+        ))
+      }
+    </div>
+    <p class="section-lede">Switchback sets place names. It arrives with the landscape, where places do.</p>
+    <div class="type-roles">
+      {
+        typeRoles.map((r) => (
+          <div class="type-role">
+            <p class="type-meta">
+              <code>--type-{r.role}</code>
+              {r.note && <span>{r.note}</span>}
+              <span>{describe(byName("Type", `--type-${r.role}`))}</span>
+            </p>
+            <p class="type-sample" style={typeStyle(r)}>{r.sample}</p>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="ds-section split" aria-labelledby="space">
+    <div>
+      <h2 id="space">Space</h2>
+      <p class="section-lede">Rem, named by pixels. Spacing comes from this scale or a layout token.</p>
+      <ul class="space-scale">
+        {
+          space.map((t) => (
+            <li>
+              <code>{t.css}</code>
+              <span class="space-bar" style={barWidth(t)}></span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+    <div>
+      <h2 id="layout">Layout and stroke</h2>
+      <dl class="token-list">
+        {
+          layout.map((t) => (
+            <div>
+              <dt><code>{t.css}</code> {String(t.$value)}</dt>
+              <dd>{describe(t)}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <ul class="strokes">
+        {
+          strokes.map((t) => (
+            <li>
+              <span class="stroke" style={strokeStyle(t)}></span>
+              <code>{t.css}</code>
+              <span>{describe(t)}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="ds-section" aria-labelledby="motion">
+    <h2 id="motion">Motion</h2>
+    <p class="section-lede">
+      Parts arrive, lock in and settle, on one curve: <code>{ease?.$value}</code>. With reduced
+      motion, everything finishes at once and no delay is kept, so content never waits.
+    </p>
+    <div class="ease-demo" aria-hidden="true"><span></span></div>
+    <dl class="token-list motion-list">
+      {
+        motion.map((t) => (
+          <div>
+            <dt><code>{t.css}</code> {String(t.$value)}</dt>
+            <dd>{describe(t)}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </section>
+
+  <section class="ds-section" aria-labelledby="change">
+    <h2 id="change">How a change gets in</h2>
+    <ol class="steps">
+      <li><strong>Edit <code>tokens.json</code></strong> first: the value, the theme pair or the use-when line.</li>
+      <li><strong>Run <code>pnpm tokens</code>.</strong> It writes the CSS this page and the site read.</li>
+      <li><strong>Build.</strong> <code>pnpm build</code> fails on a new raw color, size, space or duration, a hand-built keyframe, font or transition, or a token file that's out of date.</li>
+      <li><strong>Prove it.</strong> <code>pnpm ui:shots</code> compares every page pixel for pixel; <code>pnpm motion:table</code> lists every animation for a text diff.</li>
+    </ol>
   </section>
 </Layout>
 
 <style>
-  .ds-hero, .ds-section { max-width: var(--layout-container); margin: 0 auto; padding: var(--space-32) var(--layout-gutter); }
-  .eyebrow { color: var(--color-accent); font-size: var(--type-small); font-weight: var(--weight-extrabold); letter-spacing: var(--track-wide); text-transform: uppercase; }
-  .ds-hero h1 { max-width: 10ch; margin: 0; font-size: var(--ds-text-display); }
-  .lede { max-width: 66ch; color: var(--text-muted); }
-  .ds-section h2 { margin-bottom: var(--space-20); }
-  .swatches { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-16); }
-  .swatch, .type-card, .mini-card, .principles, .token-list div { border: var(--stroke-frame) solid var(--text-primary); background: var(--surface-raised); }
-  .swatch { padding: var(--space-12); }
-  .swatch span { display: block; aspect-ratio: 1.3; margin-bottom: var(--space-12); border: var(--stroke-control) solid var(--text-primary); }
-  code { font-size: var(--ds-text-xs); color: var(--color-accent); }
-  .split { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--space-24); }
-  .type-card { padding: var(--space-24); }
-  .type-display { display: block; color: var(--color-accent); font-size: clamp(4rem, 10vw, 8rem); font-weight: var(--weight-black); line-height: .9; text-transform: uppercase; }
-  .type-title { display: block; margin-top: var(--space-16); color: var(--color-accent); font-size: var(--ds-text-xl); font-weight: var(--weight-black); text-transform: uppercase; }
-  .token-list { display: grid; gap: var(--space-12); }
-  .token-list div { padding: var(--space-16); }
-  dt { font-weight: var(--weight-black); text-transform: uppercase; }
-  dd { display: grid; gap: var(--space-4); margin: 0; }
-  dd span { font-size: var(--type-small); color: var(--text-muted); }
-  .components { display: grid; grid-template-columns: .7fr 1fr 1fr; gap: var(--space-16); align-items: stretch; }
-  .button-demo { display: inline-flex; align-items: center; justify-content: center; min-height: var(--touch-target); padding: var(--space-12) var(--space-16); border: var(--stroke-frame) solid var(--color-accent); background: var(--color-accent); color: var(--bg-canvas); font-weight: var(--weight-black); text-transform: uppercase; }
-  .mini-card, .principles { padding: var(--space-20); }
-  .mini-card span { display: inline-block; margin: 0 0 var(--space-12); padding: var(--space-4) var(--space-8); border: var(--stroke-control) solid var(--color-accent); color: var(--color-accent); font-size: var(--ds-text-xs); font-weight: var(--weight-extrabold); text-transform: uppercase; }
-  .mini-card h3, .principles h3 { margin: 0 0 var(--space-12); text-transform: uppercase; }
-  .principles ul { display: grid; gap: var(--space-8); list-style: square; padding-left: var(--space-20); }
-  .principles li { line-height: var(--leading-small); }
-  @media (width <= 900px) { .split, .components { grid-template-columns: 1fr; } }
+  .ds-hero,
+  .ds-section {
+    max-width: var(--layout-container);
+    margin: 0 auto;
+    padding: var(--space-32) var(--layout-gutter);
+  }
+
+  /* The site's global "p, span" size would otherwise beat inheritance here; class rules still win. */
+  :where(.ds-hero, .ds-section) span {
+    font-size: inherit;
+  }
+
+  .eyebrow,
+  .theme-name,
+  .season-name,
+  .face-name,
+  .role-head {
+    color: var(--text-accent);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    line-height: var(--leading-tight);
+    text-transform: uppercase;
+  }
+
+  .ds-hero h1 {
+    margin: var(--space-12) 0 var(--space-20);
+  }
+
+  .lede {
+    max-width: var(--layout-measure);
+    font-size: var(--type-body-lg);
+    line-height: var(--leading-read);
+  }
+
+  .section-lede {
+    max-width: var(--layout-measure);
+    margin: 0 0 var(--space-24);
+    color: var(--text-muted);
+    line-height: var(--leading-read);
+  }
+
+  code {
+    font-size: var(--type-small);
+    color: var(--text-accent);
+  }
+
+  .ds-section h2 {
+    margin: 0 0 var(--space-16);
+  }
+
+  /* Day and Dusk */
+  .themes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-16);
+  }
+
+  .theme {
+    position: relative;
+    display: grid;
+    gap: var(--space-12);
+    padding: var(--space-24);
+    border: var(--stroke-frame) solid var(--border-strong);
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+    overflow: hidden;
+  }
+
+  .theme h3 {
+    margin: 0;
+    font-family: var(--font-title);
+    font-size: var(--type-heading);
+    text-transform: uppercase;
+  }
+
+  .theme-body,
+  .theme-muted {
+    margin: 0;
+    line-height: var(--leading-small);
+  }
+
+  .theme-muted {
+    color: var(--text-muted);
+    font-size: var(--type-small);
+  }
+
+  .theme-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-16);
+    margin-top: var(--space-8);
+  }
+
+  .theme-button {
+    padding: var(--space-12) var(--space-16);
+    background: var(--action-primary);
+    color: var(--text-inverse);
+    font-size: var(--type-ui);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+
+  .theme-link {
+    color: var(--action-primary);
+    font-size: var(--type-ui);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+
+  .theme-tag {
+    padding: var(--space-4) var(--space-8);
+    border: var(--stroke-control) solid var(--border-strong);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+  }
+
+  .theme-ground {
+    position: absolute;
+    right: var(--space-24);
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-left: var(--space-32) solid transparent;
+    border-right: var(--space-32) solid transparent;
+    border-bottom: var(--space-40) solid var(--accent-ground);
+  }
+
+  /* Roles */
+  .role-table {
+    display: grid;
+    border-top: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .role-row {
+    display: grid;
+    grid-template-columns: minmax(0, 14rem) var(--space-64) var(--space-64) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-16);
+    padding: var(--space-12) 0;
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  /* Each chip sits on its own theme's canvas, so ink-on-ink roles stay readable. */
+  .role-tile {
+    display: block;
+    padding: var(--space-8);
+    background: var(--bg-canvas);
+    border: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .role-chip {
+    display: block;
+    height: var(--space-24);
+    border: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .role-use {
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+    color: var(--text-muted);
+  }
+
+  /* Primitives */
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: var(--space-16);
+  }
+
+  .swatch {
+    display: grid;
+    gap: var(--space-4);
+    align-content: start;
+  }
+
+  .swatch-color {
+    aspect-ratio: 4 / 3;
+    margin-bottom: var(--space-8);
+    border: var(--stroke-frame) solid var(--border-strong);
+  }
+
+  .swatch-hex,
+  .swatch-note {
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+    color: var(--text-muted);
+  }
+
+  /* Seasonal inks */
+  .seasons {
+    display: grid;
+    gap: var(--space-20);
+  }
+
+  .season-name {
+    margin: 0 0 var(--space-8);
+  }
+
+  .season-name span {
+    color: var(--text-muted);
+  }
+
+  .season-strip {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    height: var(--space-48);
+    border: var(--stroke-frame) solid var(--border-strong);
+  }
+
+  .season-strip span {
+    display: block;
+    height: 100%;
+  }
+
+  .season-strip--dusk {
+    height: var(--space-24);
+    border-top: 0;
+  }
+
+  /* Type */
+  .faces {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-16);
+    margin-bottom: var(--space-24);
+  }
+
+  .face {
+    display: grid;
+    gap: var(--space-12);
+    align-content: start;
+    padding: var(--space-20);
+    border: var(--stroke-frame) solid var(--border-strong);
+    background: var(--bg-raised);
+  }
+
+  .face-name,
+  .face-sample,
+  .face-use {
+    margin: 0;
+  }
+
+  .face-sample {
+    font-size: var(--type-heading);
+    line-height: var(--leading-heading);
+  }
+
+  .face-use {
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+    color: var(--text-muted);
+  }
+
+  .type-roles {
+    display: grid;
+    border-top: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .type-role {
+    display: grid;
+    grid-template-columns: minmax(0, 16rem) minmax(0, 1fr);
+    align-items: baseline;
+    gap: var(--space-24);
+    padding: var(--space-16) 0;
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .type-meta {
+    display: grid;
+    gap: var(--space-4);
+    margin: 0;
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+    color: var(--text-muted);
+  }
+
+  .type-sample {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  /* Space, layout, stroke */
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-48);
+  }
+
+  .space-scale,
+  .strokes {
+    display: grid;
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .space-scale li {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-12);
+  }
+
+  .space-bar {
+    height: var(--space-12);
+    background: var(--action-primary);
+  }
+
+  .token-list {
+    display: grid;
+    gap: var(--space-12);
+    margin: 0 0 var(--space-32);
+  }
+
+  .token-list dt {
+    font-weight: var(--weight-bold);
+  }
+
+  .token-list dd {
+    margin: var(--space-4) 0 0;
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+    color: var(--text-muted);
+  }
+
+  .strokes li {
+    display: grid;
+    grid-template-columns: var(--space-64) 9rem minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-12);
+    font-size: var(--type-small);
+    color: var(--text-muted);
+  }
+
+  .stroke {
+    border-top-style: solid;
+    border-top-color: var(--text-primary);
+  }
+
+  /* Motion */
+  .ease-demo {
+    position: relative;
+    height: var(--space-16);
+    margin-bottom: var(--space-24);
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .ease-demo span {
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: var(--space-12);
+    background: var(--action-primary);
+    transform: scaleX(0.08);
+    transform-origin: left;
+    transition: transform var(--motion-entry) var(--ease-out);
+  }
+
+  .ease-demo:hover span {
+    transform: scaleX(1);
+  }
+
+  .motion-list {
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+  }
+
+  /* How a change gets in */
+  .steps {
+    display: grid;
+    gap: var(--space-12);
+    max-width: var(--layout-measure);
+    padding-left: var(--space-24);
+    line-height: var(--leading-read);
+  }
+
+  @media (width <= 900px) {
+    .themes,
+    .faces,
+    .split {
+      grid-template-columns: 1fr;
+    }
+
+    .role-row {
+      grid-template-columns: minmax(0, 1fr) var(--space-48) var(--space-48);
+    }
+
+    .role-use {
+      grid-column: 1 / -1;
+    }
+
+    .type-role {
+      grid-template-columns: 1fr;
+      gap: var(--space-8);
+    }
+  }
 </style>
