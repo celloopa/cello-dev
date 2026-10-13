@@ -577,3 +577,29 @@ calm reading → next post rises); /card, /resume, /design-system and /watchlist
 stays later and opt-in (D6). The new pieces (chapter, rail, doorway view transition, the two idle tiers,
 the depth hand-off, the swatch index) enter the design system as amendment A4, reviewed by the
 migration thread. No build work until he has walked the storyboard.
+
+### Q44. /card at events (2026-10-13)
+
+Cello added /card to the chapters scope: "a page targetted at sharing elevator pitches for myself, my
+work etc while i'm at events — hackathons, confs, quickly pull it up to share with strangers" (this
+replaces Q43's "/card stays as built" default). Event use is show, then share: he holds the phone up and
+the first screen is the pitch with a big QR they can scan; a tap or swipe goes to a project's 10-second
+pitch with its artifact; Save Contact and Share stay one tap away throughout. (rec.)
+
+### Q45. /card words (2026-10-13)
+
+Reuse what exists (the cv.json title, the "Open to…" line, the summary, each project's one-liner and
+artifact). Visible `[Cello's words]` slots for a spoken-length personal pitch and per-project
+10-second lines he'll write later. No new copy from agents. (rec.)
+
+### Q46. /card reliability (2026-10-13)
+
+Fast, online only: no offline or home-screen install (he declined that option). Words, QR and actions at
+first paint; scenes lazy, never blocking.
+
+### Q47. /card structure (2026-10-13)
+
+Screen 1 is the pitch (name, cv.json title, "Open to…", the pitch slot, a big QR to cello.design, Save
+Contact and Share). Then the four projects as compact chapters reusing home's chapter component (place,
+title, one-liner, artifact, soft snap, the bottom rail), then About and contact. The pitch screen is the
+only new piece. /card's About link moves from /#about to /about (Q35). (rec.)
