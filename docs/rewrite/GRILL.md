@@ -448,3 +448,54 @@ roles, components; DS-HANDOFF proposals go in as an amendment), not as a separat
 → **Cutover target: this week**, after Cello irons it out on a demo. Today's site stays live meanwhile.
 The build is now a part for the "Ship cello.dev" conductor; the design-system session
 ("Continue the cello.dev design-system migration") owns how the proposals enter the system.
+
+### After the first pin: presenting the experience (2026-10-13)
+
+Cello, reviewing the pinned landscape build (250cd03) in the "Cut over cello.dev" session: "something
+isnt clicking about how were presenting the experience". The idle-motion change (remove "Take in the
+view", add idle animation) was cancelled before it started; the cutover pin is on hold. Direction to
+storyboard (his yes): **the scene owns the thresholds, the work owns the middle.** Decisions below
+were made in that session's grilling and relayed here; "(rec.)" marks where he took the recommended
+option.
+
+### Q23. Audience (2026-10-13)
+
+Hiring managers and recruiters first (skimming, often on phones from LinkedIn), peers second. The scene
+is craft they feel in 3 s, never a gate. (rec.)
+
+### Q24. Arrival (2026-10-13)
+
+One full screen of the living scene plus the hero copy; text at first paint, no wait. "Take in the
+view" is dropped. The first project's place/cover peeks at the bottom edge. (rec.)
+
+### Q25. Work on home (2026-10-13)
+
+Full-screen chapters, one per project, "but having a timeline bar they can scrub or click to skip
+through" (Cello). Replaces the in-row previews and the whole-page background swaps built in the pinned
+version.
+
+### Q26. Scroll (2026-10-13)
+
+Soft (proximity) snap, free inside a chapter; fast flicks skip chapters; place transitions are tied to
+scroll position (scrubbable, reversible). (rec.)
+
+### Q27. Timeline (2026-10-13)
+
+A slim right-edge vertical rail on desktop, a thin bottom bar on phones. One stop per chapter (arrival,
+the four projects, then How I Build / About / Contact); name on hover/focus; drag to scrub, tap to jump;
+shows progress and the current chapter. A real nav landmark (a list of links) for keyboard and screen
+readers. (rec.)
+
+### Q28. Chapter content (2026-10-13)
+
+The place full-bleed and sharp, plus title, role, one-line pitch, plus ONE product artifact (the looping
+video or a key screen) set into the scene, plus "Read the case study" (and "Live site" where there is
+one). (rec.)
+
+### Q29. The doorway (2026-10-13)
+
+The chapter becomes the case study's cover through a cross-document view transition: the place stays,
+the title moves into the page title, the artifact settles. Back returns to the same chapter. Browsers
+without view transitions get a normal load. URLs unchanged. (rec.)
+
+Open: what the scene does while reading inside a case study, and onward.
