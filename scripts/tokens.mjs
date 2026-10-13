@@ -3,6 +3,9 @@
 //   pnpm tokens             write src/styles/tokens.css from src/tokens/tokens.json
 //   pnpm tokens --check     fail if tokens.css is stale, or if any file gained a raw value or a
 //                           hand-built pattern beyond src/tokens/raw-baseline.json
+//                           and fail if tokens.json drifts from the vendored Cello family layer
+//                           (src/tokens/family.json); warn only if ~/Documents/code/cello-family
+//                           has a newer version, so no build depends on that folder existing
 //   pnpm tokens --baseline  rewrite the baseline. Run it only after REMOVING literals, never to
 //                           admit a new one: the baseline is a ratchet that only goes down.
 //
@@ -10,6 +13,7 @@
 // src/hidden-pages is the parked Lab staging area (DESIGN.md: "hidden until implementations meet
 // portfolio quality"), so it and the components only it uses are out of scope until they ship.
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
@@ -18,6 +22,8 @@ const SRC = path.join(root, "src");
 const JSON_PATH = path.join(SRC, "tokens/tokens.json");
 const CSS_PATH = path.join(SRC, "styles/tokens.css");
 const BASELINE_PATH = path.join(SRC, "tokens/raw-baseline.json");
+const FAMILY_PATH = path.join(SRC, "tokens/family.json");
+const FAMILY_SOURCE = path.join(os.homedir(), "Documents/code/cello-family/family.json");
 const flag = (n) => process.argv.includes(n);
 
 // ---------- generator ----------
@@ -156,6 +162,33 @@ function scan() {
   return { counts, where };
 }
 
+// ---------- family drift ----------
+// The Cello family layer (fonts, neutral endpoints, the house curve, the reduced-motion contract)
+// is vendored at src/tokens/family.json. tokens.json must use exactly those values.
+function familyCheck() {
+  const problems = [], warnings = [];
+  if (!fs.existsSync(FAMILY_PATH)) return { problems: ["src/tokens/family.json is missing: vendor it from ~/Documents/code/cello-family"], warnings, version: null };
+  const family = JSON.parse(fs.readFileSync(FAMILY_PATH, "utf8"));
+  const tokens = Object.fromEntries(JSON.parse(fs.readFileSync(JSON_PATH, "utf8")).groups.flatMap((g) => g.tokens).map((t) => [t.css, t.$value]));
+  const same = (a, b) => String(a).trim().toLowerCase() === String(b).trim().toLowerCase();
+  const stack = (v) => String(v).split(",").map((f) => f.trim().replace(/^"|"$/g, ""));
+  const expect = (ok, what) => { if (!ok) problems.push(`Family drift: ${what} (family ${family.version}). Change tokens.json, or change the family repo first.`); };
+  expect(same(tokens["--ink-950"], family.neutral.ink.$value), `--ink-950 is ${tokens["--ink-950"]}, family ink is ${family.neutral.ink.$value}`);
+  expect(same(tokens["--paper-100"], family.neutral.paper.$value), `--paper-100 is ${tokens["--paper-100"]}, family paper is ${family.neutral.paper.$value}`);
+  expect(same(tokens["--ease-out"], family.motion["ease-out"].$value), `--ease-out is ${tokens["--ease-out"]}, the family curve is ${family.motion["ease-out"].$value}`);
+  expect(stack(tokens["--font-mono"])[0] === family.type.mono.family, `--font-mono doesn't lead with ${family.type.mono.family}`);
+  expect(stack(tokens["--font-read"]).some((f) => f === family.type.sans.family || f === `${family.type.sans.family} Variable`), `--font-read doesn't use ${family.type.sans.family}`);
+  const motionCss = fs.readFileSync(path.join(SRC, "styles/animations.css"), "utf8");
+  expect(/animation-delay:\s*var\(--motion-none\)\s*!important/.test(motionCss) && /transition-delay:\s*var\(--motion-none\)\s*!important/.test(motionCss),
+    "the reduced-motion block in src/styles/animations.css no longer zeroes animation and transition delays");
+  if (fs.existsSync(FAMILY_SOURCE)) {
+    const source = JSON.parse(fs.readFileSync(FAMILY_SOURCE, "utf8"));
+    const newer = (a, b) => { const x = a.split(".").map(Number), y = b.split(".").map(Number); for (let i = 0; i < 3; i++) if ((x[i] ?? 0) !== (y[i] ?? 0)) return (x[i] ?? 0) > (y[i] ?? 0); return false; };
+    if (newer(source.version, family.version)) warnings.push(`Cello family ${source.version} is available (vendored ${family.version}): copy ~/Documents/code/cello-family/family.json to src/tokens/family.json and re-run.`);
+  }
+  return { problems, warnings, version: family.version };
+}
+
 // ---------- main ----------
 const css = generate();
 if (flag("--baseline")) {
@@ -175,8 +208,11 @@ if (flag("--baseline")) {
       problems.push(`${f}:${where[`${f}|${k}|${v}`]}: new ${k.startsWith("ban:") ? "hand-built pattern" : "raw " + k} ${v}${n - allowed > 1 ? ` (+${n - allowed})` : ""}. ${why}`);
     }
   }
+  const family = familyCheck();
+  problems.push(...family.problems);
+  family.warnings.forEach((w) => console.warn(`warning: ${w}`));
   if (problems.length) { console.error(problems.join("\n")); process.exit(1); }
-  console.log("Tokens are up to date, no new raw values, and no new hand-built keyframes, fonts, transitions, containers or theme storage.");
+  console.log(`Tokens are up to date, match Cello family ${family.version}, and there are no new raw values or hand-built keyframes, fonts, transitions, containers or theme storage.`);
 } else {
   fs.writeFileSync(CSS_PATH, css);
   console.log("src/styles/tokens.css written from src/tokens/tokens.json");

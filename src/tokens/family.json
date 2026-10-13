@@ -1,0 +1,44 @@
+{
+  "version": "0.1.0",
+  "$description": "The Cello family layer: the few things every Cello product shares. Each product vendors a pinned copy and checks its own tokens against it. Everything not listed here (action color, earth, marks, display faces, spacing, components) belongs to each product.",
+  "type": {
+    "mono": {
+      "family": "Geist Mono",
+      "license": "OFL-1.1",
+      "$description": "Data, labels, time, code. Every Cello product may use it; none is required to make it the body face."
+    },
+    "sans": {
+      "family": "Geist",
+      "license": "OFL-1.1",
+      "$description": "The sibling for long reading where a product wants one. cello.dev uses it for case-study and blog body text only."
+    }
+  },
+  "neutral": {
+    "ink": {
+      "$value": "#001a11",
+      "$description": "Midnight Ink. The darkest neutral: a green-black, never pure black."
+    },
+    "paper": {
+      "$value": "#f3ede2",
+      "$description": "Paper. The lightest neutral: warm paper, never pure white."
+    },
+    "rule": "Each product builds its own ramp between ink and paper and may shift it; text on canvas stays at or above 7:1."
+  },
+  "motion": {
+    "ease-out": {
+      "$value": "cubic-bezier(0.16, 1, 0.3, 1)",
+      "$description": "The house curve. Arrivals, reveals, hovers. Loops use linear."
+    },
+    "character": "Assembly: parts arrive, lock in, and settle. Motion explains a change; it never decorates content.",
+    "reduced-motion": "Every animation has a direct-state fallback; delays are zeroed; content never waits on motion; loops stop."
+  },
+  "voice": {
+    "principles": [
+      "Short, concrete, specific before broad",
+      "Claim, then proof",
+      "Honest maturity labels (in progress, private beta, personal)",
+      "No guilt, no hype"
+    ],
+    "banned": ["elevate", "unleash", "next-gen", "seamless", "transformative"]
+  }
+}
