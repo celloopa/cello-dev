@@ -6,7 +6,8 @@
  * add their own media (the poster media, the place swatch) and layout around it. Replaces the
  * copy of WorkItem and SceneSelector, and ProjectCard/BlogCard's role on the live site.
  *
- *   variant  project  with the live site as an IconButton when `live` is set
+ *   variant  project  with the live site as an IconButton when `live` is set (opens a new tab,
+ *                     and its name says so, as ArrowLink external does)
  *            post     the same card without the live link (a post has none)
  *   size     lg       a poster row (home's Work list): the title at section-title size
  *            md       an index row (/projects, /blog): the title at heading size
@@ -74,7 +75,7 @@ const hasMeta = tags.length > 0 || !!liveUrl || Astro.slots.has("meta");
         {liveUrl && (
           <IconButton
             href={liveUrl}
-            label={`Visit live site for ${title}`}
+            label={`Visit live site for ${title} (opens in a new tab)`}
             target="_blank"
             rel="noopener noreferrer"
             class="card-live"
