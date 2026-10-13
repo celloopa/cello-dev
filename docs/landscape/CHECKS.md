@@ -719,3 +719,101 @@ Known, deliberately not done on this branch; pick these up once the landscape bu
   Tab order and focus return checked and fixed: Tab stays inside it while open, Esc and every action
   return focus to the control that opened it (or to the page when it was opened by the keys). Not
   touched in S5–S6 (§7 "Later").
+
+# DS review follow-ups (2026-10-12)
+
+Three small accessibility items from the design-system review, plus the two later items logged
+above. Same setup: production build, installed Chrome through `playwright-core`.
+
+## 1. Card's live link announces the new tab
+
+`ui/Card.astro`: the live IconButton's name is now "Visit live site for {title} (opens in a new
+tab)", the same cue as ArrowLink external. Card renders the link in exactly two places, both through
+the one component: home's Work rows (`WorkItem`: Ghosted, VegAvengers) and the /projects index
+(`SceneSelector`: the same two). Posts have no live link. Checked in the built HTML (all four
+labels carry the cue) and in the Tab pass below.
+Seen, not changed: other new-tab icon links (the scene footer's socials, /resume's hero icons, the
+legacy `ProjectCard`, which no page imports) don't say so either.
+
+## 2. A current nav item on child pages: already in place
+
+Nothing to change. d52187a (S6 riding fixes) already marks the parent: Work = `aria-current="true"`
+on `/projects/*`, Writing = `true` on `/blog/*`, and `page` only on the exact page, in every nav that
+renders there: the bar (`ContextBar`) and the scene footer (`SceneLayout`). `Header` does the same
+for /resume and the other non-scene pages. Re-checked in the built HTML: Ghosted, Daybreak and the
+post each carry `true` on the bar's and the footer's parent link; /projects and /blog carry `page`.
+The bar underlines a current item (`.bar-link[aria-current]`, "true" included); the scene footer has
+no visual for it (the attribute only).
+
+## 3. Focus ring contrast over scenes
+
+`--focus-ring` is signal-500 (#00bc44, luminance 0.364) on every scene page. Contrast needed: 3:1
+against what's next to the ring.
+
+**Method.** 12 screens (home, home in Admire, /card, /projects, /blog, 404, the four case studies,
+both posts) × 1440×900 and 390×844 × Day and Dusk × WebGL (Chrome with `--use-angle=metal`) and the
+reduced-motion still: Tab through every stop (1,222 per run), screenshot with the ring, again with
+the ring hidden. The band is the 3px just outside the ring (6–9px from the control's box), with
+neighbouring text and controls masked out. Contrast = ring color against each band pixel; the
+headline is the 5th percentile (the worst 5% of the band), lowest over a screen's stops. The scripts
+are not committed.
+
+**Before** (no halo): **70 of 1,222 stops under 3:1 in WebGL, 76 in the still**. Which controls:
+
+| Control | Lowest | Where |
+|---|---|---|
+| Skip to content | 1.31 (Day WebGL; 1.29 still) | its ring's lower edge leaves the dark bar onto bright sky: home, /card, 404 at 1440 and 390 |
+| Pause / Play video | 1.08 | the button sits over bright app screenshots in the video: Ghosted, Asheville, VegAvengers, the Programmatic Resumes post, both widths, both themes |
+| View Case Studies ↓ (Admire) | 2.66 | 390, over the Day sky |
+| "Ghosted →" (/card) | 2.94 | 1440 Day |
+
+Everything else (the home hero, the Work rows, the bar, the footer) was already 3.6–7.2 because the
+copy scrim and the ink bar sit under it. Dusk WebGL fails only on the video buttons; Day fails on
+those and on the skip link.
+
+**Fix** (`5bcf3c8`). The color stays. On scene pages `:focus-visible` gains an ink halo: a new Scene
+token `--focus-halo` (= ink-950) and one rule in `scene.css`, `box-shadow: 0 0 0 calc(var(--stroke-frame) * 3) var(--focus-halo)`.
+The 9px shadow paints under the 3px outline, so ink fills the 3px offset gap and the 3px outside the
+ring: ink | green | ink. Ring vs ink-950 is 7.16:1. No raw values (`tokens --check` clean,
+`raw-baseline.json` untouched).
+
+**After**, lowest 5th-percentile contrast per screen, before → after, WebGL:
+
+| Page | 1440 Dusk | 1440 Day | 390 Dusk | 390 Day |
+|---|---|---|---|---|
+| / | 3.87 → 7.16 | 1.31 → 6.52 | 3.99 → 7.16 | 1.31 → 7.16 |
+| / (Admire) | 6.30 → 7.16 | 4.70 → 6.52 | 5.14 → 7.16 | 2.66 → 7.16 |
+| /card/ | 3.87 → 5.63 | 1.31 → 4.75 | 3.99 → 7.16 | 1.31 → 7.16 |
+| /projects/ | 3.83 → 7.16 | 3.65 → 7.16 | 3.67 → 7.16 | 3.67 → 7.16 |
+| /blog/ | 5.68 → 7.16 | 3.65 → 7.16 | 7.09 → 7.16 | 5.82 → 7.00 |
+| /404.html | 3.87 → 7.16 | 1.31 → 7.16 | 3.99 → 7.16 | 1.31 → 7.16 |
+| Ghosted | 1.92 → 7.16 | 1.92 → 7.16 | 1.92 → 6.30 | 1.92 → 4.48 |
+| Daybreak | 6.69 → 7.16 | 5.00 → 7.16 | 6.59 → 7.03 | 4.91 → 5.76 |
+| Asheville Dispensary | 1.10 → 7.16 | 1.10 → 7.16 | 1.08 → 6.88 | 1.08 → 5.37 |
+| VegAvengers | 1.20 → 7.16 | 1.20 → 7.16 | 1.19 → 6.81 | 1.19 → 4.94 |
+| Designing for the Second User | 7.09 → 7.16 | 5.94 → 7.16 | 6.51 → 7.16 | 4.56 → 7.16 |
+| Programmatic Resumes | 1.69 → 6.53 | 1.69 → 4.51 | 1.92 → 7.02 | 1.92 → 5.56 |
+
+Still (reduced motion; the Day art in both themes, so Dusk and Day match): lowest 1.07 → **4.39**
+(1440: 1.31 → 6.60 on home, 1.20 → 7.16 on VegAvengers, 1.67 → 4.39 on the Programmatic Resumes
+post; 390: 1.29 → 7.16 on home, 1.19 → 4.77 on VegAvengers). **After: 0 of 1,222 stops under 3:1 in
+both runs; the lowest screen is 4.39 (still) and 4.48 (WebGL).**
+
+Two measurement notes. The lowest single pixel in a band is still 1.00 on three multi-line title
+links (the 5th percentile is 4.5+): a wrapped link draws a ring per line, so the second line's ring
+falls inside the first line's band. And the "before" column is the same screenshots with the halo
+hidden, so the two columns share pixels.
+
+Seen, not changed: at 390 a case study's table-of-contents chips (`.read-toc ul`, `overflow-x:
+auto` on phones) clip the ring and the halo on two sides (28 stops, ring drawn on 2 of 4 sides).
+Padding the list by the ring's 9px would fix it; it's a layout change, so it's left for Cello.
+
+## 4. Keyboard pass, build, console
+
+- **Tab pass** on home (34 stops at 1440, 30 at 390), /card (32, 28) and /projects/ghosted (40, 40)
+  in Day and Dusk, WebGL and the still: every stop draws the ring and the halo, except the 6 phone
+  TOC chips on each case study (clipped, above). Home's Ghosted and VegAvengers live links read
+  "Visit live site for … (opens in a new tab)". Order unchanged from S6.
+- **Console:** zero errors and zero warnings across all 1,222 stops per run and all 12 screens.
+- `pnpm build`: 0 errors, 0 warnings, 0 hints (107 files); `tokens --check` clean, baseline
+  unchanged (55).
