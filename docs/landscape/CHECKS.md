@@ -706,3 +706,16 @@ LinkedIn, Bluesky; on /resume the hero's four links keep their full names.
 - **Guard idea, not built:** §8's class-name ban (`btn|button|cta|tag|…` outside `ui/`) isn't in
   `scripts/tokens.mjs`; adding it now would add baseline entries for the hand-builds left above,
   and the baseline only shrinks here.
+
+# Later (after cutover)
+
+Known, deliberately not done on this branch; pick these up once the landscape build is the site.
+
+- **§8 class-name guard.** `scripts/tokens.mjs` has no ban on hand-built `btn|button|cta|tag|…` class
+  names outside `ui/`. Adding it now would put baseline entries in for the controls left hand-built
+  on purpose (see "Left hand-built on purpose" in S5–S6), and the baseline only shrinks on this
+  branch. Build the guard once those controls have moved onto the components.
+- **The ⌘K menu's Tab/focus-return fix.** `KeyboardShortcutsMenu.svelte` (a `role="dialog"`) needs its
+  Tab order and focus return checked and fixed: Tab stays inside it while open, Esc and every action
+  return focus to the control that opened it (or to the page when it was opened by the keys). Not
+  touched in S5–S6 (§7 "Later").
