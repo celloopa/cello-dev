@@ -555,3 +555,154 @@ Left for Cello:
 - ~~Three unlinked Ghosted terminal videos showed a local home-folder path and username.~~
   Removed on master (f06cec5, Cello's go) and merged here.
 - `v3/signin.webp` keeps the "e.g. kim-7x2qpd" placeholder (the app's own copy).
+
+---
+
+# S5–S6: design-system stages 5 and 6 in the landscape (2026-10-12)
+
+Cello moved stages 5 (layout rules) and 6 (the v1 components, proposal §7) from the migration
+branch into this build. The landscape keeps its markup and structure; the components read
+semantic roles only. Same setup as above: production build on `astro preview` (port 4623),
+headless installed Chrome through `playwright-core`. Shots: `shots/s56/` (before | after,
+JPEG q82).
+
+## Merge first: master @ f06cec5
+
+Merged as `bc17427` (stage 7: `/design-system` read from tokens.json, coral removed; the three
+unlinked Ghosted videos removed). tokens.json merged cleanly: the Scene and A3 tokens stay,
+`coral-500`, `ds-color-coral-500` and `accent-warning` are gone, and nothing here used them.
+The one conflict, `raw-baseline.json`, was regenerated after the merge: **55**, below both sides
+(ours 57, master 199). `git grep` finds no reference to the removed videos.
+`/design-system` after the merge = 9ea55ab's page built with our tokens.json: **0 px on all 4
+screens**. (Against 9ea55ab's own tokens.json the page is longer, because it now lists the
+Scene and A3 tokens: data, not style.)
+
+## Stage 5: layout rules
+
+| Rule | What changed |
+|---|---|
+| One container token | The scene bar and footer carry the one `.container` (they repeated its formula); Header, Section, Layout's footer and /resume's divider read `var(--layout-container)` instead of `1100px` (0 px; four ratchet entries gone) |
+| One left edge | Every text and media block's left x measured at 1440 and 390 on every page. Reading pages already had one edge (S2 dropped the 0.8rem inset). Two drifts fixed: on phones the scene heroes (home, /card, 404), the Admire view and the place label started at 24 px while every section, the bar and the footer start at the gutter (16 px); and Prose's bulleted lists indented twice (ul 24 + li 24), so their words started 24 px right of a numbered item's |
+| Shared Prose | `ui/Prose.astro` (S2), 2c's scoping unchanged: `--font-read` and `--layout-measure-read` on the article's own p/ul/ol/blockquote; components stay Geist Mono |
+
+## Stage 6: the v1 components (`src/components/ui/`)
+
+| Component | Variants | Replaced |
+|---|---|---|
+| Focus ring (`src/styles/focus.css`) | one, global | animations.css's ring and the `:where()` rings in Layout and SceneLayout |
+| Button | primary, secondary · md, sm · `href` → `<a>` · optional `detail` line | home's `.hero-cta` ×2, a case study's View Live / GitHub, /card's Save Contact / Share Card, the bar's Menu, MediaVideo's Pause/Play |
+| ArrowLink | forward, back, external (new tab, announced), + down (Admire's in-page jump) | every `.scene-arrow` (home ×4, 404, /card ×2, StoryEnd ×2); the global rule is gone |
+| IconButton | 44px, `label` required | the bar's theme button, the scene footer's socials, WorkItem's and SceneSelector's live links, /resume's hero icons (36 → 44px) |
+| Tag | tech, count, role, date | WorkItem's, SceneSelector's and ReadHead's tag lists, ReadHead's role/date badge |
+| Eyebrow + AccentBar | inherit, on-art, accent · bar sm, md | StoryEnd's labels, the TOC label, /card's role/where/QR labels, home's kicker, FlowDiagram's step bar |
+| Panel | plain, labeled | CaseMeta's boxes, the case-study highlights, FlowDiagram's frame |
+| Card | project, post · lg, md · stretch | the copy of home's Work rows (WorkItem) and of the index rows (SceneSelector) |
+| Section | with title, without · contained or full-bleed | home's four section heads, /card's two |
+
+Each component owns hover = focus-visible (and active and disabled where they apply); the
+global ring draws on top. One shared change makes `color: inherit` safe: on scene pages, text in
+`main` defaults to `--text-on-art` (plates keep `--text-primary`).
+
+Riding fixes: `aria-current` on every nav's current item (`page` on the page, `true` under it:
+Header, the bar, the scene footer). Already in place and checked: underlined case-study body
+links and blog table styles (Prose, S2); the resume theme button's name ("Switch to Day/Dusk").
+Not done: the ⌘K menu's Tab/focus-return pass (§7 "Later").
+
+Left hand-built on purpose: /resume's Download PDF / Export cv.json (the offset-frame motif;
+WindowFrame isn't in this pass), Layout's 40px footer socials and Header (they also render on
+`/design-system`, which must not change here), the Admire buttons (the A3 control), /card's
+contact links, QR link and panel titles, home's proof cards, the TOC chips, the skip link.
+
+## ui:shots (exact)
+
+Stage 5 vs 2c2c1be (at b37b0eb): **26 of 48 changed**, all expected: the four case studies and
+the post at both widths (the lists rewrap; pages 28–532 px shorter) and home, /card and 404 at
+390 (the hero's 8 px). Home, /card and 404 at 1440, the indexes, /resume, /design-system: 0 px.
+
+Stage 6 vs the post-merge build (bc17427, two runs), at d52187a: **44 of 48 changed**;
+`/design-system` is **0 px** (4). Each change, named:
+
+| Screens | Why |
+|---|---|
+| home (4) | Buttons take the ui role (.9rem/700, was .85rem/800) and the 2px control stroke (was 3px), so the bottom-aligned hero copy sits 5–6 px lower; Work rows: the role 8 px above the title (was 12), the +N count green-outlined, meta gap 12/16 |
+| /card (4) | the actions' 2px stroke, Share's border `--border-strong`; Visit Portfolio is external (↗); About: the QR now sits under the title, level with the paragraph (the page is 17 px taller at 1440) |
+| /projects, /blog (8) | the +N count green-outlined (≤ 1,326 px) |
+| case studies, the post (20) | tags and the role/date badge lose 4 px of side padding and take leading-ui; CaseMeta 3px frames and bold labels; FlowDiagram's title bold and 8 px closer; View Live 8 px narrower; StoryEnd's index link gains → and its labels leading-ui (pages 8–44 px shorter) |
+| 404 (4) | ArrowLink's arrow sits at the flex gap (≤ 362 px) |
+| /resume (4) | the hero's icon links and theme button grow 36 → 44 px (390: the page is 8 px taller) |
+
+## Motion table (vs bc17427)
+
+Every animation line is identical on every page. Transitions differ only by element name
+(`.hero-cta` → `.button--primary`, `.scene-arrow` → `.arrow-link`, `.work-external` →
+`.icon-button`…) and by `border-color` joining Button's and IconButton's lists; all at
+`--motion-ui` 300 ms on the house curve, 0.01 ms under reduced motion.
+
+## Text over art: contrast (each line vs the 99th-percentile brightest pixel under it)
+
+The S1–S3 measure, every 60% viewport step down 11 pages (home, /card, /projects also with each
+row hovered, /blog, 404, the four case studies, both posts) × 1440/390 × Day/Dusk × WebGL/still.
+Lowest small / large:
+
+| Page | WebGL 1440 Dusk · Day | WebGL 390 Dusk · Day | Still 1440 | Still 390 |
+|---|---|---|---|---|
+| home | 11.21/6.54 · 7.06/5.12 | 12.30/7.16 · 8.61/5.15 | 6.98/5.13 | 8.56/4.79 |
+| /card | 7.92/7.28 · 5.29/6.69 | 9.24/7.31 · 6.43/5.77 | 5.90/6.69 | 7.79/4.97 |
+| /projects | 11.22/7.42 · 7.09/7.02 | 12.30/7.17 · 8.80/6.00 | 7.09/7.15 | 8.80/5.93 |
+| /projects, rows hovered | 7.53/5.40 · 7.53/5.40 | 12.30/7.46 · 8.80/7.13 | — | — |
+| /blog | 11.22/7.42 · 7.09/7.02 | 12.43/7.16 · 8.80/5.99 | 7.09/7.20 | 8.83/5.92 |
+| 404 | 13.53/13.68 · 9.98/10.27 | 14.68/14.50 · 13.54/12.56 | 10.32/10.05 | 13.39/12.38 |
+| Ghosted | 9.83/7.42 · 6.93/6.98 | 9.83/7.63 · 8.50/7.46 | 6.93/6.97 | 8.50/7.35 |
+| Asheville Dispensary | 11.27/6.92 · 7.15/5.34 | 12.08/7.17 · 8.60/6.07 | 7.16/5.34 | 8.63/6.07 |
+| VegAvengers | 9.83/6.77 · 7.04/4.84 | 9.83/7.04 · 8.73/5.69 | 7.01/4.84 | 8.73/5.62 |
+| Daybreak | 12.89/7.23 · 9.09/6.38 | 12.59/7.17 · 9.08/6.00 | 9.23/6.31 | 9.49/6.00 |
+| Designing for the Second User | 11.54/7.47 · 7.15/7.14 | 12.38/7.57 · 8.73/7.31 | 7.15/7.07 | 8.73/7.21 |
+| Programmatic Resumes | 11.37/6.93 · 7.31/5.48 | 12.23/6.87 · 8.75/5.09 | 7.23/5.41 | 8.71/5.02 |
+
+(The still is the Day art in both themes, so its two columns match.) **0 failures** of 4.5:1 /
+3:1 across about 24,700 measured lines. One measurement fix on the way: ArrowLink external's
+screen-reader note "(opens in a new tab)" is a 1 px box clipped to nothing and paints no pixels,
+but the first pass measured its text rectangle (2.18:1 on /card); the script now skips visually
+hidden text. Thinnest margins: home's "Cello" over the phone still (4.79:1, large, needs 3) and
+VegAvengers' green h2 "Context" in Day (4.84:1, large).
+
+## Keyboard (reduced motion)
+
+| Page | Tab order |
+|---|---|
+| home 1440 | skip link, Cello, Work, About, Writing, Design System, Resume, Menu, Switch to Dusk, View Case Studies, View Resume →, Take in the view, the four case-study titles (Ghosted's and VegAvengers' live links after their titles), All Case Studies →, the three proof cards, Email Me, View Resume →, the footer. At 390 the utilities step aside; the rest is the same |
+| /card 1440 | skip, the bar, Save Contact, Share Card, the four panel titles, email, LinkedIn, GitHub, View Resume →, Visit Portfolio ↗ (announced as opening a new tab), the QR, Direct contact file, the footer |
+| Ghosted 1440 | skip, Cello, All work, Menu, Switch to Dusk, View Live, Play video, the 16 section links, the body's launch-post link (underlined), the code block, the next Play video |
+
+Every stop draws the one ring (3 px, offset 3 px, `--focus-ring`): **0 stops without it**.
+`aria-current`: Work = page on /projects, Writing = page on /blog, Resume = page on /resume
+(Header), Work = true on a case study, Writing = true on a post, none on home. IconButton names:
+"Switch to Dusk"/"Switch to Day", "Visit live site for …", "Email Marcelo Rondon", GitHub,
+LinkedIn, Bluesky; on /resume the hero's four links keep their full names.
+
+## Build, URL contract, console
+
+- `pnpm build` (`tokens --check` + `astro check` + `astro build`): 0 errors, 0 warnings, 0 hints
+  (107 files); the build itself 0 warnings. `raw-baseline.json` 61 → 57 (stage 5a) → 55 (the
+  merge); the components add none.
+- The 16 URLs: **200**. The 8 expected 404s plus `/visuals/graphic-design`: **404**. The two
+  301s are Netlify's (`_redirects` unchanged). `/cv.json` parses (label unchanged), the PDF
+  starts `%PDF-`.
+- **Console:** zero errors and zero warnings in every run (the keyboard passes and the contrast
+  runs). The only failed requests are home's and the case studies' videos (webm range requests)
+  cancelled when a run closed the page, as in S3.
+
+## For Cello and the migration reviewer
+
+- **Hover changes you only see by pointing:** /card's two actions, the bar's Menu and theme
+  button and Pause/Play now fill green on hover (they turned paper). One state language: a
+  primary inverts to a plate with green text; everything outlined fills green.
+- **ArrowLink `down`** is a fourth variant §7 didn't list (Admire's "View Case Studies ↓").
+- **Two `Section`s:** /resume keeps `components/Section.astro` (its 1.5rem mono heading);
+  folding it into `ui/Section` would restyle /resume.
+- **Layout's footer socials stay 40 px** (under the touch target) because they also render on
+  `/design-system`; moving them to IconButton is a named /design-system change for stage 7's
+  owner.
+- **Guard idea, not built:** §8's class-name ban (`btn|button|cta|tag|…` outside `ui/`) isn't in
+  `scripts/tokens.mjs`; adding it now would add baseline entries for the hand-builds left above,
+  and the baseline only shrinks here.
