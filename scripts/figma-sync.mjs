@@ -59,6 +59,28 @@ const hex = (h) => {
   return { r: parseInt(n.slice(0, 2), 16) / 255, g: parseInt(n.slice(2, 4), 16) / 255, b: parseInt(n.slice(4, 6), 16) / 255 };
 };
 const round = (x) => Math.round(x * 1000) / 1000;
+// sRGB <-> OKLab (Björn Ottosson's matrices), for color-mix(in oklab, ...).
+const lin = (c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4);
+const gam = (c) => (c <= 0.0031308 ? 12.92 * c : 1.055 * c ** (1 / 2.4) - 0.055);
+const toOklab = ({ r, g, b }) => {
+  [r, g, b] = [lin(r), lin(g), lin(b)];
+  const l = Math.cbrt(0.4122214708 * r + 0.5363325363 * g + 0.0514459929 * b);
+  const m = Math.cbrt(0.2119034982 * r + 0.6806995451 * g + 0.1073969566 * b);
+  const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
+  return [0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s, 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s, 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s];
+};
+const fromOklab = ([L, A, B]) => {
+  const l = (L + 0.3963377774 * A + 0.2158037573 * B) ** 3;
+  const m = (L - 0.1055613458 * A - 0.0638541728 * B) ** 3;
+  const s = (L - 0.0894841775 * A - 1.291485548 * B) ** 3;
+  const c = (x) => Math.min(1, Math.max(0, gam(x)));
+  return { r: c(4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s), g: c(-1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s), b: c(-0.0041960863 * l - 0.7034186147 * m + 1.707614701 * s) };
+};
+const mix = (a, b, w, space) => {
+  if (space === "srgb") return { r: a.r * w + b.r * (1 - w), g: a.g * w + b.g * (1 - w), b: a.b * w + b.b * (1 - w) };
+  const x = toOklab(a), y = toOklab(b);
+  return fromOklab(x.map((v, i) => v * w + y[i] * (1 - w)));
+};
 const rgba = (c, a = 1) => [round(c.r), round(c.g), round(c.b), round(a)];
 
 // "--ink-950" -> "ink/950"; "--bg-canvas" -> "bg/canvas"; "--space-16" -> "space/16"
@@ -82,11 +104,25 @@ function build() {
     : css.startsWith("--border-") || css === "--focus-ring" ? ["STROKE_COLOR"]
     : css === "--action-primary" ? ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL", "STROKE_COLOR"]
     : ["FRAME_FILL", "SHAPE_FILL", "STROKE_COLOR"];
+  const colorOf = (x) => {
+    x = x.trim();
+    let m;
+    if ((m = x.match(/^var\((--[\w-]+)\)$/)) && primHex[m[1]]) return hex(primHex[m[1]]);
+    if (/^#/.test(x)) return hex(x);
+    throw new Error(`figma-sync: can't resolve color ${x}`);
+  };
   const roleValue = (v) => {
     let m;
     if ((m = v.match(/^var\((--[\w-]+)\)$/))) return { a: figmaName(m[1]) };
-    if ((m = v.match(/^color-mix\(in srgb, var\((--[\w-]+)\) ([\d.]+)%, transparent\)$/))) return { v: rgba(hex(primHex[m[1]]), +m[2] / 100) };
     if (/^#/.test(v)) return { v: rgba(hex(v)) };
+    // color-mix(in srgb|oklab, A p%, B): a tint over transparent becomes RGBA; two colors are mixed
+    // here (Figma can't alias a mix), in the space the CSS names.
+    if ((m = v.match(/^color-mix\(in (srgb|oklab), (.+?) ([\d.]+)%, (.+)\)$/))) {
+      const [, space, a, p, b] = m;
+      const w = +p / 100;
+      if (b.trim() === "transparent") return { v: rgba(colorOf(a), w) };
+      return { v: rgba(mix(colorOf(a), colorOf(b), w, space)) };
+    }
     throw new Error(`figma-sync: can't express role value ${v}`);
   };
   const R = by("Roles: color").map((t) => {

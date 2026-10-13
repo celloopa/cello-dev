@@ -30,9 +30,9 @@
   "counts": {
     "primitives": 9,
     "art": 25,
-    "roles": 16,
-    "numbers": 43,
-    "strings": 5,
+    "roles": 18,
+    "numbers": 53,
+    "strings": 6,
     "textStyles": 11
   },
   "notYet": "Components (Button, IconButton, ArrowLink, Tag, Card, Panel, Eyebrow, Section) follow the landscape cutover, when they reach master."
