@@ -1,6 +1,13 @@
 {
   "$description": "Which scene each reading page opens over (docs/landscape/PLAN.md, 'Scene pairings'; mood only, no claims about where the work was made). Ids are scenes in src/data/scene-library.json. Read by src/lib/scene/pairing.ts. A case study missing from `projects` rotates with the posts.",
   "home": "mirror-lake",
+  "$homeSectionsDescription": "Home's reading sections that aren't a case study, each over its own place while it's in view (the Work list's case studies use `projects`). Keys name the sections in src/pages/index.astro (`homeSection(key)`); the footer is home's own scene, bookending the hero. Mood only; swap a place by changing its id here.",
+  "homeSections": {
+    "how": "meadows-lift",
+    "about": "bald-mountain",
+    "contact": "ramona",
+    "footer": "mirror-lake"
+  },
   "projects": {
     "asheville-dispensary": "over-hood",
     "ghosted": "ecola",

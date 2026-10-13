@@ -4,6 +4,9 @@
  *   case study  its entry in `projects`, else the post rotation
  *   post        the rotation in `posts`, picked by a hash of the slug (FNV-1a), so a post keeps
  *               its scene whatever other posts come and go
+ *   home        `home` (the hero's scene), and `homeSections`: the place behind each of home's
+ *               reading sections that isn't a case study (How I Build, About, Let's Talk, the
+ *               footer) while it's in view
  */
 import pairings from "@/data/scene-pairings.json";
 import { sceneIds } from "./catalog";
@@ -33,3 +36,9 @@ export function sceneForProject(slug: string): string {
 }
 
 export const homeScene = (): string => checked(pairings.home, "home");
+
+export function homeSection(key: string): string {
+  const id = (pairings.homeSections as Record<string, string>)[key];
+  if (!id) throw new Error(`[scene] src/data/scene-pairings.json has no homeSections.${key}`);
+  return checked(id, `homeSections.${key}`);
+}

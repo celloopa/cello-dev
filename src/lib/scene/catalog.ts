@@ -177,3 +177,32 @@ export function sceneArt(id: string): SceneArt {
     anchor: SETTINGS[id]?.anchor ?? [0.5, 0.5],
   };
 }
+
+export interface SceneBackdrop {
+  id: string;
+  /** The reading still (read.webp): the place as it's only ever seen, through the focus recipe. */
+  src: string;
+  width: number;
+  height: number;
+  /** object-position, desktop and phone (as the Scene's own reading still). */
+  position: string;
+}
+
+/**
+ * A scene as a backdrop: the reading still that a page brings in behind its focused content,
+ * over its own scene, while a part of the page is in view (home's Work list and sections) or a
+ * story is pointed at (the /projects index). Throws at build time if read.webp is missing.
+ */
+export function sceneBackdrop(id: string): SceneBackdrop {
+  const scene = loadScene(id);
+  if (!scene.read) throw new Error(`[scene] ${id} has no read.webp: run pnpm scenes:derive`);
+  const [ax, ay] = scene.layers[0]?.anchor ?? [0.5, 0.5];
+  const pct = (v: number) => `${+(v * 100).toFixed(2)}%`;
+  return {
+    id,
+    src: scene.read.src,
+    width: scene.read.width,
+    height: scene.read.height,
+    position: `--ax:${pct(ax)};--ay:${pct(ay)};--mx:${pct(scene.read.mobileX)};--my:50%`,
+  };
+}
