@@ -499,3 +499,81 @@ the title moves into the page title, the artifact settles. Back returns to the s
 without view transitions get a normal load. URLs unchanged. (rec.)
 
 Open: what the scene does while reading inside a case study, and onward.
+
+### Q30. Reading (2026-10-13)
+
+Cello: "mosly settled still buT maybe a long and subtle idle animation".
+
+### Q31. Reading idle (2026-10-13)
+
+Only after 20–30 s without input; art-only motion (water, sky, plants in the shader), never depth
+layers sliding under text; very low amplitude, ≤30 fps; stops on any input; rests after ~1 min; off
+for reduced motion, Save-Data and hidden tabs; contrast checked at its brightest moment. (rec.)
+
+### Q32. Arrival and chapter idle (2026-10-13)
+
+Livelier and sooner (after 3–5 s still): layer drift within each scene's tested caps (none on the four
+still-first scenes, no vertical on Ecola) plus the art's own motion; pointer parallax on desktop as
+today; ≤30 fps; the existing spring hand-back; rests after 60–90 s; the same off-switches. (rec.)
+
+### Q33. End of a case study (2026-10-13)
+
+The next project's chapter rises (the same screen as on home); tap to go through its doorway, or use
+All work / the rail. Nothing navigates on its own. (rec.)
+
+### Q34. Home's other sections (2026-10-13)
+
+How I Build, About and Let's Talk move off home. Home = arrival → the four project chapters → Let's
+Talk as the final chapter.
+
+### Q35. A new /about (2026-10-13)
+
+A reading page with its own cover chapter (Bald Mountain): About and How I Build, calm on the settled
+still, ending with the Let's Talk chapter. The top bar's About goes there; old /#about and /#how
+forward to it. Adds one URL, removes none. (rec.)
+
+### Q36. Indexes (2026-10-13)
+
+/projects is the fast, scannable index: all work on one calm screen, each row with its place as a small
+swatch, plus role, one line and year; no background swaps. /blog follows the same calm index pattern.
+(rec.)
+
+### Q37. Phones (2026-10-13)
+
+A stacked chapter with the same rhythm: the place on the top ~55%, the artifact overlapping the seam,
+words below on the scrim; the rail as a thin bottom bar above Safari's toolbar; soft snap; the doorway
+works in iOS Safari 18+; no layer drift on phones (art-only motion). (rec.)
+
+### Q38. Place-to-place transition (2026-10-13)
+
+The depth hand-off, tied to scroll: the outgoing place comes apart by depth (near first), the incoming
+one assembles back to front (arrival's choreography); it reverses on scroll back; within caps; reduced
+motion gets a clean cut. (rec.)
+
+### Q39. Cutover (2026-10-13)
+
+HOLD. Today's site stays live until the chapters build is done, checked with the CUTOVER test plan, and
+walked by Cello on his phone on a preview. (rec.)
+
+### Q40. Pairings (2026-10-13)
+
+Mood-led, with a quiet place caption per chapter (e.g. "Ecola · July"); no new copy; "why this place"
+lines stay Cello's to write later. (rec.)
+
+### Q41. Arrival title (2026-10-13)
+
+Use the cv.json label, "Product Designer & Design Engineer — Design Systems & AI Tools", instead of
+"Digital Designer / Brand & Design Systems". Keep the "Open to…" line and the summary. (rec.)
+
+### Q42. Top bar (2026-10-13)
+
+Constant and quiet everywhere (mark, Work, About, Writing, Resume, theme, Menu); no chapter naming on
+home (the rail does that); inside a case study it shows the title once the cover scrolls away. (rec.)
+
+### Q43. Storyboard it (2026-10-13)
+
+Cello: "Yes, storyboard it". Defaults he accepted with it: posts follow the case-study pattern (cover →
+calm reading → next post rises); /card, /resume, /design-system and /watchlist stay as built; sound
+stays later and opt-in (D6). The new pieces (chapter, rail, doorway view transition, the two idle tiers,
+the depth hand-off, the swatch index) enter the design system as amendment A4, reviewed by the
+migration thread. No build work until he has walked the storyboard.
