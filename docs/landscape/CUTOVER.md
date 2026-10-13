@@ -5,6 +5,48 @@ cello.design. It doesn't build features; fixes go to "Rewrite cello.dev". The pu
 "Ship cello.dev" (`docs/ship/PROFILE.md` on `claude/ship-conductor`), and only after Cello's go
 in chat.
 
+## Restart checkpoint (2026-10-13): paused; the rebuild moves to Codex
+
+Cello paused all cello.dev threads for a computer restart. After it, the chapters rebuild continues in
+Codex. Nothing is deploying, building or testing; no cutover is authorized.
+
+**State at the checkpoint**
+- Live `master` = `060ad5b` (design-system stage 9). Untouched by this work.
+- `claude/landscape-build`: the chapters build is planned (PLAN.md "Chapters build", C0–C5, notes folded in at `3a81c58`) and **not started** (it was gated on machine load).
+- `claude/landscape-cutover` (this doc's branch): doc-only commits. Everything up to `f6b657f` is merged into landscape-build; the checkpoint commit on top of it is not merged yet.
+- Pin `250cd03` (tree `5212c4e`) is withdrawn. Its results above are the baseline.
+- The demo branch (PR #14, draft, never merge) is one commit, `d94e121`: `250cd03`'s tree on `060ad5b`.
+- "Ship cello.dev" is archived. No scheduled jobs, servers or agents are left from this thread.
+
+**Acceptance plan for the chapters build (run on its C5 sha, then on its deploy preview)**
+T1–T12 in section 2, plus:
+- **URLs:** 17 URLs at 200, now that `/about` is added.
+- **Contrast** (A3) during the depth hand-off and while scrubbing the rail, at the idle extremes, and across the old arrival→reading scroll range.
+- **Doorway:** Back and forward land on the same chapter, and the no-view-transition fallback works in Firefox.
+- **Theme:** never painted wrong across the cross-document transition (sample every animation frame).
+- **Keyboard with snap:** each chapter scrolls fully into view, nothing traps focus, and the rail is a `<nav>` list with `aria-current`.
+- **Reduced motion:** no smooth scroll, the hand-off is a cut, and there's no idle motion.
+- **Weight:** a full home scroll on Slow 4G phone; CLS ≤ 0.05; LCP ≤ 1.78 s.
+- **Fallbacks per chapter:** `?gl=0`, context loss, a blocked texture, a hidden tab, Save-Data.
+- **SEO** for `/about`.
+- **Privacy** on the squashed tree: the private-pattern grep, the removed files, the `ghosted/v3` blobs, D2/D3.
+- **Build-time requirements already folded into the plan:** chapter videos ship WebM + MP4 + poster, and `/#about` and `/#how` are forwarded by a script on home (`_redirects` untouched).
+
+**Pending questions for Cello (ask one at a time at the go/no-go)**
+1. Firefox and desktop Safari, needed for the doorway's fallback: install or enable automation, or does he check by hand on the preview?
+2. On his phone: do the Work-list and chapter videos play? (Recheck on the C5 preview.)
+3. Confirm the post-cutover deferrals: the §8 class-name guard (O4), and the ⌘K Tab/focus-return fix (O5).
+4. The 41 unlinked files in `public/` (O6): keep, or remove in their own ship after cutover?
+5. The SEO leftovers (O8): canonicals on /resume, /design-system and /watchlist; trailing slashes; sitemap.
+6. Storyboard choices to confirm: Let's Talk over Mirror Lake (bookend) vs Ramona; whether the home rail shows during a case study's ending.
+
+**To resume (any agent, Codex included)**
+1. Read this file, `docs/landscape/PLAN.md` ("Chapters build"), `docs/landscape/CHECKS.md`, and `docs/rewrite/GRILL.md` Q23–Q47 on `claude/rewrite-exploration`.
+2. The builder runs C0 → C5 on `claude/landscape-build` and hands the C5 sha to whoever runs this plan.
+3. Run the acceptance plan above on that sha and on its preview, then give Cello the phone checklist and the go/no-go (one decision at a time).
+4. Ship as **one squashed commit on live master** (tree = the verified tree), never landscape-build's history. Hand off with the URL fates, the checks run and Cello's go, quoted.
+5. Afterwards: run the smoke checks, then update `CHANGELOG.md` and the Brain project note. Then offer Cello the post/video about rebuilding cello.dev.
+
 ## Status (2026-10-13, 09:30): cutover on hold for the chapters direction
 
 - Cello held the cutover (grill Q39) to rework the experience as "the scene owns the thresholds,
