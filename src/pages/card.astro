@@ -27,6 +27,7 @@ import SceneLayout from "@/layouts/SceneLayout.astro";
 import Button from "@/components/ui/Button.astro";
 import ArrowLink from "@/components/ui/ArrowLink.astro";
 import Eyebrow from "@/components/ui/Eyebrow.astro";
+import Section from "@/components/ui/Section.astro";
 import { homeScene, sceneForProject } from "@/lib/scene/pairing";
 import { sceneArt } from "@/lib/scene/catalog";
 import Mail from "@/icons/Mail.astro";
@@ -117,10 +118,14 @@ const PLACE = homeScene(); // Mirror Lake, as home
     </div>
   </section>
 
-  <section class="card-work" aria-labelledby="card-work-title" data-scene-focus>
-    <header class="card-work-head container" data-scene-stop="Selected Case Studies">
-      <h2 class="card-section-title" id="card-work-title">Selected Case Studies</h2>
-    </header>
+  <Section
+    class="card-work"
+    title="Selected Case Studies"
+    titleId="card-work-title"
+    stop="Selected Case Studies"
+    contained={false}
+    data-scene-focus
+  >
     {
       projects.map((p, i) => (
         <article class="panel" data-scene-stop={p.title} aria-labelledby={`panel-${p.slug}`} style={p.style}>
@@ -152,12 +157,11 @@ const PLACE = homeScene(); // Mirror Lake, as home
         </article>
       ))
     }
-  </section>
+  </Section>
 
-  <section class="card-about" aria-labelledby="card-about-title" data-scene-stop="About">
-    <div class="container card-about-grid">
+  <Section class="card-about" title="About" titleId="card-about-title" data-scene-stop="About">
+    <div class="card-about-grid">
       <div class="card-about-copy">
-        <h2 class="card-section-title" id="card-about-title">About</h2>
         <p class="card-about-text">
           I came to product design through visual journalism, brand systems, and front-end
           engineering. That range lets me translate creative intent into product rules, prototype
@@ -212,7 +216,7 @@ const PLACE = homeScene(); // Mirror Lake, as home
         <a class="card-qr-link" href={vCardUrl}>Direct contact file</a>
       </aside>
     </div>
-  </section>
+  </Section>
 
   <!-- Share Card: today's card script (Web Share API → clipboard → the bare link). The only
        change: the button is above it, so it binds at once instead of at DOMContentLoaded, which
@@ -405,19 +409,13 @@ const PLACE = homeScene(); // Mirror Lake, as home
   }
 
   /* ---------- 2. the case studies, each over its own place ---------- */
-  .card-work-head {
-    padding-block: var(--space-96) var(--space-48);
+  .card-work {
+    padding-top: var(--space-96);
   }
 
-  .card-section-title {
-    margin: 0;
-    color: var(--text-accent);
-    font-family: var(--font-title);
-    font-size: var(--type-section-title);
-    font-weight: var(--weight-bold);
-    line-height: var(--leading-tight);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
+  /* the title block's space below it, before the first place */
+  .card-work .panel:first-of-type {
+    margin-top: var(--space-48);
   }
 
   /* Each panel is a window onto a picture fixed to the viewport (clip-path clips its fixed
@@ -579,12 +577,12 @@ const PLACE = homeScene(); // Mirror Lake, as home
     grid-template-columns: minmax(0, 1fr) auto;
     gap: var(--space-64);
     align-items: start;
+    margin-top: var(--space-24);
   }
 
   .card-about-text {
     max-width: var(--layout-measure-read);
-    margin: var(--space-24) 0 var(--space-32);
-    color: var(--text-on-art);
+    margin: 0 0 var(--space-32);
     font-family: var(--font-read);
     font-size: var(--type-body-lg);
     line-height: var(--leading-read);

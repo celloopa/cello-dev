@@ -13,6 +13,7 @@ import WorkItem from "@/components/scene/WorkItem.astro";
 import Button from "@/components/ui/Button.astro";
 import ArrowLink from "@/components/ui/ArrowLink.astro";
 import Eyebrow from "@/components/ui/Eyebrow.astro";
+import Section from "@/components/ui/Section.astro";
 import { loadScene } from "@/lib/scene/catalog";
 import { homeScene } from "@/lib/scene/pairing";
 import { basics } from "@cv";
@@ -62,16 +63,15 @@ const homeDescription =
     </div>
   </section>
 
-  <section class="work" id="work" aria-labelledby="work-title" data-scene-focus>
-    <div class="container">
-      <header class="section-head" data-scene-stop="Selected Case Studies">
-        <h2 class="section-title" id="work-title">Selected Case Studies</h2>
-        <p class="section-intro">
-          Systems first: one shared system across three brands, and a design system whose tokens
-          and checks keep AI coding agents inside it. Then the products I designed and built on
-          the same rules.
-        </p>
-      </header>
+  <Section
+    class="work"
+    id="work"
+    title="Selected Case Studies"
+    titleId="work-title"
+    stop="Selected Case Studies"
+    intro="Systems first: one shared system across three brands, and a design system whose tokens and checks keep AI coding agents inside it. Then the products I designed and built on the same rules."
+    data-scene-focus
+  >
       <ol class="work-list">
         {
           featuredProjects.map((project, i) => (
@@ -89,17 +89,15 @@ const homeDescription =
         }
       </ol>
       <ArrowLink href="/projects" class="view-all">All Case Studies</ArrowLink>
-    </div>
-  </section>
+  </Section>
 
-  <section class="how" aria-labelledby="how-heading" data-scene-stop="How I Build">
-    <div class="container">
-      <h2 class="section-title" id="how-heading">How I Build</h2>
-      <p class="section-intro">
-        I build what I design, so the system reaches production intact. Code does everything it
-        can, the model gets the smallest job it can be trusted with, and a person approves
-        wherever the consequences are.
-      </p>
+  <Section
+    class="how"
+    title="How I Build"
+    titleId="how-heading"
+    intro="I build what I design, so the system reaches production intact. Code does everything it can, the model gets the smallest job it can be trusted with, and a person approves wherever the consequences are."
+    data-scene-stop="How I Build"
+  >
       <div class="proof-strip">
         <a class="proof-item" href="/projects/asheville-dispensary">
           <h3>Code First</h3>
@@ -126,33 +124,29 @@ const homeDescription =
           <span class="proof-link">Proof: VegAvengers →</span>
         </a>
       </div>
-    </div>
-  </section>
+  </Section>
 
-  <section class="about" id="about" aria-labelledby="about-heading" data-scene-stop="About">
-    <div class="container">
-      <h2 class="section-title" id="about-heading">About</h2>
-      <p class="section-intro">
-        I came to product design through visual journalism, brand systems, and front-end
-        engineering. That range lets me translate creative intent into product rules, prototype
-        behavior, make constraints legible, and speak the language of the team shipping it.
-      </p>
-    </div>
-  </section>
+  <Section
+    class="about"
+    id="about"
+    title="About"
+    titleId="about-heading"
+    intro="I came to product design through visual journalism, brand systems, and front-end engineering. That range lets me translate creative intent into product rules, prototype behavior, make constraints legible, and speak the language of the team shipping it."
+    data-scene-stop="About"
+  />
 
-  <section class="contact" aria-labelledby="contact-heading" data-scene-stop="Let’s Talk">
-    <div class="container">
-      <h2 class="section-title" id="contact-heading">Let’s Talk</h2>
-      <p class="section-intro">
-        Open to design systems, brand and product design roles, remote in the US or in Portland.
-        The fastest way to reach me is email.
-      </p>
+  <Section
+    class="contact"
+    title="Let’s Talk"
+    titleId="contact-heading"
+    intro="Open to design systems, brand and product design roles, remote in the US or in Portland. The fastest way to reach me is email."
+    data-scene-stop="Let’s Talk"
+  >
       <div class="contact-actions">
         <Button href={`mailto:${email}`}>Email Me</Button>
         <ArrowLink href="/resume">View Resume</ArrowLink>
       </div>
-    </div>
-  </section>
+  </Section>
 </SceneLayout>
 
 <script>
@@ -257,31 +251,8 @@ const homeDescription =
     padding-block: var(--space-96) var(--space-64);
   }
 
-  .section-head {
-    padding-bottom: var(--space-32);
-  }
-
-  .section-title {
-    margin: 0 0 var(--space-24);
-    color: var(--text-accent);
-    font-family: var(--font-title);
-    font-size: var(--type-section-title);
-    font-weight: var(--weight-bold);
-    line-height: var(--leading-tight);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
-  }
-
-  .section-intro {
-    max-width: var(--layout-measure);
-    margin: 0;
-    color: var(--text-on-art);
-    font-size: var(--type-body);
-    line-height: var(--leading-read);
-  }
-
   .work-list {
-    margin: 0;
+    margin: var(--space-32) 0 0;
     padding: 0;
     list-style: none;
   }
