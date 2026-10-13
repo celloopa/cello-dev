@@ -63,7 +63,10 @@ function createBackdrop(host) {
     layer.dataset.on = next;
     clearTimeout(settle);
     if (!item) {
-      items.forEach((el) => el.classList.remove("is-on"));
+      items.forEach((el) => {
+        el.style.transition = "";
+        el.classList.remove("is-on");
+      });
       return;
     }
     const img = load(id);
@@ -76,7 +79,12 @@ function createBackdrop(host) {
       void item.offsetWidth;
       item.style.transition = "";
       item.classList.add("is-on");
-      settle = setTimeout(() => items.forEach((el, k) => k !== current && el.classList.remove("is-on")), fadeMs(item) + 50);
+      // once it's in, the ones under it go at once (hidden anyway: no fade left to composite)
+      settle = setTimeout(() => items.forEach((el, k) => {
+        if (k === current) return;
+        el.style.transition = "none";
+        el.classList.remove("is-on");
+      }), fadeMs(item) + 50);
     };
     if (img.complete && img.naturalWidth) reveal();
     else img.addEventListener("load", reveal, { once: true });
