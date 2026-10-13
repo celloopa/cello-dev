@@ -11,6 +11,7 @@ import { getCollection } from "astro:content";
 import SceneLayout from "@/layouts/SceneLayout.astro";
 import WorkItem from "@/components/scene/WorkItem.astro";
 import Button from "@/components/ui/Button.astro";
+import ArrowLink from "@/components/ui/ArrowLink.astro";
 import { loadScene } from "@/lib/scene/catalog";
 import { homeScene } from "@/lib/scene/pairing";
 import { basics } from "@cv";
@@ -47,7 +48,7 @@ const homeDescription =
       </p>
       <div class="hero-actions">
         <Button href="#work">View Case Studies</Button>
-        <a href="/resume" class="scene-arrow">View Resume <span aria-hidden="true">→</span></a>
+        <ArrowLink href="/resume">View Resume</ArrowLink>
         <button class="admire-btn" type="button" data-admire-open>Take in the view</button>
       </div>
     </div>
@@ -55,9 +56,7 @@ const homeDescription =
       <p class="admire-place">{scene.place} · {scene.month}</p>
       <div class="admire-actions">
         <button class="admire-return" type="button" data-admire-close>Back to Cello</button>
-        <a class="scene-arrow" href="#work" data-admire-work>
-          View Case Studies <span aria-hidden="true">↓</span>
-        </a>
+        <ArrowLink href="#work" variant="down" data-admire-work>View Case Studies</ArrowLink>
       </div>
     </div>
   </section>
@@ -88,7 +87,7 @@ const homeDescription =
           ))
         }
       </ol>
-      <a href="/projects" class="scene-arrow view-all">All Case Studies <span aria-hidden="true">→</span></a>
+      <ArrowLink href="/projects" class="view-all">All Case Studies</ArrowLink>
     </div>
   </section>
 
@@ -149,7 +148,7 @@ const homeDescription =
       </p>
       <div class="contact-actions">
         <Button href={`mailto:${email}`}>Email Me</Button>
-        <a href="/resume" class="scene-arrow">View Resume <span aria-hidden="true">→</span></a>
+        <ArrowLink href="/resume">View Resume</ArrowLink>
       </div>
     </div>
   </section>

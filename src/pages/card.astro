@@ -25,6 +25,7 @@ import QRCode from "qrcode";
 import cv from "@cv";
 import SceneLayout from "@/layouts/SceneLayout.astro";
 import Button from "@/components/ui/Button.astro";
+import ArrowLink from "@/components/ui/ArrowLink.astro";
 import { homeScene, sceneForProject } from "@/lib/scene/pairing";
 import { sceneArt } from "@/lib/scene/catalog";
 import Mail from "@/icons/Mail.astro";
@@ -198,10 +199,8 @@ const PLACE = homeScene(); // Mirror Lake, as home
           }
         </ul>
         <div class="card-more">
-          <a href="/resume" class="scene-arrow">View Resume <span aria-hidden="true">→</span></a>
-          <a href={url} class="scene-arrow" target="_blank" rel="noopener noreferrer">
-            Visit Portfolio · {siteHost} <span aria-hidden="true">→</span>
-          </a>
+          <ArrowLink href="/resume">View Resume</ArrowLink>
+          <ArrowLink href={url} variant="external">Visit Portfolio · {siteHost}</ArrowLink>
         </div>
       </div>
       <aside class="card-qr" aria-labelledby="card-qr-title">

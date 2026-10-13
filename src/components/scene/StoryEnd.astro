@@ -4,6 +4,8 @@
  * finish the story, then offer the next one; About, contact and Resume stay separate, in the
  * site footer). The next story leads; the previous one and the index follow as small links.
  */
+import ArrowLink from "@/components/ui/ArrowLink.astro";
+
 interface Story {
   href: string;
   title: string;
@@ -30,12 +32,12 @@ const { next, previous, all } = Astro.props;
   <div class="story-end-more">
     {
       previous && previous.href !== next.href && (
-        <a class="scene-arrow" href={previous.href}>
-          <span aria-hidden="true">←</span> {previous.title}
-        </a>
+        <ArrowLink href={previous.href} variant="back">
+          {previous.title}
+        </ArrowLink>
       )
     }
-    <a class="scene-arrow" href={all.href}>{all.label}</a>
+    <ArrowLink href={all.href}>{all.label}</ArrowLink>
   </div>
 </nav>
 

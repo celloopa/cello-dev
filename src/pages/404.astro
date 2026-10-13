@@ -4,6 +4,7 @@
  * home does (readable at first paint; the scene assembles behind the words).
  */
 import SceneLayout from "@/layouts/SceneLayout.astro";
+import ArrowLink from "@/components/ui/ArrowLink.astro";
 import { homeScene } from "@/lib/scene/pairing";
 ---
 
@@ -16,7 +17,7 @@ import { homeScene } from "@/lib/scene/pairing";
     <div class="not-found-copy copy-scrim" data-scene-intro>
       <p class="not-found-code">404</p>
       <h1 class="not-found-title">Page Not Found</h1>
-      <a href="/" class="scene-arrow">Back to home <span aria-hidden="true">→</span></a>
+      <ArrowLink href="/">Back to home</ArrowLink>
     </div>
   </section>
   <!-- the page's end: once it nears the reading line, the scene softens and dims as home's does

@@ -287,26 +287,6 @@ html.scene-admire [data-scene-intro] {
   }
 }
 
-/* ---------- ArrowLink over art ---------- */
-.scene-arrow {
-  display: inline-flex;
-  gap: var(--space-8);
-  align-items: center;
-  padding-bottom: var(--space-4);
-  border-bottom: var(--stroke-control) solid var(--action-primary);
-  color: var(--text-on-art);
-  font-size: var(--type-ui);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-  text-decoration: none;
-  transition: color var(--motion-ui) var(--ease-out);
-}
-.scene-arrow:hover,
-.scene-arrow:focus-visible {
-  color: var(--action-primary);
-}
-
 /* reduced motion: animations.css zeroes durations; nothing here waits on a delay either */
 @media (prefers-reduced-motion: reduce) {
   .admire-view,
