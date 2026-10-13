@@ -285,6 +285,7 @@ const PLACE = homeScene(); // Mirror Lake, as home
   </script>
 
   <script>
+    import { afterFirstScreen, whenNear } from "@/lib/scene/lazy.js";
     // Each panel's picture and artifact load only as the panel nears (the picture sits at a fixed
     // position, so native lazy loading would fetch every one at once, and on a slow connection
     // Chrome's lazy margin reaches the artifacts too). Nothing starts before the first scroll or
@@ -305,37 +306,7 @@ const PLACE = homeScene(); // Mirror Lake, as home
       img.src = img.dataset.src ?? "";
       if (img.complete && img.naturalWidth) shown();
     };
-    let started = false;
-    const start = () => {
-      if (started) return;
-      started = true;
-      if (!("IntersectionObserver" in window)) return panels.forEach(load);
-      const io = new IntersectionObserver(
-        (entries) => {
-          for (const e of entries) {
-            if (!e.isIntersecting) continue;
-            io.unobserve(e.target);
-            load(e.target as HTMLElement);
-          }
-        },
-        { rootMargin: "0px 0px 100% 0px" },
-      );
-      panels.forEach((p) => io.observe(p));
-    };
-    const root = document.documentElement;
-    const heroDone = () => !root.classList.contains("scene-3d") || root.classList.contains("scene-gl-on");
-    const whenHeroDone = () => {
-      if (heroDone()) return start();
-      const mo = new MutationObserver(() => {
-        if (!heroDone()) return;
-        mo.disconnect();
-        start();
-      });
-      mo.observe(root, { attributes: true, attributeFilter: ["class"] });
-    };
-    if (document.readyState === "complete") whenHeroDone();
-    else addEventListener("load", whenHeroDone, { once: true });
-    addEventListener("scroll", start, { once: true, passive: true });
+    afterFirstScreen(() => whenNear(panels, load));
   </script>
 </SceneLayout>
 
