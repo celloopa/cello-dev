@@ -295,7 +295,7 @@
     }
 
     h3 {
-      font-size: 0.65rem;
+      font-size: var(--type-label);
       margin-bottom: var(--space-4);
     }
 
@@ -308,7 +308,7 @@
     }
 
     .key {
-      font-size: 0.7rem;
+      font-size: var(--type-label);
       padding: 0.15rem 0.35rem;
       margin-right: var(--space-8);
     }
@@ -415,7 +415,7 @@
     background-color: var(--text-primary);
     color: var(--bg-canvas);
     font-weight: var(--weight-bold);
-    font-size: 0.8rem;
+    font-size: var(--type-small);
     padding: var(--space-4) var(--space-8);
     margin-right: var(--space-12);
     text-transform: uppercase;

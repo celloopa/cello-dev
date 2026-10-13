@@ -132,7 +132,7 @@
     padding: 0.15rem var(--space-8);
     border: 2px solid var(--color-accent);
     color: var(--color-accent);
-    font-size: 0.7rem;
+    font-size: var(--type-label);
     font-weight: var(--weight-bold);
     text-transform: uppercase;
     letter-spacing: var(--track-caps);
@@ -183,7 +183,7 @@
   .preview ul {
     padding-left: var(--space-20);
     font-family: var(--font-mono);
-    font-size: 0.8rem;
+    font-size: var(--type-small);
   }
 
   summary {
