@@ -71,3 +71,26 @@ one build agent, one dev server, no parallel renders. Checkpoint after each stag
 Copy rule unchanged: today's words only; `[Cello's words]` where a slot has none. Pairings and captions
 from `scene-pairings.json` and the catalog (Q40). Motion caps from the manifests; still-first four stay
 at 0 travel until the "raise scene motion caps" cleanup task.
+
+**Additions from the cutover thread (2026-10-13), folded into the stages:**
+- **C3:** `/#about` and `/#how` can't go through `_redirects` (the fragment never reaches the server).
+  Home gets a tiny inline script (`location.hash` → `location.replace('/about#…')`). Without JS it falls
+  back to home's top. `_redirects` stays untouched.
+- **C1/C4:** every chapter artifact that's a video ships **webm + mp4 + poster** (the Ghosted Loop
+  pattern, MediaVideo). iPhone Safari showed WebM-only, poster-less videos as empty boxes, and in a
+  chapter that box is the hero of the screen.
+- **C5** runs CUTOVER.md T1–T12. The cutover thread re-runs them on the C5 sha and on the preview.
+  Hand it the sha with a green build. Beyond the table above:
+  - URL contract 17 × 200 (+ /about), 2 × 301, the 8 expected 404s.
+  - /cv.json and the PDF byte-identical to live; .vcf as text/vcard.
+  - A3 contrast **during** the depth hand-off and while the rail scrubs.
+  - Doorway Back/forward lands on the same chapter (scroll restoration with snap + bfcache). The no-VT
+    fallback needs Firefox, and desktop Safari is checked by Cello by hand.
+  - No wrong-theme frame across the cross-document VT.
+  - Keyboard: Tab brings each chapter fully into view, snap never traps focus, skip link first.
+  - Reduced motion: scroll-behavior auto, hand-off = cut, no idle.
+  - Phone Slow 4G total transfer for a full scroll, lazy places, CLS from snap ≤ 0.05.
+  - Fallbacks per chapter: ?gl=0, context loss, blocked texture, hidden tab, Save-Data.
+  - /about SEO (title, description, canonical, OG image that resolves). Optional: fix the canonicals
+    for /resume, /design-system and /watchlist, which point at home, and add the missing trailing slash.
+  - Privacy grep from the local patterns file on the squashed tree; D2/D3 eye check of new artifacts.
