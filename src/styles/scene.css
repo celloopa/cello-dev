@@ -182,7 +182,7 @@ html.scene-admire .place-label {
 }
 @media (max-width: 768px) {
   .place-label {
-    left: var(--space-24);
+    left: var(--layout-gutter);
   }
 }
 
@@ -274,8 +274,8 @@ html.scene-admire [data-scene-intro] {
 }
 @media (max-width: 768px) {
   .admire-view {
-    left: var(--space-24);
-    right: var(--space-24);
+    left: var(--layout-gutter);
+    right: var(--layout-gutter);
     bottom: var(--space-96);
   }
 }

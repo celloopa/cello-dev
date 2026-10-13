@@ -64,7 +64,10 @@
     padding-left: var(--space-24);
   }
 
+  /* One left edge (§4): the dash hangs on the column's edge and the item's text takes the one
+     named indent, so bulleted and numbered items start their words at the same x. */
   .prose :global(ul) {
+    padding-left: 0;
     list-style: none;
   }
 
