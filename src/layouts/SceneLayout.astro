@@ -136,7 +136,7 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
       <slot />
     </main>
     <footer class="site-footer">
-      <div class="footer-inner">
+      <div class="footer-inner container">
         <div class="footer-row">
           <a href="/" class="footer-logo" aria-label="Home"><Mark class="footer-mark" /></a>
           <nav class="footer-nav" aria-label="Footer navigation">
@@ -254,6 +254,8 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
         top: var(--space-16);
       }
 
+      /* The one page container (§4): every scene page's column, the bar's and the footer's. Its
+         content edge is the left edge of everything inside it; inner blocks add no side padding. */
       .container {
         width: min(100% - 2 * var(--layout-gutter), var(--layout-container));
         margin-inline: auto;
@@ -264,11 +266,6 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
         padding: var(--space-48) 0;
         background: var(--bg-canvas);
         border-top: var(--stroke-bar) solid var(--text-primary);
-      }
-
-      .footer-inner {
-        width: min(100% - 2 * var(--layout-gutter), var(--layout-container));
-        margin-inline: auto;
       }
 
       .footer-row {

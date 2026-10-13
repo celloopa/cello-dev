@@ -34,7 +34,7 @@ const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page
 ---
 
 <header class="bar">
-  <nav class="bar-inner" aria-label="Main">
+  <nav class="bar-inner container" aria-label="Main">
     <a class="bar-brand" href="/" aria-label="Cello, home">
       <Mark class="bar-mark" />
       <span>Cello</span>
@@ -96,8 +96,6 @@ const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page
     align-items: center;
     gap: var(--space-24);
     height: 100%;
-    width: min(100% - 2 * var(--layout-gutter), var(--layout-container));
-    margin-inline: auto;
   }
 
   .bar-brand {
