@@ -10,6 +10,7 @@
  */
 import type { SceneArt } from "@/lib/scene/catalog";
 import IconButton from "@/components/ui/IconButton.astro";
+import Tag from "@/components/ui/Tag.astro";
 
 export interface SelectorItem {
   href: string;
@@ -53,9 +54,9 @@ const { items, preview = false, label } = Astro.props;
               item.tags && item.tags.length > 0 && (
                 <ul class="selector-tags">
                   {item.tags.slice(0, 2).map((tag) => (
-                    <li>{tag}</li>
+                    <Tag>{tag}</Tag>
                   ))}
-                  {item.tags.length > 2 && <li>+{item.tags.length - 2}</li>}
+                  {item.tags.length > 2 && <Tag variant="count">+{item.tags.length - 2}</Tag>}
                 </ul>
               )
             }
@@ -243,16 +244,6 @@ const { items, preview = false, label } = Astro.props;
     margin: 0;
     padding: 0;
     list-style: none;
-  }
-
-  .selector-tags li {
-    padding: var(--space-4) var(--space-8);
-    border: var(--stroke-control) solid var(--border-strong);
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    line-height: var(--leading-ui);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
   }
 
   /* above the row's stretched title link, so it stays its own target */

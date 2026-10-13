@@ -5,6 +5,7 @@
  * scene. A reading stop: the bar names it while it's in view.
  */
 import IconButton from "@/components/ui/IconButton.astro";
+import Tag from "@/components/ui/Tag.astro";
 
 interface Props {
   title: string;
@@ -42,8 +43,10 @@ const href = `/projects/${slug}`;
     <p class="work-desc">{description}</p>
     <div class="work-meta">
       <ul class="work-tags">
-        {techStack.slice(0, 2).map((tech) => <li>{tech}</li>)}
-        {techStack.length > 2 && <li>+{techStack.length - 2}</li>}
+        {techStack.slice(0, 2).map((tech) => (
+          <Tag>{tech}</Tag>
+        ))}
+        {techStack.length > 2 && <Tag variant="count">+{techStack.length - 2}</Tag>}
       </ul>
       {
         url && (
@@ -156,17 +159,6 @@ const href = `/projects/${slug}`;
     margin: 0;
     padding: 0;
     list-style: none;
-  }
-
-  .work-tags li {
-    padding: var(--space-4) var(--space-8);
-    border: var(--stroke-control) solid var(--border-strong);
-    color: var(--text-on-art);
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    line-height: var(--leading-ui);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
   }
 
   @media (width <= 700px) {

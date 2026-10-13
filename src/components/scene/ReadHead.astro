@@ -6,9 +6,12 @@
  * One header for both templates, so the two never drift apart again.
  */
 import MediaVideo from "@/components/media/MediaVideo.astro";
+import Tag from "@/components/ui/Tag.astro";
 
 interface Props {
   eyebrow: string;
+  /** What the eyebrow is: a case study's role, or a post's date (both a green Tag). */
+  eyebrowKind?: "role" | "date";
   title: string;
   lede: string;
   tags?: string[];
@@ -18,21 +21,21 @@ interface Props {
   cover?: { src: string; alt: string };
 }
 
-const { eyebrow, title, lede, tags = [], maxTags = tags.length, tagsLabel = "Tags", cover } = Astro.props;
+const { eyebrow, eyebrowKind = "role", title, lede, tags = [], maxTags = tags.length, tagsLabel = "Tags", cover } = Astro.props;
 const isVideo = (src: string) => src.endsWith(".webm") || src.endsWith(".mp4");
 ---
 
 <header class="read-head container">
-  <p class="read-eyebrow">{eyebrow}</p>
+  <Tag as="p" variant={eyebrowKind} class="read-eyebrow">{eyebrow}</Tag>
   <h1 class="read-title">{title}</h1>
   <p class="read-lede">{lede}</p>
   {
     tags.length > 0 && (
       <ul class="read-tags" aria-label={tagsLabel}>
         {tags.slice(0, maxTags).map((tag) => (
-          <li>{tag}</li>
+          <Tag>{tag}</Tag>
         ))}
-        {tags.length > maxTags && <li class="read-tag-more">+{tags.length - maxTags}</li>}
+        {tags.length > maxTags && <Tag variant="count">+{tags.length - maxTags}</Tag>}
       </ul>
     )
   }
@@ -57,14 +60,7 @@ const isVideo = (src: string) => src.endsWith(".webm") || src.endsWith(".mp4");
   }
 
   .read-eyebrow {
-    display: inline-block;
-    margin: 0 0 var(--space-24);
-    padding: var(--space-4) var(--space-12);
-    border: var(--stroke-control) solid var(--action-primary);
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--track-wide);
-    text-transform: uppercase;
+    margin-bottom: var(--space-24);
   }
 
   .read-title {
@@ -91,19 +87,6 @@ const isVideo = (src: string) => src.endsWith(".webm") || src.endsWith(".mp4");
     margin: 0 0 var(--space-32);
     padding: 0;
     list-style: none;
-  }
-
-  .read-tags li {
-    padding: var(--space-4) var(--space-12);
-    border: var(--stroke-control) solid var(--border-strong);
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
-  }
-
-  .read-tags .read-tag-more {
-    border-color: var(--action-primary);
   }
 
   .read-cover {

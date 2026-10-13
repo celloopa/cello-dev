@@ -1,0 +1,54 @@
+---
+/*
+ * Tag (proposal §7): a small outlined label. Never interactive, so it has no hover state.
+ * Replaces the hand-built `.work-tags li`, `.selector-tags li`, `.read-tags li`,
+ * `.read-tag-more` and `.read-eyebrow`.
+ *
+ *   variant  tech   a tool or topic (neutral outline, --border-strong)
+ *            count  the "+N" after a cut list (green outline)
+ *            role   a case study's role (green outline, wide tracking)
+ *            date   a post's date (green outline, wide tracking)
+ *   as       the element: li inside a tag list (the default), p or span on its own
+ *
+ * The `label` type role; the text color it sits in.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"li"> & {
+  variant?: "tech" | "count" | "role" | "date";
+  as?: "li" | "p" | "span";
+};
+
+const { variant = "tech", as: El = "li", class: className, ...rest } = Astro.props;
+---
+
+<El class:list={["tag", `tag--${variant}`, className]} {...rest}><slot /></El>
+
+<style>
+  /* margin and display in :where(), so a parent can space it without a specificity fight */
+  :where(.tag) {
+    display: inline-block;
+    margin: 0;
+  }
+
+  .tag {
+    padding: var(--space-4) var(--space-8);
+    border: var(--stroke-control) solid var(--border-strong);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-ui);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+
+  .tag--count,
+  .tag--role,
+  .tag--date {
+    border-color: var(--action-primary);
+  }
+
+  .tag--role,
+  .tag--date {
+    letter-spacing: var(--track-wide);
+  }
+</style>
