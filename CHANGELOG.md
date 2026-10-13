@@ -4,6 +4,11 @@ All notable changes to this portfolio site should be documented here.
 
 ## 2026-10-12
 
+### Design system, stage 9: Figma follows code (foundations)
+
+- A Figma library, "cello.dev Design System", generated from `src/tokens/tokens.json`: primitives (hidden), the color roles with Day and Dusk modes and their use-when lines, the seasonal art inks, type, space, layout, stroke and motion values, and one text style per type role (National Park, Geist Mono, Geist) with size and family bound to variables. Every variable carries its CSS name as code syntax.
+- `pnpm figma:sync --emit` writes the one re-runnable Figma script; `--record` stores the synced hash in `src/tokens/figma-synced.json`. `pnpm build` fails while Figma is behind the synced tokens and prints the exact steps. Components follow at the landscape cutover. No visible change on the site.
+
 ### Design system, stage 8: the Cello family layer
 
 - The roots every Cello product shares now live in their own repo (`~/Documents/code/cello-family`, v0.1.0): Geist Mono and Geist, Midnight Ink and Paper, the house curve and the reduced-motion contract, and voice. cello.dev vendors a pinned copy at `src/tokens/family.json`.

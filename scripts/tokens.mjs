@@ -15,6 +15,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { figmaHash } from "./figma-sync.mjs";
 
 const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), "..");
 const rel = (f) => path.relative(root, f);
@@ -210,9 +211,15 @@ if (flag("--baseline")) {
   }
   const family = familyCheck();
   problems.push(...family.problems);
+  // Figma follows code: the Design System file must have been synced from these tokens.
+  const syncedPath = path.join(SRC, "tokens/figma-synced.json");
+  if (fs.existsSync(syncedPath)) {
+    const synced = JSON.parse(fs.readFileSync(syncedPath, "utf8")), current = figmaHash();
+    if (synced.hash !== current) problems.push(`Figma is behind tokens.json (synced ${synced.hash}, now ${current}). Run: node scripts/figma-sync.mjs --emit /tmp/figma-sync.js, run that file with use_figma on the Design System file (key: CELLO_FIGMA_FILE_KEY or .figma.local.json), then node scripts/figma-sync.mjs --record <hash it returns>.`);
+  }
   family.warnings.forEach((w) => console.warn(`warning: ${w}`));
   if (problems.length) { console.error(problems.join("\n")); process.exit(1); }
-  console.log(`Tokens are up to date, match Cello family ${family.version}, and there are no new raw values or hand-built keyframes, fonts, transitions, containers or theme storage.`);
+  console.log(`Tokens are up to date, match Cello family ${family.version}, Figma is in sync, and there are no new raw values or hand-built keyframes, fonts, transitions, containers or theme storage.`);
 } else {
   fs.writeFileSync(CSS_PATH, css);
   console.log("src/styles/tokens.css written from src/tokens/tokens.json");

@@ -1,0 +1,39 @@
+{
+  "$description": "The cello.dev Design System Figma library, generated from src/tokens/tokens.json by scripts/figma-sync.mjs. Node, variable-collection and style IDs only; the file key stays out of the public repo (env CELLO_FIGMA_FILE_KEY or the git-ignored .figma.local.json). Calls share no state, so IDs from each sync run are recorded here.",
+  "createdAt": "2026-10-13",
+  "collections": {
+    "Primitives": "VariableCollectionId:2:2",
+    "Art": "VariableCollectionId:2:12",
+    "Color": "VariableCollectionId:2:38",
+    "Dimensions": "VariableCollectionId:2:55",
+    "Type families and curves": "VariableCollectionId:2:99"
+  },
+  "textStyles": {
+    "display/hero": "S:f02cfa4c0e1f7a107e6b91bdc7905b925590ea58",
+    "title/page": "S:0108e63ac8d4a725d1401233c37db399d7492069",
+    "title/section": "S:272bac60c27fcb0e42feab2b0d79d39e3814d606",
+    "heading": "S:cbe1d46d49b4e1c466a85ebeaaa80a2be1533eaf",
+    "title": "S:d9823f7e2be2497fcedf1d0ab730d4459c683166",
+    "body/large": "S:f4e9d115d4b8d868fb4725f2a6baafc30a8c53b5",
+    "body": "S:a26ceb65ae2b1735cb124f85642338e64c539200",
+    "body/read": "S:c8539c9eb45b6cac34fac88ce1fabce15314dbe7",
+    "ui": "S:03e5f3c6fdb22ddd0111cce8b79eb0ac9088b8eb",
+    "small": "S:4e76b531dbb3f1dc59185b32907e9d4aa78db20a",
+    "label": "S:c50f65e4104256b0d9c933f2518445cda1b47e7c"
+  },
+  "pages": {
+    "Foundations": "0:1"
+  },
+  "nodes": {
+    "Foundations specimen (Day + Dusk boards)": "2:116"
+  },
+  "counts": {
+    "primitives": 9,
+    "art": 25,
+    "roles": 16,
+    "numbers": 43,
+    "strings": 5,
+    "textStyles": 11
+  },
+  "notYet": "Components (Button, IconButton, ArrowLink, Tag, Card, Panel, Eyebrow, Section) follow the landscape cutover, when they reach master."
+}
