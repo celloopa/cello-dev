@@ -5,6 +5,7 @@
  * site footer). The next story leads; the previous one and the index follow as small links.
  */
 import ArrowLink from "@/components/ui/ArrowLink.astro";
+import Eyebrow from "@/components/ui/Eyebrow.astro";
 
 interface Story {
   href: string;
@@ -23,9 +24,15 @@ const { next, previous, all } = Astro.props;
 ---
 
 <nav class="story-end" aria-label="Next story">
-  <p class="story-end-label">Next story</p>
+  <Eyebrow tone="on-art" class="story-end-label">Next story</Eyebrow>
   <a class="story-end-next" href={next.href}>
-    {next.eyebrow && <span class="story-end-eyebrow">{next.eyebrow}</span>}
+    {
+      next.eyebrow && (
+        <Eyebrow as="span" tone="on-art" class="story-end-eyebrow">
+          {next.eyebrow}
+        </Eyebrow>
+      )
+    }
     <span class="story-end-title">{next.title} <span aria-hidden="true">→</span></span>
     {next.description && <span class="story-end-desc">{next.description}</span>}
   </a>
@@ -50,12 +57,7 @@ const { next, previous, all } = Astro.props;
   }
 
   .story-end-label {
-    margin: 0 0 var(--space-16);
-    color: var(--text-on-art-muted);
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--track-wide);
-    text-transform: uppercase;
+    margin-bottom: var(--space-16);
   }
 
   .story-end-next {
@@ -64,13 +66,7 @@ const { next, previous, all } = Astro.props;
   }
 
   .story-end-eyebrow {
-    display: block;
     margin-bottom: var(--space-8);
-    color: var(--text-on-art-muted);
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
   }
 
   .story-end-title {

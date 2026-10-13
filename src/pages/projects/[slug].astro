@@ -11,6 +11,7 @@ import { getCollection, render } from "astro:content";
 import SceneLayout from "@/layouts/SceneLayout.astro";
 import Prose from "@/components/ui/Prose.astro";
 import Button from "@/components/ui/Button.astro";
+import Eyebrow from "@/components/ui/Eyebrow.astro";
 import CaseMeta from "@/components/CaseMeta.astro";
 import MediaFull from "@/components/media/MediaFull.astro";
 import MediaTwo from "@/components/media/MediaTwo.astro";
@@ -113,7 +114,9 @@ const all = { href: "/projects", label: "All work" };
             {summary && <CaseMeta items={summary} />}
             {sectionLinks.length > 2 && (
               <nav class="read-toc" aria-label="On this page">
-                <span>On this page</span>
+                <Eyebrow as="span" tone="on-art" class="read-toc-label">
+                  On this page
+                </Eyebrow>
                 <ul>
                   {sectionLinks.map((h) => (
                     <li>
@@ -174,14 +177,8 @@ const all = { href: "/projects", label: "All work" };
     margin-top: 0;
   }
 
-  .read-toc span {
-    display: block;
+  .read-toc-label {
     margin-bottom: var(--space-8);
-    color: var(--text-on-art-muted);
-    font-size: var(--type-label);
-    font-weight: var(--weight-extrabold);
-    letter-spacing: var(--track-wide);
-    text-transform: uppercase;
   }
 
   .read-toc ul {

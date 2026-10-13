@@ -3,6 +3,8 @@
  * FlowDiagram: a titled sequence of steps (label + detail), with an optional caption.
  * The figure is a plate (A1 bg-plate), so its labels and text never sit on scene art.
  */
+import AccentBar from "@/components/ui/AccentBar.astro";
+
 interface FlowItem {
   label: string;
   detail: string;
@@ -23,6 +25,7 @@ const { title, items, caption } = Astro.props;
     {
       items.map((item) => (
         <li>
+          <AccentBar class="flow-bar" />
           <strong>{item.label}</strong>
           <p>{item.detail}</p>
         </li>
@@ -66,13 +69,8 @@ const { title, items, caption } = Astro.props;
     background: var(--bg-raised);
   }
 
-  li::before {
-    content: "";
-    display: block;
-    width: var(--space-40);
-    height: var(--stroke-bar);
+  .flow-bar {
     margin-bottom: var(--space-12);
-    background: var(--action-primary);
   }
 
   strong {

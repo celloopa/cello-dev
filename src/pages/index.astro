@@ -12,6 +12,7 @@ import SceneLayout from "@/layouts/SceneLayout.astro";
 import WorkItem from "@/components/scene/WorkItem.astro";
 import Button from "@/components/ui/Button.astro";
 import ArrowLink from "@/components/ui/ArrowLink.astro";
+import Eyebrow from "@/components/ui/Eyebrow.astro";
 import { loadScene } from "@/lib/scene/catalog";
 import { homeScene } from "@/lib/scene/pairing";
 import { basics } from "@cv";
@@ -34,10 +35,10 @@ const homeDescription =
   <section class="hero" aria-labelledby="hero-name" data-scene-hero>
     <div class="hero-copy copy-scrim" data-scene-intro>
       <h1 class="hero-name" id="hero-name">Cello</h1>
-      <p class="kicker">
+      <Eyebrow class="kicker">
         <span class="kicker-dot" aria-hidden="true"></span>
         <span>Open to design systems, brand and product design roles</span>
-      </p>
+      </Eyebrow>
       <p class="hero-line">
         Digital Designer
         <span class="hero-line-sub">Brand &amp; Design Systems</span>
@@ -205,12 +206,7 @@ const homeDescription =
     display: flex;
     align-items: baseline;
     gap: var(--space-12);
-    margin: 0 0 var(--space-16);
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    line-height: var(--leading-ui);
-    letter-spacing: var(--track-wide);
-    text-transform: uppercase;
+    margin-bottom: var(--space-16);
   }
 
   .kicker-dot {

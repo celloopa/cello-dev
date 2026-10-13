@@ -26,6 +26,7 @@ import cv from "@cv";
 import SceneLayout from "@/layouts/SceneLayout.astro";
 import Button from "@/components/ui/Button.astro";
 import ArrowLink from "@/components/ui/ArrowLink.astro";
+import Eyebrow from "@/components/ui/Eyebrow.astro";
 import { homeScene, sceneForProject } from "@/lib/scene/pairing";
 import { sceneArt } from "@/lib/scene/catalog";
 import Mail from "@/icons/Mail.astro";
@@ -95,7 +96,7 @@ const PLACE = homeScene(); // Mirror Lake, as home
         {roleLine}
         {roleSub && <span class="card-role-sub">{roleSub}</span>}
       </p>
-      {locationLabel && <p class="card-where">{locationLabel}</p>}
+      {locationLabel && <Eyebrow class="card-where">{locationLabel}</Eyebrow>}
       <div class="card-actions" aria-label="Primary actions">
         <Button class="card-action" href="/contact.vcf" detail="VCF for phone or desktop">Save Contact</Button>
         <Button
@@ -134,7 +135,9 @@ const PLACE = homeScene(); // Mirror Lake, as home
               <p class="panel-place">
                 {p.art.place} · {p.art.month}
               </p>
-              <p class="panel-role">{p.role}</p>
+              <Eyebrow tone="on-art" class="panel-role">
+                {p.role}
+              </Eyebrow>
               <h3 class="panel-title" id={`panel-${p.slug}`}>
                 <a href={`/projects/${p.slug}`}>
                   {p.title} <span class="panel-arrow" aria-hidden="true">→</span>
@@ -204,7 +207,7 @@ const PLACE = homeScene(); // Mirror Lake, as home
         </div>
       </div>
       <aside class="card-qr" aria-labelledby="card-qr-title">
-        <p class="card-qr-title" id="card-qr-title">Scan To Visit</p>
+        <Eyebrow id="card-qr-title">Scan To Visit</Eyebrow>
         <a class="card-qr-frame" href={url} target="_blank" rel="noopener noreferrer" aria-label={`Open ${siteHost}`} set:html={qrCodeSvg} />
         <a class="card-qr-link" href={vCardUrl}>Direct contact file</a>
       </aside>
@@ -351,12 +354,7 @@ const PLACE = homeScene(); // Mirror Lake, as home
   /* Portland, Oregon: under the role line, inside the scrim's flat middle (as the copy's first line
      it sat in the scrim's top feather and measured 4.0:1 over the still on phones) */
   .card-where {
-    margin: 0 0 var(--space-24);
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    line-height: var(--leading-ui);
-    letter-spacing: var(--track-wide);
-    text-transform: uppercase;
+    margin-bottom: var(--space-24);
   }
 
   .card-name {
@@ -519,13 +517,7 @@ const PLACE = homeScene(); // Mirror Lake, as home
   }
 
   .panel-role {
-    margin: 0 0 var(--space-8);
-    color: var(--text-on-art-muted);
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    line-height: var(--leading-ui);
-    letter-spacing: var(--track-wide);
-    text-transform: uppercase;
+    margin-bottom: var(--space-8);
   }
 
   .panel-title {
@@ -642,7 +634,6 @@ const PLACE = homeScene(); // Mirror Lake, as home
     width: 13rem;
   }
 
-  .card-qr-title,
   .card-qr-link {
     margin: 0;
     color: var(--text-on-art);
