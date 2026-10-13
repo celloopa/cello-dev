@@ -22,6 +22,7 @@ import "@fontsource-variable/national-park";
 import nationalParkLatin from "@fontsource-variable/national-park/files/national-park-latin-wght-normal.woff2?url";
 import "@/styles/colors.css";
 import "@/styles/animations.css";
+import "@/styles/focus.css";
 import "@/styles/print.css";
 import "@/styles/scene.css";
 import ContextBar from "@/components/scene/ContextBar.astro";
@@ -227,11 +228,6 @@ const SOCIAL_ICONS: SocialIcon = { GitHub, LinkedIn, Bsky };
 
       button {
         font: inherit;
-      }
-
-      :where(a, button, input, select, textarea, [tabindex]):focus-visible {
-        outline: var(--stroke-frame) solid var(--focus-ring);
-        outline-offset: var(--space-4);
       }
 
       ::selection {
