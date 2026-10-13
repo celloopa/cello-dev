@@ -46,7 +46,7 @@ const items = allPosts
     </header>
     {
       items.length > 0 ? (
-        <SceneSelector items={items} label="Posts" />
+        <SceneSelector items={items} label="Posts" kind="post" />
       ) : (
         <p class="index-intro">No posts yet. Check back soon!</p>
       )
