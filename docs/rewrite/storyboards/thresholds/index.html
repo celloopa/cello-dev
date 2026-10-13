@@ -1,0 +1,1514 @@
+<title>Landscape Thresholds</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600&family=Geist+Mono:wght@400;700&family=National+Park:wght@600;800&display=swap">
+<style>
+/* Layout: home is one fixed stage of layered places behind a column of full-screen chapters. Scroll position drives
+   the depth hand-off between places; a rail (right edge on desktop, bottom bar on phones) scrubs and jumps.
+   Ghosted opens through a view transition into its cover; reading settles; the next chapter rises at the end. */
+:root {
+  /* brand primitives (src/tokens/tokens.json) */
+  --ink-950: #001a11;
+  --paper-100: #f3ede2;
+  --paper-200: #e0e0e0;
+  --signal-500: #00bc44;
+  --signal-700: #007a33;
+  --earth-400: #a89762;
+  --earth-600: #6f613e;
+  --blueprint-500: #42a5ff;
+
+  /* Day roles (light) */
+  --bg: var(--paper-100);
+  --fg: var(--ink-950);
+  --muted: color-mix(in srgb, var(--ink-950) 78%, var(--paper-100));
+  --rule: color-mix(in srgb, var(--ink-950) 18%, var(--paper-100));
+  --accent: var(--signal-700);
+  --ground: var(--earth-600);
+  --construct: var(--blueprint-500);
+  --on-art: var(--paper-100);
+  --on-art-muted: color-mix(in oklab, var(--paper-100) 88%, var(--signal-500));
+  --scrim-ink: var(--ink-950);
+  --bar-bg: color-mix(in srgb, var(--ink-950) 86%, transparent);
+  --wash: color-mix(in srgb, var(--paper-100) 86%, transparent);
+  --glow: color-mix(in srgb, var(--paper-100) 70%, transparent);
+
+  --font-display: "National Park", "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-label: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --t-ui: 300ms;
+  --t-settle: 700ms;
+  --gutter: clamp(16px, 4vw, 32px);
+  --sb-h: 34px;          /* the storyboard strip (not part of the site) */
+  --bar-h: 52px;
+  --chrome: calc(var(--sb-h) + var(--bar-h) + env(safe-area-inset-top, 0px));
+  --tl-h: 48px;
+  --tl-room: calc(var(--tl-h) + env(safe-area-inset-bottom, 0px));
+  --rail-room: 0px;
+  --peek: 104px;
+  --measure: 31em;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: var(--ink-950);
+    --fg: var(--paper-200);
+    --muted: color-mix(in srgb, var(--paper-200) 82%, var(--ink-950));
+    --rule: color-mix(in srgb, var(--paper-200) 18%, var(--ink-950));
+    --accent: var(--signal-500);
+    --ground: var(--earth-400);
+    --wash: color-mix(in srgb, var(--ink-950) 70%, transparent);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: var(--ink-950);
+  --fg: var(--paper-200);
+  --muted: color-mix(in srgb, var(--paper-200) 82%, var(--ink-950));
+  --rule: color-mix(in srgb, var(--paper-200) 18%, var(--ink-950));
+  --accent: var(--signal-500);
+  --ground: var(--earth-400);
+  --wash: color-mix(in srgb, var(--ink-950) 70%, transparent);
+  color-scheme: dark;
+}
+@media (min-width: 900px) {
+  :root { --tl-room: 0px; --rail-room: 72px; --peek: 84px; }
+}
+html.snap { scroll-snap-type: y proximity; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+* { box-sizing: border-box; }
+img { display: block; max-width: 100%; }
+h1, h2, h3, p, ol, ul, figure, dl, dd { margin: 0; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.on-art :focus-visible, .bar :focus-visible, .sb :focus-visible, .tl :focus-visible, .menu :focus-visible { outline-color: var(--on-art); box-shadow: 0 0 0 6px var(--ink-950); }
+.label { font-family: var(--font-label); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.4; }
+.wrap {
+  width: 100%;
+  max-width: calc(1100px + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: max(var(--gutter), env(safe-area-inset-left, 0px)) max(var(--gutter), env(safe-area-inset-right, 0px));
+}
+
+/* ---------- storyboard strip: always reachable, not part of the site ---------- */
+.sb {
+  position: fixed; inset: 0 0 auto 0; z-index: 62;
+  padding: env(safe-area-inset-top, 0px) max(8px, env(safe-area-inset-right, 0px)) 0 max(8px, env(safe-area-inset-left, 0px));
+  background: var(--ink-950); color: var(--on-art);
+  border-bottom: 2px dashed var(--construct);
+  view-transition-name: sb;
+}
+.sb-in { height: calc(var(--sb-h) - 2px); display: flex; align-items: center; gap: 8px; }
+.sb-name { color: var(--construct); }
+.sb .seg { display: inline-flex; border: 1px solid color-mix(in srgb, var(--paper-100) 50%, transparent); }
+.sb button {
+  min-height: 28px; padding: 0 9px; border: 0; background: none; cursor: pointer; color: var(--on-art);
+  font-family: var(--font-label); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.sb .seg button[aria-pressed="true"] { background: var(--paper-100); color: var(--ink-950); }
+.sb .idle { margin-left: auto; color: var(--on-art-muted); font-family: var(--font-label); font-size: 0.68rem; letter-spacing: 0.04em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.sb #fastIdle { border: 1px solid color-mix(in srgb, var(--paper-100) 50%, transparent); }
+.sb #fastIdle[aria-pressed="true"] { background: var(--construct); color: var(--ink-950); }
+@media (max-width: 520px) {
+  .sb-name, .sb .wide-only { display: none; }
+  .sb-in { gap: 6px; }
+  .sb button { padding: 0 7px; font-size: 0.62rem; }
+  .sb .idle { font-size: 0.62rem; letter-spacing: 0; }
+}
+
+/* ---------- the site's top bar: constant and quiet ---------- */
+.bar {
+  position: fixed; left: 0; right: 0; top: calc(var(--sb-h) + env(safe-area-inset-top, 0px)); z-index: 60;
+  padding: 0 max(10px, env(safe-area-inset-right, 0px)) 0 max(10px, env(safe-area-inset-left, 0px));
+  background: var(--bar-bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  color: var(--on-art);
+  view-transition-name: bar;
+}
+.bar-in { height: var(--bar-h); display: flex; align-items: center; gap: 4px; }
+.mark { display: inline-flex; align-items: center; min-height: 44px; padding: 0 6px; border: 0; background: none; cursor: pointer; font-family: var(--font-display); font-weight: 800; font-size: 1.2rem; letter-spacing: -0.02em; }
+.bar-title { margin-left: 8px; padding-left: 12px; border-left: 1px solid color-mix(in srgb, var(--paper-100) 40%, transparent); font-family: var(--font-display); font-weight: 600; font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.bar-nav { display: none; margin-left: 16px; gap: 2px; }
+.bar-nav button, .bar .quiet {
+  display: inline-flex; align-items: center;
+  min-height: 44px; padding: 0 10px; border: 0; background: none; cursor: pointer; color: var(--on-art-muted);
+  font-family: var(--font-label); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+}
+.bar-nav button:hover, .bar .quiet:hover { color: var(--on-art); }
+.bar-spacer { flex: 1; }
+.menu-btn { display: inline-flex; }
+[tabindex="-1"]:focus { outline: none; box-shadow: none; }
+@media (min-width: 900px) { .bar-nav { display: flex; } .menu-btn { display: none; } }
+.menu {
+  position: fixed; z-index: 61; right: 10px; top: calc(var(--chrome) + 6px);
+  min-width: 200px; padding: 6px; background: var(--ink-950); color: var(--on-art); border: 2px solid var(--paper-100);
+  list-style: none; margin: 0;
+}
+.menu button { display: block; width: 100%; text-align: left; min-height: 44px; padding: 0 12px; border: 0; background: none; cursor: pointer; font-family: var(--font-label); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* ---------- the stage: every home place, layered, fixed behind the chapters ---------- */
+.stage { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: var(--ink-950); }
+.scene { position: absolute; inset: 0; visibility: hidden; }
+.scene.on { visibility: visible; }
+.ly, .scene picture, .scene picture img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+}
+.ly { transform: scale(1.06); transform-origin: 50% 100%; will-change: transform, opacity; }
+.scene[data-scene="mirror"] .ly { object-position: 46% 34%; }
+.scene[data-scene="overhood"] .ly { object-position: 50% 50%; }
+.scene[data-scene="ecola"] .ly { object-position: 50% 50%; }
+@media (orientation: portrait) {
+  .scene[data-scene="mirror"] .ly[data-name="near"] { object-position: 9% 50%; }
+  .scene[data-scene="overhood"] .ly { object-position: 53% 50%; }
+  .scene[data-scene="ecola"] .ly { object-position: 51% 50%; }
+}
+.light { position: absolute; inset: 0; opacity: 0; background: radial-gradient(120% 70% at 50% 8%, var(--glow), transparent 62%); mix-blend-mode: soft-light; pointer-events: none; }
+.scene[data-scene="ecola"] { view-transition-name: place; }
+
+/* ---------- sections over the stage ---------- */
+.sec { position: relative; z-index: 1; scroll-snap-align: start; color: var(--on-art); overflow-x: clip; }
+#proto, #card, #frames { overflow-x: clip; }
+.scrim { position: relative; isolation: isolate; }
+.scrim::before {
+  content: ""; position: absolute; inset: -40px -36px -28px -36px; z-index: -1;
+  background: color-mix(in srgb, var(--scrim-ink) 74%, transparent);
+  -webkit-mask: radial-gradient(closest-side, #000 66%, transparent); mask: radial-gradient(closest-side, #000 66%, transparent);
+}
+
+/* arrival */
+.arrival { min-height: calc(100svh - var(--peek)); display: grid; align-items: end; }
+.arrival::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(to top, color-mix(in srgb, var(--ink-950) 82%, transparent) 0%, color-mix(in srgb, var(--ink-950) 58%, transparent) 38%, transparent 66%); }
+@media (min-width: 900px) { .arrival::before { background: linear-gradient(to right, transparent 30%, color-mix(in srgb, var(--ink-950) 62%, transparent) 55%, color-mix(in srgb, var(--ink-950) 70%, transparent)), linear-gradient(to top, color-mix(in srgb, var(--ink-950) 60%, transparent), transparent 60%); } }
+.arrival-copy { padding: calc(var(--chrome) + 24px) calc(var(--gutter) + var(--rail-room)) 28px var(--gutter); }
+.name { font-family: var(--font-display); font-weight: 800; font-size: clamp(3.25rem, 13vw, 6rem); line-height: 0.95; letter-spacing: -0.04em; }
+.kicker { display: flex; align-items: baseline; gap: 10px; margin-top: 12px; }
+.kicker::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: var(--signal-500); }
+.line { margin-top: 12px; max-width: 24ch; font-family: var(--font-display); font-weight: 600; font-size: clamp(1.3rem, 5.2vw, 2.1rem); line-height: 1.1; }
+.line span { display: block; margin-top: 6px; font-family: var(--font-label); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+.summary { margin-top: 12px; max-width: 46ch; font-size: 1rem; line-height: 1.6; }
+.actions { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.btn {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px;
+  border: 2px solid var(--paper-100); background: var(--paper-100); color: var(--ink-950); cursor: pointer;
+  font-family: var(--font-label); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none;
+}
+.btn:hover { background: var(--signal-500); border-color: var(--signal-500); }
+.arrow {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0; border: 0; background: none; cursor: pointer;
+  font-family: var(--font-label); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--on-art); text-decoration: underline; text-underline-offset: 5px; text-decoration-thickness: 2px;
+}
+.arrow:hover { color: var(--on-art-muted); }
+.caption { position: absolute; z-index: 1; padding: 4px 8px; background: color-mix(in srgb, var(--ink-950) 72%, transparent); color: var(--on-art-muted); }
+.arrival .caption { top: calc(var(--chrome) + 12px); right: calc(var(--gutter) + var(--rail-room)); }
+@media (min-width: 900px) { .arrival-copy { padding-left: 43vw; padding-bottom: 7vh; } }
+
+/* the first chapter peeks under the arrival */
+.peek { position: absolute; inset: 0 0 auto 0; height: var(--peek); clip-path: inset(0); pointer-events: none; opacity: var(--peek-o, 1); }
+.peek .fix { position: fixed; inset: 0; background: var(--ink-950); }
+
+/* chapters. Phones (Q37): the place on the top ~55%, the artifact on the seam, the words below on the scrim */
+.chapter {
+  min-height: 100svh;
+  display: grid;
+  grid-template-rows: 55svh auto auto;
+  align-content: start;
+  padding: 0 calc(var(--gutter) + var(--rail-room)) calc(var(--tl-room) + 22px) var(--gutter);
+}
+.ch-shade {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to bottom,
+    color-mix(in srgb, var(--ink-950) 50%, transparent) 0%, transparent calc(var(--chrome) + 70px),
+    transparent 44%, color-mix(in srgb, var(--ink-950) 88%, transparent) 56%, color-mix(in srgb, var(--ink-950) 94%, transparent) 100%);
+}
+.ch-top { position: relative; align-self: start; padding-top: calc(var(--chrome) + 12px); }
+.ch-top .caption { position: static; display: inline-block; }
+.ch-artifact {
+  position: relative; justify-self: center;
+  width: min(80%, 440px);
+  margin-top: calc(min(80vw, 440px) * -0.3125);
+  transform: translate3d(0, var(--art-y, 0px), 0);
+}
+.ch-artifact img, .cover-artifact img {
+  width: 100%; aspect-ratio: 16 / 10; height: auto; object-fit: cover; object-position: 50% 0;
+  border: 3px solid var(--ink-950);
+  box-shadow: 10px 10px 0 var(--ink-950); /* the sill plate */
+  background: var(--paper-100);
+}
+.ch-copy { position: relative; margin-top: 22px; max-width: 40rem; }
+.ch-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(2.1rem, 9.6vw, 4.75rem); line-height: 0.95; letter-spacing: -0.03em; text-wrap: balance; }
+.ch-role { margin-top: 10px; color: var(--on-art-muted); }
+.ch-pitch { margin-top: 10px; max-width: 42ch; font-size: 1rem; line-height: 1.55; }
+.ch-copy .actions { margin-top: 16px; }
+@media (min-width: 900px) {
+  .chapter {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    grid-template-rows: auto 1fr;
+    column-gap: 48px;
+    padding-bottom: 8vh;
+  }
+  .ch-shade {
+    background: linear-gradient(to top, color-mix(in srgb, var(--ink-950) 86%, transparent) 0%, color-mix(in srgb, var(--ink-950) 44%, transparent) 38%, transparent 64%),
+                linear-gradient(to bottom, color-mix(in srgb, var(--ink-950) 50%, transparent), transparent 24%);
+  }
+  .ch-top { grid-column: 1 / -1; padding-top: calc(var(--chrome) + 18px); }
+  .ch-copy { grid-column: 1; grid-row: 2; align-self: end; margin-top: 0; }
+  .ch-artifact { grid-column: 2; grid-row: 2; align-self: center; width: 100%; margin-top: 0; }
+}
+/* Let's Talk: the last chapter, back over Mirror Lake */
+.talk { grid-template-rows: 1fr auto; }
+.talk .ch-copy { grid-row: 2; }
+@media (min-width: 900px) { .talk .ch-copy { grid-column: 1 / -1; } }
+
+/* ---------- the rail ---------- */
+.tl {
+  position: fixed; z-index: 55; left: 0; right: 0; bottom: 0; height: var(--tl-room);
+  padding: 0 max(22px, env(safe-area-inset-right, 0px)) env(safe-area-inset-bottom, 0px) max(22px, env(safe-area-inset-left, 0px));
+  background: var(--bar-bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  color: var(--on-art); touch-action: none; user-select: none; -webkit-user-select: none;
+  view-transition-name: rail;
+}
+.tl ol { position: relative; list-style: none; margin: 0; padding: 0; height: var(--tl-h); }
+.tl ol::before, .tl ol::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; background: color-mix(in srgb, var(--paper-100) 30%, transparent); }
+.tl ol::after { background: var(--signal-500); transform-origin: 0 50%; transform: scaleX(var(--f, 0)); }
+.tl li { position: absolute; top: 50%; left: calc(var(--i) / 5 * 100%); transform: translate(-50%, -50%); z-index: 1; }
+.tl a { -webkit-user-drag: none; position: relative; display: grid; place-items: center; width: 44px; height: 44px; text-decoration: none; color: inherit; }
+.tl .dot { width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--paper-100); background: var(--ink-950); transition: transform var(--t-ui) var(--ease-out); }
+.tl li.past .dot { background: var(--paper-100); }
+.tl a[aria-current="true"] .dot { background: var(--signal-500); border-color: var(--signal-500); transform: scale(1.5); }
+.tl .name {
+  position: absolute; bottom: calc(100% + 4px); left: 50%; transform: translateX(-50%);
+  padding: 5px 9px; white-space: nowrap; pointer-events: none; background: var(--paper-100); color: var(--ink-950);
+  font-family: var(--font-label); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  opacity: 0; transition: opacity 150ms ease-out;
+}
+.tl li:first-child .name { left: 0; transform: none; }
+.tl li:last-child .name { left: auto; right: 0; transform: none; }
+.tl a:hover .name, .tl a:focus-visible .name, .tl li.show .name { opacity: 1; }
+@media (min-width: 900px) {
+  .tl.auto { left: auto; right: 0; top: 50%; bottom: auto; width: var(--rail-room); height: min(56vh, 460px); transform: translateY(-50%); padding: 22px 0; background: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .tl.auto ol { height: 100%; width: 100%; }
+  .tl.auto ol::before, .tl.auto ol::after { top: 0; bottom: 0; left: 50%; right: auto; width: 2px; height: auto; margin: 0 0 0 -1px; }
+  .tl.auto ol::before { background: color-mix(in srgb, var(--paper-100) 45%, transparent); box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink-950) 35%, transparent); }
+  .tl.auto ol::after { transform-origin: 50% 0; transform: scaleY(var(--f, 0)); }
+  .tl.auto li { left: 50%; top: calc(var(--i) / 5 * 100%); }
+  .tl.auto .name, .tl.auto li:first-child .name, .tl.auto li:last-child .name { bottom: auto; top: 50%; left: auto; right: calc(100% + 2px); transform: translateY(-50%); }
+}
+.toast {
+  position: fixed; z-index: 70; left: 50%; bottom: calc(var(--tl-room) + 16px); transform: translateX(-50%);
+  width: max-content; max-width: calc(100vw - 32px); padding: 10px 14px;
+  background: var(--paper-100); color: var(--ink-950); border: 2px solid var(--ink-950);
+  font-family: var(--font-label); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.04em;
+}
+
+/* ---------- the case study ---------- */
+.case-back { position: fixed; inset: 0; z-index: 0; overflow: hidden; background: var(--ink-950); }
+.case-back .sharp, .case-back .soft, .case-back .wash, .case-back .light { position: absolute; inset: 0; width: 100%; height: 100%; }
+.case-back .sharp { view-transition-name: place; }
+.case-back .soft { object-fit: cover; opacity: 0; transform: scale(1.025); }
+.case-back .wash { background: var(--wash); opacity: 0; }
+.case-back .sharp, .case-back .soft, .case-back .wash { transition: opacity var(--t-settle) var(--ease-out); }
+#case.settled .case-back .sharp { opacity: 0; }
+#case.settled .case-back .soft, #case.settled .case-back .wash { opacity: 1; }
+
+.cover .cover-artifact { position: relative; justify-self: center; width: min(92%, 520px); margin-top: calc(min(92vw, 520px) * -0.3125); }
+.cover .cover-artifact img { box-shadow: 4px 4px 0 var(--ink-950); }
+.cover-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(3.4rem, 16vw, 8rem); line-height: 0.92; letter-spacing: -0.04em; text-wrap: balance; }
+.cover .ch-copy { margin-top: 26px; }
+@media (min-width: 900px) {
+  .cover .cover-artifact { grid-column: 2; grid-row: 2; align-self: center; width: 100%; margin-top: 0; }
+}
+/* the doorway's shared elements */
+#chGhosted .ch-title, .cover-title { view-transition-name: ghosted-title; }
+#chGhosted .ch-artifact, .cover-artifact { view-transition-name: ghosted-artifact; }
+::view-transition-group(ghosted-title), ::view-transition-group(ghosted-artifact) { animation-duration: 760ms; animation-timing-function: cubic-bezier(0.7, 0, 0.18, 1); }
+::view-transition-old(ghosted-title), ::view-transition-new(ghosted-title) { height: 100%; width: auto; animation-duration: 760ms; }
+::view-transition-group(place) { animation-duration: 760ms; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 360ms; }
+
+.read { position: relative; z-index: 1; padding-block: 48px 96px; color: var(--fg); }
+.read-col { max-width: 46rem; margin-inline: auto; }
+.role { color: var(--muted); }
+.lede { margin-top: 12px; font-size: 1.15rem; line-height: 1.6; max-width: var(--measure); }
+.facts { margin-top: 32px; display: grid; gap: 18px; border-top: 3px solid var(--fg); padding-top: 20px; }
+.facts div { display: grid; gap: 4px; }
+.facts dt { color: var(--fg); }
+.facts dd { font-size: 0.98rem; line-height: 1.6; max-width: var(--measure); }
+@media (min-width: 900px) { .facts { grid-template-columns: 1fr 1fr; gap: 24px 40px; } }
+.read h2 { margin-top: 64px; font-family: var(--font-display); font-weight: 800; font-size: clamp(1.6rem, 5.4vw, 2.2rem); line-height: 1.12; letter-spacing: -0.015em; text-wrap: balance; }
+.read p.p { margin-top: 16px; font-size: 1.03rem; line-height: 1.75; max-width: var(--measure); }
+.read ul { margin-top: 16px; padding-left: 1.1em; max-width: var(--measure); display: grid; gap: 10px; line-height: 1.7; }
+.read li::marker { color: var(--ground); }
+.fig { margin-top: 28px; }
+.fig img { width: 100%; height: auto; border: 2px solid var(--fg); background: var(--paper-100); }
+.fig figcaption { margin-top: 10px; font-size: 0.85rem; line-height: 1.55; color: var(--muted); max-width: var(--measure); }
+.sketch-note { border-left: 3px solid var(--construct); padding: 6px 0 6px 12px; color: var(--muted); font-family: var(--font-label); font-size: 0.78rem; line-height: 1.5; }
+.trim { margin-top: 48px; }
+.end-mark { margin-top: 56px; display: flex; align-items: center; gap: 12px; color: var(--muted); }
+.end-mark::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+
+/* the outro: the next project's chapter rises, the same screen as on home */
+.win { position: relative; clip-path: inset(0); background: var(--ink-950); }
+.win > .fix { position: fixed; inset: 0; pointer-events: none; transform: translate3d(0, var(--rise-y, 0px), 0) scale(var(--rise-s, 1)); transform-origin: 50% 100%; }
+.win > .fix picture, .win > .fix img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.outro { z-index: 2; }
+
+/* ---------- /card: phone only (Q44–Q47) ---------- */
+#card { --rail-room: 0px; --tl-room: calc(var(--tl-h) + env(safe-area-inset-bottom, 0px)); }
+.card-col { position: relative; width: min(100%, 430px); margin-inline: auto; container-type: inline-size; background: var(--bg); }
+@media (min-width: 600px) { .card-col { box-shadow: 0 0 0 1px var(--rule); } }
+.card-bar {
+  position: fixed; z-index: 60; top: calc(var(--sb-h) + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%);
+  width: min(100%, 430px); height: var(--bar-h); display: flex; align-items: center; gap: 6px; padding: 0 10px;
+  background: var(--bar-bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: var(--on-art);
+}
+.card-act {
+  min-height: 40px; padding: 0 12px; border: 2px solid var(--paper-100); background: none; color: var(--on-art); cursor: pointer;
+  font-family: var(--font-label); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+}
+.card-act.primary { background: var(--paper-100); color: var(--ink-950); }
+#cardRail { left: 50%; right: auto; width: min(100%, 430px); transform: translateX(-50%); }
+.pitch {
+  position: relative; z-index: 1; min-height: 100svh; scroll-snap-align: start;
+  display: grid; align-content: center; gap: 14px;
+  padding: calc(var(--chrome) + 18px) 16px calc(var(--tl-room) + 18px);
+  background: var(--bg); color: var(--fg);
+}
+.pitch .name { font-size: clamp(3rem, 15cqw, 4rem); }
+.pitch-title { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; line-height: 1.15; text-wrap: balance; }
+.pitch .kicker { margin-top: 0; color: var(--fg); }
+.slot { border: 2px dashed var(--construct); padding: 10px 12px; color: var(--muted); font-size: 0.92rem; line-height: 1.5; }
+.slot b { display: block; font-family: var(--font-label); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg); }
+.on-art .slot { color: var(--on-art-muted); }
+.on-art .slot b { color: var(--on-art); }
+.qr { justify-self: center; width: min(74cqw, 300px); padding: 14px 14px 10px; background: var(--paper-100); border: 3px solid var(--ink-950); box-shadow: 10px 10px 0 var(--ground); }
+.qr img { width: 100%; height: auto; image-rendering: pixelated; }
+.qr figcaption { margin-top: 8px; text-align: center; color: var(--ink-950); }
+.pitch-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.pitch-actions button { min-height: 48px; border: 2px solid var(--fg); background: none; color: var(--fg); cursor: pointer; font-family: var(--font-label); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.pitch-actions .primary { background: var(--fg); color: var(--bg); }
+#card .chapter { grid-template-columns: none; grid-template-rows: 55svh auto auto; column-gap: 0; padding: 0 16px calc(var(--tl-room) + 22px); }
+#card .ch-shade { background: linear-gradient(to bottom, color-mix(in srgb, var(--ink-950) 50%, transparent) 0%, transparent calc(var(--chrome) + 70px), transparent 44%, color-mix(in srgb, var(--ink-950) 88%, transparent) 56%, color-mix(in srgb, var(--ink-950) 94%, transparent) 100%); }
+#card .ch-top { grid-column: auto; padding-top: calc(var(--chrome) + 12px); }
+#card .ch-artifact { grid-column: auto; grid-row: auto; align-self: auto; width: 80%; margin-top: calc(80cqw * -0.3125); transform: none; }
+#card .ch-copy { grid-column: auto; grid-row: auto; align-self: auto; margin-top: 22px; }
+#card .ch-title { font-size: clamp(2rem, 9.6cqw, 2.6rem); }
+#card .ch-copy .slot { margin-top: 12px; }
+.card-about { position: relative; z-index: 1; scroll-snap-align: start; min-height: 80svh; background: var(--bg); color: var(--fg); padding: calc(var(--chrome) + 32px) 16px calc(var(--tl-room) + 40px); display: grid; gap: 14px; align-content: start; }
+.card-about .h2 + p { color: var(--muted); }
+.card-about .h2:not(:first-child) { margin-top: 24px; }
+
+/* ---------- frames ---------- */
+.frames { padding-block: calc(var(--chrome) + 36px) 80px; }
+.frames-head { display: grid; gap: 12px; max-width: 62ch; }
+.eyebrow { color: var(--ground); }
+.h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(1.9rem, 6.5vw, 2.8rem); line-height: 1.05; letter-spacing: -0.02em; text-wrap: balance; color: var(--fg); }
+.thesis { font-size: 1.02rem; color: var(--muted); }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 10px; }
+.chip { display: inline-flex; align-items: center; padding: 3px 8px; border: 2px solid currentColor; font-family: var(--font-label); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.chip.s { color: var(--ground); }
+.chip.w { color: var(--accent); }
+.chip.m { color: var(--fg); border-style: dashed; border-color: var(--construct); }
+.frames-tools { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.tool-btn { min-height: 44px; padding: 0 14px; border: 2px solid var(--fg); background: none; cursor: pointer; font-family: var(--font-label); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.tool-btn[aria-pressed="true"] { background: var(--fg); color: var(--bg); }
+.grid { list-style: none; padding: 0; margin-top: 32px; display: grid; gap: 28px 32px; grid-template-columns: 1fr; }
+@media (min-width: 760px) { .grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1180px) { .grid { grid-template-columns: 1fr 1fr 1fr; } }
+.card { display: grid; grid-template-columns: minmax(0, 44%) minmax(0, 1fr); gap: 14px; align-items: start; min-width: 0; }
+.card-notes { display: grid; gap: 10px; min-width: 0; align-content: start; }
+.card-num { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.num { font-family: var(--font-display); font-weight: 800; font-size: 1.6rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.card h3 { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; line-height: 1.15; text-wrap: balance; }
+.note { font-size: 0.86rem; line-height: 1.5; }
+.note b { display: block; font-family: var(--font-label); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ground); font-weight: 700; }
+.play-beat { justify-self: start; min-height: 40px; padding: 0; border: 0; background: none; cursor: pointer; color: var(--accent); font-family: var(--font-label); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: underline; text-underline-offset: 4px; }
+@media (min-width: 1180px) { .grid.two { grid-template-columns: 1fr 1fr; max-width: 67%; } }
+.frames-foot { margin-top: 40px; max-width: 70ch; display: grid; gap: 10px; }
+
+/* mini phone frames */
+.mini { position: relative; container-type: inline-size; aspect-ratio: 390 / 844; max-width: 100%; overflow: hidden; border: 3px solid var(--fg); background: var(--ink-950); color: var(--on-art); }
+.mini.wide { aspect-ratio: 1440 / 900; align-self: center; }
+.m-abs { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.m-bar { position: absolute; inset: 0 0 auto 0; height: 9cqw; background: var(--bar-bg); z-index: 5; display: flex; align-items: center; gap: 2cqw; padding: 0 3cqw; font-family: var(--font-display); font-weight: 800; font-size: 3.6cqw; color: var(--on-art); }
+.m-bar i { margin-left: auto; width: 6cqw; height: 0.6cqw; background: var(--paper-100); box-shadow: 0 1.4cqw 0 var(--paper-100), 0 -1.4cqw 0 var(--paper-100); }
+.m-bar em { font-style: normal; font-weight: 600; font-size: 3.2cqw; opacity: .85; border-left: 0.3cqw solid color-mix(in srgb, var(--paper-100) 40%, transparent); padding-left: 2cqw; }
+.wide .m-bar { height: 5cqw; font-size: 1.8cqw; }
+.wide .m-bar span { font-family: var(--font-label); font-size: 1.1cqw; letter-spacing: .08em; margin-left: 2cqw; opacity: .8; }
+.m-tl { position: absolute; inset: auto 0 0 0; height: 8cqw; background: var(--bar-bg); z-index: 5; }
+.m-tl::before { content: ""; position: absolute; left: 6cqw; right: 6cqw; top: 50%; height: 0.5cqw; background: color-mix(in srgb, var(--paper-100) 35%, transparent); }
+.m-tl::after { content: ""; position: absolute; left: 6cqw; top: 50%; height: 0.5cqw; width: calc((100% - 12cqw) * var(--f, 0)); background: var(--signal-500); }
+.m-tl b { position: absolute; top: 50%; width: 2.2cqw; height: 2.2cqw; margin: -1.1cqw 0 0 -1.1cqw; border-radius: 50%; background: var(--ink-950); border: 0.5cqw solid var(--paper-100); z-index: 1; left: calc(6cqw + (100% - 12cqw) * var(--i) / 5); }
+.m-tl b.on { background: var(--signal-500); border-color: var(--signal-500); width: 3.2cqw; height: 3.2cqw; margin: -1.6cqw 0 0 -1.6cqw; }
+.m-rail { position: absolute; z-index: 5; right: 2.4cqw; top: 22%; bottom: 22%; width: 0.3cqw; background: color-mix(in srgb, var(--paper-100) 45%, transparent); }
+.m-rail b { position: absolute; left: 50%; width: 1.2cqw; height: 1.2cqw; margin: -0.6cqw 0 0 -0.6cqw; border-radius: 50%; background: var(--ink-950); border: 0.25cqw solid var(--paper-100); top: calc(var(--i) / 5 * 100%); }
+.m-rail b.on { background: var(--signal-500); border-color: var(--signal-500); }
+.m-shade { position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 44%, color-mix(in srgb, var(--ink-950) 88%, transparent) 56%, color-mix(in srgb, var(--ink-950) 94%, transparent)); }
+.m-grad { position: absolute; inset: 0; background: linear-gradient(to top, color-mix(in srgb, var(--ink-950) 84%, transparent), transparent 58%); }
+.m-copy { position: absolute; left: 5cqw; right: 5cqw; bottom: 12cqw; }
+.m-name { font-family: var(--font-display); font-weight: 800; font-size: 13cqw; line-height: 0.95; letter-spacing: -0.04em; }
+.m-lbl { font-family: var(--font-label); font-weight: 700; font-size: 2.6cqw; letter-spacing: 0.1em; text-transform: uppercase; color: var(--on-art-muted); }
+.m-cap { position: absolute; z-index: 4; left: 4cqw; top: 12cqw; padding: 0.6cqw 1.6cqw; background: color-mix(in srgb, var(--ink-950) 72%, transparent); }
+.m-t { font-family: var(--font-display); font-weight: 800; font-size: 8.4cqw; line-height: 0.95; letter-spacing: -0.03em; margin-top: 1cqw; }
+.m-cover { font-family: var(--font-display); font-weight: 800; font-size: 14cqw; line-height: 0.95; letter-spacing: -0.04em; margin-top: 1.5cqw; }
+.m-lines { display: grid; gap: 1.6cqw; margin-top: 2.5cqw; }
+.m-lines i { display: block; height: 1.6cqw; background: color-mix(in srgb, currentColor 34%, transparent); }
+.m-lines i:nth-child(3n) { width: 70%; }
+.m-btns { display: flex; gap: 2cqw; margin-top: 3cqw; }
+.m-btns i { display: block; height: 5cqw; width: 30cqw; background: var(--paper-100); }
+.m-btns i + i { width: 18cqw; background: none; border-bottom: 0.6cqw solid var(--paper-100); }
+.m-art { position: absolute; z-index: 3; left: 10%; width: 80%; aspect-ratio: 16 / 10; border: 0.6cqw solid var(--ink-950); box-shadow: 2.4cqw 2.4cqw 0 var(--ink-950); background: var(--paper-100); overflow: hidden; }
+.m-art img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; }
+.m-peek { position: absolute; left: 0; right: 0; bottom: 8cqw; height: 15cqw; overflow: hidden; z-index: 3; }
+.m-peek img { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 600%; object-fit: cover; object-position: 50% 100%; }
+.m-half { position: absolute; left: 0; right: 0; bottom: 0; overflow: hidden; z-index: 3; }
+.m-half img { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 100cqh; object-fit: cover; }
+.m-tag { position: absolute; z-index: 7; right: 2cqw; top: 11cqw; padding: 0.6cqw 1.6cqw; background: var(--construct); color: var(--ink-950); font-family: var(--font-label); font-weight: 700; font-size: 2.4cqw; letter-spacing: 0.06em; text-transform: uppercase; }
+.wide .m-tag { font-size: 1.2cqw; top: 6cqw; }
+.m-ghost { position: absolute; z-index: 6; border: 0.6cqw dashed var(--construct); }
+.m-arrow { position: absolute; width: 0.6cqw; background: var(--construct); z-index: 6; }
+.m-arrow::after { content: ""; position: absolute; left: 50%; width: 3.2cqw; height: 3.2cqw; border: 0.6cqw solid var(--construct); border-width: 0.6cqw 0.6cqw 0 0; top: 0; transform: translate(-50%, 0) rotate(-45deg); }
+.m-bubble { position: absolute; z-index: 7; padding: 0.8cqw 1.8cqw; background: var(--paper-100); color: var(--ink-950); font-family: var(--font-label); font-weight: 700; font-size: 2.6cqw; letter-spacing: 0.06em; text-transform: uppercase; }
+.m-thumb { position: absolute; z-index: 7; width: 10cqw; height: 10cqw; border-radius: 50%; border: 0.8cqw solid var(--construct); background: color-mix(in srgb, var(--construct) 30%, transparent); }
+.m-soft { filter: blur(0.6cqw); transform: scale(1.03); }
+.m-wash { position: absolute; inset: 0; background: var(--wash); }
+.m-read { position: absolute; inset: 0; padding: 14cqw 6cqw 0; color: var(--fg); }
+.m-h { font-family: var(--font-display); font-weight: 800; font-size: 6cqw; line-height: 1.05; }
+.m-fig { margin-top: 4cqw; height: 34cqw; background: var(--paper-100) url("assets/ghosted-proposal.webp") center top / cover; border: 0.5cqw solid var(--fg); }
+
+/* the motion sketches inside the frames (only when asked for) */
+.f1 .m-l { transform: scale(1.06); }
+.grid.playing .f1 .m-l2 { animation: dr2 9s ease-in-out infinite alternate; }
+.grid.playing .f1 .m-l3 { animation: dr3 9s ease-in-out infinite alternate; }
+.grid.playing .f1 .m-l4 { animation: dr4 9s ease-in-out infinite alternate; }
+@keyframes dr2 { from { transform: translateX(-0.4%) scale(1.06); } to { transform: translateX(0.4%) scale(1.06); } }
+@keyframes dr3 { from { transform: translateX(-1.1%) scale(1.06); } to { transform: translateX(1.1%) scale(1.06); } }
+@keyframes dr4 { from { transform: translateX(-2.4%) scale(1.06); } to { transform: translateX(2.4%) scale(1.06); } }
+.grid.playing .f3 .h-o1 { animation: hout 4s ease-in-out infinite alternate; }
+.grid.playing .f3 .h-o2 { animation: hout 4s ease-in-out infinite alternate; animation-name: hout2; }
+.grid.playing .f3 .h-i1 { animation: hin1 4s ease-in-out infinite alternate; }
+.grid.playing .f3 .h-i2 { animation: hin2 4s ease-in-out infinite alternate; }
+.grid.playing .f3 .h-i3 { animation: hin3 4s ease-in-out infinite alternate; }
+@keyframes hout { 0%, 10% { opacity: 1; } 35%, 100% { opacity: 0; } }
+@keyframes hout2 { 0%, 25% { opacity: 1; } 55%, 100% { opacity: 0; } }
+@keyframes hin1 { 0%, 40% { opacity: 0; } 65%, 100% { opacity: 1; } }
+@keyframes hin2 { 0%, 55% { opacity: 0; } 78%, 100% { opacity: 1; } }
+@keyframes hin3 { 0%, 70% { opacity: 0; } 92%, 100% { opacity: 1; } }
+.grid.playing .f6 .m-t-move { animation: tmove 3.2s cubic-bezier(0.7, 0, 0.18, 1) infinite; }
+.grid.playing .f6 .m-art-move { animation: amove 3.2s cubic-bezier(0.7, 0, 0.18, 1) infinite; }
+@keyframes tmove { 0%, 15% { transform: scale(0.62); } 70%, 100% { transform: none; } }
+@keyframes amove { 0%, 15% { transform: scale(0.87); } 70%, 100% { transform: none; } }
+.grid.playing .f8 .m-light { animation: breathe 6s ease-in-out infinite alternate; }
+@keyframes breathe { from { opacity: 0; } to { opacity: .5; } }
+.grid.playing .f9 .m-half { animation: wipe 4s ease-in-out infinite alternate; }
+@keyframes wipe { from { height: 18%; } to { height: 70%; } }
+
+/* ---------- reduced motion: cuts, still art ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .win > .fix, .peek .fix { position: absolute; transform: none !important; }
+  .ch-artifact { transform: none !important; }
+  .case-back .sharp, .case-back .soft, .case-back .wash { transition: none !important; }
+  .grid.playing * { animation: none !important; }
+  #playSketches { display: none; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+</style>
+
+<div class="sb">
+  <div class="sb-in">
+    <span class="sb-name label">Storyboard</span>
+    <div class="seg" role="group" aria-label="Storyboard view">
+      <button type="button" id="modeProto" aria-pressed="true">Prototype</button>
+      <button type="button" id="modeCard" aria-pressed="false">/card</button>
+      <button type="button" id="modeFrames" aria-pressed="false">Frames</button>
+    </div>
+    <span class="idle" id="idleStatus" aria-live="off">Idle: still</span>
+    <button type="button" id="fastIdle" aria-pressed="false" title="Shortens the idle timers so you can watch them">Fast<span class="wide-only"> idle</span></button>
+  </div>
+</div>
+
+<header class="bar">
+  <div class="bar-in">
+    <button class="mark" type="button" id="mark" aria-label="Cello, home">Cello</button>
+    <span class="bar-title" id="barTitle" hidden>Ghosted</span>
+    <nav class="bar-nav" aria-label="Site">
+      <button type="button" data-nav="work">Work</button>
+      <button type="button" data-nav="about">About</button>
+      <button type="button" data-nav="writing">Writing</button>
+      <button type="button" data-nav="resume">Resume</button>
+    </nav>
+    <span class="bar-spacer"></span>
+    <button class="quiet" type="button" id="themeBtn">Dusk</button>
+    <button class="quiet menu-btn" type="button" id="menuBtn" aria-expanded="false" aria-controls="menu">Menu</button>
+  </div>
+</header>
+<ul class="menu" id="menu" hidden>
+  <li><button type="button" data-nav="work">Work</button></li>
+  <li><button type="button" data-nav="about">About</button></li>
+  <li><button type="button" data-nav="writing">Writing</button></li>
+  <li><button type="button" data-nav="resume">Resume</button></li>
+</ul>
+
+<main id="proto">
+  <!-- HOME: arrival → four project chapters → Let's Talk -->
+  <div id="home">
+    <div class="stage" id="stage" aria-hidden="true">
+      <div class="scene on" data-scene="mirror">
+        <img class="ly" data-name="sky" data-depth="0.97" data-cap="1.2,0.6" data-art="drift" src="assets/mirror-lake-sky.webp" alt="" width="1536" height="1024" fetchpriority="high">
+        <img class="ly" data-name="far" data-depth="0.85" data-cap="6,3" src="assets/mirror-lake-far.webp" alt="" width="1536" height="1024">
+        <img class="ly" data-name="mid" data-depth="0.55" data-cap="18,9" data-art="shimmer" src="assets/mirror-lake-mid.webp" alt="" width="1536" height="1024">
+        <img class="ly" data-name="near" data-depth="0.05" data-cap="38,19" data-art="sway" src="assets/mirror-lake-near.webp" alt="" width="1536" height="1024">
+        <div class="light"></div>
+      </div>
+      <div class="scene" data-scene="overhood" data-still>
+        <img class="ly" data-name="sky" data-depth="0.97" data-cap="0,0" src="assets/over-hood-sky.webp" alt="" width="1536" height="1024">
+        <img class="ly" data-name="terrain" data-depth="0.8" data-cap="0,0" src="assets/over-hood-terrain.webp" alt="" width="1536" height="1024">
+        <img class="ly" data-name="wing" data-depth="0.05" data-cap="0,0" src="assets/over-hood-wing.webp" alt="" width="1536" height="1024">
+        <div class="light"></div>
+      </div>
+      <div class="scene" data-scene="ecola">
+        <img class="ly" data-name="sky" data-depth="0.97" data-cap="0,0" src="assets/ecola-sky.webp" alt="" width="1536" height="1024">
+        <img class="ly" data-name="far" data-depth="0.85" data-cap="1,0" src="assets/ecola-far.webp" alt="" width="1536" height="1024">
+        <img class="ly" data-name="mid" data-depth="0.35" data-cap="4,0" src="assets/ecola-mid.webp" alt="" width="1536" height="1024">
+        <img class="ly" data-name="near" data-depth="0.05" data-cap="6,0" data-art="sway" src="assets/ecola-near.webp" alt="" width="1536" height="1024">
+        <div class="light"></div>
+      </div>
+      <div class="scene" data-scene="sauvie">
+        <picture class="ly" data-name="flat" data-depth="0.5" data-cap="0,0"><source media="(orientation: portrait)" srcset="assets/sauvie-tall.webp"><img src="assets/sauvie-flat.webp" alt="" width="1536" height="1024"></picture>
+        <div class="light"></div>
+      </div>
+      <div class="scene" data-scene="meadows">
+        <picture class="ly" data-name="flat" data-depth="0.5" data-cap="0,0"><source media="(orientation: portrait)" srcset="assets/meadows-tall.webp"><img src="assets/meadows-flat.webp" alt="" width="1536" height="1024"></picture>
+        <div class="light"></div>
+      </div>
+    </div>
+
+    <section class="sec arrival on-art" id="arrival" data-stop="0" data-place="mirror" aria-labelledby="arrivalName">
+      <p class="caption label">Mirror Lake · September</p>
+      <div class="arrival-copy">
+        <div class="scrim">
+          <h1 class="name" id="arrivalName">Cello</h1>
+          <p class="kicker label">Open to design systems, brand and product design roles</p>
+          <p class="line">Product Designer &amp; Design Engineer <span>Design Systems &amp; AI Tools</span></p>
+          <p class="summary">I lead design across three brands through a shared Figma system, then build the components and tools that carry it into everyday use.</p>
+          <div class="actions">
+            <a class="btn" href="#chAsheville" data-jump="1">View Case Studies</a>
+            <button class="arrow" type="button" data-stub="The resume isn’t part of this sketch.">View Resume</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec chapter on-art" id="chAsheville" data-stop="1" data-place="overhood" aria-labelledby="tAsheville">
+      <div class="peek" id="peek" aria-hidden="true">
+        <div class="fix">
+          <img class="ly" src="assets/over-hood-sky.webp" alt="" style="object-position: var(--oh-pos, 50% 50%)">
+          <img class="ly" src="assets/over-hood-terrain.webp" alt="" style="object-position: var(--oh-pos, 50% 50%)">
+          <img class="ly" src="assets/over-hood-wing.webp" alt="" style="object-position: var(--oh-pos, 50% 50%)">
+        </div>
+      </div>
+      <div class="ch-shade"></div>
+      <div class="ch-top"><p class="caption label">Over Hood · September</p></div>
+      <figure class="ch-artifact"><img src="assets/asheville-directory.webp" width="900" height="473" alt="The Plantbar asset directory: a search bar, then Branding open with Brand Guide, Main Assets, Shareable Assets, Iconography and Partner Assets"></figure>
+      <div class="ch-copy scrim">
+        <h2 class="ch-title" id="tAsheville">Asheville Dispensary</h2>
+        <p class="ch-role label">Product Design Lead / Design Engineer</p>
+        <p class="ch-pitch">One shared system, three distinct brands.</p>
+        <div class="actions"><button class="btn" type="button" data-stub="Only Ghosted opens in this sketch.">Read the case study</button></div>
+      </div>
+    </section>
+
+    <section class="sec chapter on-art" id="chGhosted" data-stop="2" data-place="ecola" aria-labelledby="tGhosted">
+      <div class="ch-shade"></div>
+      <div class="ch-top"><p class="caption label">Ecola · July</p></div>
+      <figure class="ch-artifact"><img src="assets/ghosted-loop-poster.webp" width="1440" height="900" alt="Ghosted's landing page, step 4 of 6, 'Keep it, or Reject it': a demo resume for a fictional Rowan Ellis with AI changes highlighted in yellow and an AI proposal bar with Reject and Keep"></figure>
+      <div class="ch-copy scrim">
+        <h2 class="ch-title" id="tGhosted">Ghosted</h2>
+        <p class="ch-role label">Product Designer / AI Tools</p>
+        <p class="ch-pitch">Tokens, component guidance and AI-assisted implementation, in a live resume you edit by chatting.</p>
+        <div class="actions">
+          <a class="btn" href="#ghosted" id="openGhosted">Read the case study</a>
+          <a class="arrow" href="https://ghosted.cello.design" target="_blank" rel="noopener">Live site <span aria-hidden="true">&nearr;</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec chapter on-art" id="chVeg" data-stop="3" data-place="sauvie" aria-labelledby="tVeg">
+      <div class="ch-shade"></div>
+      <div class="ch-top"><p class="caption label">Sauvie Island · October</p></div>
+      <figure class="ch-artifact"><img src="assets/vegavengers-vegfests.webp" width="900" height="473" alt="The VegFests 2026 page on vegavengers.com: a search field, a Hide TBD toggle and a grid of festivals with city, dates and a website link"></figure>
+      <div class="ch-copy scrim">
+        <h2 class="ch-title" id="tVeg">VegAvengers Marketing</h2>
+        <p class="ch-role label">Product Designer / Design Engineer</p>
+        <p class="ch-pitch">Designed and shipped the content platform behind vegavengers.com.</p>
+        <div class="actions">
+          <button class="btn" type="button" data-stub="Only Ghosted opens in this sketch.">Read the case study</button>
+          <a class="arrow" href="https://vegavengers.com" target="_blank" rel="noopener">Live site <span aria-hidden="true">&nearr;</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec chapter on-art" id="chDaybreak" data-stop="4" data-place="meadows" aria-labelledby="tDaybreak">
+      <div class="ch-shade"></div>
+      <div class="ch-top"><p class="caption label">Mt Hood Meadows · June</p></div>
+      <figure class="ch-artifact"><img src="assets/daybreak-today.webp" width="900" height="751" alt="Daybreak's Today view on the Mac: Onboard your day with a Review today's draft button, then Morning, Evening and Later sections and Prep tomorrow"></figure>
+      <div class="ch-copy scrim">
+        <h2 class="ch-title" id="tDaybreak">Daybreak</h2>
+        <p class="ch-role label">Product Designer / AI Systems</p>
+        <p class="ch-pitch">A local-first Mac and iPhone planner where people and AI use the same typed, receipt-backed operations.</p>
+        <div class="actions"><button class="btn" type="button" data-stub="Only Ghosted opens in this sketch.">Read the case study</button></div>
+      </div>
+    </section>
+
+    <section class="sec chapter talk on-art" id="contact" data-stop="5" data-place="mirror" aria-labelledby="contactTitle">
+      <div class="ch-shade"></div>
+      <div class="ch-top"><p class="caption label">Mirror Lake · September</p></div>
+      <div class="ch-copy scrim">
+        <h2 class="ch-title" id="contactTitle">Let’s Talk</h2>
+        <p class="ch-pitch">Open to design systems, brand and product design roles, remote in the US or in Portland. The fastest way to reach me is email.</p>
+        <div class="actions">
+          <button class="btn" type="button" data-stub="Email isn’t wired up in this sketch.">Email Me</button>
+          <button class="arrow" type="button" data-stub="The resume isn’t part of this sketch.">View Resume</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- CASE STUDY: Ghosted over Ecola -->
+  <div id="case" hidden>
+    <div class="case-back" aria-hidden="true">
+      <div class="sharp">
+        <img class="ly" src="assets/ecola-sky.webp" alt="" style="object-position: var(--ec-pos, 50% 50%)">
+        <img class="ly" src="assets/ecola-far.webp" alt="" style="object-position: var(--ec-pos, 50% 50%)">
+        <img class="ly" src="assets/ecola-mid.webp" alt="" style="object-position: var(--ec-pos, 50% 50%)">
+        <img class="ly" src="assets/ecola-near.webp" alt="" style="object-position: var(--ec-pos, 50% 50%)">
+      </div>
+      <img class="soft" id="readSoft" src="assets/ecola-read.webp" alt="" width="768" height="512">
+      <div class="light" id="readLight"></div>
+      <div class="wash"></div>
+    </div>
+
+    <header class="sec chapter cover on-art" id="cover">
+      <div class="ch-shade"></div>
+      <div class="ch-top"><p class="caption label">Ecola · July</p></div>
+      <figure class="cover-artifact"><img src="assets/ghosted-loop-poster.webp" width="1440" height="900" alt="Ghosted's landing page, step 4 of 6, 'Keep it, or Reject it': a demo resume for a fictional Rowan Ellis with AI changes highlighted in yellow"></figure>
+      <div class="ch-copy">
+        <h1 class="cover-title" id="coverTitle" tabindex="-1">Ghosted</h1>
+        <p class="ch-role label">Product Designer / AI Tools</p>
+      </div>
+    </header>
+
+    <article class="read" id="read" aria-labelledby="readStart">
+      <div class="wrap read-col">
+        <p class="role label" id="readStart">Case study</p>
+        <p class="lede">Tokens, component guidance and AI-assisted implementation, in a live resume you edit by chatting. Every AI change arrives as a yellow proposal you keep or reject. In private beta, shaped by its testers since day one.</p>
+        <dl class="facts">
+          <div><dt class="label">Problem</dt><dd>Job applications are repetitive and high-stakes. An AI can make tailoring a resume much faster, but only if you can see exactly what it changed and undo any of it.</dd></div>
+          <div><dt class="label">Role</dt><dd>Product designer and owner. I set the flows, the product model, the brand, the design system, and every call about where the AI stops. Coding agents built most of it from my specs and decisions.</dd></div>
+          <div><dt class="label">Key decision</dt><dd>Every AI change is a proposal, highlighted in yellow on the real page for the person to keep or reject. Yellow means only that, and the design system is built around protecting that one rule.</dd></div>
+          <div><dt class="label">Shipped</dt><dd>Live at ghosted.cello.design in private beta since October 8, 2026, with 70 production releases in its first four days. A design system of 59 primitive and 43 semantic color tokens, eight components in code, and checks that keep coding agents inside it.</dd></div>
+        </dl>
+
+        <h2>The Product: A Resume You Can Talk To</h2>
+        <p class="p">Ghosted is built around one surface: a live resume canvas with a chat beside it. You ask for a change, and the change shows up on the page in yellow.</p>
+        <figure class="fig">
+          <img src="assets/ghosted-proposal.webp" width="1920" height="1200" loading="lazy" alt="A live resume under a bar reading 'AI proposal awaiting your decision. Highlighted text is what changed.' with Reject and Keep buttons. The new summary and four bullets are highlighted in yellow">
+          <figcaption>Every AI change is a proposal: highlighted on the real page, waiting for Keep or Reject. (Demo data: a fictional resume.)</figcaption>
+        </figure>
+        <ul>
+          <li><strong>A live canvas.</strong> The resume is drawn in the browser by Typst, and the PDF comes from the same compiler, so what you see is what you download. An edit re-renders in about 7 ms.</li>
+          <li><strong>Proposals, not edits.</strong> Every change the agent makes is highlighted and saved as a version: who made it, when, and why. Keep it, Reject it, or Edit it myself. Undo and Restore only move a pointer, so nothing is ever deleted.</li>
+          <li><strong>Click any line to fix it yourself.</strong> Clicking a line on the rendered page opens the edit form at that exact field. When the AI misses twice in a row, the chat says so and points there instead of making you argue with it.</li>
+        </ul>
+
+        <h2>Before You Apply: Fit And Research</h2>
+        <p class="p">Every tailored job gets a Fit report, written by the same AI call that tailors the resume.</p>
+        <p class="p">Fit has to be checkable, too. Every “already strong” point cites a line, and code looks for that line on the job’s resume and the base. Anything it can’t find is flagged, never hidden.</p>
+        <figure class="fig">
+          <img src="assets/ghosted-fit.webp" width="2056" height="1408" loading="lazy" alt="The Fit tab: '4 of 10 ready.' with a progress meter and a one-line read of the whole report. Left: five Already strong items and the posting's words with checks. Right: Lead with and Gaps to prepare as checklists, four ticked">
+          <figcaption>Fit: the proof, then the prep, ticked off as you go. (Fictional job.)</figcaption>
+        </figure>
+
+        <h2>Testing With Real Testers</h2>
+        <p class="p">Ghosted went live to testers on October 8. The first tester used it that day, and her job notes were open in an interview the next morning. From then on, testers set the order of work.</p>
+        <figure class="fig">
+          <img src="assets/ghosted-board.webp" width="1920" height="1084" loading="lazy" alt="The Ghosted board with seven fictional jobs across Saved, Applied, Interviewing, Offer, Rejected and Ghosted columns, with status dates, a materials checklist on Saved jobs and a follow-up nudge on an Applied card">
+          <figcaption>The board after ‘it feels a bit empty’: status dates, a materials checklist on Saved jobs, and a follow-up nudge after 14 days. The product’s name, made useful.</figcaption>
+        </figure>
+
+        <p class="sketch-note trim">Sketch: the full case study continues here (the design system, the first-resume interview, identity and motion, the focus pass, by the numbers). The settled still stays put through all of it; after 20–30 s without input it may breathe, very slightly, for about a minute.</p>
+
+        <h2>What I Learned</h2>
+        <p class="p">Adding AI to a product is easy. The design work is deciding how much the model gets to do, and making sure the person can see, judge and undo every bit of it.</p>
+        <p class="end-mark label">End of Ghosted</p>
+      </div>
+    </article>
+
+    <section class="sec chapter win on-art outro" id="outro" aria-labelledby="tOutro">
+      <div class="fix" aria-hidden="true"><picture><source media="(orientation: portrait)" srcset="assets/sauvie-tall.webp"><img src="assets/sauvie-flat.webp" alt="" width="1536" height="1024"></picture></div>
+      <div class="ch-shade"></div>
+      <div class="ch-top"><p class="caption label">Sauvie Island · October</p></div>
+      <figure class="ch-artifact"><img src="assets/vegavengers-vegfests.webp" width="900" height="473" alt="The VegFests 2026 page on vegavengers.com: a search field, a Hide TBD toggle and a grid of festivals with city, dates and a website link"></figure>
+      <div class="ch-copy scrim">
+        <h2 class="ch-title" id="tOutro">VegAvengers Marketing</h2>
+        <p class="ch-role label">Product Designer / Design Engineer</p>
+        <p class="ch-pitch">Designed and shipped the content platform behind vegavengers.com.</p>
+        <div class="actions">
+          <button class="btn" type="button" data-stub="VegAvengers’ doorway isn’t storyboarded; it plays the same move as Ghosted’s.">Read the case study</button>
+          <a class="arrow" href="https://vegavengers.com" target="_blank" rel="noopener">Live site <span aria-hidden="true">&nearr;</span></a>
+          <button class="arrow" type="button" data-stub="All work is the calm /projects index; not in this sketch.">All work</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<!-- /card: show, then share (phone only) -->
+<div id="card" hidden>
+  <header class="card-bar">
+    <span class="mark" style="cursor: default">Cello</span>
+    <span class="bar-spacer"></span>
+    <button class="card-act primary" type="button" data-stub="Save Contact is visual only in the storyboard.">Save Contact</button>
+    <button class="card-act" type="button" data-stub="Share is visual only in the storyboard.">Share</button>
+  </header>
+  <div class="card-col">
+    <section class="pitch" id="cPitch" data-cstop="0" aria-labelledby="cName">
+      <h1 class="name" id="cName">Cello</h1>
+      <p class="pitch-title">Product Designer &amp; Design Engineer — Design Systems &amp; AI Tools</p>
+      <p class="kicker label">Open to design systems, brand and product design roles</p>
+      <p class="slot"><b>[Cello’s words]</b>A spoken-length personal pitch, the few sentences said while the phone is held up.</p>
+      <figure class="qr">
+        <img src="assets/qr-cello-design.svg" width="300" height="300" alt="QR code for cello.design">
+        <figcaption class="label">Scan · cello.design</figcaption>
+      </figure>
+      <div class="pitch-actions">
+        <button class="primary" type="button" data-stub="Save Contact is visual only in the storyboard.">Save Contact</button>
+        <button type="button" data-stub="Share is visual only in the storyboard.">Share</button>
+      </div>
+    </section>
+
+    <section class="sec chapter win on-art" id="cAshS" data-cstop="1" aria-labelledby="cAsh">
+      <div class="fix" aria-hidden="true"><img src="assets/over-hood-tall.webp" alt="" loading="lazy" width="576" height="1024"></div>
+      <div class="ch-shade"></div>
+      <div class="ch-top"><p class="caption label">Over Hood · September</p></div>
+      <figure class="ch-artifact"><img src="assets/asheville-directory.webp" width="900" height="473" alt="The Plantbar asset directory: a search bar, then Branding open with Brand Guide, Main Assets, Shareable Assets, Iconography and Partner Assets"></figure>
+      <div class="ch-copy scrim">
+        <h2 class="ch-title" id="cAsh">Asheville Dispensary</h2>
+        <p class="ch-pitch">One shared system, three distinct brands.</p>
+        <p class="slot"><b>[Cello’s words]</b>The 10-second line.</p>
+      </div>
+    </section>
+
+    <section class="sec chapter win on-art" id="cGhosted" data-cstop="2" aria-labelledby="cGh">
+      <div class="fix" aria-hidden="true"><img src="assets/ecola-tall.webp" alt="" loading="lazy" width="576" height="1024"></div>
+      <div class="ch-shade"></div>
+      <div class="ch-top"><p class="caption label">Ecola · July</p></div>
+      <figure class="ch-artifact"><img src="assets/ghosted-loop-poster.webp" width="1440" height="900" alt="Ghosted's landing page, step 4 of 6, 'Keep it, or Reject it': a demo resume for a fictional Rowan Ellis with AI changes highlighted in yellow"></figure>
+      <div class="ch-copy scrim">
+        <h2 class="ch-title" id="cGh">Ghosted</h2>
+        <p class="ch-pitch">Tokens, component guidance and AI-assisted implementation, in a live resume you edit by chatting.</p>
+        <p class="slot"><b>[Cello’s words]</b>The 10-second line.</p>
+      </div>
+    </section>
+
+    <section class="sec chapter win on-art" id="cVegS" data-cstop="3" aria-labelledby="cVeg">
+      <div class="fix" aria-hidden="true"><img src="assets/sauvie-tall.webp" alt="" loading="lazy" width="576" height="1024"></div>
+      <div class="ch-shade"></div>
+      <div class="ch-top"><p class="caption label">Sauvie Island · October</p></div>
+      <figure class="ch-artifact"><img src="assets/vegavengers-vegfests.webp" width="900" height="473" alt="The VegFests 2026 page on vegavengers.com: a search field, a Hide TBD toggle and a grid of festivals"></figure>
+      <div class="ch-copy scrim">
+        <h2 class="ch-title" id="cVeg">VegAvengers Marketing</h2>
+        <p class="ch-pitch">Designed and shipped the content platform behind vegavengers.com.</p>
+        <p class="slot"><b>[Cello’s words]</b>The 10-second line.</p>
+      </div>
+    </section>
+
+    <section class="sec chapter win on-art" id="cDayS" data-cstop="4" aria-labelledby="cDay">
+      <div class="fix" aria-hidden="true"><img src="assets/meadows-tall.webp" alt="" loading="lazy" width="576" height="1024"></div>
+      <div class="ch-shade"></div>
+      <div class="ch-top"><p class="caption label">Mt Hood Meadows · June</p></div>
+      <figure class="ch-artifact"><img src="assets/daybreak-today.webp" width="900" height="751" alt="Daybreak's Today view on the Mac: Onboard your day, then Morning, Evening and Later sections"></figure>
+      <div class="ch-copy scrim">
+        <h2 class="ch-title" id="cDay">Daybreak</h2>
+        <p class="ch-pitch">A local-first Mac and iPhone planner where people and AI use the same typed, receipt-backed operations.</p>
+        <p class="slot"><b>[Cello’s words]</b>The 10-second line.</p>
+      </div>
+    </section>
+
+    <section class="card-about" id="cAboutS" data-cstop="5" aria-labelledby="cAbout">
+      <h2 class="h2" id="cAbout">About</h2>
+      <p>I came to product design through visual journalism, brand systems, and front-end engineering. That range lets me translate creative intent into product rules, prototype behavior, make constraints legible, and speak the language of the team shipping it.</p>
+      <h2 class="h2">Let’s Talk</h2>
+      <p>Open to design systems, brand and product design roles, remote in the US or in Portland. The fastest way to reach me is email.</p>
+      <div class="pitch-actions">
+        <button class="primary" type="button" data-stub="Save Contact is visual only in the storyboard.">Save Contact</button>
+        <button type="button" data-stub="Share is visual only in the storyboard.">Share</button>
+      </div>
+    </section>
+  </div>
+  <nav class="tl" id="cardRail" aria-label="Card chapters">
+    <ol>
+      <li style="--i: 0"><a href="#cPitch" data-i="0"><span class="dot"></span><span class="name">Pitch</span></a></li>
+      <li style="--i: 1"><a href="#cAshS" data-i="1"><span class="dot"></span><span class="name">Asheville Dispensary</span></a></li>
+      <li style="--i: 2"><a href="#cGhosted" data-i="2"><span class="dot"></span><span class="name">Ghosted</span></a></li>
+      <li style="--i: 3"><a href="#cVegS" data-i="3"><span class="dot"></span><span class="name">VegAvengers</span></a></li>
+      <li style="--i: 4"><a href="#cDayS" data-i="4"><span class="dot"></span><span class="name">Daybreak</span></a></li>
+      <li style="--i: 5"><a href="#cAboutS" data-i="5"><span class="dot"></span><span class="name">About &amp; contact</span></a></li>
+    </ol>
+  </nav>
+</div>
+
+<nav class="tl auto" id="timeline" aria-label="Chapters">
+  <ol id="tlList">
+    <li style="--i: 0"><a href="#arrival" data-i="0"><span class="dot"></span><span class="name">Cello</span></a></li>
+    <li style="--i: 1"><a href="#chAsheville" data-i="1"><span class="dot"></span><span class="name">Asheville Dispensary</span></a></li>
+    <li style="--i: 2"><a href="#chGhosted" data-i="2"><span class="dot"></span><span class="name">Ghosted</span></a></li>
+    <li style="--i: 3"><a href="#chVeg" data-i="3"><span class="dot"></span><span class="name">VegAvengers</span></a></li>
+    <li style="--i: 4"><a href="#chDaybreak" data-i="4"><span class="dot"></span><span class="name">Daybreak</span></a></li>
+    <li style="--i: 5"><a href="#contact" data-i="5"><span class="dot"></span><span class="name">Let’s Talk</span></a></li>
+  </ol>
+</nav>
+
+<p class="toast" id="toast" role="status" hidden></p>
+
+<!-- FRAMES -->
+<section class="frames" id="frames" hidden aria-labelledby="framesTitle">
+  <div class="wrap">
+    <div class="frames-head">
+      <p class="eyebrow label">Storyboard · home and Ghosted · decisions Q23–Q43</p>
+      <h2 class="h2" id="framesTitle">Home in chapters, Ghosted through the doorway</h2>
+      <p class="thesis">For a recruiter skimming on a phone from LinkedIn: the craft is felt in the first three seconds and never stands between them and the work. Look, read, look.</p>
+      <div class="legend" aria-label="Who leads each frame">
+        <span class="chip s">Scene leads</span><span class="chip w">Work leads</span><span class="chip m">Motion</span>
+      </div>
+    </div>
+    <div class="frames-tools">
+      <button class="tool-btn" type="button" id="playSketches" aria-pressed="false">Play motion sketches</button>
+      <span class="label" style="color: var(--muted)">Frames rest on their key pose</span>
+    </div>
+
+    <ol class="grid" id="grid">
+      <li class="card f1">
+        <div class="mini" aria-hidden="true">
+          <img class="m-abs m-l m-l1" src="assets/mirror-lake-sky.webp" alt="" style="object-position: 46% 34%">
+          <img class="m-abs m-l m-l2" src="assets/mirror-lake-far.webp" alt="" style="object-position: 46% 34%">
+          <img class="m-abs m-l m-l3" src="assets/mirror-lake-mid.webp" alt="" style="object-position: 46% 34%">
+          <img class="m-abs m-l m-l4" src="assets/mirror-lake-near.webp" alt="" style="object-position: 9% 50%">
+          <div class="m-grad"></div>
+          <div class="m-copy" style="bottom: 25cqw"><p class="m-name">Cello</p><div class="m-lines"><i></i><i></i><i></i><i></i></div><div class="m-btns"><i></i><i></i></div></div>
+          <div class="m-peek"><img src="assets/over-hood-tall.webp" alt=""></div>
+          <div class="m-bar">Cello<i></i></div>
+          <div class="m-tl" style="--f: 0"><b class="on" style="--i:0"></b><b style="--i:1"></b><b style="--i:2"></b><b style="--i:3"></b><b style="--i:4"></b><b style="--i:5"></b></div>
+        </div>
+        <div class="card-notes">
+          <div class="card-num"><span class="num">1</span><span class="chip s">Scene leads</span></div>
+          <h3>Arrival over Mirror Lake</h3>
+          <p class="note"><b>Scene</b>One full screen, alive. Layers assemble back to front once; after 3–5 s still they drift within their caps (desktop), the water shimmers and the fireweed sways. Over Hood peeks at the bottom edge.</p>
+          <p class="note"><b>Reader</b>Reads the name, the role and the summary at first paint. No wait, no gate.</p>
+          <button class="play-beat" type="button" data-beat="arrival">Play in prototype</button>
+        </div>
+      </li>
+
+      <li class="card f2">
+        <div class="mini" aria-hidden="true">
+          <img class="m-abs" src="assets/over-hood-tall.webp" alt="">
+          <div class="m-shade"></div>
+          <span class="m-cap m-lbl">Over Hood · September</span>
+          <div class="m-art" style="top: 47%"><img src="assets/asheville-directory.webp" alt=""></div>
+          <div class="m-copy" style="bottom: 12cqw"><p class="m-t">Asheville Dispensary</p><p class="m-lbl" style="margin-top: 1.5cqw">Product Design Lead</p><div class="m-lines"><i></i></div><div class="m-btns"><i></i></div></div>
+          <div class="m-bar">Cello<i></i></div>
+          <div class="m-tl" style="--f: .2"><b style="--i:0"></b><b class="on" style="--i:1"></b><b style="--i:2"></b><b style="--i:3"></b><b style="--i:4"></b><b style="--i:5"></b></div>
+        </div>
+        <div class="card-notes">
+          <div class="card-num"><span class="num">2</span><span class="chip s">Scene leads</span><span class="chip w">Work leads</span></div>
+          <h3>A chapter on a phone</h3>
+          <p class="note"><b>Scene</b>The place on the top 55%, the artifact on the seam, the words below on the scrim. Over Hood is still-first: only its light breathes when idle.</p>
+          <p class="note"><b>Reader</b>Title, role, one-line pitch, Read the case study. The rail says chapter 2 of 6.</p>
+          <button class="play-beat" type="button" data-beat="chapter">Play in prototype</button>
+        </div>
+      </li>
+
+      <li class="card f3">
+        <div class="mini" aria-hidden="true">
+          <img class="m-abs h-o2" src="assets/over-hood-sky.webp" alt="" style="object-position: 53% 50%; opacity: .3">
+          <img class="m-abs h-i1" src="assets/ecola-sky.webp" alt="" style="object-position: 51% 50%">
+          <img class="m-abs h-o1" src="assets/over-hood-terrain.webp" alt="" style="object-position: 53% 50%; opacity: .3">
+          <img class="m-abs h-i2" src="assets/ecola-far.webp" alt="" style="object-position: 51% 50%; opacity: .9">
+          <img class="m-abs h-i3" src="assets/ecola-mid.webp" alt="" style="object-position: 51% 50%; opacity: .45">
+          <span class="m-tag">Scrubbed by scroll · reversible</span>
+          <div class="m-bar">Cello<i></i></div>
+          <div class="m-tl" style="--f: .3"><b style="--i:0"></b><b class="on" style="--i:1"></b><b style="--i:2"></b><b style="--i:3"></b><b style="--i:4"></b><b style="--i:5"></b></div>
+        </div>
+        <div class="card-notes">
+          <div class="card-num"><span class="num">3</span><span class="chip m">Motion</span><span class="chip s">Scene leads</span></div>
+          <h3>The depth hand-off</h3>
+          <p class="note"><b>Scene</b>Over Hood comes apart by depth, wing first, then terrain, then sky; Ecola assembles back to front, the arrival’s order. Shifts stay inside each layer’s cap.</p>
+          <p class="note"><b>Reader</b>Scrolls. Scroll back and it reverses. Soft snap lands on the chapter; a fast flick skips it. Reduced motion: a clean cut.</p>
+          <button class="play-beat" type="button" data-beat="between">Play in prototype</button>
+        </div>
+      </li>
+
+      <li class="card f4">
+        <div class="mini" aria-hidden="true">
+          <img class="m-abs" src="assets/ecola-tall.webp" alt="">
+          <div class="m-shade"></div>
+          <span class="m-cap m-lbl">Ecola · July</span>
+          <div class="m-art" style="top: 47%"><img src="assets/ghosted-loop-poster.webp" alt=""></div>
+          <div class="m-copy" style="bottom: 13cqw"><p class="m-t">Ghosted</p><p class="m-lbl" style="margin-top: 1.5cqw">Product Designer / AI Tools</p><div class="m-lines"><i></i><i></i></div><div class="m-btns"><i></i><i></i></div></div>
+          <div class="m-bar">Cello<i></i></div>
+          <div class="m-tl" style="--f: .52"><b style="--i:0"></b><b style="--i:1"></b><b style="--i:2"></b><b class="on" style="--i:3"></b><b style="--i:4"></b><b style="--i:5"></b></div>
+          <span class="m-bubble" style="left: 40%; bottom: 10cqw">VegAvengers</span>
+          <span class="m-thumb" style="left: calc(6cqw + 88cqw * 2.6 / 5 - 5cqw); bottom: -1cqw"></span>
+          <span class="m-tag" style="top: auto; bottom: 19cqw; left: 3cqw; right: auto">Drag to scrub · tap to jump</span>
+        </div>
+        <div class="card-notes">
+          <div class="card-num"><span class="num">4</span><span class="chip w">Work leads</span></div>
+          <h3>Ghosted, and scrubbing the rail</h3>
+          <p class="note"><b>Scene</b>Ecola, sharp, with the Loop’s Keep-or-Reject step set in (demo persona). Dragging the bar scrubs the places exactly as scrolling would.</p>
+          <p class="note"><b>Reader</b>Six stops: arrival, the four projects, Let’s Talk. The name shows while dragging, on hover or on focus. It’s a nav of real links.</p>
+          <button class="play-beat" type="button" data-beat="ghosted">Play in prototype</button>
+        </div>
+      </li>
+
+      <li class="card f5">
+        <div class="mini wide" aria-hidden="true">
+          <img class="m-abs" src="assets/ecola-tall.webp" alt="" style="object-fit: cover; object-position: 50% 40%">
+          <div class="m-grad"></div>
+          <span class="m-cap m-lbl" style="top: 7cqw; left: 3cqw; font-size: 1.2cqw">Ecola · July</span>
+          <div class="m-art" style="left: 53%; width: 38%; top: 26%; box-shadow: 1cqw 1cqw 0 var(--ink-950); border-width: 0.3cqw"><img src="assets/ghosted-loop-poster.webp" alt=""></div>
+          <div class="m-copy" style="left: 3cqw; bottom: 8cqw; right: 55%"><p class="m-t" style="font-size: 5cqw">Ghosted</p><p class="m-lbl" style="font-size: 1.2cqw; margin-top: .8cqw">Product Designer / AI Tools</p></div>
+          <div class="m-bar">Cello<span>Work · About · Writing · Resume</span></div>
+          <div class="m-rail"><b style="--i:0"></b><b style="--i:1"></b><b class="on" style="--i:2"></b><b style="--i:3"></b><b style="--i:4"></b><b style="--i:5"></b></div>
+          <span class="m-tag" style="right: 4cqw">Right rail · pointer parallax</span>
+        </div>
+        <div class="card-notes">
+          <div class="card-num"><span class="num">5</span><span class="chip w">Work leads</span></div>
+          <h3>The same chapter on desktop</h3>
+          <p class="note"><b>Scene</b>Full-bleed. Idle drift within caps (none vertical on Ecola) plus pointer parallax with a spring back; rests after 60–90 s.</p>
+          <p class="note"><b>Reader</b>Words bottom left, artifact right, the rail on the right edge. The bar stays quiet: mark, Work, About, Writing, Resume, theme.</p>
+          <button class="play-beat" type="button" data-beat="ghosted">Play in prototype</button>
+        </div>
+      </li>
+
+      <li class="card f6">
+        <div class="mini" aria-hidden="true">
+          <img class="m-abs" src="assets/ecola-tall.webp" alt="">
+          <div class="m-shade"></div>
+          <div class="m-art m-art-move" style="top: 44%; left: 4%; width: 92%; transform: scale(.93); box-shadow: 1.6cqw 1.6cqw 0 var(--ink-950)"><img src="assets/ghosted-loop-poster.webp" alt=""></div>
+          <div class="m-copy" style="bottom: 16cqw"><p class="m-cover m-t-move" style="transform: scale(.8); transform-origin: 0 100%">Ghosted</p></div>
+          <span class="m-ghost" style="left: 10%; width: 80%; top: 47%; aspect-ratio: 16 / 10"></span>
+          <span class="m-tag">One move · 0.76 s</span>
+          <div class="m-bar">Cello<i></i></div>
+        </div>
+        <div class="card-notes">
+          <div class="card-num"><span class="num">6</span><span class="chip m">Motion</span><span class="chip s">Scene leads</span></div>
+          <h3>The doorway into the cover</h3>
+          <p class="note"><b>Scene</b>The place stays put. The title grows into the page title, the artifact settles onto its sill, the rest fades.</p>
+          <p class="note"><b>Reader</b>Under a second, then the cover. Back returns to the Ghosted chapter. Build: cross-document view transition, URLs unchanged, normal load without it (iOS Safari 18+ has it). Here: same-document.</p>
+          <button class="play-beat" type="button" data-beat="doorway">Play in prototype</button>
+        </div>
+      </li>
+
+      <li class="card f7">
+        <div class="mini" aria-hidden="true">
+          <img class="m-abs" src="assets/ecola-tall.webp" alt="">
+          <div class="m-shade"></div>
+          <span class="m-cap m-lbl">Ecola · July</span>
+          <div class="m-art" style="top: 44%; left: 4%; width: 92%; box-shadow: 1cqw 1cqw 0 var(--ink-950)"><img src="assets/ghosted-loop-poster.webp" alt=""></div>
+          <div class="m-copy" style="bottom: 14cqw"><p class="m-cover">Ghosted</p><p class="m-lbl" style="margin-top: 1.5cqw">Product Designer / AI Tools</p></div>
+          <div class="m-bar">Cello<i></i></div>
+        </div>
+        <div class="card-notes">
+          <div class="card-num"><span class="num">7</span><span class="chip s">Scene leads</span></div>
+          <h3>Ecola, the cover</h3>
+          <p class="note"><b>Scene</b>Same place, same layers, at rest. One caption, from the catalog: Ecola · July.</p>
+          <p class="note"><b>Reader</b>Knows where they are. Once the cover scrolls away, the bar shows “Ghosted” beside the mark.</p>
+          <button class="play-beat" type="button" data-beat="cover">Play in prototype</button>
+        </div>
+      </li>
+
+      <li class="card f8">
+        <div class="mini" aria-hidden="true">
+          <img class="m-abs m-soft" src="assets/ecola-read.webp" alt="">
+          <div class="m-abs m-light light" style="opacity: 0"></div>
+          <div class="m-wash"></div>
+          <div class="m-read">
+            <p class="m-h">The Product: A Resume You Can Talk To</p>
+            <div class="m-lines"><i></i><i></i><i></i><i></i></div>
+            <div class="m-fig"></div>
+            <div class="m-lines"><i></i><i></i><i></i></div>
+          </div>
+          <div class="m-bar">Cello<em>Ghosted</em><i></i></div>
+          <span class="m-tag" style="top: auto; bottom: 4cqw">Idle after 20–30 s · art only</span>
+        </div>
+        <div class="card-notes">
+          <div class="card-num"><span class="num">8</span><span class="chip w">Work leads</span></div>
+          <h3>Calm reading, with the reading idle</h3>
+          <p class="note"><b>Scene</b>Settles once to a soft, washed still. After 20–30 s without input its light breathes, very low, under 30 fps; no layer slides under text. Any input stops it; it rests after about a minute.</p>
+          <p class="note"><b>Reader</b>Reads. Off for reduced motion, Save-Data and hidden tabs.</p>
+          <button class="play-beat" type="button" data-beat="read">Play in prototype</button>
+        </div>
+      </li>
+
+      <li class="card f9">
+        <div class="mini" aria-hidden="true">
+          <img class="m-abs m-soft" src="assets/ecola-read.webp" alt="">
+          <div class="m-wash"></div>
+          <div class="m-read" style="padding-top: 13cqw"><p class="m-h">What I Learned</p><div class="m-lines"><i></i><i></i><i></i></div></div>
+          <div class="m-half" style="height: 62%"><img src="assets/sauvie-tall.webp" alt=""><div class="m-grad"></div>
+            <div class="m-copy" style="bottom: 13cqw"><p class="m-lbl">Sauvie Island · October</p><p class="m-t">VegAvengers Marketing</p><div class="m-btns"><i></i><i></i></div></div>
+          </div>
+          <span class="m-arrow" style="left: 86%; top: 40%; height: 14%"></span>
+          <div class="m-bar">Cello<em>Ghosted</em><i></i></div>
+          <div class="m-tl" style="--f: .6"><b style="--i:0"></b><b style="--i:1"></b><b style="--i:2"></b><b class="on" style="--i:3"></b><b style="--i:4"></b><b style="--i:5"></b></div>
+        </div>
+        <div class="card-notes">
+          <div class="card-num"><span class="num">9</span><span class="chip s">Scene leads</span></div>
+          <h3>The outro: the next chapter rises</h3>
+          <p class="note"><b>Scene</b>VegAvengers’ chapter rises under the last lines, scrubbed by scroll: the same screen as on home.</p>
+          <p class="note"><b>Reader</b>Taps it to go through its doorway, or uses All work or the rail. Nothing navigates on its own.</p>
+          <button class="play-beat" type="button" data-beat="next">Play in prototype</button>
+        </div>
+      </li>
+    </ol>
+
+    <div class="frames-head" style="margin-top: 56px">
+      <p class="eyebrow label">/card · at an event · phone only · Q44–Q47</p>
+      <h2 class="h2" style="font-size: clamp(1.6rem, 5.4vw, 2.2rem)">Show, then share</h2>
+      <p class="thesis">Cello holds the phone up to someone. Words, QR and actions are there at first paint; places load lazily behind them and never block.</p>
+    </div>
+    <ol class="grid two">
+      <li class="card f10">
+        <div class="mini" aria-hidden="true" style="background: var(--bg); color: var(--fg)">
+          <div style="position: absolute; inset: 13cqw 5cqw 10cqw; display: grid; align-content: center; gap: 2.6cqw">
+            <p class="m-name">Cello</p>
+            <p style="font-family: var(--font-display); font-weight: 600; font-size: 4.4cqw; line-height: 1.15">Product Designer &amp; Design Engineer — Design Systems &amp; AI Tools</p>
+            <div style="border: 0.5cqw dashed var(--construct); padding: 2cqw; font-family: var(--font-label); font-size: 2.4cqw; font-weight: 700; text-transform: uppercase">[Cello’s words]</div>
+            <div style="justify-self: center; width: 66cqw; padding: 3cqw; background: var(--paper-100); border: 0.6cqw solid var(--ink-950); box-shadow: 2.4cqw 2.4cqw 0 var(--ground)"><img src="assets/qr-cello-design.svg" alt="" style="width: 100%; image-rendering: pixelated"></div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2cqw"><i style="height: 9cqw; background: var(--fg)"></i><i style="height: 9cqw; border: 0.5cqw solid var(--fg)"></i></div>
+          </div>
+          <div class="m-bar">Cello<span style="margin-left: auto; font-family: var(--font-label); font-size: 2.2cqw; letter-spacing: .06em">SAVE · SHARE</span></div>
+          <div class="m-tl" style="--f: 0"><b class="on" style="--i:0"></b><b style="--i:1"></b><b style="--i:2"></b><b style="--i:3"></b><b style="--i:4"></b><b style="--i:5"></b></div>
+        </div>
+        <div class="card-notes">
+          <div class="card-num"><span class="num">10</span><span class="chip w">Work leads</span></div>
+          <h3>The pitch, held up</h3>
+          <p class="note"><b>Scene</b>None. A plain surface so the QR reads in a dim room; the code sits on a paper plate in both themes. Points to https://cello.design.</p>
+          <p class="note"><b>Reader</b>Scans while Cello says the spoken pitch ([Cello’s words]). Save Contact and Share stay in the bar the whole way.</p>
+          <button class="play-beat" type="button" data-beat="card-pitch">Play in prototype</button>
+        </div>
+      </li>
+      <li class="card f11">
+        <div class="mini" aria-hidden="true">
+          <img class="m-abs" src="assets/ecola-tall.webp" alt="">
+          <div class="m-shade"></div>
+          <span class="m-cap m-lbl">Ecola · July</span>
+          <div class="m-art" style="top: 47%"><img src="assets/ghosted-loop-poster.webp" alt=""></div>
+          <div class="m-copy" style="bottom: 12cqw"><p class="m-t">Ghosted</p><div class="m-lines"><i></i><i></i></div><div style="margin-top: 2.5cqw; border: 0.5cqw dashed var(--construct); padding: 1.6cqw; font-family: var(--font-label); font-size: 2.3cqw; font-weight: 700">[CELLO’S WORDS] · 10 S</div></div>
+          <div class="m-bar">Cello<span style="margin-left: auto; font-family: var(--font-label); font-size: 2.2cqw; letter-spacing: .06em">SAVE · SHARE</span></div>
+          <div class="m-tl" style="--f: .4"><b style="--i:0"></b><b style="--i:1"></b><b class="on" style="--i:2"></b><b style="--i:3"></b><b style="--i:4"></b><b style="--i:5"></b></div>
+        </div>
+        <div class="card-notes">
+          <div class="card-num"><span class="num">11</span><span class="chip s">Scene leads</span><span class="chip w">Work leads</span></div>
+          <h3>A 10-second chapter: Ghosted</h3>
+          <p class="note"><b>Scene</b>Home’s chapter component, compact: Ecola on top, the Loop poster on the seam. The place loads lazily; ink holds its spot until then.</p>
+          <p class="note"><b>Reader</b>One tap or swipe per project; soft snap; the bottom rail. Then About and contact.</p>
+          <button class="play-beat" type="button" data-beat="card-ghosted">Play in prototype</button>
+        </div>
+      </li>
+    </ol>
+    <div class="frames-foot">
+      <p class="sketch-note">Off the storyboard: How I Build and About move to a new /about (Q34); /projects and /blog stay calm indexes (Q36); posts follow the case-study pattern later (Q43). Cutover is on hold (Q39).</p>
+      <p class="sketch-note">Only Over Hood and Ecola are cut into layers here; Sauvie and Meadows hand off as single flats to keep the sketch light. Let’s Talk returns to Mirror Lake, home’s bookend.</p>
+    </div>
+  </div>
+</section>
+
+<script>
+(() => {
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => [...document.querySelectorAll(s)];
+  const reduceMQ = matchMedia("(prefers-reduced-motion: reduce)");
+  const desktopMQ = matchMedia("(min-width: 900px) and (hover: hover) and (pointer: fine)");
+  const saveData = !!(navigator.connection && navigator.connection.saveData);
+  const reduce = () => reduceMQ.matches;
+  const root = document.documentElement;
+  const proto = $("#proto"), frames = $("#frames"), card = $("#card"), home = $("#home"), kase = $("#case"), tl = $("#timeline");
+  const siteBar = $(".bar");
+  let mode = "proto", view = "home";
+  const saved = { proto: 0, card: 0, frames: 0 };
+  const jump = (y) => window.scrollTo({ top: y, behavior: "instant" });
+  const glide = (y) => window.scrollTo({ top: y, behavior: reduce() ? "instant" : "smooth" });
+  const vt = (fn) => (!reduce() && document.startViewTransition) ? document.startViewTransition(fn) : (fn(), null);
+  const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const smooth = (x) => { x = clamp(x); return x * x * (3 - 2 * x); };
+  const absTop = (el) => el.getBoundingClientRect().top + window.scrollY;
+
+  /* ---------- theme ---------- */
+  const themeBtn = $("#themeBtn");
+  const isDark = () => root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  const paintTheme = () => { const d = isDark(); themeBtn.textContent = d ? "Day" : "Dusk"; themeBtn.setAttribute("aria-label", d ? "Switch to Day (light)" : "Switch to Dusk (dark)"); };
+  themeBtn.addEventListener("click", () => { root.dataset.theme = isDark() ? "light" : "dark"; paintTheme(); });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", paintTheme);
+  paintTheme();
+
+  /* ---------- toast, menu, bar links ---------- */
+  const toast = $("#toast"); let toastT = 0;
+  const say = (msg) => { toast.textContent = msg; toast.hidden = false; clearTimeout(toastT); toastT = setTimeout(() => (toast.hidden = true), 2800); };
+  $$("[data-stub]").forEach((b) => b.addEventListener("click", (e) => { e.preventDefault(); say(b.dataset.stub); }));
+  const menu = $("#menu"), menuBtn = $("#menuBtn");
+  menuBtn.addEventListener("click", () => { menu.hidden = !menu.hidden; menuBtn.setAttribute("aria-expanded", String(!menu.hidden)); });
+  const navMsg = {
+    about: "/about: How I Build and About move here (Q34). Not in this sketch.",
+    writing: "Writing is the calm /blog index (Q36). Not in this sketch.",
+    resume: "The resume isn’t part of this sketch.",
+  };
+  $$("[data-nav]").forEach((b) => b.addEventListener("click", () => {
+    menu.hidden = true; menuBtn.setAttribute("aria-expanded", "false");
+    const k = b.dataset.nav;
+    if (k === "work") { setMode("proto"); if (view === "case") backToChapter(); else glide(homeRail.tops[1]); }
+    else say(navMsg[k]);
+  }));
+  $("#mark").addEventListener("click", () => { setMode("proto"); goBeat("arrival"); });
+
+  /* ---------- rails: tap to jump, drag to scrub, progress and the current chapter ---------- */
+  function makeRail(nav, stopEls, opts = {}) {
+    const list = nav.querySelector("ol"), links = [...list.querySelectorAll("a")];
+    const r = { tops: [], links, current: -1, dragged: false };
+    links.forEach((l) => (l.draggable = false));          // a link drag would cancel the scrub
+    nav.addEventListener("dragstart", (e) => e.preventDefault());
+    const vertical = () => (opts.vertical ? opts.vertical() : false);
+    r.measure = () => { const max = document.documentElement.scrollHeight - innerHeight; r.tops = stopEls.map((s) => clamp(absTop(s), 0, max)); };
+    r.yFor = (f) => { const t = r.tops, n = t.length - 1, x = clamp(f * n, 0, n), i = Math.min(n - 1, Math.floor(x)); return t[i] + (x - i) * (t[i + 1] - t[i]); };
+    r.fracFor = (y) => { const t = r.tops, n = t.length - 1; if (y <= t[0]) return 0; for (let i = 0; i < n; i++) if (y < t[i + 1]) return (i + (y - t[i]) / Math.max(1, t[i + 1] - t[i])) / n; return 1; };
+    r.paint = (idx, f) => {
+      if (f == null) { f = r.fracFor(window.scrollY); idx = Math.round(f * (r.tops.length - 1)); }
+      list.style.setProperty("--f", f.toFixed(4));
+      if (idx === r.current) return;
+      r.current = idx;
+      links.forEach((a, i) => { if (i === idx) a.setAttribute("aria-current", "true"); else a.removeAttribute("aria-current"); a.parentElement.classList.toggle("past", i < idx); });
+    };
+    links.forEach((a) => a.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (r.dragged) return;
+      const i = Number(a.dataset.i);
+      if (opts.onTap && opts.onTap(i)) return;
+      r.measure(); glide(r.tops[i]);
+    }));
+    let dragging = false, startPt = 0, showLi = null;
+    const fracAt = (ev) => { const b = list.getBoundingClientRect(); return clamp(vertical() ? (ev.clientY - b.top) / b.height : (ev.clientX - b.left) / b.width); };
+    const showName = (i) => { if (showLi) showLi.classList.remove("show"); showLi = i == null ? null : links[i].parentElement; if (showLi) showLi.classList.add("show"); };
+    nav.addEventListener("pointerdown", (ev) => { if (opts.canDrag && !opts.canDrag()) return; dragging = true; r.dragged = false; startPt = vertical() ? ev.clientY : ev.clientX; nav.setPointerCapture?.(ev.pointerId); });
+    nav.addEventListener("pointermove", (ev) => {
+      if (!dragging) return;
+      const pt = vertical() ? ev.clientY : ev.clientX;
+      if (!r.dragged && Math.abs(pt - startPt) < 6) return;
+      if (!r.dragged) { r.dragged = true; root.classList.remove("snap"); r.measure(); }
+      const f = fracAt(ev);
+      jump(r.yFor(f)); showName(Math.round(f * (r.tops.length - 1))); input();
+    });
+    const end = (ev) => {
+      if (!dragging) return;
+      dragging = false;
+      if (r.dragged) { sync(); setTimeout(() => { showName(null); r.dragged = false; }, 700); }
+      else if (ev.type === "pointerup" && !ev.target.closest("a")) { r.measure(); glide(r.tops[Math.round(fracAt(ev) * (r.tops.length - 1))]); }
+    };
+    nav.addEventListener("pointerup", end);
+    nav.addEventListener("pointercancel", end);
+    return r;
+  }
+  const homeStops = $$("#home [data-stop]");
+  const homeRail = makeRail(tl, homeStops, {
+    vertical: () => matchMedia("(min-width: 900px)").matches,
+    canDrag: () => view === "home",
+    onTap: (i) => { if (view === "case") { goHomeAt(i); return true; } return false; },
+  });
+  const cardRail = makeRail($("#cardRail"), $$("#card [data-cstop]"));
+
+  /* ---------- views and modes ---------- */
+  const barTitle = $("#barTitle");
+  let outroIn = false;
+  function sync() {
+    root.classList.toggle("snap", (mode === "proto" && view === "home") || mode === "card");
+    tl.hidden = !(mode === "proto" && (view === "home" || outroIn));
+    siteBar.hidden = mode === "card";
+    if (view !== "case" || mode !== "proto") barTitle.hidden = true;
+  }
+  function measure() { if (mode === "proto" && view === "home") { homeRail.measure(); placeShore(); } if (mode === "card") cardRail.measure(); }
+  function showView(v) {
+    view = v; home.hidden = v !== "home"; kase.hidden = v !== "case";
+    outroIn = false; sync(); measure(); scrolled = true; kick();
+  }
+  function setMode(m) {
+    if (m === mode) return;
+    saved[mode] = window.scrollY;
+    mode = m;
+    proto.hidden = m !== "proto"; frames.hidden = m !== "frames"; card.hidden = m !== "card";
+    ["Proto", "Card", "Frames"].forEach((k) => $("#mode" + k).setAttribute("aria-pressed", String(m === k.toLowerCase())));
+    menu.hidden = true;
+    sync(); measure(); jump(saved[m]); scrolled = true; kick();
+  }
+  $("#modeProto").addEventListener("click", () => setMode("proto"));
+  $("#modeCard").addEventListener("click", () => setMode("card"));
+  $("#modeFrames").addEventListener("click", () => setMode("frames"));
+
+  /* ---------- stage: scenes, layers, caps ---------- */
+  const scenes = {};
+  $$("#stage .scene").forEach((el) => {
+    scenes[el.dataset.scene] = {
+      el, light: el.querySelector(".light"), still: el.hasAttribute("data-still"),
+      layers: [...el.querySelectorAll(".ly")].map((img, i) => {
+        const [cx, cy] = (img.dataset.cap || "0,0").split(",").map(Number);
+        return { img, i, depth: Number(img.dataset.depth || 0.5), cx, cy, art: img.dataset.art || "", phase: i * 1.7 };
+      }),
+    };
+  });
+  const mirrorMid = scenes.mirror.layers.find((l) => l.art === "shimmer");
+  // the water shimmer: a copy of the mid plane, clipped below the shore line (0.745 of the art)
+  const shimmer = mirrorMid.img.cloneNode(); shimmer.removeAttribute("data-art"); shimmer.removeAttribute("fetchpriority"); shimmer.style.opacity = "0";
+  mirrorMid.img.after(shimmer);
+  function placeShore() {
+    const vw = innerWidth, vh = innerHeight, H = Math.max(vw / 1536, vh / 1024) * 1024, off = (vh - H) * 0.34;
+    shimmer.style.clipPath = `inset(${Math.max(0, off + 0.745 * H).toFixed(0)}px 0 0 0)`;
+    const port = matchMedia("(orientation: portrait)").matches;
+    root.style.setProperty("--oh-pos", port ? "53% 50%" : "50% 50%");
+    root.style.setProperty("--ec-pos", port ? "51% 50%" : "50% 50%");
+  }
+  const sections = $$("#home [data-place]");
+
+  /* where the stage is: one place at rest, or a hand-off between two, from scroll position alone */
+  function stageState() {
+    const vh = innerHeight;
+    let out = sections[0].dataset.place, inn = null, p = 0;
+    for (let k = 1; k < sections.length; k++) {
+      const T = sections[k].getBoundingClientRect().top;
+      const pk = clamp((0.85 * vh - T) / (0.75 * vh));
+      if (pk <= 0) break;
+      if (pk >= 1) { out = sections[k].dataset.place; inn = null; p = 0; continue; }
+      out = sections[k - 1].dataset.place; inn = sections[k].dataset.place; p = pk; break;
+    }
+    return { out, inn, p };
+  }
+
+  /* ---------- idle: still → playing → resting ---------- */
+  let fast = false;
+  const idleCfg = () => view === "case"
+    ? { delay: fast ? 5000 : 25000, rest: fast ? 15000 : 60000 }   // Q31: 20–30 s, about 1 min
+    : { delay: fast ? 2000 : 4000, rest: fast ? 15000 : 75000 };   // Q32: 3–5 s, 60–90 s
+  let lastInput = performance.now(), playStart = 0, idleState = "still";
+  let amp = 0, ampV = 0;
+  let px = 0, py = 0, pvx = 0, pvy = 0, ptx = 0, pty = 0;
+  const idleOff = () => reduce() ? "reduced motion" : saveData ? "Save-Data" : document.hidden ? "hidden tab" : "";
+  function input() { lastInput = performance.now(); if (idleState !== "off") idleState = "still"; kick(); }
+  ["wheel", "touchstart", "keydown", "pointerdown"].forEach((t) => window.addEventListener(t, input, { passive: true }));
+  window.addEventListener("pointermove", (e) => {
+    if (mode !== "proto") return;
+    if (view === "case") { input(); return; }   // reading: any input stops the idle
+    if (!desktopMQ.matches) return;
+    ptx = (e.clientX / innerWidth) * 2 - 1; pty = (e.clientY / innerHeight) * 2 - 1; kick();
+  }, { passive: true });
+  document.documentElement.addEventListener("pointerleave", () => { ptx = 0; pty = 0; kick(); });
+  $("#fastIdle").addEventListener("click", (e) => { fast = !fast; e.currentTarget.setAttribute("aria-pressed", String(fast)); input(); });
+
+  /* ---------- one render loop: scroll-linked hand-offs every frame; idle motion at ≤30 fps ---------- */
+  const OVERSCAN = 1.06;
+  let arriveAt = performance.now(), raf = 0, lastT = performance.now(), lastIdleFrame = 0, scrolled = true, idleClock = 0;
+  const backOut = (x) => { const t = x - 1; return 1 + 2 * t * t * t + t * t; };
+  function kick() { if (!raf) raf = requestAnimationFrame(frame); }
+  window.addEventListener("scroll", () => { scrolled = true; lastInput = performance.now(); if (idleState !== "off") idleState = "still"; kick(); }, { passive: true });
+  window.addEventListener("resize", () => { measure(); scrolled = true; kick(); });
+  window.addEventListener("load", () => { measure(); scrolled = true; kick(); });
+  document.addEventListener("visibilitychange", () => { lastInput = performance.now(); kick(); });
+
+  const idleEl = $("#idleStatus"); let lastText = "";
+  const idleText = (s) => { const t = `Idle: ${s}`; if (t !== lastText) { lastText = t; idleEl.textContent = t; } };
+  function stepIdle(now, dt) {
+    const off = idleOff(), cfg = idleCfg();
+    if (off) idleState = "off";
+    else if (idleState === "off") { idleState = "still"; lastInput = now; }
+    else if (idleState === "still" && now - lastInput > cfg.delay) { idleState = "playing"; playStart = now; }
+    else if (idleState === "playing" && now - playStart > cfg.rest) idleState = "resting";
+    const target = idleState === "playing" ? 1 : 0;
+    const k = target ? 2.2 : 9, d = target ? 2.6 : 6;           // eases in over ~2 s; springs back to rest
+    ampV += ((target - amp) * k - ampV * d) * dt; amp = clamp(amp + ampV * dt, 0, 1.05);
+    pvx += ((ptx - px) * 30 - pvx * 10) * dt; px += pvx * dt;
+    pvy += ((pty - py) * 30 - pvy * 10) * dt; py += pvy * dt;
+    if (off) { amp = ampV = px = py = pvx = pvy = 0; }
+    if (target || amp > 0.001) idleClock += dt;
+    idleText(off ? `off · ${off}` : idleState === "still" ? `still ${Math.max(0, (now - lastInput) / 1000).toFixed(0)}s` : idleState);
+  }
+
+  function frame(now) {
+    raf = 0;
+    if (mode === "frames") { idleText("off · frames"); return; }
+    if (mode === "card") { if (scrolled) { cardRail.paint(); scrolled = false; } idleText("off · /card"); return; }
+    const dt = Math.min(0.1, (now - lastT) / 1000); lastT = now;
+    stepIdle(now, dt);
+    const idleActive = amp > 0.001 || Math.abs(px) + Math.abs(py) > 0.002 || Math.abs(ptx) + Math.abs(pty) > 0.002;
+    const arriving = view === "home" && now - arriveAt < 1700 && !reduce();
+    const due = scrolled || arriving || (idleActive && now - lastIdleFrame >= 33);   // idle frames capped at 30 fps
+    if (due) {
+      if (idleActive) lastIdleFrame = now;
+      if (view === "home") renderHome(now); else renderCase();
+      scrolled = false;
+    }
+    if (arriving || idleActive || idleState === "still" || idleState === "playing") raf = requestAnimationFrame(frame);
+  }
+
+  const peek = $("#peek"), homeArtifacts = $$("#home .ch-artifact");
+  function renderHome(now) {
+    const vw = innerWidth, vh = innerHeight;
+    homeRail.paint();
+    const st = stageState(), rm = reduce();
+    if (rm && st.inn) { if (st.p >= 0.5) st.out = st.inn; st.inn = null; }   // a clean cut
+    const k = Math.max(vw / 1536, vh / 1024) * OVERSCAN;   // rendered px per source px
+    const drifting = desktopMQ.matches && !rm;            // Q37: no layer drift on phones
+    const t = idleClock, arriveT = (now - arriveAt) / 1000;
+    peek.style.setProperty("--peek-o", st.out === "mirror" && !st.inn ? "1" : st.inn === "overhood" ? (1 - smooth(st.p / 0.35)).toFixed(3) : "0");
+    for (const [name, sc] of Object.entries(scenes)) {
+      const role = name === st.out ? "out" : name === st.inn ? "in" : null;
+      sc.el.classList.toggle("on", !!role);
+      if (!role) continue;
+      const n = sc.layers.length, handing = !!st.inn;
+      for (const L of sc.layers) {
+        let o = 1, dx = 0, dy = 0, skew = 0;
+        if (handing) {
+          if (role === "out") {         // comes apart by depth, near first, never past the cap
+            const j = n - 1 - L.i, s0 = n > 1 ? 0.36 * j / (n - 1) : 0.12;
+            const g = smooth((st.p - s0) / 0.3); o = 1 - g;
+            dx = -L.cx * k * g; dy = -L.cy * k * g;
+          } else {                      // assembles back to front, the arrival's order
+            const s0 = n > 1 ? 0.4 + 0.3 * L.i / (n - 1) : 0.5;
+            const g = smooth((st.p - s0) / 0.3); o = g;
+            dx = L.cx * k * (1 - g); dy = L.cy * k * (1 - g);
+          }
+        } else {
+          if (drifting && !sc.still) {  // idle drift and pointer parallax, inside the caps
+            dx = clamp(L.cx * k * (amp * 0.7 * Math.sin((t / 17) * Math.PI * 2 + L.phase) + px * 0.6), -L.cx * k, L.cx * k);
+            dy = clamp(L.cy * k * (amp * 0.35 * Math.sin((t / 23) * Math.PI * 2 + L.phase * 0.6) + py * 0.3), -L.cy * k, L.cy * k);
+          }
+          if (L.art === "sway" && !rm) skew = amp * 0.35 * Math.sin((t / 6.5) * Math.PI * 2 + L.phase);   // the art's own motion
+        }
+        if (name === "mirror" && arriveT < 1.7 && !rm && !handing) {   // the arrival: rises once, back to front
+          dy += (1 - L.depth) * 40 * (1 - backOut(clamp((arriveT - L.i * 0.12) / 1.4)));
+        }
+        L.img.style.opacity = o.toFixed(3);
+        L.img.style.transform = `translate3d(${dx.toFixed(2)}px, ${dy.toFixed(2)}px, 0) scale(${OVERSCAN})${skew ? ` skewX(${skew.toFixed(3)}deg)` : ""}`;
+        if (L === mirrorMid) {
+          shimmer.style.opacity = handing ? "0" : (amp * 0.5).toFixed(3);
+          shimmer.style.transform = `translate3d(${(dx + amp * 1.6 * Math.sin((t / 3.2) * Math.PI * 2)).toFixed(2)}px, ${dy.toFixed(2)}px, 0) scale(${OVERSCAN})`;
+        }
+      }
+      if (sc.light) sc.light.style.opacity = handing ? "0" : (amp * 0.5 * (0.5 + 0.5 * Math.sin((t / 11) * Math.PI * 2))).toFixed(3);
+    }
+    if (!rm) homeArtifacts.forEach((a) => {
+      const top = a.parentElement.getBoundingClientRect().top;
+      a.style.setProperty("--art-y", `${(clamp(top / vh, -1, 1) * -24).toFixed(1)}px`);
+    });
+  }
+
+  /* ---------- the case study ---------- */
+  const outro = $("#outro"), readSoft = $("#readSoft"), readLight = $("#readLight"), cover = $("#cover");
+  function renderCase() {
+    const vh = innerHeight, rm = reduce();
+    kase.classList.toggle("settled", window.scrollY > vh * 0.5);
+    barTitle.hidden = !(window.scrollY > cover.offsetHeight * 0.8);
+    const top = outro.getBoundingClientRect().top;
+    const nowOutro = top < vh * 0.6;
+    if (nowOutro !== outroIn) { outroIn = nowOutro; sync(); }
+    if (outroIn) homeRail.paint(3, 0.6);
+    const t = idleClock;   // the reading idle: art only; the settled still's light breathes
+    readSoft.style.transform = `scale(${(1.025 + amp * 0.006 * Math.sin((t / 14) * Math.PI * 2)).toFixed(4)})`;
+    readLight.style.opacity = (amp * 0.35 * (0.5 + 0.5 * Math.sin((t / 9) * Math.PI * 2))).toFixed(3);
+    if (rm) return;
+    const p = clamp(1 - top / vh), e = 1 - (1 - p) * (1 - p);
+    outro.style.setProperty("--rise-y", `${((1 - e) * vh * 0.16).toFixed(1)}px`);
+    outro.style.setProperty("--rise-s", (1 + (1 - e) * 0.06).toFixed(4));
+  }
+
+  /* ---------- the doorway: chapter → cover, one view transition ---------- */
+  const settleOn = (y) => new Promise((res) => {
+    if (Math.abs(window.scrollY - y) < 2) return res();
+    glide(y);
+    let done = false; const fin = () => { if (!done) { done = true; res(); } };
+    window.addEventListener("scrollend", fin, { once: true }); setTimeout(fin, 750);
+  });
+  async function openCase() {
+    if (view === "case") return;
+    homeRail.measure();
+    await settleOn(homeRail.tops[2]);   // the chapter fills the screen before it becomes the cover
+    const t = vt(() => { showView("case"); jump(0); renderCase(); });
+    try { history.pushState({ v: "case" }, "", "#ghosted"); } catch (_) {}
+    (t ? t.finished : Promise.resolve()).then(() => $("#coverTitle").focus({ preventScroll: true }));
+  }
+  function goHomeAt(i, fromPop) {
+    vt(() => { showView("home"); homeRail.measure(); jump(homeRail.tops[i]); scrolled = true; renderHome(performance.now()); });
+    if (!fromPop) { try { history.pushState({ v: "home" }, "", homeRail.links[i].getAttribute("href")); } catch (_) {} }
+  }
+  function backToChapter(fromPop) {
+    if (view !== "case") return;
+    goHomeAt(2, fromPop);
+    $("#openGhosted").focus({ preventScroll: true });
+  }
+  $("#openGhosted").addEventListener("click", (e) => { e.preventDefault(); openCase(); });
+  window.addEventListener("popstate", () => {
+    if (mode !== "proto") return;
+    if (location.hash === "#ghosted" && view !== "case") { showView("case"); jump(0); }
+    else if (location.hash !== "#ghosted" && view === "case") backToChapter(true);
+  });
+  $$("[data-jump]").forEach((a) => a.addEventListener("click", (e) => { e.preventDefault(); homeRail.measure(); glide(homeRail.tops[Number(a.dataset.jump)]); }));
+
+  /* ---------- beats ---------- */
+  function goBeat(beat) {
+    if (beat.startsWith("card-")) {
+      setMode("card"); cardRail.measure();
+      jump(beat === "card-ghosted" ? cardRail.tops[2] : 0); scrolled = true; kick();
+      return;
+    }
+    setMode("proto");
+    const homeBeats = { arrival: 0, chapter: 1, ghosted: 2, doorway: 2 };
+    if (beat in homeBeats || beat === "between") {
+      if (view !== "home") showView("home");
+      homeRail.measure();
+      const T = homeRail.tops;
+      if (beat === "between") { root.classList.remove("snap"); jump(T[1] + (T[2] - T[1]) * 0.42); setTimeout(sync, 80); }
+      else jump(T[homeBeats[beat]]);
+      if (beat === "arrival") arriveAt = performance.now();
+      if (beat === "doorway") setTimeout(openCase, 500);
+      scrolled = true; kick();
+      return;
+    }
+    if (view !== "case") showView("case");
+    if (beat === "cover") jump(0);
+    if (beat === "read") jump($("#read").offsetTop - 40);
+    if (beat === "next") jump(outro.offsetTop - innerHeight * 0.5);
+    scrolled = true; kick();
+  }
+  $$(".play-beat").forEach((b) => b.addEventListener("click", () => goBeat(b.dataset.beat)));
+
+  const play = $("#playSketches");
+  play.addEventListener("click", () => {
+    const on = play.getAttribute("aria-pressed") !== "true";
+    play.setAttribute("aria-pressed", String(on));
+    play.textContent = on ? "Stop motion sketches" : "Play motion sketches";
+    $$(".grid").forEach((g) => g.classList.toggle("playing", on));
+  });
+
+  reduceMQ.addEventListener?.("change", () => { scrolled = true; kick(); });
+  window.__sb = { goBeat, setMode, state: () => ({ mode, view, idleState, amp }) };   // for the storyboard's own checks
+  sync(); measure(); kick();
+  if (location.hash === "#frames") setMode("frames");
+  else if (location.hash === "#card") setMode("card");
+  else if (location.hash === "#ghosted") showView("case");
+})();
+</script>
