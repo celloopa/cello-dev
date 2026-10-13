@@ -4,6 +4,13 @@ All notable changes to this portfolio site should be documented here.
 
 ## 2026-10-12
 
+### Design system, stage 4 (values): roles and scales instead of one-offs
+
+- Tints → color roles: inline code and quotes in articles use the neutral `bg-muted` / `border-muted` instead of green tints (green stays for action); the ⌘K overlay and the header backdrop use `scrim` (paper in Day, not black); the resume's section rules are earth (`accent-ground`); case-meta panels use `bg-raised`.
+- Type: off-scale font sizes snap to the type roles (label 0.75, small 0.85, UI 0.9, title 1.25, heading 1.5rem); every page h1 is the page title, including the resume name, which is now larger and wraps to two lines on phones. Tracking collapses to three values, and line heights to the leading scale (articles read at 1.75).
+- Spacing: off-scale margins, paddings and gaps snap to the space scale (a pixel or two on chips, tags and the menu key).
+- Raw values outside the tokens: 1,208 at the start of the migration, 201 now (home, print, art gradients and display posters make up most of the rest).
+
 ### Design system, stage 4 (motion): one contract, one keyframes file, tiers
 
 - Reduced motion now follows the Cello family contract in one block: animations and transitions finish at once and every delay is zeroed (new `--motion-none`), so content never waits on motion. Before, reduced-motion visitors still waited up to 1s on staggered entries.
