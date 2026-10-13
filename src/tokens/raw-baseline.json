@@ -8,10 +8,6 @@
   }
  },
  "src/components/BlogCard.astro": {
-  "line-height": {
-   "1": 1,
-   "1.5": 1
-  },
   "spacing": {
    "0.4rem": 2,
    "0.2rem": 1
@@ -24,9 +20,6 @@
   "spacing": {
    "0.9rem": 1,
    "0.35rem": 1
-  },
-  "line-height": {
-   "1.6": 1
   }
  },
  "src/components/Header.astro": {
@@ -54,10 +47,6 @@
    "0.55rem": 1,
    "0.4rem": 2,
    "0.2rem": 1
-  },
-  "line-height": {
-   "1": 1,
-   "1.5": 1
   }
  },
  "src/components/Section.astro": {
@@ -69,10 +58,6 @@
   }
  },
  "src/components/sections/Experience.astro": {
-  "line-height": {
-   "1.5": 1,
-   "1.6": 2
-  },
   "spacing": {
    "0.35rem": 1,
    "1.35rem": 1
@@ -85,10 +70,6 @@
   }
  },
  "src/components/sections/Projects.astro": {
-  "line-height": {
-   "1.5": 1,
-   "1.6": 1
-  },
   "spacing": {
    "1.35rem": 1,
    "0.35rem": 1
@@ -99,9 +80,6 @@
    "0.4rem": 1,
    "0.35rem": 1,
    "0.6rem": 1
-  },
-  "line-height": {
-   "1": 1
   }
  },
  "src/components/svelte/KeyboardShortcutsMenu.svelte": {
@@ -157,10 +135,6 @@
    "0.4rem": 3,
    "0.2rem": 1
   },
-  "line-height": {
-   "1.8": 2,
-   "1.7": 1
-  },
   "font-size": {
    "0.9em": 1
   }
@@ -189,9 +163,7 @@
    "clamp(2.6rem, 14vw, 4rem)": 1
   },
   "line-height": {
-   "0.92": 1,
-   "1.5": 1,
-   "1.7": 1
+   "0.92": 1
   },
   "letter-spacing": {
    "-0.08em": 1
@@ -305,10 +277,6 @@
    "0.35rem": 1,
    "0.65rem": 1,
    "0.2rem": 1
-  },
-  "line-height": {
-   "1.8": 2,
-   "1.7": 3
   },
   "font-size": {
    "0.9em": 1
