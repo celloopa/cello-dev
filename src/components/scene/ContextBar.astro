@@ -13,6 +13,7 @@
  */
 import Mark from "./Mark.astro";
 import Sun from "@/icons/Sun.astro";
+import Button from "@/components/ui/Button.astro";
 
 interface Props {
   /** A reading page's title, shown from the first paint (else scenery.js names the stop in view). */
@@ -56,9 +57,10 @@ const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page
       }
     </ul>
     <div class="bar-actions">
-      <button
-        class="bar-btn bar-menu"
-        type="button"
+      <Button
+        class="bar-menu"
+        variant="secondary"
+        size="sm"
         data-bar-menu
         aria-haspopup="dialog"
         aria-controls="keyboard-shortcuts-menu"
@@ -66,7 +68,7 @@ const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page
       >
         <span class="bar-key" data-bar-key></span>
         <span>Menu</span>
-      </button>
+      </Button>
       <button class="bar-btn bar-theme" type="button" data-theme-toggle aria-label="Switch between Day and Dusk">
         <Sun />
       </button>
@@ -191,8 +193,8 @@ const current = (href: string) => (href !== "/" && path.startsWith(href) ? "page
     color: var(--bg-canvas);
   }
 
-  .bar-btn:hover .bar-key,
-  .bar-btn:focus-visible .bar-key {
+  .bar-menu:hover .bar-key,
+  .bar-menu:focus-visible .bar-key {
     background: var(--bg-canvas);
     color: var(--text-primary);
   }

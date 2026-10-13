@@ -8,8 +8,11 @@
  *   - Plays only while on screen and only when motion is allowed; never autoplays from markup,
  *     so reduced motion and no JavaScript keep the poster (or the first frame).
  *   - A visible Pause / Play button (WCAG 2.2.2): a loop runs longer than 5 s. Once a visitor
- *     pauses, scrolling never restarts it. The button appears only with JavaScript.
+ *     pauses, scrolling never restarts it. The button (a secondary sm Button) appears only with
+ *     JavaScript.
  */
+import Button from "@/components/ui/Button.astro";
+
 interface Props {
   src: string;
   mp4?: string;
@@ -35,7 +38,7 @@ const type = (s: string) => (s.endsWith(".mp4") ? "video/mp4" : "video/webm");
     <source src={src} type={type(src)} />
     {mp4 && mp4 !== src && <source src={mp4} type="video/mp4" />}
   </video>
-  <button class="media-video-toggle" type="button" data-media-video-toggle hidden>Pause</button>
+  <Button class="media-video-toggle" variant="secondary" size="sm" data-media-video-toggle hidden>Pause</Button>
 </div>
 
 <script>
@@ -102,34 +105,10 @@ const type = (s: string) => (s.endsWith(".mp4") ? "video/mp4" : "video/webm");
     height: auto;
   }
 
+  /* Pause / Play (a secondary Button) sits on the video corner */
   .media-video-toggle {
     position: absolute;
     right: var(--space-12);
     bottom: var(--space-12);
-    min-width: var(--touch-target);
-    min-height: var(--touch-target);
-    padding: 0 var(--space-12);
-    border: var(--stroke-control) solid var(--border-strong);
-    background: var(--bg-plate);
-    color: var(--text-primary);
-    font: inherit;
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
-    cursor: pointer;
-    transition:
-      background-color var(--motion-ui) var(--ease-out),
-      color var(--motion-ui) var(--ease-out);
-  }
-
-  .media-video-toggle[hidden] {
-    display: none;
-  }
-
-  .media-video-toggle:hover,
-  .media-video-toggle:focus-visible {
-    background: var(--text-primary);
-    color: var(--bg-plate);
   }
 </style>

@@ -24,6 +24,7 @@ import { getCollection } from "astro:content";
 import QRCode from "qrcode";
 import cv from "@cv";
 import SceneLayout from "@/layouts/SceneLayout.astro";
+import Button from "@/components/ui/Button.astro";
 import { homeScene, sceneForProject } from "@/lib/scene/pairing";
 import { sceneArt } from "@/lib/scene/catalog";
 import Mail from "@/icons/Mail.astro";
@@ -95,21 +96,18 @@ const PLACE = homeScene(); // Mirror Lake, as home
       </p>
       {locationLabel && <p class="card-where">{locationLabel}</p>}
       <div class="card-actions" aria-label="Primary actions">
-        <a class="card-action card-action-save" href="/contact.vcf">
-          <span class="card-action-title">Save Contact</span>
-          <span class="card-action-copy">VCF for phone or desktop</span>
-        </a>
-        <button
-          type="button"
-          class="card-action card-action-share"
+        <Button class="card-action" href="/contact.vcf" detail="VCF for phone or desktop">Save Contact</Button>
+        <Button
+          class="card-action"
+          variant="secondary"
+          detail="AirDrop or copy link"
           data-share-button
           data-share-url={cardUrl}
           data-share-title={`${name} | Conference Card`}
           data-share-text={`Connect with ${name}.`}
         >
-          <span class="card-action-title" data-share-label>Share Card</span>
-          <span class="card-action-copy">AirDrop or copy link</span>
-        </button>
+          <span data-share-label>Share Card</span>
+        </Button>
       </div>
       <p class="card-note" data-share-status aria-live="polite">
         Open on iPhone to AirDrop, or copy the link anywhere else.
@@ -397,50 +395,9 @@ const PLACE = homeScene(); // Mirror Lake, as home
     max-width: 36rem;
   }
 
+  /* the two actions fill their grid cells, a little taller than the touch target */
   .card-action {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--space-4);
     min-height: calc(var(--touch-target) + var(--space-24));
-    margin: 0;
-    padding: var(--space-12) var(--space-16);
-    border: var(--stroke-frame) solid var(--action-primary);
-    background: var(--action-primary);
-    color: var(--text-inverse);
-    text-align: left;
-    cursor: pointer;
-    transition:
-      background-color var(--motion-ui) var(--ease-out),
-      border-color var(--motion-ui) var(--ease-out),
-      color var(--motion-ui) var(--ease-out);
-  }
-
-  /* Share sits on its own plate (A1 bg-plate): opaque, so its words never depend on the art */
-  .card-action-share {
-    border-color: var(--text-on-art);
-    background: var(--bg-plate);
-    color: var(--text-primary);
-  }
-
-  .card-action:hover,
-  .card-action:focus-visible {
-    border-color: var(--text-on-art);
-    background: var(--text-on-art);
-    color: var(--text-inverse);
-  }
-
-  .card-action-title {
-    font-size: var(--type-ui);
-    font-weight: var(--weight-bold);
-    line-height: var(--leading-ui);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
-  }
-
-  .card-action-copy {
-    font-size: var(--type-label);
-    line-height: var(--leading-ui);
   }
 
   .card-note {

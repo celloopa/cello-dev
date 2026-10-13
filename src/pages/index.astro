@@ -10,6 +10,7 @@
 import { getCollection } from "astro:content";
 import SceneLayout from "@/layouts/SceneLayout.astro";
 import WorkItem from "@/components/scene/WorkItem.astro";
+import Button from "@/components/ui/Button.astro";
 import { loadScene } from "@/lib/scene/catalog";
 import { homeScene } from "@/lib/scene/pairing";
 import { basics } from "@cv";
@@ -45,7 +46,7 @@ const homeDescription =
         components and tools that carry it into everyday use.
       </p>
       <div class="hero-actions">
-        <a href="#work" class="hero-cta">View Case Studies</a>
+        <Button href="#work">View Case Studies</Button>
         <a href="/resume" class="scene-arrow">View Resume <span aria-hidden="true">→</span></a>
         <button class="admire-btn" type="button" data-admire-open>Take in the view</button>
       </div>
@@ -147,7 +148,7 @@ const homeDescription =
         The fastest way to reach me is email.
       </p>
       <div class="contact-actions">
-        <a href={`mailto:${email}`} class="hero-cta">Email Me</a>
+        <Button href={`mailto:${email}`}>Email Me</Button>
         <a href="/resume" class="scene-arrow">View Resume <span aria-hidden="true">→</span></a>
       </div>
     </div>
@@ -254,29 +255,6 @@ const homeDescription =
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-12) var(--space-24);
-  }
-
-  .hero-cta {
-    display: inline-flex;
-    align-items: center;
-    min-height: var(--touch-target);
-    padding: var(--space-12) var(--space-16);
-    border: var(--stroke-frame) solid var(--action-primary);
-    background: var(--action-primary);
-    color: var(--text-inverse);
-    font-size: var(--type-small);
-    font-weight: var(--weight-extrabold);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
-    transition:
-      background-color var(--motion-ui) var(--ease-out),
-      color var(--motion-ui) var(--ease-out);
-  }
-
-  .hero-cta:hover,
-  .hero-cta:focus-visible {
-    background: var(--bg-canvas);
-    color: var(--action-primary);
   }
 
   /* ---------- reading: the content over the focused scene ---------- */
