@@ -47,3 +47,27 @@ at `f1b1e66`). Read them with `git show claude/rewrite-exploration:<path>`.
 
 Still-first scenes (Over Hood, Moss Falls, Meadows Lift, Salmon Ridge) render with 0 travel; the
 reading state is nearly still anyway. "Why this place" lines, if any, are Cello's to write.
+
+## Chapters build (planned 2026-10-13; not started)
+
+Cello paused the cutover (Q39) to rework how the experience is presented: **the scene owns the
+thresholds, the work owns the middle.** Decisions: rewrite GRILL Q23–Q47 (on `claude/rewrite-exploration`).
+Reference: the approved "Landscape Thresholds" storyboard, source at
+`docs/rewrite/storyboards/thresholds/` on that branch ("this looks so awesome"). Builds on this branch's
+pin `250cd03`; old pin results are the baseline in `CUTOVER.md`.
+
+**Gate:** start only when `rig` is OK or BUSY (it was STOP at planning time). One heavy job at a time:
+one build agent, one dev server, no parallel renders. Checkpoint after each stage (commit + a line here).
+
+| # | Stage | Decisions | Touches |
+|---|---|---|---|
+| C0 | **Chapter + rail components; idle tiers; A4 draft.** `Chapter` (place full-bleed, caption, title/role/pitch, one artifact on the sill, Read / Live), `ChapterRail` (right rail ≥900px, bottom bar on phones above Safari's toolbar; a `<nav>` list of links; tap/drag scrub; progress; `aria-current`), the two idle tiers (chapter: 3–5 s, drift within caps + art motion + pointer parallax, rests 60–90 s; reading: 20–30 s, art-only, rests ~1 min; ≤30 fps; off for reduced motion / Save-Data / hidden), the scroll-tied depth hand-off (out near-first, in back-to-front, reversible, within caps, reduced motion = cut). A4 tokens in tokens.json with use-lines; migration thread reviews; Figma re-sync before preview. | Q26–Q28, Q31, Q32, Q37, Q38, Q43 | `src/components/scene/*`, `src/lib/scene/*`, `src/styles/scene.css`, tokens |
+| C1 | **Home = arrival → 4 project chapters → Let's Talk.** Arrival: one screen, living scene, text at first paint, cv.json label as title (Q41), "Open to…" + summary kept, first chapter peeks at the bottom, no "Take in the view" (Admire removed: state, CSS, tokens, ArrowLink `down` if unused). Remove the S3 page-wide backdrop swaps on home. Fix the old arrival→reading-line contrast failure by construction. | Q24, Q25, Q34, Q40–Q42 | `src/pages/index.astro`, SceneLayout, ContextBar |
+| C2 | **Case studies + posts.** Cover chapter, cross-document view transition doorway (place stays, title → h1, artifact settles; Back → same chapter; no-VT = normal load; URLs unchanged), calm reading on the settled still with the reading idle, the next project's chapter rises at the end (no auto-navigation). Posts follow the same pattern. Top bar shows the title once the cover scrolls away. | Q29–Q33, Q42, Q43 | `projects/[slug]`, `blog/[slug]`, ReadHead, StoryEnd |
+| C3 | **/about (new URL) + indexes.** /about: Bald Mountain cover, About + How I Build calm, ends on Let's Talk; `/#about` and `/#how` forward to it. /projects and /blog: calm swatch indexes (swatch + role + one line + year), no backdrop swaps. | Q35, Q36 | `src/pages/about.astro`, `projects/index`, `blog.astro`, `_redirects` only if needed (risky area: conductor reviews) |
+| C4 | **/card: show, then share.** Pitch screen (name, cv.json title, "Open to…", `[Cello's words]` pitch slot, big QR to cello.design, Save Contact + Share), then the four compact chapters (shared component) with `[Cello's words]` 10-second slots, then About (→ /about) + contact. Online only; words/QR/actions at first paint. | Q44–Q47 | `src/pages/card.astro` |
+| C5 | **Verify + hand to cutover.** pnpm build 0/0/0 (+ family, Figma in sync), URL contract (+ /about), ui:shots, motion table, keyboard, A3/A4 contrast incl. idle extremes and the arrival→reading range, perf (LCP phone Slow 4G ≤ baseline 1.78 s), iPhone notes from CUTOVER.md (sticky tap state on theme/Pause, Menu dot at the left edge). Then demo refresh (squashed on live master) and the cutover thread re-pins. | Q39 | — |
+
+Copy rule unchanged: today's words only; `[Cello's words]` where a slot has none. Pairings and captions
+from `scene-pairings.json` and the catalog (Q40). Motion caps from the manifests; still-first four stay
+at 0 travel until the "raise scene motion caps" cleanup task.
