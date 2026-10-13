@@ -1,4 +1,4 @@
-# Landscape build: checks (S0–S2, 2026-10-12)
+# Landscape build: checks (S0–S3, 2026-10-12)
 
 Branch `claude/landscape-build`. Production build served by `astro preview` on this Mac; browser
 checks in headless installed Chrome through `playwright-core` (GPU on, so WebGL runs). The scratch
@@ -211,3 +211,242 @@ checked by eye.
 - Clean: the brand and design-system images, `board`, `board-dark`, `category`, `fit`,
   `intake`, `research`, `tour-look`, and every `web/*` image (demo "Sam Rivera").
 - The old files stay in git history.
+
+---
+
+# S3: /card, the indexes, 404, and the reading pages' slow-network fix (2026-10-12)
+
+Same setup as above: production build on `astro preview` (port 4622), headless installed Chrome
+through `playwright-core`, GPU on. Throttling is Chrome DevTools' own presets through CDP: **Slow
+4G** = 1.44 Mbps down (1.6 × 0.9), 562.5 ms RTT; **Fast 4G** = 8.1 Mbps (9 × 0.9), 165 ms; 4× CPU,
+cache off, median of 5. That RTT is the DevTools preset's, so these numbers run slower than S1/S2's
+and compare only with each other (the Ghosted before/after below is one harness). Shots:
+`shots/s3/` (JPEG q82).
+
+## What changed
+
+| Page | Now |
+|---|---|
+| `/card` | The event landing page (below). Same URL, same Save Contact and Share Card. |
+| `/projects` | SceneSelector (A3 item 7): today's list, copy and order, each with its place's swatch; hover or focus brings the place in behind the list. Archived and retired case studies stay off, as today. |
+| `/blog` | Today's published posts, newest first, each with its place's swatch (the post rotation). Drafts stay off. |
+| 404 | Today's words ("404", "Page Not Found", "Back to home") over home's scene, arriving as home does. |
+| Case studies, posts, `/projects`, `/blog` | Paint a half-size focused still at first paint (the slow-network fix). |
+| `/watchlist`, `/design-system` | Unchanged, on today's Layout. `/design-system` shows the Day and Dusk swatches, which a scene page's Dusk-in-both-themes roles would misstate, and the watchlist is a stub the inventory marks "Never". Not cheap and safe, so they wait. |
+| `/resume` | Unchanged (stage 3 owns it). |
+
+New pieces, all on tokens: SceneLayout `focus` (html.scene-focus-page), Scene `focused` (the
+reading still), SceneSelector, `pnpm scenes:derive` (swatches, the reading still, the case-study
+panels' flattened copies, the /card artifacts). One new token, `--type-display-card`; one shared
+keyframe, `sceneSettle`. `raw-baseline.json` ratchets 277 → 179 (deletions only).
+
+## /card
+
+1. **First screen:** the name (National Park, one line from 769 px up; two lines on phones),
+   cv.json's role line, Portland, Oregon, then **Save Contact** and **Share Card**, two-up, 88 px
+   tall, their bottom edge at 695 of 844 px on a phone, and today's share note. Over Mirror Lake:
+   the arrival assembles the scene behind the words once the renderer is in.
+2. **The case studies:** Asheville Dispensary over Over Hood, Ghosted over Ecola, VegAvengers over
+   Sauvie Island, Daybreak over Mt Hood Meadows (`scene-pairings.json`). Each panel is a window onto
+   a picture fixed to the viewport, so scrolling reveals one place over the last, and the picture
+   settles from `--focus-scale` to rest along the panel's scroll timeline (`--ease-out`). Each has
+   the place name (Switchback), the role, the title linking to the case study, one line, and a
+   demo-only artifact. The bar names the panel in view.
+3. **About** (Geist), email, LinkedIn, GitHub, View Resume, Visit Portfolio, and today's QR code
+   ("Scan To Visit", "Direct contact file").
+
+Reduced motion: the same art, no movement (the hero is the still, the renderer is never
+requested, each panel's picture scrolls with its panel, no settle).
+
+### Where every word on /card comes from
+
+| Words | Source |
+|---|---|
+| Marcelo Rondon | `cv.json` basics.name (today's card h1) |
+| Product Designer & Design Engineer / Design Systems & AI Tools | `cv.json` basics.label, split at its " — " (today's card role line) |
+| Portland, Oregon | `cv.json` location (today's card) |
+| Save Contact · VCF for phone or desktop | today's card |
+| Share Card · AirDrop or copy link · Copy Card Link (no Web Share) | today's card |
+| Open on iPhone to AirDrop, or copy the link anywhere else. · Share sheet opened. · Card link copied to the clipboard. · Share failed on this browser. | today's card (the share script) |
+| Share payload: "Marcelo Rondon \| Conference Card", "Connect with Marcelo Rondon.", https://cello.design/card | today's card |
+| Selected Case Studies | home |
+| Each panel's role and title | the case study's frontmatter (`role`, `title`) |
+| Each panel's line | the first sentence of the frontmatter `description`; VegAvengers' and Daybreak's single long sentences are cut at their dash: "Designed and shipped the content platform behind vegavengers.com", "Designed and built a local-first Mac and iPhone planner where people and AI use the same typed, receipt-backed operations" |
+| Place names (Over Hood · September …) | `scene-library.json` (as home's place label) |
+| About + its paragraph | home's About section |
+| email, LinkedIn, GitHub | `cv.json` (today's card) |
+| View Resume | home |
+| Visit Portfolio · cello.design | today's card |
+| Scan To Visit · Direct contact file | today's card |
+| Page title, description, og | today's card |
+
+No `[Cello's words]` slot was needed. Dropped from today's card: the "Conference Card" eyebrow, the
+summary paragraph on the first screen (it's still the vCard's NOTE), and the QR note.
+
+### The actions (phone 390×844, `isMobile`, touch)
+
+| Check | Result |
+|---|---|
+| Save Contact | links to `/contact.vcf`; a tap opens it (200). `astro preview` serves the prerendered file with an empty Content-Type, so Chrome shows it inline there; served with the endpoint's own headers (text/vcard, attachment), the tap downloads `marcelo-rondon.vcf`: vCard 3.0, CRLF lines, FN, N, TITLE, EMAIL, URL ×2, ADR, NOTE, REV. `contact.vcf.ts` is unchanged. **Check the headers Netlify serves on the branch preview** (today's card links the same file). |
+| Share (Web Share stubbed) | `navigator.share({ title: "Marcelo Rondon \| Conference Card", text: "Connect with Marcelo Rondon.", url: "https://cello.design/card" })`; the note reads "Share sheet opened." |
+| Share dismissed (AbortError) | the note stays as it was |
+| No Web Share, clipboard | the label reads "Copy Card Link"; the tap copies `https://cello.design/card`; "Card link copied to the clipboard." |
+| No Web Share, no clipboard | the note shows the link |
+| Links | the four case studies and /resume 200; email, LinkedIn, GitHub, the portfolio, the vCard |
+| One change to today's share script | it binds as soon as it's parsed (it sits below the button) instead of at DOMContentLoaded, which waits for every module script: Share is usable at 1.44 s on Slow 4G instead of 3.44 s |
+
+### Behaviour
+
+| Check | 1440 | 390 |
+|---|---|---|
+| Arrival | the renderer takes over (scene-gl-on); exploring at the top | same |
+| Panels | no panel picture or artifact requested at load; after the first screen is complete (loaded, renderer in) the next one preloads; every picture loaded by the time its panel is in view (`flat.webp`) | same, with the 9:16 crops (`flat-tall.webp`) |
+| Reading | engages over the projects; the bar names the panel in view ("Daybreak" at the last) | same |
+| Horizontal overflow | 0 | 0 (63 px before the panels clipped their copy scrim) |
+| Settle | `sceneSettle` on a scroll timeline | same |
+| Reduced motion | the still, renderer never requested, panels `position: absolute` (scroll with the page), no settle | same |
+
+## /projects, /blog, 404
+
+| Check | Result |
+|---|---|
+| /projects hover | Ghosted's row brings `ecola/flat.webp` in behind the list; keyboard focus on VegAvengers brings `sauvie/flat.webp`; a click opens the case study; a tap on a phone opens it directly |
+| Index pages | the half-size still on at load (layers hidden), the renderer takes over settled and focused, 0 draws in 1.5 s idle |
+| 404 | arrives like home; a focus target just above the hero's end dims the scene before its short scroll runs out |
+| Reduced motion (card, projects, blog, 404, Ghosted) | the still; the renderer chunk is never requested |
+| Home | unchanged: no reading still, the still waits under the ink for the arrival |
+
+## Reading pages: the slow-network fix (Task 2)
+
+As briefed (the full layered still at first paint) it wasn't enough: the four full layers share
+the link with the page's own media, so on Slow 4G the first of them still landed at about 7.8 s and
+was the LCP, and on Fast 4G painting them moved the LCP from the lede (0.61 s) to the layer
+(1.30 s). So a reading or index page now paints `read.webp`, the scene's layers flattened at 768 px
+and lightly pre-blurred (14–45 KB, `fetchpriority=high`), which is only ever seen through the focus
+recipe's blur anyway; the full layers load hidden, for the renderer only, which arrives settled and
+focused and takes over without a visible change. Home's arrival is unchanged.
+
+Ghosted (the longest case study), median of 5:
+
+| Profile | Before (S2) | Layered still at first paint | **Now (half-size still)** |
+|---|---|---|---|
+| Phone 390, Slow 4G | 8.54 s (a scene layer) | 7.78 s (a scene layer) | **2.14 s** (`read.webp`); FCP 1.70 s |
+| Desktop 1440, Slow 4G | 8.32 s | 8.32 s | **2.13 s**; FCP 1.63 s |
+| Phone 390, Fast 4G | 0.61 s (the lede) | 1.30 s (a layer) | **0.64 s** (`read.webp`) |
+| Desktop 1440, Fast 4G | 0.59 s | 1.28 s | **0.62 s** |
+
+CLS 0.0008 (390) / 0.019 (1440), as before. The renderer takes over at ≈3.8 s on Fast 4G and ≈19 s
+on Slow 4G (the page's media share the link); the still holds until then. "Before" is the same
+build with the head script's old condition, served from a copy of the page.
+
+## Performance: /card
+
+| Profile | LCP | FCP | CLS | Share usable | Renderer in | LCP element |
+|---|---|---|---|---|---|---|
+| **Phone 390, Slow 4G** | **1.54 s** | 1.54 s | 0 | 1.44 s | 6.79 s | the name |
+| Desktop 1440, Slow 4G | 1.52 s | 1.52 s | 0.0002 | 1.44 s | 6.87 s | the name |
+| Phone 390, Fast 4G | 0.54 s | 0.54 s | 0 | 0.46 s | 1.73 s | the name |
+| Desktop 1440, Fast 4G | 0.52 s | 0.52 s | 0 | 0.45 s | 1.82 s | the name |
+
+Target LCP ≤ 2.5 s on Slow 4G with the actions usable before any WebGL: met (Save Contact is a plain
+link, usable at first paint; Share binds before first paint).
+
+### Weight (phone, transferred)
+
+| | KB |
+|---|---|
+| HTML | 11.9 |
+| CSS | 10.3 |
+| Fonts | 140.9: Geist Mono 400 and 700 and National Park latin (preloaded, 73), Switchback 21, Geist 29, Geist Mono 600 18 (the fallback face Chrome fetches for National Park semibold while it loads). Desktop adds Geist Mono 800 (the bar's "Cello") |
+| JS | 148.9: ≈20 before paint (the ⌘K menu, the scene's DOM half, the bar, the theme), then three.js + the renderer 129 after paint, only when the 3D gate allows |
+| Mirror Lake's layers (the hero; still and textures) | 574 |
+| **First screen** | **≈886** |
+| Later, one panel at a time: pictures | phone 355 for all four (65, 115, 96, 79); desktop 873 (132, 313, 224, 204) |
+| Later: artifacts | 69 for all four |
+
+Two font files fewer than the first cut: the action titles use the preloaded bold (not 800), and
+the panel arrows are set in Geist Mono (National Park's latin subset has no arrows, so it pulled
+its latin-ext file).
+
+## Text over art: contrast
+
+Same measure as S1/S2: each line against the 99th-percentile brightest pixel under it, with the
+text (and its decorations: link underlines) hidden; text on its own opaque fill or plate excluded
+(the actions, the bar, the footer, the QR frame, swatches and artifacts). Every step of 60% of the
+viewport down each page; on /projects also with each row hovered (its place in behind the list).
+Text colors are read through a canvas, so `--text-on-art-muted` (an oklab mix) is measured as
+rendered.
+
+| Page · state | 1440 Dusk | 1440 Day | 390 Dusk | 390 Day |
+|---|---|---|---|---|
+| /card · WebGL | 7.92 / 7.28 | 5.29 / 6.69 | 9.24 / 7.31 | 6.43 / 5.30 |
+| /card · still | 7.86 / 6.69 | 5.90 / 6.69 | 9.13 / 4.37 | 7.80 / 4.37 |
+| /projects · WebGL | 11.22 / 7.42 | 7.09 / 7.02 | 12.30 / 7.17 | 8.80 / 6.00 |
+| /projects · each row hovered | 7.53 / 5.40 | 7.53 / 5.40 | 12.30 / 7.46 | 8.80 / 7.13 |
+| /projects · still | 7.09 / 7.15 | 7.09 / 7.15 | 8.80 / 5.93 | 8.80 / 5.93 |
+| /blog · WebGL | 11.22 / 7.42 | 7.09 / 7.02 | 12.43 / 7.16 | 8.80 / 5.99 |
+| /blog · still | 7.09 / 7.20 | 7.09 / 7.20 | 8.83 / 5.92 | 8.83 / 5.92 |
+| 404 · WebGL | 13.53 / 13.68 | 9.98 / 10.27 | 14.68 / 14.50 | 13.41 / 12.56 |
+| 404 · still | 10.32 / 10.05 | 10.32 / 10.05 | 13.39 / 12.38 | 13.39 / 12.38 |
+| Ghosted (reading still) · WebGL | 9.83 / 7.48 | 6.93 / 7.17 | 9.83 / 7.59 | 8.61 / 7.30 |
+| Ghosted · still | 6.95 / 7.17 | 6.95 / 7.17 | 8.51 / 7.35 | 8.51 / 7.35 |
+
+(lowest small / lowest large.) **0 failures** of 4.5:1 / 3:1 across about 11,900 measured lines.
+Thinnest margin: the name on /card over the phone still (4.37:1, large, needs 3).
+
+Failures found and fixed on the way:
+- /card panels: the grounding ink was fixed to the viewport with the picture, so when a panel's
+  copy scrolled up it sat on bright sky (1.2:1). The ink now belongs to the panel and travels with
+  the copy; on phones the artifact comes first so the words sit lowest.
+- /card hero: Portland, Oregon was the copy's first line, in the scrim's top feather (4.0:1 over
+  the phone still). It now sits under the role line.
+- 404: scrolled to its end, "404" sat over the sky (2.8:1). It now dims like home's Work list.
+
+## Build, URL contract, console
+
+- `pnpm build`: green. Tokens up to date, no new raw values; `astro check` 0 errors, 0 warnings,
+  0 hints; the build itself 0 warnings.
+- The 16 URLs: all **200**. The 8 expected 404s plus `/visuals/graphic-design`: **404**. The two
+  301s are Netlify's (`_redirects` unchanged; `astro preview` answers 404). `/cv.json` parses
+  (label unchanged), the PDF starts `%PDF-`; `cv.json`, `contact.vcf.ts`, `public/files`,
+  `_redirects` and `/resume` untouched.
+- **Console:** zero errors and zero warnings across every run above (/card, /projects, /blog,
+  404, Ghosted, home; both themes, both widths, both motion modes). The only failed requests are
+  Ghosted's videos (webm/mp4 range requests), cancelled when a run closed the page.
+
+## ui:shots (exact; baseline = S2's head f159e05 built in this worktree, two runs)
+
+**36 of 48 screens changed**, all expected: `/card` (4, the new page), `/projects` (4), `/blog` (4),
+404 (4), and the four case studies and the post (20: under the reduced motion ui:shots uses, their
+still is now the half-size flattened copy). Home, `/resume` and `/design-system` are **0 px** (12).
+
+## For Cello
+
+- **Ecola's seams:** the sharp, flattened Ecola on /card's Ghosted panel shows the outpaint seams at
+  the original portrait's edges (x ≈ 384 and 1152 of 1536), most visibly in the sky at 1440. They're
+  in the layers (S2's reading pages hide them under the blur). A cleanup pass on Ecola, or a
+  different crop, would fix it.
+- **Pairings:** /projects, /blog and 404 sit over home's Mirror Lake (no new pairing was claimed).
+  Each could get its own place.
+- **The panels are Day art in both themes;** in Dusk they get the reading ink over them.
+- **/contact.vcf on the deploy:** check that Netlify serves it as a vCard (iOS opens the contact
+  sheet then). It's the same file and link as today's card.
+- On Slow 4G /card's scene assembles at about 6.8 s; the words and both actions are there from
+  1.5 s.
+- `ProjectCard` and `BlogCard` are now reachable only from the hidden pages (dead on the live site).
+
+## D3 follow-up (Ghosted images, partly done)
+
+- **Done:** the post "Programmatic Resumes You Can Chat With" no longer shows `v3/archetype.webp`
+  (it showed a real resume). Its "Categories and archetypes" paragraph stays, with the category
+  screenshot alone at full width, and the file is removed so it isn't served at its URL.
+- **Not done yet:** replacing the seven recaptured demo-persona shots (`style-looks`, `phones`,
+  `interview`, `tailored`, `history`, `edit-style`, `report`) and building `proposal.webp`,
+  `og.png` and `highlights.webp` from Ghosted's demo landing shot. The copy into this repo was
+  stopped by the session's permission check, so the alt and caption edits that go with the new
+  images wait too (they'd describe images that aren't there).
+- **OCR today** (tesseract, counting lines with "Marcelo", "Rondon", "cello@", the GitHub or
+  LinkedIn handle): `edit-style` 5, `style-looks` 3, `highlights` 2, `interview` 2, `report` 2,
+  `tailored` 2, `og.png` 2, `history` 1, `proposal` 1; `phones` reads 0 at this size but showed the
+  real resume in S2's check by eye. Clean: `board`, `board-dark`, `category`, `fit`, `intake`,
+  `research`, `tour-look`, `signin`, the Loop poster, and the four /card artifacts.
