@@ -190,7 +190,7 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
     position: absolute;
     left: 1rem;
     bottom: 1rem;
-    padding: 0.35rem 0.55rem;
+    padding: var(--space-4) var(--space-8);
     border: 2px solid var(--color-accent);
     color: var(--color-accent);
     font-size: var(--type-label);
@@ -320,7 +320,7 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
 
   .tags {
     display: flex;
-    gap: 0.4rem;
+    gap: var(--space-8);
     flex-wrap: wrap;
   }
 
@@ -329,7 +329,7 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
     font-weight: var(--weight-semibold);
     text-transform: uppercase;
     letter-spacing: var(--track-caps);
-    padding: 0.2rem 0.4rem;
+    padding: var(--space-4) var(--space-8);
     border: 1px solid var(--text-primary);
     transition:
       border-color var(--motion-ui) var(--ease-out),

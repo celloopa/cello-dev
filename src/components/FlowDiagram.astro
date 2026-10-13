@@ -64,7 +64,7 @@ const { title, items, caption } = Astro.props;
 
   li {
     min-height: 100%;
-    padding: 0.9rem;
+    padding: var(--space-16);
     border: 2px solid var(--border-strong);
     background: var(--bg-canvas);
   }
@@ -80,7 +80,7 @@ const { title, items, caption } = Astro.props;
 
   strong {
     display: block;
-    margin-bottom: 0.35rem;
+    margin-bottom: var(--space-4);
     font-size: var(--type-ui);
     line-height: var(--leading-title);
     text-transform: uppercase;

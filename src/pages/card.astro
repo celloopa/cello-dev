@@ -386,7 +386,7 @@ const qrCodeSvg = await QRCode.toString(url, {
   }
 
   .role {
-    margin-top: 0.65rem;
+    margin-top: var(--space-12);
     font-size: var(--type-body);
     font-weight: var(--weight-bold);
     line-height: var(--leading-small);
@@ -396,7 +396,7 @@ const qrCodeSvg = await QRCode.toString(url, {
   }
 
   .meta {
-    margin-top: 0.45rem;
+    margin-top: var(--space-8);
     font-size: var(--type-ui);
     color: var(--text-muted);
   }
@@ -419,10 +419,10 @@ const qrCodeSvg = await QRCode.toString(url, {
   .action {
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    gap: var(--space-4);
     justify-content: center;
     min-height: 4.5rem;
-    padding: 0.95rem var(--space-16);
+    padding: var(--space-16) var(--space-16);
     border: 2px solid var(--text-primary);
     background: transparent;
     color: var(--text-primary);
@@ -504,8 +504,8 @@ const qrCodeSvg = await QRCode.toString(url, {
     width: 100%;
     max-width: 16rem;
     aspect-ratio: 1;
-    padding: 0.9rem;
-    margin-top: 0.4rem;
+    padding: var(--space-16);
+    margin-top: var(--space-8);
     border: 2px solid var(--text-primary);
     background: var(--color-paper);
   }
@@ -517,7 +517,7 @@ const qrCodeSvg = await QRCode.toString(url, {
   }
 
   .qr-note {
-    margin-top: 0.85rem;
+    margin-top: var(--space-12);
     max-width: 22ch;
     font-size: var(--type-small);
     line-height: var(--leading-small);
@@ -525,7 +525,7 @@ const qrCodeSvg = await QRCode.toString(url, {
   }
 
   .mini-link {
-    margin-top: 0.85rem;
+    margin-top: var(--space-12);
     color: var(--color-accent);
     font-size: var(--type-small);
     font-weight: var(--weight-bold);
@@ -585,7 +585,7 @@ const qrCodeSvg = await QRCode.toString(url, {
 
   @media (max-width: 700px) {
     .page-shell {
-      padding-inline: 0.9rem;
+      padding-inline: var(--space-16);
     }
 
     .intro {
@@ -616,12 +616,12 @@ const qrCodeSvg = await QRCode.toString(url, {
 
     .qr-frame {
       max-width: 15rem;
-      margin-top: 0.4rem;
+      margin-top: var(--space-8);
     }
 
     .qr-note,
     .mini-link {
-      margin-top: 0.85rem;
+      margin-top: var(--space-12);
     }
   }
 

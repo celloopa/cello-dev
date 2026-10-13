@@ -129,7 +129,7 @@
   }
 
   .tag {
-    padding: 0.15rem var(--space-8);
+    padding: var(--space-4) var(--space-8);
     border: 2px solid var(--color-accent);
     color: var(--color-accent);
     font-size: var(--type-label);

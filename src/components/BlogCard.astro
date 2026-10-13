@@ -255,7 +255,7 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
 
   .tags {
     display: flex;
-    gap: 0.4rem;
+    gap: var(--space-8);
     flex-wrap: wrap;
   }
 
@@ -264,7 +264,7 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
     font-weight: var(--weight-semibold);
     text-transform: uppercase;
     letter-spacing: var(--track-caps);
-    padding: 0.2rem 0.4rem;
+    padding: var(--space-4) var(--space-8);
     border: 1px solid var(--text-primary);
     transition:
       border-color var(--motion-ui) var(--ease-out),

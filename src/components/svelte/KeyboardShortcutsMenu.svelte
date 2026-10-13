@@ -304,12 +304,12 @@
     }
 
     button {
-      padding: 0.35rem var(--space-8);
+      padding: var(--space-4) var(--space-8);
     }
 
     .key {
       font-size: var(--type-label);
-      padding: 0.15rem 0.35rem;
+      padding: var(--space-4) var(--space-4);
       margin-right: var(--space-8);
     }
 
