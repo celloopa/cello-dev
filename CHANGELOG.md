@@ -2,6 +2,22 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-10-14 — Writing
+
+### Writing: future of design and a conversational voice
+
+- Published “When will the future of design arrive?” with the approved article body, source links, and a WebP of the generated collaboration concept. The caption identifies it as an imagined experience, not a functional prototype.
+- Rewrote “Designing for the second user” and “Programmatic resumes you can chat with” in the endorsed first-person, concrete, conversational voice. Kept their URLs, original publication dates, evidence, authorship, links and media; revision dates are October 14.
+- Applied the same voice to the flower-drop automation and Ghosted design-system drafts. Both remain unpublished. Historical results and plans keep their original context.
+- Added an optional uncropped image display to MediaFull so the concept's call profiles and lower canvas remain visible; existing media retains its current sizing.
+- Baseline, inventory and reading-check evidence: `docs/writing/2026-10-14-publication.md`.
+
+### Validation
+
+- `pnpm build`: token/family/Figma guards pass, Astro check 114 files with zero errors, warnings or hints, 16 pages built.
+- Writing list and all three public posts captured at 1440 and 390 px under both theme settings (16 screenshots); tablet and phone layout checks pass. Browser walk: Writing → new article → second-user post → resume post.
+- Original dates, draft flags, links and media references preserved; local built links/images resolve; private capture material excluded; both drafts absent from static output.
+
 ## 2026-10-14 — Landscape portfolio
 
 - Add Home/Contact icons and project marks to the connected rail, including Daybreak’s newer Rail and block icon. Enlarge the rail on the hero, shrink it by 10% in reading, and restore its size on hover or keyboard focus. Restyle the menu with a clear close control, grouped rows and About navigation.
