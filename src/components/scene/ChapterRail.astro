@@ -1,11 +1,12 @@
 ---
+import { projectStories } from "@/data/project-stories";
 import Mail from "@/icons/Mail.astro";
 interface Props { projects: { slug: string; title: string }[] }
 const { projects } = Astro.props;
-const marks: Record<string, string> = { "asheville-dispensary": "/images/project-marks/asheville-dispensary.svg", ghosted: "/images/project-marks/ghosted.svg", vegavengers: "/images/project-marks/vegavengers.svg", daybreak: "/images/project-marks/daybreak.webp" };
+
 const stops = [
   { id: "arrival", title: "Home", mark: undefined },
-  ...projects.map(p => ({ id: `project-${p.slug}`, title: p.title, mark: marks[p.slug] })),
+  ...projects.map(p => ({ id: `project-${p.slug}`, title: p.title, mark: projectStories[p.slug]?.mark })),
   { id: "contact", title: "Contact", mark: undefined },
 ];
 ---

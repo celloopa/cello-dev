@@ -1,0 +1,22 @@
+---
+import { projectStories } from '@/data/project-stories';
+interface Props { slug: string; ownership?: string }
+const { slug, ownership } = Astro.props;
+const story = projectStories[slug];
+---
+{story && <section class="case-brief container" aria-label="Case study at a glance">
+  <dl>
+    <div><dt>The problem</dt><dd>{story.problem}</dd></div>
+    <div><dt>The decision</dt><dd>{story.decision}</dd></div>
+    <div><dt>What changed</dt><dd>{story.outcome}</dd></div>
+  </dl>
+  {ownership && <p class="ownership"><strong>My role.</strong>{" "}{ownership}</p>}
+</section>}
+<style>
+.case-brief { max-width: var(--ds-container); margin-bottom: var(--space-48); }
+dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-32); padding-block: var(--space-24); margin: 0; border-block: 1px solid var(--border-strong); }
+dt { margin-bottom: var(--space-12); font-size: var(--type-small); text-transform: uppercase; letter-spacing: var(--track-caps); color: var(--text-accent); }
+dd { margin: 0; font-size: var(--type-ui); line-height: var(--leading-read); }
+.ownership { max-width: 80ch; margin: var(--space-24) 0 0; font-size: var(--type-small); line-height: var(--leading-read); }
+@media (width <= 700px) { dl { grid-template-columns: 1fr; gap: var(--space-24); } }
+</style>

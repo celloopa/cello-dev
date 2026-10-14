@@ -2,6 +2,12 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## Preview iteration: conversational home
+
+- Add Cello’s existing avatar, Mt. Hood greeting and immediate routes to Work, Writing and About. Keep YouTube hidden pending the new channel.
+- Enlarge home project artifacts, pair project marks with names, and introduce a problem/decision/result opening before case-study media. Condense Ghosted’s main navigation to six chapters while retaining supporting evidence and anchors.
+- Preserve the landscape renderer, cursor depth, still fallbacks and approved production release. See `docs/landscape/PREVIEW-CONVERSATIONAL-HOME.md` for scope and checks.
+
 ## 2026-10-14 — Landscape portfolio
 
 - Add Home/Contact icons and project marks to the connected rail, including Daybreak’s newer Rail and block icon. Enlarge the rail on the hero, shrink it by 10% in reading, and restore its size on hover or keyboard focus. Restyle the menu with a clear close control, grouped rows and About navigation.

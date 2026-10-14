@@ -7,7 +7,6 @@ import ChapterRail from "@/components/scene/ChapterRail.astro";
 import WorkItem from "@/components/scene/WorkItem.astro";
 import Button from "@/components/ui/Button.astro";
 import ArrowLink from "@/components/ui/ArrowLink.astro";
-import Eyebrow from "@/components/ui/Eyebrow.astro";
 import Section from "@/components/ui/Section.astro";
 import { homeScene, homeSection, sceneForProject } from "@/lib/scene/pairing";
 import { basics } from "@cv";
@@ -24,9 +23,9 @@ const featuredProjects = allProjects
 const sections = { contact: homeSection("contact"), footer: homeSection("footer") };
 const backdrops = [...featuredProjects.map((p) => sceneForProject(p.slug)), ...Object.values(sections)];
 
-const homeTitle = "Cello — Digital Designer, Brand & Design Systems";
+const homeTitle = "Cello — Designer, Products & Prototypes";
 const homeDescription =
-  "I lead design across three brands through a shared Figma system, then build the components and tools that carry it into everyday use.";
+  "I design and prototype helpful experiences, from products and systems to the code that brings them to life.";
 ---
 
 <SceneLayout
@@ -39,21 +38,21 @@ const homeDescription =
   <ChapterRail projects={featuredProjects.map(p => ({ slug: p.slug, title: p.data.title }))} />
   <section id="arrival" class="hero" aria-labelledby="hero-name" data-scene-hero>
     <div class="hero-copy copy-scrim" data-scene-intro>
-      <h1 class="hero-name" id="hero-name">Cello</h1>
-      <Eyebrow class="kicker">
-        <span class="kicker-dot" aria-hidden="true"></span>
-        <span>Open to design systems, brand and product design roles</span>
-      </Eyebrow>
-      <p class="hero-line">
-        Digital Designer
-        <span class="hero-line-sub">Brand &amp; Design Systems</span>
-      </p>
-      <p class="hero-summary">
-        I lead design across three brands through a shared Figma system, then build the
-        components and tools that carry it into everyday use.
-      </p>
+      <div class="hero-greeting">
+        <img class="hero-avatar" src="/images/avatar.webp" alt="Illustrated Cello with a camera" width="88" height="88" fetchpriority="high" />
+        <div class="hero-bubbles">
+          <h1 class="hero-name" id="hero-name">Hi, I’m Cello.</h1>
+          <p class="hero-bubble">Welcome to Mt. Hood. I come here a lot, so I thought I’d bring you along this time.</p>
+          <p class="hero-bubble">I love to design and prototype helpful experiences. Products, systems, and the code that brings them to life.</p>
+          <p class="hero-aside">I’d call myself a builder, but lowkey hate that word.</p>
+        </div>
+      </div>
+      <nav class="hero-routes" aria-label="Start exploring">
+        <a href="#work"><strong>Here for the work? <span aria-hidden="true">↓</span></strong><span>Scroll down, or choose a project logo on the rail to jump straight to it.</span></a>
+        <a href="/blog/"><strong>See what I’m learning <span aria-hidden="true">↗</span></strong><span>I document my work and share what I learn in Writing.</span></a>
+        <a href="/about/"><strong>A little more about me <span aria-hidden="true">↗</span></strong><span>I’m taken, but you can still read my About page.</span></a>
+      </nav>
       <div class="hero-actions">
-        <Button href="#work">View Case Studies</Button>
         <ArrowLink href="/resume">View Resume</ArrowLink>
       </div>
     </div>
@@ -62,11 +61,12 @@ const homeDescription =
 
   <Section
     class="work"
+    contained={false}
     id="work"
     title="Selected Case Studies"
     titleId="work-title"
     stop="Selected Case Studies"
-    intro="Systems first: one shared system across three brands, and a design system whose tokens and checks keep AI coding agents inside it. Then the products I designed and built on the same rules."
+    intro="From shared brand systems to AI tools and everyday planning. Here’s the problem, the decision, and what shipped."
     data-scene-focus
   >
       <ol class="work-list">
@@ -86,7 +86,7 @@ const homeDescription =
           ))
         }
       </ol>
-      <ArrowLink href="/projects" class="view-all">All Case Studies</ArrowLink>
+      <div class="container"><ArrowLink href="/projects" class="view-all">All Case Studies</ArrowLink></div>
   </Section>
 
   <Section
@@ -127,59 +127,30 @@ const homeDescription =
   }
 
   .hero-copy {
-    max-width: 42rem;
+    max-width: 44rem;
     color: var(--text-on-art);
   }
 
+  .hero-greeting { display: flex; align-items: start; gap: var(--space-16); }
+  .hero-avatar { width: 80px; height: 80px; flex: none; border-radius: var(--radius-circle); border: var(--stroke-control) solid var(--border-strong); }
+  .hero-bubbles { min-width: 0; }
+  .hero-bubble { max-width: 48ch; margin: 0 0 var(--space-8); padding: var(--space-12) var(--space-16); background: var(--bg-plate); color: var(--text-primary); border: 1px solid var(--border-strong); border-radius: var(--space-12); font-size: var(--type-ui); line-height: var(--leading-read); }
+  .hero-aside { margin: var(--space-12) 0 var(--space-24); font-size: var(--type-small); }
+  .hero-routes { display: grid; gap: var(--space-12); margin: 0 0 var(--space-24) var(--space-96); }
+  .hero-routes a { display: grid; gap: var(--space-4); color: inherit; text-decoration: none; }
+  .hero-routes strong { text-decoration: underline; text-underline-offset: .25em; font-size: var(--type-ui); }
+  .hero-routes a:hover strong { color: var(--text-accent); }
+  .hero-routes a > span { font-size: var(--type-small); line-height: var(--leading-read); max-width: 48ch; }
+  .hero-actions { margin-left: var(--space-96); }
+  .work :global(.container) { max-width: var(--ds-container-wide); padding-inline: var(--layout-gutter); }
+  @media (width <= 700px) { .hero-avatar { width: 52px; height: 52px; } .hero-greeting { gap: var(--space-12); } .hero-routes, .hero-actions { margin-left: 0; } }
   .hero-name {
     margin: 0 0 var(--space-12);
     font-family: var(--font-title);
-    font-size: var(--type-display-scene);
+    font-size: var(--type-page-title);
     font-weight: var(--weight-semibold);
     line-height: var(--leading-display);
     letter-spacing: var(--track-tight);
-  }
-
-  .kicker {
-    display: flex;
-    align-items: baseline;
-    gap: var(--space-12);
-    margin-bottom: var(--space-16);
-  }
-
-  .kicker-dot {
-    flex: none;
-    width: var(--space-8);
-    height: var(--space-8);
-    border-radius: var(--radius-circle);
-    background: var(--action-primary);
-    transform: translateY(-1px);
-  }
-
-  .hero-line {
-    max-width: 24ch;
-    margin: 0 0 var(--space-16);
-    font-family: var(--font-title);
-    font-size: var(--type-hero-line);
-    font-weight: var(--weight-semibold);
-    line-height: var(--leading-tight);
-  }
-
-  .hero-line-sub {
-    display: block;
-    margin-top: var(--space-8);
-    font-family: var(--font-mono);
-    font-size: var(--type-ui);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
-  }
-
-  .hero-summary {
-    max-width: var(--layout-measure-narrow);
-    margin: 0 0 var(--space-24);
-    font-size: var(--type-body);
-    line-height: var(--leading-read);
   }
 
   .hero-actions,
@@ -196,8 +167,11 @@ const homeDescription =
   }
 
   .work-list {
-    margin: var(--space-32) 0 0;
-    padding: 0;
+    width: 100%;
+    max-width: var(--ds-container-wide);
+    box-sizing: border-box;
+    margin: var(--space-32) auto 0;
+    padding-inline: var(--layout-gutter);
     list-style: none;
   }
 
@@ -223,10 +197,6 @@ const homeDescription =
       padding: var(--space-32) var(--layout-gutter) var(--space-96);
     }
 
-    .hero-summary {
-      font-size: var(--type-small);
-      line-height: var(--leading-small);
-    }
   }
 
   @media (width < 900px) { :global(body:has(.chapter-rail)) { padding-bottom: var(--space-96); } }

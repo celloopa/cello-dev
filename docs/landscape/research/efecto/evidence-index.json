@@ -1,0 +1,168 @@
+{
+  "capture_date": "2026-10-13",
+  "timezone": "America/Los_Angeles",
+  "rea_version": "6.4.0",
+  "scope": "Three sequential public runtime scenarios; raw captures stored outside repository. Docs-only features labeled in research note.",
+  "captures": [
+    {
+      "file": "efecto-overview.evidence.json",
+      "sha256": "ad72941dc6c8f466fe9ad834bb66e7663dc6b189fe4658179ea5fb1c1cd019af",
+      "evidence_id": "ev_4ef9c6f6987dc3dd385bfa6ba20058291e627052bd9bab56b1d9c5e5a075941a",
+      "environment": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "no-preference",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.41"
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "status": "completed",
+          "url": "https://efecto.app/"
+        },
+        {
+          "id": "home_ready",
+          "status": "completed",
+          "url": "https://efecto.app/"
+        },
+        {
+          "id": "docs_direct",
+          "status": "completed",
+          "url": "https://efecto.app/docs"
+        },
+        {
+          "id": "docs_ready",
+          "status": "completed",
+          "url": "https://efecto.app/docs"
+        }
+      ]
+    },
+    {
+      "file": "efecto-fx.evidence.json",
+      "sha256": "806cd60f02f264ea83d9027b91dcf50f80b4f12d50edafe7532a88ddd72f3c79",
+      "evidence_id": "ev_fb82cb1a73abed5b79ecb79d3e9a0acc4a0f2c5973655e1f4e3d98366acb29dc",
+      "environment": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "no-preference",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.41"
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "status": "completed",
+          "url": "https://efecto.app/fx?v=1&in=media&media=%252Fassets%252Frobot-and-girl.mp4&mpx=0&mpy=0&ms=1&ss=0"
+        },
+        {
+          "id": "fx_ready",
+          "status": "completed",
+          "url": "https://efecto.app/fx?v=1&in=media&media=%252Fassets%252Frobot-and-girl.mp4&mpx=0&mpy=0&ms=1&ss=0"
+        }
+      ]
+    },
+    {
+      "file": "efecto-fx-probe.evidence.json",
+      "sha256": "1e506853af8a3f53302e8469df2fa1267598a95f146bed772c56e41e29cf9907",
+      "evidence_id": "ev_ed542eccd5763410571aa23911f760430a30c347788cee21e98a0819fcde96ad",
+      "environment": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "no-preference",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.41"
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "status": "completed",
+          "url": "https://efecto.app/fx?v=1&in=media&media=%252Fassets%252Fmotorcycle.mp4&mpx=0&mpy=0&ms=1&ss=0"
+        },
+        {
+          "id": "sample_landscape",
+          "status": "completed",
+          "url": "https://efecto.app/fx?v=1&in=media&media=%252Fassets%252Fbeach-sunset.mp4&mpx=0&mpy=0&ms=1&ss=0"
+        },
+        {
+          "id": "halftone",
+          "status": "completed",
+          "url": "https://efecto.app/fx?v=1&in=media&media=%252Fassets%252Fbeach-sunset.mp4&mpx=0&mpy=0&ms=1&ss=0&eid=halftone-mono"
+        },
+        {
+          "id": "halftone_ready",
+          "status": "completed",
+          "url": "https://efecto.app/fx?v=1&in=media&media=%252Fassets%252Fbeach-sunset.mp4&mpx=0&mpy=0&ms=1&ss=0&eid=halftone-mono"
+        },
+        {
+          "id": "art",
+          "status": "completed",
+          "url": "https://efecto.app/fx?v=1&in=media&media=%252Fassets%252Fbeach-sunset.mp4&mpx=0&mpy=0&ms=1&ss=0&eid=art-engraving"
+        },
+        {
+          "id": "art_ready",
+          "status": "completed",
+          "url": "https://efecto.app/fx?v=1&in=media&media=%252Fassets%252Fbeach-sunset.mp4&mpx=0&mpy=0&ms=1&ss=0&eid=art-engraving"
+        },
+        {
+          "id": "export_code",
+          "status": "completed",
+          "url": "https://efecto.app/fx?v=1&in=media&media=%252Fassets%252Fbeach-sunset.mp4&mpx=0&mpy=0&ms=1&ss=0&eid=art-engraving"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "landing.png",
+      "source": "efecto-overview.evidence.home_ready.png",
+      "sha256": "87a2301bb77cb775ad0c03dd6b7e2672f676d256663c557e18ad741b066c6617"
+    },
+    {
+      "file": "halftone.png",
+      "source": "efecto-fx-probe.evidence.halftone_ready.png",
+      "sha256": "a5daa32daff15d985abd13f789838497387298556b39f9f6c646a4afb138572f"
+    },
+    {
+      "file": "engraving.png",
+      "source": "efecto-fx-probe.evidence.art_ready.png",
+      "sha256": "0e3db46587607457cdcc445ae064e9da7523e68633f5ceacab5d9f26e0fa94b3"
+    }
+  ]
+}

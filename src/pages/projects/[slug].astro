@@ -12,7 +12,7 @@ import SceneLayout from "@/layouts/SceneLayout.astro";
 import Prose from "@/components/ui/Prose.astro";
 import Button from "@/components/ui/Button.astro";
 import Eyebrow from "@/components/ui/Eyebrow.astro";
-import Panel from "@/components/ui/Panel.astro";
+import CaseBrief from "@/components/scene/CaseBrief.astro";
 import CaseMeta from "@/components/CaseMeta.astro";
 import MediaFull from "@/components/media/MediaFull.astro";
 import MediaTwo from "@/components/media/MediaTwo.astro";
@@ -34,7 +34,7 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content, headings } = await render(project);
 const sectionLinks = headings.filter((h) => h.depth === 2);
-const { title, description, image, ogImage, url, github, techStack, role, highlights, summary, media } = project.data;
+const { title, description, image, ogImage, url, github, role, summary, media } = project.data;
 
 const allProjects = (await getCollection("projects"))
   .filter((item) => item.data.complete)
@@ -64,11 +64,9 @@ const all = { href: "/projects", label: "All work" };
       eyebrow={role}
       title={title}
       lede={description}
-      tags={techStack}
-      maxTags={4}
-      tagsLabel="Tools"
       cover={image ? { src: image, alt: title } : undefined}
     >
+      <CaseBrief slot="overview" slug={project.slug} ownership={summary?.find(item => item.label === "Role")?.value} />
       {
         (url || github) && (
           <div class="read-links">
@@ -112,7 +110,7 @@ const all = { href: "/projects", label: "All work" };
       {
         (summary || sectionLinks.length > 2) && (
           <div class="read-open">
-            {summary && <CaseMeta items={summary} />}
+
             {sectionLinks.length > 2 && (
               <nav class="read-toc" aria-label="On this page">
                 <Eyebrow as="span" tone="on-art" class="read-toc-label">
@@ -135,20 +133,7 @@ const all = { href: "/projects", label: "All work" };
         <Content />
       </Prose>
 
-      {
-        highlights.length > 0 && (
-          <section class="read-highlights" aria-labelledby="highlights-title">
-            <h2 id="highlights-title">Highlights</h2>
-            <ul>
-              {highlights.map((highlight) => (
-                <Panel as="li">
-                  <p>{highlight}</p>
-                </Panel>
-              ))}
-            </ul>
-          </section>
-        )
-      }
+      {summary && <details class="read-details"><summary>Project details and tools</summary><CaseMeta items={summary} /></details>}
 
       <StoryEnd next={next} previous={previous} all={all} />
     </div>
@@ -206,36 +191,8 @@ const all = { href: "/projects", label: "All work" };
     border-color: var(--action-primary);
   }
 
-  /* ---------- highlights ---------- */
-  .read-highlights {
-    max-width: var(--layout-measure);
-    margin: var(--space-64) auto 0;
-  }
-
-  .read-highlights h2 {
-    margin: 0 0 var(--space-24);
-    color: var(--text-accent);
-    font-family: var(--font-title);
-    font-size: var(--type-heading);
-    font-weight: var(--weight-extrabold);
-    line-height: var(--leading-heading);
-    text-transform: uppercase;
-  }
-
-  .read-highlights ul {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-16);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .read-highlights p {
-    margin: 0;
-    font-size: var(--type-body);
-    line-height: var(--leading-read);
-  }
+  .read-details { margin-block: var(--space-48); }
+  .read-details summary { cursor: pointer; padding-block: var(--space-16); font-size: var(--type-ui); text-decoration: underline; text-underline-offset: .25em; }
 
   @media (width <= 700px) {
     .read {
@@ -258,8 +215,5 @@ const all = { href: "/projects", label: "All work" };
       scroll-snap-align: start;
     }
 
-    .read-highlights ul {
-      grid-template-columns: 1fr;
-    }
   }
 </style>

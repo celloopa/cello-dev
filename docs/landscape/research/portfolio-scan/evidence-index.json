@@ -1,0 +1,1066 @@
+{
+  "capture_date": "2026-10-13",
+  "date_timezone": "America/Los_Angeles",
+  "cli_version": "6.4.0",
+  "notes": [
+    "Public material only. Raw captures retained outside this repository.",
+    "Viewport studies use desktop Chromium at narrow width; not real iPhone or Safari tests.",
+    "Elapsed times include scripted waits and capture overhead; not human findability measurements.",
+    "Error envelopes retain partial observations and have no successful REA Evidence ID.",
+    "uxfolio-case-desktop/phone tested a URL inferred from a thumbnail filename. These are excluded from live-site conclusions.",
+    "Ordinary Playwright popup and no-JavaScript probes are separate from REA Evidence."
+  ],
+  "captures": [
+    {
+      "file": "dennis-case-desktop.evidence.json",
+      "sha256": "173ba0e6069c9171fbc242ea44854684f2412b98f7a800fe202afddeffaee8f9",
+      "evidence_id": null,
+      "error_code": "cleanup_incomplete",
+      "environment": null,
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "incomplete",
+        "product": "Chromium",
+        "version": "155.0.8059.40"
+      },
+      "duration_ms": 13707,
+      "completeness": null,
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 7382,
+          "url": "https://www.dennissnellenberg.com/work/twice",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "case_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 5086,
+          "url": "https://www.dennissnellenberg.com/work/twice",
+          "status": "completed",
+          "error": null
+        }
+      ]
+    },
+    {
+      "file": "dennis-desktop.evidence.json",
+      "sha256": "0d4c5f1a1492947a3f1ec4483635b2ad8b2ec7b2fb3d16583d45c9698403dc2f",
+      "evidence_id": "ev_a8e75791e729e01356fbd9029adbc7651ef0f1a032113762f23a54368e4f3975",
+      "error_code": null,
+      "environment": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "no-preference",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.40"
+      },
+      "duration_ms": 5880,
+      "completeness": {
+        "status": "complete",
+        "equality_eligible": true,
+        "missing_sections": [],
+        "truncated_sections": []
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 3279,
+          "url": "https://www.dennissnellenberg.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "settled",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 1569,
+          "url": "https://www.dennissnellenberg.com/",
+          "status": "completed",
+          "error": null
+        }
+      ]
+    },
+    {
+      "file": "dennis-flow.evidence.json",
+      "sha256": "7b55d5d825c78b1735871526052b08e8ddd10f894679c7f898d7e13ad9e5920c",
+      "evidence_id": "ev_8a1e067bb2bb2d79d4cdbd5180ec6abdc03d98f482c67c33c0cee038f5f65e98",
+      "error_code": null,
+      "environment": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "no-preference",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.40"
+      },
+      "duration_ms": 13205,
+      "completeness": {
+        "status": "complete",
+        "equality_eligible": true,
+        "missing_sections": [],
+        "truncated_sections": []
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 2869,
+          "url": "https://www.dennissnellenberg.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "home_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 5107,
+          "url": "https://www.dennissnellenberg.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "work_click",
+          "action": "click",
+          "elapsed_ms": 213,
+          "url": "https://www.dennissnellenberg.com/work",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "work_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 1991,
+          "url": "https://www.dennissnellenberg.com/work",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "case_click",
+          "action": "click",
+          "elapsed_ms": 1050,
+          "url": "https://www.dennissnellenberg.com/work/twice",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "case_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 1566,
+          "url": "https://www.dennissnellenberg.com/work/twice",
+          "status": "completed",
+          "error": null
+        }
+      ]
+    },
+    {
+      "file": "dennis-phone-case.evidence.json",
+      "sha256": "be1f126ed6b7e7f80563d289250bf7da98bd26963b2350f6bc6abf913d0febd1",
+      "evidence_id": "ev_66883e6559d10c996423497fe969f7a95fe38a7e1526a57ea2380fc1fe68af5c",
+      "error_code": null,
+      "environment": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "no-preference",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.41"
+      },
+      "duration_ms": 12187,
+      "completeness": {
+        "status": "complete",
+        "equality_eligible": true,
+        "missing_sections": [],
+        "truncated_sections": []
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 4407,
+          "url": "https://www.dennissnellenberg.com/work",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "work_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 3578,
+          "url": "https://www.dennissnellenberg.com/work",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "case_click",
+          "action": "click",
+          "elapsed_ms": 170,
+          "url": "https://www.dennissnellenberg.com/work/twice",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "case_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 3699,
+          "url": "https://www.dennissnellenberg.com/work/twice",
+          "status": "completed",
+          "error": null
+        }
+      ]
+    },
+    {
+      "file": "dennis-phone-flow.evidence.json",
+      "sha256": "93c6b19244c35953cd157731b28233d6e151e72a49a7419886e56d846fe94ffb",
+      "evidence_id": null,
+      "error_code": "cleanup_incomplete",
+      "environment": null,
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "incomplete",
+        "product": "Chromium",
+        "version": "155.0.8059.40"
+      },
+      "duration_ms": 23263,
+      "completeness": null,
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 3601,
+          "url": "https://www.dennissnellenberg.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "home_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 5113,
+          "url": "https://www.dennissnellenberg.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "menu_click",
+          "action": "click",
+          "elapsed_ms": 740,
+          "url": "https://www.dennissnellenberg.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "menu_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 885,
+          "url": "https://www.dennissnellenberg.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "work_click",
+          "action": "click",
+          "elapsed_ms": 161,
+          "url": "https://www.dennissnellenberg.com/work",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "work_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 3574,
+          "url": "https://www.dennissnellenberg.com/work",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "case_click",
+          "action": "click",
+          "elapsed_ms": 8097,
+          "url": "https://www.dennissnellenberg.com/work",
+          "status": "failed",
+          "error": "Analysis operation timed out after 8000ms: capture_browser_scenario"
+        },
+        {
+          "id": "case_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 0,
+          "url": "https://www.dennissnellenberg.com/work",
+          "status": "cancelled",
+          "error": "not executed after an earlier action failure"
+        }
+      ]
+    },
+    {
+      "file": "pablo-desktop.evidence.json",
+      "sha256": "448d16bbfde8ff8cb9e6effd73a281ec71b69c82fb7c4ad1b8a281b49797c2e2",
+      "evidence_id": "ev_468fabcb3ee0c892ebc0aae03acd2f57414011a6be3669d84f239dcd6c856e1a",
+      "error_code": null,
+      "environment": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "no-preference",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.41"
+      },
+      "duration_ms": 8757,
+      "completeness": {
+        "status": "complete",
+        "equality_eligible": true,
+        "missing_sections": [],
+        "truncated_sections": []
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 4273,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "home_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 3773,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        }
+      ]
+    },
+    {
+      "file": "pablo-flow.evidence.json",
+      "sha256": "22aeef593425da00fb917f3217ebc3179da8dcb2354783a3d68667e18cc7785f",
+      "evidence_id": "ev_5586beed98eadfab0478dea96e681144552e054830b61fdbaf0daba18566b96a",
+      "error_code": null,
+      "environment": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "no-preference",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.41"
+      },
+      "duration_ms": 8584,
+      "completeness": {
+        "status": "complete",
+        "equality_eligible": true,
+        "missing_sections": [],
+        "truncated_sections": []
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 3267,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "home_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 1804,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "menu_click",
+          "action": "click",
+          "elapsed_ms": 362,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "menu_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 749,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "work_direct",
+          "action": "goto",
+          "elapsed_ms": 526,
+          "url": "https://world.pablostanley.com/work",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "work_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 1075,
+          "url": "https://world.pablostanley.com/work",
+          "status": "completed",
+          "error": null
+        }
+      ]
+    },
+    {
+      "file": "pablo-phone.evidence.json",
+      "sha256": "7445a5da391bdd9fc079d977d4b3f2253f152e0ff641b8fcdb22521054c81137",
+      "evidence_id": "ev_dfe126488b7bcd252fce95b063c77b69c84193fb97a8ec3300262a5f384d96fd",
+      "error_code": null,
+      "environment": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "no-preference",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.41"
+      },
+      "duration_ms": 7639,
+      "completeness": {
+        "status": "complete",
+        "equality_eligible": true,
+        "missing_sections": [],
+        "truncated_sections": []
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 2590,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "home_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 1739,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "menu_click",
+          "action": "click",
+          "elapsed_ms": 264,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "menu_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 632,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "work_direct",
+          "action": "goto",
+          "elapsed_ms": 227,
+          "url": "https://world.pablostanley.com/work",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "work_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 672,
+          "url": "https://world.pablostanley.com/work",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "about_direct",
+          "action": "goto",
+          "elapsed_ms": 208,
+          "url": "https://world.pablostanley.com/about",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "about_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 672,
+          "url": "https://world.pablostanley.com/about",
+          "status": "completed",
+          "error": null
+        }
+      ]
+    },
+    {
+      "file": "pablo-project.evidence.json",
+      "sha256": "9bbcc64b7d3a39c3f2798409e1cf7b50f5d93b8cdb35b777b252bf241bf77938",
+      "evidence_id": "ev_c11fdbabe765de07b3e842557c51abdf32abfebcb297762a5abc9f62d7a14892",
+      "error_code": null,
+      "environment": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "no-preference",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.41"
+      },
+      "duration_ms": 10087,
+      "completeness": {
+        "status": "complete",
+        "equality_eligible": true,
+        "missing_sections": [],
+        "truncated_sections": []
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 2741,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "home_ready",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 1763,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "menu_click",
+          "action": "click",
+          "elapsed_ms": 358,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "jump_project",
+          "action": "click",
+          "elapsed_ms": 660,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "project_arrival",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 2776,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "open_project",
+          "action": "press",
+          "elapsed_ms": 279,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "project_detail",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 866,
+          "url": "https://world.pablostanley.com/",
+          "status": "completed",
+          "error": null
+        }
+      ]
+    },
+    {
+      "file": "uxfolio-case-desktop.evidence.json",
+      "sha256": "25f54c364990d6d495b2e1676a0de76f29cb781cefdcb646e082344638c3f43d",
+      "evidence_id": "ev_b118abda664aa102b263b55d59966ce4b91feb1b167009b5840f77b0a71f1eaf",
+      "error_code": null,
+      "environment": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "no-preference",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.40"
+      },
+      "duration_ms": 5520,
+      "completeness": {
+        "status": "complete",
+        "equality_eligible": true,
+        "missing_sections": [],
+        "truncated_sections": []
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 3552,
+          "url": "https://uxfol.io/p/lucasbarrientos/b4a7698d",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "settled",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 1576,
+          "url": "https://uxfol.io/p/lucasbarrientos/b4a7698d",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "first_scroll",
+          "action": "press",
+          "elapsed_ms": 54,
+          "url": "https://uxfol.io/p/lucasbarrientos/b4a7698d",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "second_scroll",
+          "action": "press",
+          "elapsed_ms": 47,
+          "url": "https://uxfol.io/p/lucasbarrientos/b4a7698d",
+          "status": "completed",
+          "error": null
+        }
+      ]
+    },
+    {
+      "file": "uxfolio-case-phone.evidence.json",
+      "sha256": "c29792dcac462123b8a7c01e453165b4fd4fabe773508b6aa47ea9cec9c47505",
+      "evidence_id": "ev_3853997f034a1aa61e1451abd3def23b0d655fdd342324aced0ba2641f186313",
+      "error_code": null,
+      "environment": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "no-preference",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.40"
+      },
+      "duration_ms": 5316,
+      "completeness": {
+        "status": "complete",
+        "equality_eligible": true,
+        "missing_sections": [],
+        "truncated_sections": []
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 3405,
+          "url": "https://uxfol.io/p/lucasbarrientos/b4a7698d",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "settled",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 1047,
+          "url": "https://uxfol.io/p/lucasbarrientos/b4a7698d",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "first_scroll",
+          "action": "press",
+          "elapsed_ms": 48,
+          "url": "https://uxfol.io/p/lucasbarrientos/b4a7698d",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "settled_scroll",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 551,
+          "url": "https://uxfol.io/p/lucasbarrientos/b4a7698d",
+          "status": "completed",
+          "error": null
+        }
+      ]
+    },
+    {
+      "file": "uxfolio-live-select.evidence.json",
+      "sha256": "3955040a11a10088030f2d5ecb60636f8d8af86660f627e12c7a692944febf76",
+      "evidence_id": "ev_6b156801f96522c5a2417f91f021a8f80334cc5918ce25dca815caeb7a50afdc",
+      "error_code": null,
+      "environment": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "reduce",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.40"
+      },
+      "duration_ms": 5469,
+      "completeness": {
+        "status": "complete",
+        "equality_eligible": true,
+        "missing_sections": [],
+        "truncated_sections": []
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 3594,
+          "url": "https://uxfol.io/examples/078a41ef/Zalando-case-study",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "live",
+          "action": "click",
+          "elapsed_ms": 173,
+          "url": "https://uxfol.io/examples/078a41ef/Zalando-case-study",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "settle",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 1330,
+          "url": "https://uxfol.io/examples/078a41ef/Zalando-case-study",
+          "status": "completed",
+          "error": null
+        }
+      ]
+    },
+    {
+      "file": "uxfolio-select.evidence.json",
+      "sha256": "d86ebe04f101887c75db2b8d021759e79f3ff8d2a7791c1d837b1ba46654bb39",
+      "evidence_id": "ev_6bd19dedfd05e00d9dd3a34e295c1087bf28371cc49471c1624bccb48c376ca5",
+      "error_code": null,
+      "environment": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "reduce",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.40"
+      },
+      "duration_ms": 5491,
+      "completeness": {
+        "status": "complete",
+        "equality_eligible": true,
+        "missing_sections": [],
+        "truncated_sections": []
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 3733,
+          "url": "https://uxfol.io/examples",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "open_case",
+          "action": "click",
+          "elapsed_ms": 158,
+          "url": "https://uxfol.io/examples/078a41ef/Zalando-case-study",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "settle",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 1149,
+          "url": "https://uxfol.io/examples/078a41ef/Zalando-case-study",
+          "status": "completed",
+          "error": null
+        }
+      ]
+    },
+    {
+      "file": "uxfolio-showcase-phone.evidence.json",
+      "sha256": "478c199fc01ee94f8c90b30ec06c3489977fd6ca5a26f222158f7a6010baadd5",
+      "evidence_id": "ev_861c8212385c7658c31dff44270a9dd25a63413407644d9b67fe67619b36a545",
+      "error_code": null,
+      "environment": {
+        "viewport": {
+          "width": 390,
+          "height": 844,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "no-preference",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.40"
+      },
+      "duration_ms": 5588,
+      "completeness": {
+        "status": "complete",
+        "equality_eligible": true,
+        "missing_sections": [],
+        "truncated_sections": []
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 3709,
+          "url": "https://uxfol.io/examples/078a41ef/Zalando-case-study",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "settled",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 1586,
+          "url": "https://uxfol.io/examples/078a41ef/Zalando-case-study",
+          "status": "completed",
+          "error": null
+        }
+      ]
+    },
+    {
+      "file": "uxfolio-showcase.evidence.json",
+      "sha256": "4d92e925fe9dab982a4bd999a13fdd0dd846809d9600bfe5b72fceb3e2ae0a8c",
+      "evidence_id": "ev_1f649dec2d7951ed50f0a542c2609ed1d332d0e4bd45ba92a48d5a27d4138931",
+      "error_code": null,
+      "environment": {
+        "viewport": {
+          "width": 1440,
+          "height": 900,
+          "device_scale_factor": 1
+        },
+        "locale": "en-US",
+        "timezone": "UTC",
+        "color_scheme": "light",
+        "reduced_motion": "reduce",
+        "service_workers": "block"
+      },
+      "browser": {
+        "mode": "launch",
+        "process_ownership": "provider-owned",
+        "cleanup": "terminated-owned-process",
+        "product": "Chromium",
+        "version": "155.0.8059.40"
+      },
+      "duration_ms": 6536,
+      "completeness": {
+        "status": "complete",
+        "equality_eligible": true,
+        "missing_sections": [],
+        "truncated_sections": []
+      },
+      "steps": [
+        {
+          "id": "scenario_start",
+          "action": "goto_start",
+          "elapsed_ms": 4544,
+          "url": "https://uxfol.io/examples",
+          "status": "completed",
+          "error": null
+        },
+        {
+          "id": "showcase",
+          "action": "wait_for_timeout",
+          "elapsed_ms": 1607,
+          "url": "https://uxfol.io/examples",
+          "status": "completed",
+          "error": null
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "uxfolio-summary-desktop.png",
+      "source": "uxfolio-select.evidence.settle.png",
+      "sha256": "805c21d67f119e393dea2f57ab4202d4b4d4a6b0428b8e9c1ef884edd3882e19"
+    },
+    {
+      "file": "uxfolio-summary-phone.png",
+      "source": "uxfolio-showcase-phone.evidence.settled.png",
+      "sha256": "4fd251cc965eec867e17c6653a5296603454e645563fdf8d1eb7682b5f4db8e2"
+    },
+    {
+      "file": "dennis-home-desktop.png",
+      "source": "dennis-flow.evidence.home_ready.png",
+      "sha256": "205a3fc72b8f1aad8f75207afb6326b8496db028563574beb4c5b31e50e1c0ae"
+    },
+    {
+      "file": "dennis-work-desktop.png",
+      "source": "dennis-flow.evidence.work_ready.png",
+      "sha256": "12bb67500cea09d1e21ca5b49f0b9440cdf9dd720a252b7f1e821570491defb9"
+    },
+    {
+      "file": "dennis-case-phone.png",
+      "source": "dennis-phone-case.evidence.case_ready.png",
+      "sha256": "07f9ec11aa0c3b000c3a2a25f3945cdef0cf467fa041c75523e7a5689606306e"
+    },
+    {
+      "file": "pablo-world-phone.png",
+      "source": "pablo-phone.evidence.home_ready.png",
+      "sha256": "de01113468f06a352513bd8ed14868c29b5da93d99c54fcb5d3b4778c5c01486"
+    },
+    {
+      "file": "pablo-work-phone.png",
+      "source": "pablo-phone.evidence.work_ready.png",
+      "sha256": "b41dd023651ccf285d91ad82e72e22d7cc10d21b243d050afafbbacc6ea04676"
+    },
+    {
+      "file": "pablo-nojs-home.png",
+      "source": "pablo-nojs-home.png",
+      "sha256": "f3c8542099ae1dddf6c30dfb8081254986b4793b18d05888b82ffb31647c3464"
+    }
+  ],
+  "ordinary_probes": [
+    {
+      "file": "uxfolio-resolved-link.json",
+      "sha256": "29452cae122289bba73174b9ad0b47e34b385a56dd7f2dcf6ec82d6166d0376c",
+      "result": {
+        "method": "ordinary Playwright; not REA Evidence",
+        "from": "https://uxfol.io/examples/078a41ef/Zalando-case-study",
+        "destination": "https://uxfol.io/p/lucasbarrientos/b4a7698d",
+        "title": "Case study title"
+      }
+    },
+    {
+      "file": "pablo-nojs.json",
+      "sha256": "1cad79740ea7ad14133736debb6e631de30741926a354548c1d89862a5a13b7b",
+      "result": {
+        "method": "ordinary Playwright, not REA Evidence",
+        "javascript": false,
+        "viewport": {
+          "width": 390,
+          "height": 844
+        },
+        "work_url": "https://world.pablostanley.com/work",
+        "title": "Work \u00b7 Pablo Stanley",
+        "cleanup": "browser closed in finally"
+      }
+    }
+  ]
+}
