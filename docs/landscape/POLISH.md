@@ -1,5 +1,7 @@
 # Existing landscape: cutover polish, 2026-10-13
 
+> Release approved by Cello on October 14. Current checks and delivery procedure: [release record](RELEASE-2026-10-14.md). Earlier preview-only boundaries below describe the prior candidate.
+
 This supersedes the earlier chapters hold and four still-first scene limits. Cello chose the existing scrolling portfolio over the separate world prototype, requested motion behind the work, and removed “Take in the view”: the scenery is simply the space. The separate world prototype remains outside this candidate. Cello subsequently restored the separate About page and project timeline while retaining this landscape implementation (see below).
 
 ## Implemented
@@ -85,3 +87,7 @@ Helium resolution: Cello confirmed the current preview works. Native inspection 
 ## Node rail correction (2026-10-14)
 
 Cello meant the earlier small rail with connected nodes, not numbered timeline cells. Replace all numbers and endpoint symbols with nodes, a connecting line, and a green current node. Keep desktop hover/focus names and the compact current-name label on phones. Click, scrub, keyboard, no-JavaScript anchors, scene depth, and About separation retain their existing behavior.
+
+## Final rail and menu polish (2026-10-14)
+
+Home and Contact replace the Arrival/footer wording in the rail. Each project uses its existing mark; Daybreak uses the newer Rail and block small icon. The rail is 1.15× on the hero, contracts by exactly 10% to 1.035× as content comes into focus, and grows to 1.15× on hover or visible keyboard focus. Reduced motion removes size transitions. Menu styling uses the site's ink surfaces, type, an explicit Close button, two columns on desktop and one on phones, quiet section labels, and right-aligned shortcut keys; About is now in the navigation menu.

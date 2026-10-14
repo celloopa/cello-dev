@@ -2,7 +2,9 @@
 
 All notable changes to this portfolio site should be documented here.
 
-## Unreleased: landscape cutover candidate (2026-10-14)
+## 2026-10-14 — Landscape portfolio
+
+- Add Home/Contact icons and project marks to the connected rail, including Daybreak’s newer Rail and block icon. Enlarge the rail on the hero, shrink it by 10% in reading, and restore its size on hover or keyboard focus. Restyle the menu with a clear close control, grouped rows and About navigation.
 
 - Correct the project timeline to the small connected-node rail Cello intended, with a green current node instead of numbers. Retain existing navigation and scenery.
 
@@ -18,7 +20,7 @@ All notable changes to this portfolio site should be documented here.
 - Give case-study summaries the full artifact frame, with two columns and a full-width Tools row; center the reading column and allow media to use the wider frame. Fix phone TOC focus clipping, touch hover states, Menu spacing, and keyboard-menu Tab/focus return.
 - Add MP4 sources and poster images for all 15 currently linked videos (20 placements), including home previews. Home previews use the same Pause/Play control as case-study media.
 - Fix Day text contrast during the arrival-to-reading scroll range. Add the reading motion values to the token source and existing Figma library. Correct utility-page canonicals and canonical trailing slashes.
-- Verification and release limitations: `docs/landscape/POLISH.md`. This entry describes a candidate; production is not cut over yet.
+- Verification and release limitations: `docs/landscape/POLISH.md`. Release checks and cutover procedure: `docs/landscape/RELEASE-2026-10-14.md`.
 
 ## 2026-10-12
 

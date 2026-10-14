@@ -1,6 +1,6 @@
 # Landscape cutover: readiness, test plan, results (2026-10-13)
 
-> Latest: Cello returned to the existing landscape and removed the separate viewing mode. See [POLISH.md](POLISH.md) for the new candidate and checks; the chapters hold below is historical. Production still awaits release approval.
+> Latest (2026-10-14): Cello explicitly authorized final checks and production cutover. See [RELEASE-2026-10-14.md](RELEASE-2026-10-14.md) for the final scope, checks and rollback; older holds below are historical.
 
 
 Kept by the "Cut over cello.dev" session. It takes `claude/landscape-build` from close to live on

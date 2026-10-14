@@ -1,16 +1,18 @@
 ---
+import Mail from "@/icons/Mail.astro";
 interface Props { projects: { slug: string; title: string }[] }
 const { projects } = Astro.props;
+const marks: Record<string, string> = { "asheville-dispensary": "/images/project-marks/asheville-dispensary.svg", ghosted: "/images/project-marks/ghosted.svg", vegavengers: "/images/project-marks/vegavengers.svg", daybreak: "/images/project-marks/daybreak.webp" };
 const stops = [
-  { id: "arrival", title: "Arrival" },
-  ...projects.map(p => ({ id: `project-${p.slug}`, title: p.title })),
-  { id: "contact", title: "Let’s Talk" },
+  { id: "arrival", title: "Home", mark: undefined },
+  ...projects.map(p => ({ id: `project-${p.slug}`, title: p.title, mark: marks[p.slug] })),
+  { id: "contact", title: "Contact", mark: undefined },
 ];
 ---
 <nav class="chapter-rail" aria-label="Project timeline">
-  <span class="rail-current" aria-hidden="true" data-rail-title>Arrival</span>
+  <span class="rail-current" aria-hidden="true" data-rail-title>Home</span>
   <ol class="rail-stops">
-    {stops.map((stop, i) => <li><a draggable="false" href={`#${stop.id}`} aria-label={stop.title} aria-current={i === 0 ? "location" : undefined}><span class="rail-node" aria-hidden="true"></span><span class="rail-label" aria-hidden="true">{stop.title}</span></a></li>)}
+    {stops.map((stop, i) => <li><a draggable="false" href={`#${stop.id}`} aria-label={stop.title} aria-current={i === 0 ? "location" : undefined}><span class="rail-node" aria-hidden="true">{stop.id === "arrival" ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" focusable="false"><path d="m3 10 9-7 9 7v11h-6v-7H9v7H3Z" /></svg> : stop.id === "contact" ? <Mail /> : stop.mark?.endsWith(".webp") ? <img src={stop.mark} alt="" width="20" height="20" draggable="false" /> : stop.mark ? <span class="rail-mark" style={`--rail-mark: url('${stop.mark}')`}></span> : null}</span><span class="rail-label" aria-hidden="true">{stop.title}</span></a></li>)}
   </ol>
 </nav>
 <script>
@@ -29,6 +31,8 @@ const stops = [
       targets.forEach((target, i) => { if (target.getBoundingClientRect().top <= line) current = i; });
       links.forEach((link, i) => { if (i === current) link.setAttribute("aria-current", "location"); else link.removeAttribute("aria-current"); });
       title.textContent = links[current].getAttribute("aria-label");
+      const progress = document.documentElement.classList.contains("scene-reading") ? 1 : Math.min(1, Math.max(0, scrollY / (innerHeight * .65)));
+      rail.style.setProperty("--rail-rest-scale", String(1.15 * (1 - .1 * progress)));
     };
     const schedule = () => { if (!pending) { pending = true; requestAnimationFrame(update); } };
     addEventListener("scroll", schedule, { passive: true });
@@ -83,12 +87,15 @@ const stops = [
     color: var(--text-primary);
   }
   .rail-current { display: none; }
-  .rail-stops { position: relative; margin: 0; padding: 0; list-style: none; touch-action: pan-x; user-select: none; }
+  .rail-stops { transform: scale(var(--rail-rest-scale, 1.15)); transform-origin: center; transition: transform var(--motion-ui) var(--ease-out); position: relative; margin: 0; padding: 0; list-style: none; touch-action: pan-x; user-select: none; }
   a { position: relative; display: flex; align-items: center; justify-content: center; width: var(--touch-target); height: var(--touch-target); font-size: var(--type-label); font-weight: var(--weight-bold); }
   .rail-stops::before { content: ""; position: absolute; top: calc(var(--touch-target) / 2); bottom: calc(var(--touch-target) / 2); left: 50%; width: var(--stroke-control); transform: translateX(-50%); background: var(--text-muted); box-shadow: 0 0 0 var(--stroke-control) var(--bg-canvas); }
-  .rail-node { width: var(--space-8); height: var(--space-8); border-radius: var(--radius-circle); background: var(--bg-canvas); border: var(--stroke-control) solid var(--text-primary); box-shadow: 0 0 0 var(--stroke-frame) var(--bg-canvas); }
-  a[aria-current] .rail-node { width: var(--space-12); height: var(--space-12); background: var(--action-primary); border-color: var(--action-primary); }
+  .rail-node { display: grid; place-items: center; width: var(--space-24); height: var(--space-24); color: var(--text-primary); border-radius: var(--radius-circle); background: var(--bg-canvas); border: var(--stroke-control) solid transparent; box-shadow: 0 0 0 var(--stroke-frame) var(--bg-canvas); }
+  a[aria-current] .rail-node { color: var(--action-primary); border-color: var(--action-primary); }
   a:hover .rail-node, a:focus-visible .rail-node { border-color: var(--action-primary); }
+  .rail-node :global(svg), .rail-node img, .rail-mark { display: block; width: var(--space-16); height: var(--space-16); }
+  .rail-node img { object-fit: contain; }
+  .rail-mark { background: currentColor; mask: var(--rail-mark) center / contain no-repeat; -webkit-mask: var(--rail-mark) center / contain no-repeat; }
   .rail-label { position: absolute; right: 100%; padding: var(--space-12) var(--space-16); background: var(--bg-canvas); color: var(--text-primary); border: var(--stroke-control) solid var(--border-strong); white-space: nowrap; visibility: hidden; }
   a:hover .rail-label, a:focus-visible .rail-label { visibility: visible; }
   @media (width < 900px) {
@@ -100,5 +107,8 @@ const stops = [
     .rail-stops::before { top: 50%; bottom: auto; left: calc(var(--touch-target) / 2); right: calc(var(--touch-target) / 2); width: auto; height: var(--stroke-control); transform: translateY(-50%); }
     .rail-label { display: none; }
   }
+  @media (hover: hover) { .chapter-rail:hover .rail-stops { transform: scale(1.15); } }
+  .chapter-rail:has(a:focus-visible) .rail-stops { transform: scale(1.15); }
+  @media (prefers-reduced-motion: reduce) { .rail-stops { transition: none; } }
   @media print { .chapter-rail { display: none; } }
 </style>
