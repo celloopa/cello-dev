@@ -1,0 +1,143 @@
+---
+/* PROTOTYPE: one discoverable-world direction, on the landscape branch's real assets/content.
+   Question: can landmarks invite exploration while Work remains immediately findable? */
+import { getCollection } from "astro:content";
+import { basics } from "@cv";
+import "@fontsource/geist-mono/400.css";
+import "@fontsource/geist-mono/700.css";
+import "@fontsource-variable/national-park";
+import "@fontsource-variable/geist";
+import "@/styles/colors.css";
+import "@/styles/animations.css";
+import "@/styles/focus.css";
+import "@/styles/prototype-world.css";
+import ThemeInit from "@/components/ThemeInit.astro";
+import Mark from "@/components/scene/Mark.astro";
+import WorldLandmark from "@/components/prototype/WorldLandmark.astro";
+import { loadScene, sceneArt } from "@/lib/scene/catalog";
+import { sceneForProject } from "@/lib/scene/pairing";
+
+const projects = (await getCollection("projects"))
+  .filter(p => p.data.featured && p.data.complete).sort((a,b) => a.data.order - b.data.order)
+  .map((p, index) => ({ id: p.slug, title: p.data.title.replace(" Marketing", ""), role: p.data.role,
+    description: p.data.description, summary: p.data.summary ?? [], url: p.data.url,
+    href: `/projects/${p.slug}/`, image: p.data.ogImage || p.data.image, index,
+    scene: loadScene(sceneForProject(p.slug)), art: sceneArt(sceneForProject(p.slug)) }));
+const home = loadScene("mirror-lake");
+const places = [home, ...projects.map(p => p.scene)];
+const positions = [[50,42],[27,70],[78,71],[79,35]];
+const summary = "I lead design across three brands through a shared Figma system, then build the components and tools that carry it into everyday use.";
+---
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Cello · Discoverable world prototype</title>
+    <meta name="description" content={summary} />
+    <ThemeInit />
+  </head>
+  <body class="world-page" data-world-mode="arrival" data-place="mirror-lake">
+    <a class="world-skip" href="#work">Skip to work</a>
+    <header class="world-header">
+      <a class="world-brand" href="/prototype-world/" aria-label="Cello, back to the world" data-world-home>
+        <Mark class="world-mark" /><span>Cello</span>
+      </a>
+      <nav aria-label="Main navigation">
+        <a href="#work" class="world-work-link">Work <span aria-hidden="true">↗</span></a>
+        <a href="/blog/">Writing</a>
+        <a href="/resume/">Resume</a>
+        <a href={`mailto:${basics.email}`} class="world-contact">Let's talk</a>
+        <button type="button" data-theme-toggle aria-label="Switch to Dusk"><span aria-hidden="true">◐</span></button>
+      </nav>
+    </header>
+    <main>
+      <section class="world-stage" aria-label="Explore Cello's work through the landscape">
+        <div class="world-scenes" aria-hidden="true">
+          {places.map((place, i) => <div class:list={["world-place", i === 0 && "is-current"]} data-world-scene={place.id}>
+            {place.layers.map(layer => <img src={i === 0 ? layer.src : undefined} data-src={layer.src}
+              class="world-depth" alt="" width={layer.width} height={layer.height}
+              decoding="async" fetchpriority={i === 0 ? "high" : undefined}
+              style={`--anchor-x:${layer.anchor[0]*100}%;--anchor-y:${layer.anchor[1]*100}%;--mobile-x:${layer.mobileAnchor[0]*100}%;--mobile-y:${layer.mobileAnchor[1]*100}%;--cap-x:${layer.cap[0]};--cap-y:${layer.cap[1]};--source-width:${place.grid[0]}`} />)}
+          </div>)}
+        </div>
+        <div class="world-daylight" aria-hidden="true"></div>
+        <div class="world-arrival" data-world-arrival>
+          <p class="world-location">{basics.location.city}, {basics.location.region}</p>
+          <h1>Cello</h1>
+          <p class="world-role">{basics.label}</p>
+          <p class="world-intro">{summary}</p>
+          <div class="world-arrival-actions">
+            <a href="#landmarks" data-world-explore>Explore the places <span aria-hidden="true">↗</span></a>
+            <a href="#work">View Case Studies <span aria-hidden="true">↓</span></a>
+          </div>
+        </div>
+        <nav class="world-landmarks" id="landmarks" aria-label="Project landmarks" tabindex="-1">
+          <svg class="world-trail" viewBox="0 0 1000 700" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M270 490C260 360 400 400 500 294S740 160 790 245C870 340 840 440 780 497" />
+          </svg>
+          {projects.map((p, i) => <a class={`world-landmark world-landmark-${i}`} href={p.href}
+            data-world-visit={p.id} style={`--x:${positions[i][0]}%;--y:${positions[i][1]}%`}
+            aria-label={`Visit ${p.title}, ${p.scene.place}`}>
+            <WorldLandmark kind={i} />
+            <span class="world-landmark-sign"><span class="world-landmark-number">0{i+1}</span>
+              <span><strong>{p.title}</strong><small>{p.scene.place}</small></span><span aria-hidden="true">↗</span>
+            </span>
+          </a>)}
+        </nav>
+        <div class="world-visited" data-world-visited hidden>
+          <div class="world-place-heading">
+            <button type="button" class="world-back" data-world-home>← Back to the world</button>
+            <p class="world-place-lettering" data-current-place></p>
+            <p class="world-place-month" data-current-month></p>
+          </div>
+          {projects.map(p => <article class="world-project" data-world-project={p.id} hidden>
+            <div class="world-project-cover">
+              <img data-src={p.image} alt={`${p.title} product artifact`} width="1200" height="675" />
+              <span class="world-project-stamp" aria-hidden="true">0{p.index+1}</span>
+            </div>
+            <div class="world-project-copy">
+              <p class="world-project-role">{p.role}</p>
+              <h2 tabindex="-1">{p.title}</h2>
+              <p class="world-project-description">{p.description}</p>
+              <div class="world-project-actions">
+                <button type="button" data-world-read={p.id}>Read the summary <span aria-hidden="true">↓</span></button>
+                <a href={p.href}>Full case study <span aria-hidden="true">↗</span></a>
+                {p.url && <a href={p.url} target="_blank" rel="noopener noreferrer">Live site <span aria-hidden="true">↗</span></a>}
+              </div>
+              <div class="world-project-summary" data-world-summary hidden>
+                <button type="button" class="world-back" data-world-return>← Back to the place</button>
+                <dl>{p.summary.map(fact => <div><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
+                <a class="world-full-story" href={p.href}>Read the full case study <span aria-hidden="true">↗</span></a>
+              </div>
+            </div>
+          </article>)}
+        </div>
+        <footer class="world-wayfinding">
+          <span class="world-caption" data-world-caption>Mirror Lake · September</span>
+          <nav aria-label="Places, direct navigation">
+            <button type="button" data-world-home aria-label="Return to Mirror Lake">⌂</button>
+            {projects.map((p, i) => <a href={p.href} data-world-visit={p.id}><span>0{i+1}</span> {p.title}</a>)}
+          </nav>
+        </footer>
+      </section>
+      <section class="world-index" id="work" aria-labelledby="world-work-title">
+        <div class="world-index-heading"><h2 id="world-work-title">Selected Case Studies</h2>
+          <a href="/prototype-world/" data-world-home>Back to the world <span aria-hidden="true">↗</span></a></div>
+        <ol>{projects.map(p => <li>
+          <a href={p.href} class="world-index-art" aria-label={`Read ${p.title}`}><img src={p.art.swatch} alt="" width="480" height="320" loading="lazy" /></a>
+          <div><p class="world-index-role">{p.role}</p><h3><a href={p.href}>{p.title} <span aria-hidden="true">↗</span></a></h3><p>{p.description}</p></div>
+          <a href={p.href} class="world-index-read">Read case study</a>
+        </li>)}</ol>
+        <p class="world-index-contact"><a href={`mailto:${basics.email}`}>Let's talk ↗</a><a href="/resume/">View Resume ↗</a></p>
+      </section>
+    </main>
+    <p class="world-prototype-label">Prototype · <span data-world-state>arrival</span></p>
+    <script is:inline type="application/json" data-world-data set:html={JSON.stringify(projects.map(p => ({id:p.id,place:p.scene.id,name:p.scene.place,month:p.scene.month})))} />
+    <script>
+      import { startWorldPrototype } from "@/lib/prototype/world";
+      startWorldPrototype();
+    </script>
+  </body>
+</html>

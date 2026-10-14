@@ -1,0 +1,34 @@
+---
+// Throwaway illustrated wayfinding, using the existing system's ink, paper and action roles.
+interface Props { kind: number }
+const { kind } = Astro.props;
+---
+<svg class="world-landmark-art" viewBox="0 0 120 100" fill="none" aria-hidden="true">
+  <ellipse cx="60" cy="91" rx="49" ry="6" fill="var(--accent-ground)" opacity=".4" />
+  <g stroke="var(--bg-canvas)" stroke-width="3" stroke-linejoin="round" fill="var(--bg-inverse)">
+    {kind === 0 && <>
+      <path d="M41 86 47 48M80 86 73 48M45 68h31M44 83l31-33M78 83 47 50" />
+      <path d="M30 48h59V30H30z" /><path d="m23 30 36-22 37 22z" fill="var(--accent-ground)" />
+      <path d="M39 33v15M51 33v15M64 33v15M78 33v15" />
+      <path d="M56 8V1h24v9H56" fill="var(--action-primary)" />
+    </>}
+    {kind === 1 && <>
+      <path d="M28 85V43l32-25 33 25v42z" /><path d="m17 46 43-33 44 33" stroke-width="6" />
+      <path d="M43 85V57h23v28M74 49h12v16H74z" fill="var(--accent-ground)" />
+      <path d="M77 26V8h13v29" /><path d="M22 86h78" stroke-width="6" />
+      <path d="M49 54h12v23H49z" fill="var(--action-primary)" stroke="none" />
+    </>}
+    {kind === 2 && <>
+      <path d="M16 86V42L60 9l44 33v44z" /><path d="M29 86V42l31-33 30 33v44M16 42h88M60 9v77M30 62h60" />
+      <path d="M45 86V59h29v27" fill="var(--accent-ground)" />
+      <path d="M20 84V62m0 11-8-8m8 11 8-10M99 84V61m0 10-8-7m8 12 9-11" stroke="var(--action-primary)" stroke-width="4" />
+    </>}
+    {kind === 3 && <>
+      <circle cx="60" cy="36" r="20" fill="var(--action-primary)" />
+      <path d="M60 7V0M32 17l-8-8M87 17l9-8M31 39H17m72 0h14" stroke="var(--action-primary)" stroke-width="4" />
+      <path d="m26 82 10-22h50l11 22z" fill="var(--accent-ground)" />
+      <path d="M59 60V42m0 19 18 11M23 85h77" stroke-width="5" />
+      <path d="M37 88v6m50-6v6" />
+    </>}
+  </g>
+</svg>

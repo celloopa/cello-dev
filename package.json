@@ -15,7 +15,8 @@
     "figma:sync": "node scripts/figma-sync.mjs",
     "sync-projects": "npx tsx scripts/sync-projects.ts",
     "resume:pdf": "node scripts/generate-resume-pdf.mjs",
-    "scenes:derive": "node scripts/scene-derivatives.mjs"
+    "scenes:derive": "node scripts/scene-derivatives.mjs",
+    "prototype:world": "astro dev --host 127.0.0.1 --port 4613"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.6",
