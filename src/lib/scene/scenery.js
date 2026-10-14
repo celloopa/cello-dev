@@ -215,7 +215,9 @@ export function start() {
   // footer, which can't scroll up to 45%) each get their turn, the footer last.
   function readingLine() {
     const line = innerHeight * 0.45;
-    if (!backdrop) return line;
+    // Reading pages keep the line fixed: on short About layouts, moving it toward the
+    // bottom would select Contact while How I Build still occupies the reading area.
+    if (!backdrop || readPage) return line;
     const left = root.scrollHeight - innerHeight - scrollY;
     return line + (innerHeight - 1 - line) * clamp01(1 - left / (innerHeight * 0.5));
   }

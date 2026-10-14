@@ -8,7 +8,7 @@ import { basics } from "@cv";
 const sections = { about: homeSection("about"), how: homeSection("how"), contact: homeSection("contact") };
 ---
 <SceneLayout title="About Cello" description="My path through visual journalism, brand systems, and product design, and how I carry design into production." canonicalPath="/about" place={sections.about} reading={{ title: "About", all: { href: "/#work", label: "All work" } }} backdrops={[sections.how, sections.contact]}>
-  <section class="about-intro container" id="about" aria-labelledby="about-title">
+  <section class="about-intro container" id="about" aria-labelledby="about-title" data-scene-focus data-scene-stop="About" data-scene-backdrop={sections.about}>
     <h1 id="about-title">About</h1>
     <p>I came to product design through visual journalism, brand systems, and front-end engineering. That range lets me translate creative intent into product rules, prototype behavior, make constraints legible, and speak the language of the team shipping it.</p>
     <ArrowLink href="/resume">View Resume</ArrowLink>
