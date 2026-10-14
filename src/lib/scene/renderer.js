@@ -147,6 +147,9 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
   const plane = new PlaneGeometry(1, 1);
   // a page may ease the Dusk grade (home's arrival does, so the mountains carry); 1 = the full grade
   const duskStrength = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--scene-dusk-strength")) || 1;
+  // ...and may dim Day on arrival (home does); it lifts as the page moves into reading
+  const dayBright = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--scene-day-bright")) || 1;
+  let darkNow = dark;
   const shared = {
     uTime: { value: 0 }, uDusk: { value: dark ? duskStrength : 0 }, uDuskInk: { value: DUSK },
     uMotion: { value: 0 }, uBright: { value: 1 }, uSat: { value: 1 },
@@ -278,7 +281,7 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     shared.uTime.value = time;
 
     const ref = isMobile ? REF.mobile : REF.desktop;
-    shared.uBright.value = 1 + (ref.bright - 1) * focus;
+    shared.uBright.value = (1 + (ref.bright - 1) * focus) * (darkNow ? 1 : 1 + (dayBright - 1) * (1 - focus));
     shared.uSat.value = 1 + (ref.sat - 1) * focus;
     group.scale.setScalar(1 + READ_SCALE * focus);
 
@@ -409,7 +412,7 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     setState({ reading }) { target.reading = reading ? 1 : 0; wake(); },
     setCovered(on) { covered=on; clearTimeout(restTimer);restTimer=0;if (on) {cancelAnimationFrame(raf);raf=0;} else request(); },
     setScroll(p) { if (Math.abs(p - target.scroll) > 1e-4) { target.scroll = p; if (isMobile && !settledReading()) wake(); } },
-    setDark(d) { shared.uDusk.value = d ? duskStrength : 0; wake(); },
+    setDark(d) { darkNow = d; shared.uDusk.value = d ? duskStrength : 0; wake(); },
     stop() { running = false; lost = true; cancelAnimationFrame(raf); clearTimeout(restTimer); },
     /** Review hooks: hold the arrival at t seconds (null resumes), and report plane offsets. */
     seekArrival(t) { arrivalHeld = t; wake(); },
