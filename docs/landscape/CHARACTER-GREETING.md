@@ -8,7 +8,7 @@ The selected character uses Cello’s current likeness cues, modern mullet, thin
 
 Current placement follows Cello’s feedback that the guide was lost in the scene’s shadow. The character is now a foreground DOM cutout beside the text, above the scenery’s grading, atmosphere and copy scrim. The four landscape planes remain separate in Three.js. The existing renderer’s bounded guide spring updates the foreground’s CSS offsets within the same frame loop; no additional pointer listener or animation loop is introduced. The guide metadata appears last in the depth inventory, with `surface: foreground`, rather than creating another textured GPU mesh.
 
-Character travel remains capped at 28/14 source pixels, scaled through the scene’s current fit. Chat geometry is fixed. HTML layout anchors the foreground directly beside the chat on desktop and phone. Without JavaScript/WebGL, under reduced motion, or after context loss, the character stays as a normal transparent image at rest. It scrolls out naturally with the hero.
+Character travel remains capped at 28/14 source pixels, scaled through the scene’s current fit. Chat geometry is fixed. HTML layout anchors the foreground directly beside the chat on desktop and phone, with his feet level with the bottom of the chat box (88px wide on phones, 176px on desktop; a token-based negative top margin lets him rise above a short greeting without stretching its row). Without JavaScript/WebGL, under reduced motion, or after context loss, the character stays as a normal transparent image at rest. It scrolls out naturally with the hero.
 
 The original prototype placed the guide between terrain and foreground; this front placement supersedes that composition. The old v1 asset is retained; v2 is clean-shaven.
 

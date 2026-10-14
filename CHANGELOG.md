@@ -4,6 +4,8 @@ All notable changes to this portfolio site should be documented here.
 
 ## Preview iteration: conversational home
 
+- Ground the hiking guide: his feet now line up with the bottom of the chat instead of hanging beside the name, and he is about 1.4× larger (88px wide on phones, 176px on desktop). He can rise above a short greeting without stretching it.
+
 - Bring the clean-shaven character forward beside the chat, preserving independent cursor depth. Replace the builder joke with a useful-product sentiment; fade earlier body messages upward as the next takes focus. On phone home, move Menu to the bottom project rail and hide the duplicate top bar, while retaining case-study back navigation.
 
 - Give the hiking character a clean shave; keep its depth layer and greeting behavior.
