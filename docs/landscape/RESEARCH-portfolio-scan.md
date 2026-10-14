@@ -1,8 +1,8 @@
-# Portfolio scan: planning baseline and investigation proposal
+# Portfolio scan: findings and proposed plan amendments
 
-Date: 2026-10-13. **Status: awaiting Cello's target-list approval; REA investigations not started.**
+Date: 2026-10-13 (America/Los_Angeles). **Status: bounded pass complete; recommendations await Cello's review.**
 
-This is the checkpoint for one bounded research pass. Recommendations below are proposals for
+Cello approved all three targets before investigation. Recommendations below are proposals for
 Cello to review, not amendments to GRILL or PLAN. The chapters build C0–C5 remains unstarted.
 
 ## Inputs and evidence boundary
@@ -16,8 +16,17 @@ Cello to review, not amendments to GRILL or PLAN. The chapters build C0–C5 rem
   `src/components/scene/ReadHead.astro`, and the four complete project entries.
 - One read-only planner mapped the reference to the decisions. The lead checked the actual
   template/content to distinguish missing specifications from existing implemented behavior.
-- Discovery searches of first-party pages were used only to nominate investigation targets.
-  No site interactions, runtime measurements, REA Evidence or live rebuild checks yet.
+- After approval, the lead investigated the three targets sequentially using REA 6.4.0's
+  controlled browser scenarios, screenshots, DOM and accessibility captures. Two ordinary
+  Playwright probes cover popup handling and JavaScript-disabled fallback, separately labeled.
+- [Evidence index](research/portfolio-scan/evidence-index.json) records complete Evidence IDs,
+  capture hashes, action outcomes and selected screenshot hashes. Raw captures remain outside
+  the public repository. No live rebuild checks or implementation changes were performed.
+
+**Verdict:** retain the landscape chapters direction. Strengthen visible access to the calm work
+index and protect the existing case-study summary/section links. The references offer useful
+navigation and presentation patterns, but none establishes this rebuild's hiring-task success
+or provides a fully verified model for decision-led, layered product case studies.
 
 The [UXfolio landing page](https://uxfol.io/state-of-ux-portfolios-2026) was opened; its full
 report is email-gated. Percentages in the supplied reference remain attributed to that reference,
@@ -75,44 +84,169 @@ its authorship split to every project or the portfolio.
 
 No recommendation here changes the approved identity, project order, artwork, copy or URL contract.
 
-## Proposed targets — approval pending
+## Findings from the approved targets
 
-| Target | Why nominate it | Bounded question |
-| --- | --- | --- |
-| [UXfolio public case-study examples](https://uxfol.io/examples) | A product-design storytelling comparison for the existing summary/TOC. Its public showcase includes case studies. This is the survey vendor, so it is not independent corroboration. | Inspect one public case study, selecting the first accessible case-study example in showcase order. How does its opening expose role/problem/decisions/outcome and offer deeper evidence? No editor account or trial. |
-| [Dennis Snellenberg](https://www.dennissnellenberg.com/) | Already in Q3's reference set; first-party discovery identifies selected work. | Inspect home and one project: how does a kinetic front door expose work and what survives on phone/still paths? Do not assume visual craft demonstrates product-case-study depth. |
-| [Pablo Stanley's World](https://world.pablostanley.com/) | First-party discovery describes an interactive world with a plain-version route. | Inspect entry, Work and the plain route: can someone bypass exploration and understand the work? Is the fallback discoverable and informative? Do not assume a game-like interaction suits this rebuild. |
+### UXfolio: summary before depth, with limited live coverage
 
-These are hypotheses worth testing. No candidate is yet shown to solve the gap or reach work
-within 30 seconds. Approval covers this target list before investigation, as required by the
-lead-start assignment. Exact selected public case-study URL will be recorded when resolved.
+Target: [Zalando case study showcase](https://uxfol.io/examples/078a41ef/Zalando-case-study),
+selected as the first case-study card encountered in the live showcase (Lucas Barrientos).
 
-## Approved-pass method (not yet executed)
+**Observed:** the showcase exposes title, author/role, a short narrative/impact summary and a
+clear next action before a long case-study image. That hierarchy survives the narrow viewport.
+See [desktop](research/portfolio-scan/uxfolio-summary-desktop.png) and
+[phone-width](research/portfolio-scan/uxfolio-summary-phone.png).
 
-- One site at a time; one browser session; no concurrent renderers, builds or background swarms.
-- Follow the installed REA runtime workflow and actual CLI schemas. Keep observed browser
-  behavior, static artifact evidence, inference and unknowns separate. REA is passive;
-  browser navigation/timing must not be attributed to REA.
-- Per target: first screen, shortest visible work route, one case-study/detail route, reading
-  depth and any attribution encountered. Capture desktop/phone first-screen evidence and a
-  focused navigation trace. A lead-operated timing probe is not a hiring-manager user test.
-- Record the exact URL, capture date, viewport, steps, evidence IDs, coverage limits and
-  cleanup. Store raw public captures separately; commit concise synthetic/public findings only.
-- Stop after the approved targets. Map each transferable finding back to GRILL questions and
-  C0–C5, then hand the exact research commit to review. Cello chooses plan amendments.
+**Inference for cello.dev:** provide enough supported context to judge relevance before asking
+for long reading. Preserve actual text summaries and section links rather than imitating a
+long screenshot as the reading surface.
 
-## Open questions
+**Unknown:** the showcase's next action opened an empty preview in this environment. REA
+recorded the popup but not a destination URL; an ordinary Playwright probe found an empty URL,
+placeholder title and blank body. A URL inferred from a thumbnail filename was also tried;
+it returned an unpublished placeholder and is excluded from conclusions about the live project.
+Full case-study navigation, detail structure and impact claims remain unverified. No login or
+trial was used, and no replacement case was added to this bounded pass.
 
-1. Approve all three targets, or which two should this bounded pass cover?
-2. After evidence: should Work open the calm index, and what labels should phone rail stops show?
-3. After evidence: should the existing case-study summary be visible with the cover or immediately
-   after it, and should chapter pitches explicitly include an outcome/status?
-4. After evidence: where should the portfolio's own AI attribution first appear?
+Evidence: **U1/U2** below. Vendor curation is not independent proof of hiring effectiveness.
 
-## Handoff state
+### Dennis Snellenberg: expressive arrival, explicit work route and credits
 
-- Research branch: `codex/portfolio-scan`; base: `b47164125253a6c9fd6b0eefd688ab841242a114`.
-- Owned scope: this note and the supplied positioning reference, copied verbatim from the primary checkout.
-- Current result: planning baseline and reviewable target proposal only. No REA findings yet.
-- No source edits, C0–C5 build, cutover merge, push, deploy or publication performed.
-- Existing dirty files, ignored media, preservation folder and all previous worktrees retained.
+Targets: [home](https://www.dennissnellenberg.com/), [Work](https://www.dennissnellenberg.com/work),
+[TWICE](https://www.dennissnellenberg.com/work/twice).
+
+**Observed:** desktop offers Work in the hero navigation, leading to a compact work index;
+TWICE opens with services, collaborator credit and year before project imagery. Narrow screens
+use Menu → Work and image cards; the sampled project retains its credits. See
+[home](research/portfolio-scan/dennis-home-desktop.png),
+[index](research/portfolio-scan/dennis-work-desktop.png) and
+[project at phone width](research/portfolio-scan/dennis-case-phone.png).
+
+An early screenshot still showed the greeting overlay although the accessibility tree already
+contained the work links. The desktop scripted Home → Work → TWICE sequence completed in
+13.205 seconds including fixed waits/captures; that is neither a human findability result nor
+a precise measure of visible readiness. The first narrow-screen project click targeted a hidden
+desktop variant and timed out; a subsequent role-based selector opened the visible project.
+
+**Inference:** borrow explicit index access and honest credits. Preserve cello.dev's first-paint
+words and richer problem/decision/status summaries. This sample is principally a visual/service
+showcase; it does not establish a layered product-case-study model.
+
+Evidence: **D1/D2**, with partial records described below.
+
+### Pablo Stanley: a compelling world plus a separate calm list
+
+Targets: [world](https://world.pablostanley.com/), [Work](https://world.pablostanley.com/work),
+[About](https://world.pablostanley.com/about).
+
+**Observed:** the entry is a cohesive illustrated world. Its menu offers named destination jumps.
+The semantic Work link appears in the accessibility capture but is not visible in the captured
+entry/menu. Direct `/work` exposes compact project/date/description rows. In a separate
+JavaScript-disabled probe, home visibly offered Work/About and Work opened successfully. See
+[world](research/portfolio-scan/pablo-world-phone.png),
+[calm list](research/portfolio-scan/pablo-work-phone.png) and
+[no-JavaScript entry](research/portfolio-scan/pablo-nojs-home.png).
+
+**Inference:** a rich world and a direct reading route can coexist; make the latter visibly
+available with JavaScript enabled too. Borrow the world's visual coherence, while retaining
+cello.dev's product-decision depth. The sampled list leads outward; external products were not
+investigated. A jump to Efecto moved the scene, but the subsequent E-key probe exposed no case
+study; deeper in-world detail remains unresolved.
+
+**Cello's response:** “pablo's site is very cool...” This records attraction to the reference;
+which qualities to carry into the landscape direction remains an open design question.
+
+Evidence: **P1–P3**, plus the separately labeled no-JavaScript probe.
+
+## Evidence and method
+
+REA `capture-browser-scenario` is an active, explicitly scripted browser operation in the installed
+6.4.0 CLI. It performed the declared navigation/actions here; this is not a claim that passive REA
+observation clicked anything. No static bundle reconstruction or source-map analysis was needed.
+
+Each target was investigated on its own, one owned browser process at a time. Viewports were
+1440 × 900 and 390 × 844, Chromium 155.0.8059.40, scale 1, light preference; investigation runs
+used normal motion. The initial UXfolio discovery used reduced motion. Narrow-width captures
+are responsive-layout observations, **not real iPhone, touch, Safari or reduced-motion verification**.
+No throttled performance benchmark, human test or complete accessibility audit was performed.
+
+| Ref | Raw capture filename | Successful REA Evidence ID | Coverage |
+| --- | --- | --- | --- |
+| U1 | `uxfolio-select.evidence.json` | `ev_6bd19dedfd05e00d9dd3a34e295c1087bf28371cc49471c1624bccb48c376ca5` | Showcase card click → Zalando summary, desktop. |
+| U2 | `uxfolio-showcase-phone.evidence.json` | `ev_861c8212385c7658c31dff44270a9dd25a63413407644d9b67fe67619b36a545` | Zalando showcase summary at narrow width. |
+| D1 | `dennis-flow.evidence.json` | `ev_8a1e067bb2bb2d79d4cdbd5180ec6abdc03d98f482c67c33c0cee038f5f65e98` | Home → Work → TWICE, desktop. |
+| D2 | `dennis-phone-case.evidence.json` | `ev_66883e6559d10c996423497fe969f7a95fe38a7e1526a57ea2380fc1fe68af5c` | Work → visible TWICE link → project, narrow width. |
+| P1 | `pablo-flow.evidence.json` | `ev_5586beed98eadfab0478dea96e681144552e054830b61fdbaf0daba18566b96a` | World menu and directly loaded Work, desktop. |
+| P2 | `pablo-phone.evidence.json` | `ev_dfe126488b7bcd252fce95b063c77b69c84193fb97a8ec3300262a5f384d96fd` | World/menu and directly loaded Work/About, narrow width. |
+| P3 | `pablo-project.evidence.json` | `ev_c11fdbabe765de07b3e842557c51abdf32abfebcb297762a5abc9f62d7a14892` | Destination jump and bounded E-key probe; no case study exposed. |
+
+The [index](research/portfolio-scan/evidence-index.json) includes discovery, excluded URL probes,
+partial failures and ordinary Playwright results, preserving their distinct status. REA's
+“complete” capture status describes requested artifacts, not full-site coverage or proof of usability.
+No site version digest was established; these are runtime snapshots of the recorded URLs.
+
+Two Dennis captures returned `cleanup_incomplete` after their observations. Their partial results
+were preserved, not relabeled as successful Evidence: the desktop direct TWICE capture and the
+narrow Home → Menu → Work capture (whose project selector timed out). Host inspection subsequently
+found no remaining REA-owned Chrome processes or temporary profiles. Their screenshots support only
+the visible states recorded, not a passing cleanup receipt. The later narrow Work → TWICE scenario
+completed successfully. Other successful REA runs reported termination of their owned process;
+ordinary Playwright probes closed their browsers in `finally`.
+
+Disclosure search was bounded to the captured text, summaries and About surface. No sampled
+reference established an explicit account of AI's role in creating the portfolio itself.
+Mentioning AI products does not establish portfolio authorship. This is an unresolved reference
+question, not a claim that these sites lack disclosure everywhere. The proposed cello.dev
+attribution remains grounded in its own Q8/Q16–19 and existing project disclosures.
+
+## Proposed amendments, ready for review
+
+These are recommendations **only**. GRILL and PLAN were not edited.
+
+| Proposal | Exact decision / chapter | Concrete change to review | Basis |
+| --- | --- | --- | --- |
+| **R1. Make the fast route visible.** | Q24/Q27/Q36/Q42; C0/C1/C3 | Work in the constant bar opens `/projects`. Put a visible, ordinary link to that index in the arrival surface at phone and desktop sizes. Reconcile rail stops with Q34's final home and expose recognizable project names without hover. Do not require exploration to discover the route. | D1/D2 demonstrate index access; P1/P2 show that having a calm route does not ensure its visual discoverability. |
+| **R2. Protect the existing skim layer.** | Q28/Q30; C2 | Explicitly retain `CaseMeta(summary)` and the heading links after the cover and before optional galleries/prose; provide a visible cover link to that summary. Reuse the current Problem/Role/Key decision/Shipped/Tools facts. Preserve beta/personal-use limits. Do not add a second synopsis model. | Current committed template/content; U1/U2 supply limited evidence for short context before depth; sampled references do not replace existing product thinking. |
+| **R3. Restore outcome/status to chapter guidance.** | Q4 versus Q28; C0/C1 | Decide whether the existing one-liner contains a supported result/status, or whether a separate short line is necessary. Update the spec explicitly; source every claim from current content or Cello. | The internal Q4 → Q28 omission, not a new claim inferred from another person's work. |
+| **R4. Give the rebuild a truthful credit.** | Q8/Q16–19/Q35; C3 | A short discoverable credit links to About/How I Build: Cello directs/reviews; agents implement; scene art uses AI treatment and layer work. Cello approves the final words and factual split. Preserve project-specific credits already present. | Cello's documented process; D1's collaborator credit supplies a presentation analogy, not an AI-disclosure template. |
+| **R5. Test the task and the readiness.** | Q23–24/Q29/Q37/Q39; C5 | Add cold phone/desktop probes: choose and open relevant work within a proposed 30-second target; locate role/problem/decision/status in a short scan; use section links to evidence; return to the same chapter. Record hesitation and measure when the words/artifact become usable, separately from URL changes. Repeat the fast path under still/fallback settings. | D1's overlay versus populated DOM; the reference's time pressure; no site scan here substitutes for testing cello.dev. |
+
+The strongest visual idea to explore is a coherent sense of place: scenery, foreground details
+and transitions that feel part of one authored world. The approved landscapes can carry that
+quality through their chapter thresholds and reading surfaces. Preserve the window/landscape
+concept and existing native-scroll, first-paint, keyboard, contrast, privacy and URL requirements;
+any interaction changes belong in Cello's review of the direction.
+
+## Open questions for Cello
+
+1. Should **Work always open the calm index**, with an arrival link such as “All case studies”
+   visible alongside the chapter entry? Recommendation: yes; label uses existing site vocabulary.
+2. Should **the existing summary precede optional galleries**, with a cover link to it?
+   Recommendation: yes; test its position in the C2 storyboard before implementation.
+3. Should chapter pitches explicitly show **outcome/status**? Recommendation: preserve Q4's
+   evidence intent, using only supported current content and visible validation limits.
+4. Where should the **portfolio rebuild credit** first appear: a compact persistent/footer link,
+   or arrival plus fuller About? Recommendation: a discoverable compact credit and full About
+   explanation; final wording is Cello's approval.
+5. Which quality of Pablo's world matters most to carry forward: the coherent illustrated place,
+   named destinations, or exploratory interactions? Recommendation: carry visual coherence into
+   the approved landscapes first; interaction changes need a separate decision.
+
+## Completion and handoff
+
+| Requested question | Result |
+| --- | --- |
+| Map reference to decisions and rank risks | Answered by one planner, corrected against committed implementation. |
+| Approve targets before investigation | All three approved by Cello in chat before REA began. |
+| Inspect first screens/navigation | Answered for the sampled desktop/narrow states, with partial records labeled. |
+| Inspect case-study depth | Partial: UXfolio's full preview was blank; Dennis provides services/credits/imagery; Pablo's sampled plain route is an index and deeper in-world detail remains unresolved. No fourth target or unbounded investigation added. |
+| Find a verified AI-disclosure precedent | Unresolved within these captured surfaces; recommendations use cello.dev's own process record. |
+| Deliver specific reviewable plan changes | R1–R5 above; none applied to the plan or code. |
+
+- Branch: `codex/portfolio-scan`; integration base: `b47164125253a6c9fd6b0eefd688ab841242a114`.
+- Baseline commit: `f049d7b77e6a2b4066a96e014881fb96fd357c22`; final findings commit is supplied in the chat handoff.
+- Owned changes: this research note, supplied reference, public research screenshots and evidence index.
+- Checks: source-reference comparison, screenshot inspection, Evidence/step-status checks, capture
+  hashes, staged whitespace/privacy checks and preservation of existing worktree state.
+- Documentation only: no application build needed or run. No C0–C5 implementation, cutover merge,
+  branch push, deploy or publication. Existing dirty files/media/preservation folder retained.
+- Cello decides which recommendations amend GRILL/PLAN before any rebuild resumes.
