@@ -145,8 +145,10 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
   artScene.add(group);
   const cam = new OrthographicCamera(-1, 1, 1, -1, -10, 10);
   const plane = new PlaneGeometry(1, 1);
+  // a page may ease the Dusk grade (home's arrival does, so the mountains carry); 1 = the full grade
+  const duskStrength = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--scene-dusk-strength")) || 1;
   const shared = {
-    uTime: { value: 0 }, uDusk: { value: dark ? 1 : 0 }, uDuskInk: { value: DUSK },
+    uTime: { value: 0 }, uDusk: { value: dark ? duskStrength : 0 }, uDuskInk: { value: DUSK },
     uMotion: { value: 0 }, uBright: { value: 1 }, uSat: { value: 1 },
   };
 
@@ -407,7 +409,7 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     setState({ reading }) { target.reading = reading ? 1 : 0; wake(); },
     setCovered(on) { covered=on; clearTimeout(restTimer);restTimer=0;if (on) {cancelAnimationFrame(raf);raf=0;} else request(); },
     setScroll(p) { if (Math.abs(p - target.scroll) > 1e-4) { target.scroll = p; if (isMobile && !settledReading()) wake(); } },
-    setDark(d) { shared.uDusk.value = d ? 1 : 0; wake(); },
+    setDark(d) { shared.uDusk.value = d ? duskStrength : 0; wake(); },
     stop() { running = false; lost = true; cancelAnimationFrame(raf); clearTimeout(restTimer); },
     /** Review hooks: hold the arrival at t seconds (null resumes), and report plane offsets. */
     seekArrival(t) { arrivalHeld = t; wake(); },

@@ -224,6 +224,8 @@ const homeDescription =
   .intro-controls { position: relative; z-index: 4; } /* above the routes' shade, which reaches up behind it */
   /* Let the mountains breathe: on arrival the screen-wide ink is lighter and fades out toward the
      top of the hero. The copy keeps its own local shade. */
+  /* home eases the Dusk grade ~15% (renderer reads this once); every line keeps its own shade */
+  :global(html:has(.chapter-rail)) { --scene-dusk-strength: .85; }
   :global(html:has(.chapter-rail):not(.scene-reading) .scene-atmos-arrive) { opacity: var(--hero-atmos, .4); -webkit-mask-image: linear-gradient(to top, black 20%, transparent 50%); mask-image: linear-gradient(to top, black 20%, transparent 50%); }
   /* A tight ink halo also hugs each letter over snow and sky. */
   .hero { --hero-halo: 0 0 var(--space-4) var(--bg-canvas), 0 0 var(--space-12) var(--bg-canvas), 0 0 var(--space-24) var(--bg-canvas); }
@@ -233,7 +235,7 @@ const homeDescription =
   .hero-greeting { display: contents; }
   /* The guide stands beside what he says: feet level with the bottom of the chat.
      The negative top margin lets him rise above a short greeting without stretching its row. */
-  .hero-avatar { grid-column: 2; grid-row: 1 / 4; align-self: end; margin-top: calc(var(--space-96) * -2); width: 100%; height: auto; position: relative; z-index: 2; pointer-events: none; transform-origin: 50% 100%; --enter-distance: var(--space-12); }
+  .hero-avatar { grid-column: 2; grid-row: 1 / 4; align-self: end; margin-top: calc(var(--space-96) * -2); width: 100%; height: auto; position: relative; z-index: 2; pointer-events: none; transform-origin: 50% 100%; filter: drop-shadow(0 0 var(--space-8) var(--bg-muted)) drop-shadow(0 0 var(--space-24) var(--border-muted)); /* a soft light lifts his hair off the dark trees */ --enter-distance: var(--space-12); }
   /* He stays planted while the scenery takes the cursor: a slow breath, and a small sway as each message starts. */
   .hero-avatar { animation: enter-rise var(--motion-entry) var(--ease-out) both, guide-idle calc(var(--motion-entry) * 7) var(--ease-out) infinite alternate; }
   .hero-avatar.guide-hello { animation: enter-rise var(--motion-entry) var(--ease-out) both, guide-idle calc(var(--motion-entry) * 7) var(--ease-out) infinite alternate, guide-hello calc(var(--motion-entry) * 2) var(--ease-out); }
