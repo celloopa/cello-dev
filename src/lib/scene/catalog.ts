@@ -34,6 +34,8 @@ export interface SceneLayer {
   mobileAnchor: [number, number];
   /** The art reaches the top edge, so the arrival drop must stay inside the overscan. */
   touchesTop: boolean;
+  /** Optional independent character sprite, positioned in viewport coordinates. */
+  sprite?: { foreground?: boolean; height: number; maxHeight: number; anchor: [number, number]; mobileHeight: number; mobileAnchor: [number, number] };
 }
 
 export interface SceneData {

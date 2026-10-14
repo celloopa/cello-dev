@@ -12,10 +12,11 @@
  * before the first screen's words, and scenery.js loads each still only as its part of the page
  * nears (or on hover).
  */
-import { loadScene } from "@/lib/scene/catalog";
+import { loadScene, type SceneLayer } from "@/lib/scene/catalog";
 
 interface Props {
   place: string;
+  guide?: boolean;
   /**
    * A reading or index page: the still it paints is the half-size flattened scene (it's only
    * ever seen through the focus blur), fetched first, while the full layers load hidden for the
@@ -28,6 +29,15 @@ interface Props {
 }
 
 const scene = loadScene(Astro.props.place);
+if (Astro.props.guide) {
+  const guide: SceneLayer = {
+    name: "guide", src: "/images/characters/cello-hiker-v2.webp", width: 384, height: 576,
+    depth: .22, motion: null, cap: [0, 0], capSource: "Planted beside the chat: no cursor or scroll travel; a CSS idle animates him instead (Cello, 2026-10-14).",
+    anchor: [.5, .5], mobileAnchor: [.5, .5], touchesTop: false,
+    sprite: { foreground: true, height: .42, maxHeight: 340, anchor: [.37, .80], mobileHeight: .16, mobileAnchor: [.12, .21] },
+  };
+  scene.layers.push(guide);
+}
 const read = Astro.props.focused ? scene.read : null;
 const anchor = scene.layers[0]?.anchor ?? [0.5, 0.5];
 const label = `${scene.place} · ${scene.month}`;
@@ -61,7 +71,7 @@ const pct = (v: number) => `${+(v * 100).toFixed(2)}%`;
           height={l.height}
           alt=""
           decoding="async"
-          style={`--ax:${pct(l.anchor[0])};--ay:${pct(l.anchor[1])};--mx:${pct(l.mobileAnchor[0])};--my:${pct(l.mobileAnchor[1])}`}
+          style={`--ax:${pct(l.anchor[0])};--ay:${pct(l.anchor[1])};--mx:${pct(l.mobileAnchor[0])};--my:${pct(l.mobileAnchor[1])}${l.sprite ? `;--guide-x:${pct(l.sprite.anchor[0])};--guide-y:${pct(l.sprite.anchor[1])};--guide-height:${pct(l.sprite.height)};--guide-max:${l.sprite.maxHeight}px;--guide-mobile-x:${pct(l.sprite.mobileAnchor[0])};--guide-mobile-y:${pct(l.sprite.mobileAnchor[1])};--guide-mobile-height:${pct(l.sprite.mobileHeight)}` : ""}`}
         />
       ))
     }

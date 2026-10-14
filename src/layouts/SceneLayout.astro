@@ -29,7 +29,6 @@ import ContextBar from "@/components/scene/ContextBar.astro";
 import Scene from "@/components/scene/Scene.astro";
 import { loadScene, sceneBackdrop } from "@/lib/scene/catalog";
 import KeyboardManager from "@/components/KeyboardManager.astro";
-import ThemeInit from "@/components/ThemeInit.astro";
 import Mark from "@/components/scene/Mark.astro";
 import IconButton from "@/components/ui/IconButton.astro";
 import Mail from "@/icons/Mail.astro";
@@ -62,6 +61,8 @@ interface Props {
   backdrops?: string[];
   /** The place behind the footer while it's in view (a backdrop, or the page's own scene). */
   footerPlace?: string;
+  /** Home greeting character, between the terrain and foreground. */
+  guide?: boolean;
 }
 
 const siteName = "Cello - Product Designer & Design Engineer";
@@ -69,7 +70,7 @@ const siteDescription =
   "Product designer and design engineer focused on design systems and human-centered AI tools. I build and run what I design.";
 const siteImage = "/images/thumbnail.png";
 
-const { title = siteName, description = siteDescription, image, canonicalPath, place, reading, focus, backdrops, footerPlace } = Astro.props;
+const { title = siteName, description = siteDescription, image, canonicalPath, place, reading, focus, backdrops, footerPlace, guide } = Astro.props;
 // the backdrop places' stills, as data at the end of the page (scenery.js builds their layer)
 const readingImage = reading || focus ? loadScene(place).read?.src : undefined;
 const backdropData = [...new Set(backdrops ?? [])].filter((id) => id !== place).map(sceneBackdrop);
@@ -105,7 +106,6 @@ const current = (href: string) => {
     <link rel="canonical" href={canonicalUrl} />
     <link rel="icon" type="image/svg+xml" href="/images/logos/SVG/full-light.svg" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/svg+xml" href="/images/logos/SVG/full-dark.svg" media="(prefers-color-scheme: dark)" />
-    <ThemeInit />
     <script is:inline>
       (() => {
         const r = document.documentElement;
@@ -150,7 +150,7 @@ const current = (href: string) => {
   <body>
     <a class="skip" href="#main">Skip to content</a>
     <ContextBar context={reading?.title} all={reading?.all} />
-    <Scene place={place} focused={!!reading || !!focus} backdrops={backdrops} />
+    <Scene place={place} focused={!!reading || !!focus} backdrops={backdrops} guide={guide} />
     <main id="main">
       <slot />
     </main>
@@ -210,8 +210,6 @@ const current = (href: string) => {
     }
     <KeyboardManager />
     <script>
-      import { bindThemeToggles } from "@/utils/themeToggle.js";
-      bindThemeToggles();
     </script>
     <style is:global>
       *,

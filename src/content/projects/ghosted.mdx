@@ -1,6 +1,6 @@
 ---
 title: Ghosted
-description: Tokens, component guidance and AI-assisted implementation, in a live resume you edit by chatting. Every AI change arrives as a yellow proposal you keep or reject. In private beta, shaped by its testers since day one.
+description: An AI resume editor that keeps people in control. I designed the product, its proposal-and-review workflow, and the system behind it, then iterated with private-beta testers.
 image: /images/projects/ghosted/v3/swipe-keep.webm
 ogImage: /images/projects/ghosted/v3/og.png
 url: https://ghosted.cello.design
@@ -141,7 +141,7 @@ Research started with my own application to Nike. I was looking up their design 
   { src: "/images/projects/ghosted/v3/research.webp", alt: "The Research tab: '1 of 5 read. Good start.' Five topics, such as the W3C Design Tokens format and accessible React components in Storybook, each with three links as small cards from w3.org, styledictionary.com, storybook.js.org and others. One topic is ticked as read and one is set aside", caption: "Research: what to read before you apply, with links from a real search. (Fictional job.)" }
 ]} />
 
-## A First Resume, With The Ghost
+### A First Resume, With The Ghost
 
 Everything above assumes you already have a resume. My brother doesn't. He's a high school student applying to college, and I wanted Ghosted to be the place he writes his first one: "like a gamified interview with the ghost."
 
@@ -149,7 +149,7 @@ So a new account with no resume can build one with the ghost instead of importin
 
 The resume itself had to grow for this: activities, honors and school details are now real sections, and education moves first when there's no work on the page yet. The interview ends with "Your first resume is ready", a Download PDF button and the Offer moment's highlighter burst. Tested on a made-up student with two clubs, two jobs and a food pantry, it took 26 cards and produced a one-page resume with nothing invented. I'd planned for 15 to 20 cards and kept the longer version, because someone typing all of that in is clearly engaged.
 
-## Process And Decisions
+### Process And Decisions
 
 I decide; agents build. That split only works if the decisions are written down before the code, so the repo carries them: use cases with dated decisions, proposals for anything bigger than a day, ADRs for the things that set direction, and a release log where every production release records what shipped, why, and where the decision lives. That log is the source for this page.
 
@@ -200,7 +200,7 @@ Testers also needed a way in and a way to hear back. The sign-in screen now has 
   caption="Sign-in, light on desktop and dark on a phone. No code? Request one."
 />
 
-## Identity And Motion
+### Identity And Motion
 
 By October 9 the product worked and still looked like a placeholder: an emoji for a logo and the system font. A design agent built a brand lab in Figma, with logo studies, a palette, type and a motion board. Claude reviewed it, and I made the calls.
 
@@ -256,7 +256,7 @@ Speed counts as focus too. The Looks grid renders each look from your own resume
   caption="Style lives on the base resume and applies everywhere. Each look is your own resume, rendered live."
 />
 
-## Showing People Around
+### Showing People Around
 
 On October 11 I asked for the tutorial to be rebuilt so the ghost would "hold your hand and explain things while trusting your intelligence," the way Adobe's hands-on tutorials and Logic's first run do. The tour runs in the real app, not a slideshow. The rest of the screen dims, the control that matters sits in a cutout with a blue ring, and the ghost talks from a card beside it. Every step has Next and Dismiss, and doing the real thing counts as Next.
 
@@ -272,7 +272,7 @@ Later that night I asked whether the steps were as short as they could be. They 
   caption="The look-don't-touch tour, for people who already have work in the app. (Fictional demo account.)"
 />
 
-## The Landing Page: The Loop
+### The Landing Page: The Loop
 
 Testers never see the landing page, but everyone else does first, and a page of screenshots can't show what a proposal feels like. I asked for something "stupidly flashy… more of an experience," then reacted to three live prototypes: a scroll loop, a kinetic editorial page and a hands-on playground. I picked the loop and pulled in the playground's Keep and Reject and the editorial page's mouse-following ghost.
 
@@ -288,7 +288,7 @@ One fictional resume performs the whole product as you scroll, in six chapters: 
 
 It's a showcase, so it gets its own motion tier, written down as a decision: no animation library, no scroll hijacking (snap points only catch a fling, so a trackpad can't skip a chapter), a Pause motion toggle for WCAG 2.2.2, and six still panels with reduced motion. Splitting the signed-in app into its own bundle took the landing's JavaScript from 288 kB to 81 kB gzipped. On mobile, Lighthouse performance went from 93 to 98 and page weight from 978 KiB to 349 KiB (the live page against the new build, measured locally). A phone audit afterwards found taps landing on faded layers and scrolling that re-styled about 300 elements every frame. Moving the scrubbed parts onto one scroll timeline cut frames over 33 ms from 21 to 3 on a throttled desktop, and every hands-on moment now works on a phone.
 
-## A Leaner, Faster AI
+### A Leaner, Faster AI
 
 Ghosted's AI runs on my ChatGPT subscription. At first, every request went through the Codex command-line tool. When I added usage counts on October 10, I could finally see what that cost: the tool added about 17,000 tokens of its own instructions to every call, before Ghosted said anything. I asked whether we could cut it, because "every request is crazy."
 
@@ -311,15 +311,15 @@ The same day, testers got an Effort picker next to Send (Low by default, then Me
 - **288 → 81 kB** of landing-page JavaScript, gzipped; Lighthouse mobile performance **93 → 98**.
 - **0** usage claims. Ghosted is days old with a handful of testers, and measuring how they actually use it is the next piece of work.
 
-## How It Was Built
+### How It Was Built
 
 I'm direct about this part because it's part of the design. The flow, the chat-plus-canvas model, the choice to render with Typst, the brand, and every product decision above are mine, written down before any code. Claude built the first working cut in a day from that spec, and most of the releases since, while I tested, decided and reviewed. The product's own AI is OpenAI's GPT, running on my ChatGPT subscription, and Research searches go through Firecrawl. That's useful evidence of how I work with AI tools. It isn't a claim that I hand-wrote every line. The foundations I'm now taking over by hand are the resume data model, the template, the prompts and version history.
 
-## Before This
+### Before This
 
 Ghosted is my third pass at the same problem. The first was a Go terminal app with an eight-stage pipeline, where agents drafted documents but nothing touched the tracker without my approval. The second was a Next.js web app where code did everything it could and one bounded model call wrote the prose, checked by 744 tests. The first proved the workflow but only I could use it. The second worked but testers found it too complicated, and its output lived apart from the resume. This version puts the AI on the resume itself, which is why every edit has to be a proposal.
 
-## What's Next
+### What's Next
 
 <MediaThree items={[
   { src: "/images/projects/ghosted/brand/study-pocket-ghost.webp", alt: "AI-generated layout concept 'Pocket Ghost': the job workspace with a ghost avatar in the chat and a PDF-ready toast", caption: "Pocket Ghost" },
@@ -336,6 +336,6 @@ Ghosted is my third pass at the same problem. The first was a Go terminal app wi
 - **A recognition test for the mark** at 16 px before calling it final.
 - **1.0, open source,** where you sign in with the AI subscription you already pay for.
 
-## What I Learned
+### What I Learned
 
 Adding AI to a product is easy. The design work is deciding how much the model gets to do, and making sure the person can see, judge and undo every bit of it. The second lesson: the fastest way to find out what that means is to put it in front of real people on day one and let what they say set the order of work. The walkthrough added a third: every first-run decision has to be asked again for the person who already has work in the app. And the first-resume interview added a fourth: the same proposal model works for someone with nothing on the page yet, as long as the AI only ever writes what they just said.

@@ -93,6 +93,11 @@ html.scene-page main {
     object-position: var(--mx) var(--my);
   }
 }
+/* Greeting is an independent transparent plane, between the mid and near artwork.
+   These still coordinates match the sprite branch in the WebGL layout. */
+.scene-layer-guide { display: none; inset: auto; left: var(--guide-x); top: var(--guide-y); width: auto; height: var(--guide-height); max-height: var(--guide-max); object-fit: contain; transform: translate(-50%, -100%); }
+html.scene-reading .scene-layer-guide { opacity: 0; }
+@media (max-width: 768px) { .scene-layer-guide { left: var(--guide-mobile-x); top: var(--guide-mobile-y); height: var(--guide-mobile-height); } }
 /* A reading or index page's still is the half-size flattened scene (Scene `focused`); the full
    layers load hidden, for the renderer only, so they never become a late largest paint. */
 .scene-read {
@@ -115,6 +120,14 @@ html.scene-page main {
 /* Keep the image visible even if module loading is blocked or initialization never runs. */
 html.scene-gl-on:not(.scene-still-on) .scene-still {
   opacity: 0;
+}
+/* One grade on every scene page, between the art's Day colors and the full Dusk grade (Cello,
+   2026-10-14): WebGL takes --scene-dusk-strength; the Day-art still is dimmed to match. */
+html.scene-page {
+  --scene-dusk-strength: .5;
+}
+html.scene-page:not(.scene-reading, .scene-focus-page) .scene-still {
+  filter: brightness(.8);
 }
 html:is(.scene-reading, .scene-focus-page) .scene-still {
   filter: var(--focus-filter);
@@ -172,7 +185,7 @@ html.scene-gl-on .scene-gl {
    grade, each backdrop gets the grade's darkening as ink (under the reading atmosphere), so a
    place doesn't brighten as it comes in. Under the still (no WebGL: Day art in both themes), the
    backdrops stay Day too. */
-html.scene-gl-on:not([data-theme="light"]) .scene-backdrop-item::after {
+html.scene-gl-on .scene-backdrop-item::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -230,9 +243,10 @@ html:is(.scene-reading, .scene-focus-page) .scene-atmos-read {
 html:is(.scene-reading, .scene-focus-page) .place-label {
   opacity: 0;
 }
+/* phones: the place speaks for itself; no caption */
 @media (max-width: 768px) {
   .place-label {
-    left: var(--layout-gutter);
+    display: none;
   }
 }
 

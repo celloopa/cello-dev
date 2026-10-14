@@ -41,6 +41,7 @@ const isVideo = (src: string) => src.endsWith(".webm") || src.endsWith(".mp4");
   }
   <slot />
 </header>
+<slot name="overview" />
 {
   cover && (
     <div class="read-cover container">

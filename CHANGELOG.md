@@ -2,6 +2,42 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## Preview iteration: conversational home
+
+- Fix the greeting's load flash: an inline script sets the greeting's starting state before first paint (one message slot; the final message on return, hidden-until-typing on a first visit), so the links never jump and the messages never crossfade on load. If the greeting module never arrives, the final message shows after 3s. On phones the two smaller routes stack under the primary one.
+
+- One grade on every scene page, between the art's Day colors and the full Dusk grade (`--scene-dusk-strength: .5`; the still is dimmed to match). The Day/Dusk button and the menu's theme command are gone from scene pages; Layout pages (resume, design system) keep theirs.
+- The guide walks in from the right, breathes, and waves hello on a loop (a sway from his feet about every 8s); the routes rise in one after another. Reduced motion keeps all of it still.
+- Phone home reads shorter and sits lower: route titles only, the guide stands beside the whole greeting with his feet on the first route's line and his wave in front of the chat's corner, and the copy shade is lighter.
+
+- Day arrives ~20% dimmer on home (`--scene-day-bright: .8` in WebGL, a matching brightness filter on the still; it lifts while reading). The desktop guide grows to 320px, leftward into the gap above the secondary pair.
+
+- Home eases the Dusk grade by ~15% (`--scene-dusk-strength: .85`, read by the renderer) and gives the guide a soft light glow so his hair separates from the dark trees. Hero contrast still passes in Dusk and Day.
+
+- Let the mountains breathe on home: the arrival's screen-wide ink is lighter (40%) and fades out by halfway up the hero. The copy keeps its own local shade, now reaching past the name, plus a tight ink halo on each line. Every hero line passes 4.5:1 (small) / 3:1 (large) against the brightest art under it, still and WebGL, at 1440 and 390. Phones omit the place caption on every page.
+
+- Follow Cello's layout sketch. Scene pages lose the full-width top band: the logo and ⌘K menu hold the top-left corner, page links stack top-right, and home's project rail moves to the left edge. On phones, one fixed top row carries the logo, the rail and the menu. The home greeting sits left with the larger guide standing to its right (feet level with "Here for the work?"); "See what I'm learning" and "A little more about me" become a smaller pair underneath. Phone home drops the place caption.
+
+- The guide no longer follows the cursor (it was a lot): he stays planted beside the chat with a slow breathing bob and a small sway as each message starts, while the scenery keeps its cursor depth. Reduced motion keeps him still.
+
+- Phone home spacing reads in three tiers: the greeting, a clear break before the routes, and the place caption on its own, whether one message shows or both.
+
+- On phones, the guide grows to 120px wide and the chat steps back: smaller name, text and padding, so the chat takes less room.
+
+- Ground the hiking guide: his feet now line up with the bottom of the chat instead of hanging beside the name, and he is about 1.4× larger (88px wide on phones, 176px on desktop). He can rise above a short greeting without stretching it.
+
+- Bring the clean-shaven character forward beside the chat, preserving independent cursor depth. Replace the builder joke with a useful-product sentiment; fade earlier body messages upward as the next takes focus. On phone home, move Menu to the bottom project rail and hide the duplicate top bar, while retaining case-study back navigation.
+
+- Give the hiking character a clean shave; keep its depth layer and greeting behavior.
+
+- Place the simplified hiking character on Mt. Hood as an independent fifth depth plane between terrain and foreground. Share the existing cursor spring, shader and static fallback; keep chat fixed. Preserve the character’s current haircut, glasses, rain jacket and backpack, with private source photographs kept out of the repository.
+
+- Let the circle avatar enter and the intro messages write themselves in sequence. Add Show all and Replay hello, session-aware return behavior, stable layout, and immediate complete copy for reduced motion/no JavaScript. Keep direct routes available during the greeting.
+
+- Add Cello’s existing avatar, Mt. Hood greeting and immediate routes to Work, Writing and About. Keep YouTube hidden pending the new channel.
+- Enlarge home project artifacts, pair project marks with names, and introduce a problem/decision/result opening before case-study media. Condense Ghosted’s main navigation to six chapters while retaining supporting evidence and anchors.
+- Preserve the landscape renderer, cursor depth, still fallbacks and approved production release. See `docs/landscape/PREVIEW-CONVERSATIONAL-HOME.md` for scope and checks.
+
 ## 2026-10-14 — Blog embeds
 
 - Register a shared `<Embed />` component for blog MDX: native Threads and X/Twitter posts, responsive YouTube players, and article link previews with supplied metadata.

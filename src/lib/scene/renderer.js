@@ -145,12 +145,20 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
   artScene.add(group);
   const cam = new OrthographicCamera(-1, 1, 1, -1, -10, 10);
   const plane = new PlaneGeometry(1, 1);
+  // the grade's strength (scene pages set one in-between grade); 1 = the full Dusk grade
+  const duskStrength = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--scene-dusk-strength")) || 1;
   const shared = {
-    uTime: { value: 0 }, uDusk: { value: dark ? 1 : 0 }, uDuskInk: { value: DUSK },
+    uTime: { value: 0 }, uDusk: { value: dark ? duskStrength : 0 }, uDuskInk: { value: DUSK },
     uMotion: { value: 0 }, uBright: { value: 1 }, uSat: { value: 1 },
   };
 
   const layers = scene.layers.map((l, i) => {
+    const foreground = l.sprite?.foreground ? document.querySelector("[data-scene-guide-foreground]") : null;
+    if (foreground) return {
+      l, foreground, mesh: null, uFade: { value: 1 }, arrive: ARRIVE[0], spring: SPRING[SPRING.length - 1],
+      size: [imgs[i].naturalWidth, imgs[i].naturalHeight], base: [0, 0], cap: [0, 0], drop: 0,
+      x: 0, vx: 0, y: 0, vy: 0, out: [0, 0],
+    };
     const tex = prepareLayerTexture(new Texture(imgs[i]));
     tex.anisotropy = Math.min(4, renderer.capabilities.getMaxAnisotropy());
     const uFade = { value: 0 };
@@ -231,10 +239,19 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     const k = s * srcToWeb;
     const boxW = w + 2 * ox, boxH = h + 2 * oy, Wd = iw * s, Hd = ih * s;
     for (const p of layers) {
-      const [ax, ay] = isMobile ? p.l.mobileAnchor : p.l.anchor;
-      p.base = [(Wd - boxW) * (0.5 - ax), -(Hd - boxH) * (0.5 - ay)];
       p.cap = [p.l.cap[0] * k, p.l.cap[1] * k];
-      p.mesh.scale.set(Wd, Hd, 1);
+      if (p.l.sprite) {
+        const sprite = p.l.sprite;
+        const height = Math.min(h * (isMobile ? sprite.mobileHeight : sprite.height), sprite.maxHeight);
+        const width = height * p.size[0] / p.size[1];
+        const [ax, ay] = isMobile ? sprite.mobileAnchor : sprite.anchor;
+        p.base = [w * ax - w / 2, h / 2 - h * ay + height / 2];
+        p.mesh?.scale.set(width, height, 1);
+      } else {
+        const [ax, ay] = isMobile ? p.l.mobileAnchor : p.l.anchor;
+        p.base = [(Wd - boxW) * (0.5 - ax), -(Hd - boxH) * (0.5 - ay)];
+        p.mesh?.scale.set(Wd, Hd, 1);
+      }
     }
     fit = { w, h, scale: s, screenPerSourcePx: k, overscan: [ox, oy], art: [Wd, Hd] };
     return true;
@@ -293,9 +310,13 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
       const fade = clamp(t / p.arrive.fade, 0, 1);
       const res = springResidual(t, p.arrive.zeta, p.arrive.omega);
       const drop = p.drop * (Math.abs(res) < 0.0005 && t > 0 ? 0 : res);
-      p.uFade.value = fade * fade * (3 - 2 * fade);
+      p.uFade.value = fade * fade * (3 - 2 * fade) * (p.l.sprite ? 1 - focus : 1);
       p.out = [ox, oy - drop];
-      p.mesh.position.set(p.base[0] + ox, p.base[1] + oy - drop, 0);
+      if (p.foreground) {
+        p.foreground.style.setProperty("--guide-shift-x", `${ox}px`);
+        p.foreground.style.setProperty("--guide-shift-y", `${-oy}px`);
+      }
+      p.mesh?.position.set(p.base[0] + ox, p.base[1] + oy - drop, 0);
     }
     const arriving = layers.some((p) => at - p.arrive.start < 2.2);
     const transitioning = focus !== target.reading;
@@ -388,7 +409,7 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     setState({ reading }) { target.reading = reading ? 1 : 0; wake(); },
     setCovered(on) { covered=on; clearTimeout(restTimer);restTimer=0;if (on) {cancelAnimationFrame(raf);raf=0;} else request(); },
     setScroll(p) { if (Math.abs(p - target.scroll) > 1e-4) { target.scroll = p; if (isMobile && !settledReading()) wake(); } },
-    setDark(d) { shared.uDusk.value = d ? 1 : 0; wake(); },
+    setDark(d) { shared.uDusk.value = d ? duskStrength : 0; wake(); },
     stop() { running = false; lost = true; cancelAnimationFrame(raf); clearTimeout(restTimer); },
     /** Review hooks: hold the arrival at t seconds (null resumes), and report plane offsets. */
     seekArrival(t) { arrivalHeld = t; wake(); },
@@ -397,7 +418,7 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     info: () => ({
       fit, focus, ambient, covered, mobile: isMobile, frames, calls: renderer.info.render.calls,
       planes: layers.map((p) => ({
-        name: p.l.name, depth: p.l.depth, capSourcePx: p.l.cap, capSource: p.l.capSource,
+        name: p.l.name, surface: p.foreground ? "foreground" : "canvas", depth: p.l.depth, capSourcePx: p.l.cap, capSource: p.l.capSource,
         capScreenPx: p.cap.map((v) => +v.toFixed(2)), offset: p.out.map((v) => +v.toFixed(2)),
         fade: +p.uFade.value.toFixed(3),
       })),

@@ -1,12 +1,9 @@
 ---
-/*
- * One case study in the scene's Work list: today's ProjectCard content as a poster row over the
- * focused scene: the media (decorative; the title is the link), then a Card (project, lg) with
- * the role, title, description, two tech tags + count and the live-site link. A reading stop:
- * the bar names it while it's in view, and its paired place (`place`) comes in behind it.
- */
+/* Large product artifacts stay in the DOM; project marks repeat the rail’s destinations. */
 import MediaVideo from "@/components/media/MediaVideo.astro";
-import Card from "@/components/ui/Card.astro";
+import ArrowLink from "@/components/ui/ArrowLink.astro";
+import ProjectMark from "./ProjectMark.astro";
+import { projectStories } from "@/data/project-stories";
 
 interface Props {
   title: string;
@@ -21,8 +18,9 @@ interface Props {
   place?: string;
 }
 
-const { title, description, image, url, techStack, role, slug, index = 0, place } = Astro.props;
+const { title, description, image, url, role, slug, index = 0, place } = Astro.props;
 const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
+const story = projectStories[slug];
 const href = `/projects/${slug}`;
 ---
 
@@ -40,28 +38,29 @@ const href = `/projects/${slug}`;
       )
     }
   </div>
-  <Card
-    variant="project"
-    size="lg"
-    heading="h3"
-    href={href}
-    title={title}
-    eyebrow={role}
-    description={description}
-    tags={techStack}
-    live={url}
-  />
+  <div class="work-copy">
+    <p class="work-role">{role}</p>
+    <h3><a href={href}><ProjectMark slug={slug} />{title}</a></h3>
+    <p>{story?.problem || description}</p>
+    {story && <p class="work-outcome">{story.outcome}</p>}
+    <div class="work-actions">
+      <ArrowLink href={href}>Read case study</ArrowLink>
+      {url && <a href={url} target="_blank" rel="noopener noreferrer">View live ↗</a>}
+    </div>
+  </div>
 </li>
 
 <style>
   .work-item {
     display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 2.3fr) minmax(0, 1fr);
     gap: var(--space-48);
     align-items: center;
     min-height: 72svh;
     padding-block: var(--space-32);
   }
+
+  .work-item[data-flip] { grid-template-columns: minmax(0, 1fr) minmax(0, 2.3fr); }
 
   .work-item[data-flip] .work-media {
     order: 2;
@@ -76,22 +75,28 @@ const href = `/projects/${slug}`;
     transition: transform var(--motion-ui) var(--ease-out);
   }
 
-  .work-item:hover .work-media {
-    transform: translate(-4px, -4px);
-  }
+  .work-copy { min-width: 0; color: var(--text-on-art); }
+  .work-role { font-size: var(--type-small); text-transform: uppercase; letter-spacing: var(--track-caps); }
+  h3 { font-family: var(--font-title); font-size: var(--type-hero-line); line-height: var(--leading-tight); margin: var(--space-12) 0 var(--space-24); }
+  h3 a { display: flex; align-items: center; gap: var(--space-12); color: inherit; text-decoration: none; }
+  h3 a:hover { color: var(--text-accent); }
+  .work-copy > p { line-height: var(--leading-read); }
+  .work-outcome { font-size: var(--type-small); }
+  .work-actions { display: flex; flex-wrap: wrap; gap: var(--space-16); margin-top: var(--space-24); align-items: center; }
+  .work-actions > a { color: inherit; font-size: var(--type-small); }
 
   .work-media :global(img),
   .work-media :global(video) {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .work-media :global(.media-video),
   .work-media > a { display: block; height: 100%; }
 
-  @media (width <= 700px) {
-    .work-item {
+  @media (width <= 900px) {
+    .work-item, .work-item[data-flip] {
       grid-template-columns: 1fr;
       gap: var(--space-24);
       min-height: auto;

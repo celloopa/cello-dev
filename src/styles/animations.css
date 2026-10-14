@@ -422,3 +422,42 @@
 		animation: none;
 	}
 }
+
+/* index.astro: the hiking guide beside the greeting */
+@keyframes guide-idle {
+	from {
+		translate: 0 0;
+	}
+	to {
+		translate: 0 calc(var(--space-4) * -0.75);
+	}
+}
+
+@keyframes guide-hello {
+	25% {
+		rotate: -3deg;
+	}
+	60% {
+		rotate: 2deg;
+	}
+	to {
+		rotate: 0deg;
+	}
+}
+
+@keyframes guide-wave {
+	0%,
+	16%,
+	to {
+		rotate: 0deg;
+	}
+	4% {
+		rotate: -3deg;
+	}
+	9% {
+		rotate: 2deg;
+	}
+	13% {
+		rotate: -1deg;
+	}
+}
