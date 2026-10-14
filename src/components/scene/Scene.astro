@@ -32,7 +32,7 @@ const scene = loadScene(Astro.props.place);
 if (Astro.props.guide) {
   const guide: SceneLayer = {
     name: "guide", src: "/images/characters/cello-hiker-v2.webp", width: 384, height: 576,
-    depth: .22, motion: null, cap: [28, 14], capSource: "Independent foreground greeting sprite with bounded source-pixel travel.",
+    depth: .22, motion: null, cap: [0, 0], capSource: "Planted beside the chat: no cursor or scroll travel; a CSS idle animates him instead (Cello, 2026-10-14).",
     anchor: [.5, .5], mobileAnchor: [.5, .5], touchesTop: false,
     sprite: { foreground: true, height: .42, maxHeight: 340, anchor: [.37, .80], mobileHeight: .16, mobileAnchor: [.12, .21] },
   };

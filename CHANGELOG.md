@@ -4,6 +4,8 @@ All notable changes to this portfolio site should be documented here.
 
 ## Preview iteration: conversational home
 
+- The guide no longer follows the cursor (it was a lot): he stays planted beside the chat with a slow breathing bob and a small sway as each message starts, while the scenery keeps its cursor depth. Reduced motion keeps him still.
+
 - Phone home spacing reads in three tiers: the greeting, a clear break before the routes, and the place caption on its own, whether one message shows or both.
 
 - On phones, the guide grows to 120px wide and the chat steps back: smaller name, text and padding, so the chat takes less room.
