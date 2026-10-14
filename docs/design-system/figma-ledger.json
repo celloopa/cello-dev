@@ -31,9 +31,14 @@
     "primitives": 9,
     "art": 25,
     "roles": 18,
-    "numbers": 53,
+    "numbers": 56,
     "strings": 6,
     "textStyles": 11
   },
-  "notYet": "Components (Button, IconButton, ArrowLink, Tag, Card, Panel, Eyebrow, Section) follow the landscape cutover, when they reach master."
+  "notYet": "Components (Button, IconButton, ArrowLink, Tag, Card, Panel, Eyebrow, Section) follow the landscape cutover, when they reach master.",
+  "readingMotionVariables": {
+    "motion/reading-active": "VariableID:5:2",
+    "motion/reading-rest": "VariableID:5:3",
+    "motion/reading-strength": "VariableID:5:4"
+  }
 }

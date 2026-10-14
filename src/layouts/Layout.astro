@@ -44,7 +44,7 @@ const {
   canonicalPath,
 } = Astro.props;
 const { url, email, profiles } = basics;
-const canonicalUrl = canonicalPath ? new URL(canonicalPath, url).toString() : url;
+const canonicalUrl = canonicalPath ? new URL(`${canonicalPath.replace(/\/$/, "")}/`, url).toString() : url;
 const ogImage = image
   ? new URL(image, url).toString()
   : new URL(siteImage, url).toString();

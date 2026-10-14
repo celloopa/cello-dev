@@ -163,6 +163,9 @@
   --motion-scene-fade: 700ms; /* Signature (the landscape scenes, A3): the ink atmosphere and the still's focus filter cross-fading between attention states. */
   --motion-handoff: 400ms; /* Signature (the landscape scenes, A3): still ⇄ WebGL hand-off, and the place label and the bar's reading context coming and going. */
   --motion-none: 0s; /* No wait. The reduced-motion contract zeroes every delay with it, so content never waits on motion. */
+  --motion-reading-active: 24s; /* Landscape reading drift: one slow movement phrase behind the work; no text or camera movement. Disabled by reduced motion, Save-Data and hidden tabs. */
+  --motion-reading-rest: 60s; /* Landscape reading drift: time at rest between movement phrases, so background rendering can sleep. */
+  --motion-reading-strength: 0.2; /* Landscape reading drift: maximum fraction of each cut plane’s inspected motion cap. Keep all motion inside the scene manifest bounds. */
 
   /* Scene (amendment A3, pending Cello; the rewrite's landscape pages only. Motion caps live in each scene's manifest, not here) */
   --scene-bar: 4rem; /* The dark top bar's height; the scene starts under it. */

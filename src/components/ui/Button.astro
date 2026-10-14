@@ -120,7 +120,6 @@ const Tag = href ? "a" : "button";
     color: var(--text-inverse);
   }
 
-  .button--primary:hover,
   .button--primary:focus-visible {
     background: var(--bg-plate);
     color: var(--action-primary);
@@ -132,11 +131,22 @@ const Tag = href ? "a" : "button";
     color: var(--text-primary);
   }
 
-  .button--secondary:hover,
   .button--secondary:focus-visible {
     border-color: var(--action-primary);
     background: var(--action-primary);
     color: var(--text-inverse);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .button--primary:hover {
+      background: var(--bg-plate);
+      color: var(--action-primary);
+    }
+    .button--secondary:hover {
+      border-color: var(--action-primary);
+      background: var(--action-primary);
+      color: var(--text-inverse);
+    }
   }
 
   .button:active {

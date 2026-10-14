@@ -11,7 +11,6 @@
  *   draws the same <img>s (no second download) and the still stays hidden.
  * - Attention states, all reversible:
  *     arrival  the intro copy over the scene, readable at once (nothing waits for the assembly)
- *     admire   "Take in the view" hides the intro; "Back to Cello" (or Esc) returns
  *     reading  once the focus target (the Work section) reaches the reading line, the scene
  *              softens, dims and quiets; the place label goes; the bar shows the project in view
  *              + All work. A reading page (html.scene-read-page: a case study or a post) is in
@@ -26,9 +25,10 @@
  *   under the still. /projects drives the same layer from its hover (setBackdrop).
  *
  * Root classes: scene-3d (a renderer is expected), scene-still-on (show the still under/instead of
- * the canvas), scene-gl-on (the canvas has drawn), scene-admire, scene-reading. The inline head
+ * the canvas), scene-gl-on (the canvas has drawn), scene-reading. The inline head
  * script in SceneLayout sets scene-3d / scene-still-on before first paint.
  */
+import { readingLayers } from "./reading-drift.js";
 import { afterFirstScreen, whenNear } from "./lazy.js";
 // re-exported so a page script (/card) takes them from this chunk, not a request of their own
 export { afterFirstScreen, whenNear };
@@ -46,11 +46,14 @@ const clamp01 = (v) => Math.min(1, Math.max(0, v));
  * others once it's in; show("") (or an id the page has no backdrop for) returns to the page's
  * own scene.
  */
-function createBackdrop(host) {
+function createBackdrop(host, covered) {
   const layer = host.querySelector("[data-scene-backdrops]");
   const json = document.querySelector("script[data-scene-backdrops-json]");
   if (!layer || !json) return null;
+  const motionAllowed = () => root.classList.contains("scene-gl-on") && !reduce.matches && navigator.connection?.saveData !== true;
   const items = new Map();
+  const art = new Map();
+  const drift = new Map();
   for (const b of JSON.parse(json.textContent)) {
     const item = document.createElement("i");
     item.className = "scene-backdrop-item";
@@ -66,12 +69,23 @@ function createBackdrop(host) {
     item.append(img);
     layer.append(item);
     items.set(b.id, item);
+    art.set(b.id,b.scene);
   }
   let current = "", top = 0, settle = 0;
   const load = (id) => {
     const img = items.get(id)?.querySelector("img");
     if (img && !img.getAttribute("src")) img.src = img.dataset.src;
     return img;
+  };
+  const animate = (id,item,img) => {
+    if (!drift.has(id) && motionAllowed()) {
+        drift.set(id,null);
+        readingLayers(item,art.get(id),img,motionAllowed).then(stop => {
+          if (current !== id) stop?.();
+          else if (stop) drift.set(id,stop);
+          else drift.delete(id);
+        });
+      }
   };
   // the cross-fade's length, as the CSS has it (a hair under reduced motion)
   const fadeMs = (el) => parseFloat(getComputedStyle(el).transitionDuration) * 1000 || 0;
@@ -80,9 +94,11 @@ function createBackdrop(host) {
     const next = item ? id : "";
     if (next === current) return;
     current = next;
+    covered(!!next);
     layer.dataset.on = next;
     clearTimeout(settle);
     if (!item) {
+      drift.forEach(stop => stop?.()); drift.clear();
       items.forEach((el) => {
         el.style.transition = "";
         el.classList.remove("is-on");
@@ -99,9 +115,11 @@ function createBackdrop(host) {
       void item.offsetWidth;
       item.style.transition = "";
       item.classList.add("is-on");
+      animate(id,item,img);
       // once it's in, the ones under it go at once (hidden anyway: no fade left to composite)
       settle = setTimeout(() => items.forEach((el, k) => {
         if (k === current) return;
+        drift.get(k)?.(); drift.delete(k);
         el.style.transition = "none";
         el.classList.remove("is-on");
       }), fadeMs(item) + 50);
@@ -109,7 +127,10 @@ function createBackdrop(host) {
     if (img.complete && img.naturalWidth) reveal();
     else img.addEventListener("load", reveal, { once: true });
   };
-  return { show, load };
+  return { show, load, current: () => current, refresh: () => {
+    const item=items.get(current);
+    if (item?.classList.contains('is-on')) animate(current,item,item.querySelector('img'));
+  } };
 }
 let backdropApi = null;
 
@@ -163,11 +184,7 @@ export function start() {
   const noGL = skip3D();
   if (noGL) root.classList.remove("scene-3d", "scene-still-on");
 
-  /* ---- Admire: "Take in the view" / "Back to Cello" ---- */
   const hero = document.querySelector("[data-scene-hero]");
-  const admireBtn = document.querySelector("[data-admire-open]");
-  const view = document.querySelector("[data-admire-view]");
-  const intro = document.querySelector("[data-scene-intro]");
   const context = document.querySelector("[data-scene-context]");
   const title = context?.querySelector("[data-scene-context-title]");
 
@@ -178,40 +195,19 @@ export function start() {
   // An index page (html.scene-focus-page: /projects, /blog) keeps the scene focused from the
   // first paint like a reading page, while the bar stays in the exploring context.
   const focusPage = root.classList.contains("scene-focus-page");
-  const state = { admire: false, reading: readPage };
+  const state = { reading: readPage };
   let gl = null;
-  const glState = () => ({ admire: state.admire, reading: state.reading || focusPage });
+  const glState = () => ({ reading: state.reading || focusPage });
   const apply = () => {
-    root.classList.toggle("scene-admire", state.admire);
     root.classList.toggle("scene-reading", state.reading);
     context?.toggleAttribute("inert", !state.reading);
     gl?.setState(glState());
   };
 
-  function setAdmire(on, { focusReturn = true } = {}) {
-    if (!view || state.admire === on) return;
-    // read before hiding the view: hiding it drops its focus to <body>
-    const focusWasInView = !!document.activeElement && view.contains(document.activeElement);
-    state.admire = on;
-    view.hidden = !on;
-    if (intro) intro.inert = on; // faded out in Admire: out of the tab order and the a11y tree
-    apply();
-    if (on) view.querySelector("[data-admire-close]").focus({ preventScroll: true });
-    else if (focusReturn && focusWasInView) admireBtn.focus({ preventScroll: true });
-  }
-  if (admireBtn && view) {
-    admireBtn.addEventListener("click", () => setAdmire(true));
-    view.querySelector("[data-admire-close]").addEventListener("click", () => setAdmire(false));
-    view.querySelector("[data-admire-work]")?.addEventListener("click", () => setAdmire(false, { focusReturn: false }));
-    addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && state.admire && !document.getElementById("keyboard-shortcuts-menu")) setAdmire(false);
-    });
-  }
-
   /* ---- reading: the focus target crossing the reading line ---- */
   const first = document.querySelector("[data-scene-focus]");
   const stops = [...document.querySelectorAll("[data-scene-stop]")];
-  const backdrop = createBackdrop(host);
+  const backdrop = createBackdrop(host, on => gl?.setCovered(on));
   backdropApi = backdrop;
   const zones = backdrop ? [...document.querySelectorAll("[data-scene-stop], [data-scene-backdrop]")] : [];
   // The reading line, 45% down the screen. On a page with backdrops it slides to the bottom edge
@@ -266,11 +262,10 @@ export function start() {
     ticking = false;
     if (first) {
       const top = first.getBoundingClientRect().top;
-      // hysteresis: in at 62% of the viewport height, out at 72%
-      const reading = state.reading ? top < innerHeight * 0.72 : top < innerHeight * 0.62;
+      // Dim before the Work heading enters the bright art, with a small hysteresis
+      const reading = state.reading ? top < innerHeight * 0.98 : top < innerHeight * 0.94;
       if (reading !== state.reading) {
         state.reading = reading;
-        if (reading && state.admire) setAdmire(false, { focusReturn: false });
         apply();
       }
       const parts = reading ? readingParts() : { title: "", place: "" };
@@ -324,10 +319,13 @@ export function start() {
     ready = true;
     clearTimeout(giveUp);
     root.classList.add("scene-gl-on");
+    backdrop?.refresh();
     if (root.classList.contains("scene-still-on")) stillOff = setTimeout(() => root.classList.remove("scene-still-on"), 400);
   };
   const go = async () => {
+    if (skip3D()) return;
     try {
+      for (const img of imgs) if (!img.getAttribute('src') && img.dataset.src) img.src=img.dataset.src;
       const { createLandscape } = await import("./renderer.js");
       const canvas = document.createElement("canvas");
       canvas.className = "scene-gl";
@@ -345,6 +343,7 @@ export function start() {
         onFirstFrame: handoff,
       });
       gl.setState(glState());
+      gl.setCovered(!!backdrop?.current());
       gl.setScroll(clamp01(scrollY / Math.max(1, hero?.offsetHeight ?? innerHeight)));
       gl.start(); // its first on-screen frame calls handoff (deferred while the tab is hidden)
       const onTheme = () => gl?.setDark(isDark());
@@ -359,5 +358,14 @@ export function start() {
   };
   reduce.addEventListener("change", () => { if (reduce.matches) { gl?.stop(); gl = null; showStill("reduced motion turned on"); } });
   const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 120));
-  idle(go, { timeout: 600 });
+  const queue = () => {
+    if (document.hidden) document.addEventListener('visibilitychange',queue,{once:true});
+    else idle(go,{timeout:600});
+  };
+  const readingStill = host.querySelector('.scene-read');
+  if (readingStill) {
+    // Paint the small reading still and text before fetching full, initially hidden cuts.
+    Promise.all([readingStill.decode().catch(() => {}), document.fonts.ready]).then(() =>
+      requestAnimationFrame(() => requestAnimationFrame(queue)));
+  } else queue();
 }

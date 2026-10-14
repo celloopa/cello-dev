@@ -14,7 +14,7 @@ const { name, email, profiles } = basics;
 const github = profiles.find(({ network }) => network === "GitHub")?.url;
 ---
 
-<Layout title="Cello's Resume">
+<Layout title="Cello's Resume" canonicalPath="/resume/">
   <div class="print-header print">
     {name} · {email}
     {github && `· ${github}`}

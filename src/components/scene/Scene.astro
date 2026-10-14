@@ -55,7 +55,8 @@ const pct = (v: number) => `${+(v * 100).toFixed(2)}%`;
       scene.layers.map((l) => (
         <img
           class={`scene-layer scene-layer-${l.name}`}
-          src={l.src}
+          src={read ? undefined : l.src}
+          data-src={read ? l.src : undefined}
           width={l.width}
           height={l.height}
           alt=""

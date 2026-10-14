@@ -271,7 +271,8 @@ const current = (href: string) => {
 
     /* reading page on a phone: the menu button keeps its dot and its name, not its word */
     :global(html.scene-read-page) .bar-menu {
-      padding-inline: 0;
+      padding-inline: var(--space-12);
+      justify-content: center;
     }
 
     :global(html.scene-read-page) .bar-menu span:not(.bar-key) {

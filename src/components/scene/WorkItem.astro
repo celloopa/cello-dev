@@ -5,6 +5,7 @@
  * the role, title, description, two tech tags + count and the live-site link. A reading stop:
  * the bar names it while it's in view, and its paired place (`place`) comes in behind it.
  */
+import MediaVideo from "@/components/media/MediaVideo.astro";
 import Card from "@/components/ui/Card.astro";
 
 interface Props {
@@ -26,19 +27,19 @@ const href = `/projects/${slug}`;
 ---
 
 <li class="work-item" data-scene-stop={title} data-scene-backdrop={place} data-flip={index % 2 === 1 ? "" : undefined}>
-  <a class="work-media" href={href} tabindex="-1" aria-hidden="true">
+  <div class="work-media">
     {
       image ? (
         isVideo ? (
-          <video src={image} muted loop playsinline preload="none" data-work-video />
+          <MediaVideo src={image} label={`${title} preview`} />
         ) : (
-          <img src={image} alt="" loading="lazy" decoding="async" />
+          <a href={href} tabindex="-1" aria-hidden="true"><img src={image} alt="" loading="lazy" decoding="async" /></a>
         )
       ) : (
         <span class="work-media-empty" />
       )
     }
-  </a>
+  </div>
   <Card
     variant="project"
     size="lg"
@@ -79,12 +80,15 @@ const href = `/projects/${slug}`;
     transform: translate(-4px, -4px);
   }
 
-  .work-media img,
-  .work-media video {
+  .work-media :global(img),
+  .work-media :global(video) {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
+
+  .work-media :global(.media-video),
+  .work-media > a { display: block; height: 100%; }
 
   @media (width <= 700px) {
     .work-item {

@@ -12,6 +12,7 @@
   let selectedShortcutIndex = $state(0);
   let dialogElement = $state();
   let overlayElement = $state();
+  let returnFocus;
 
   // Map network names to shortcut keys
   const networkKeyMap = {
@@ -63,10 +64,13 @@
   ];
 
   function toggleMenu() {
+    if (!isVisible) returnFocus = document.activeElement;
     isVisible = !isVisible;
     updateFooterButton();
     if (isVisible) {
-      setTimeout(() => dialogElement.focus(), 0);
+      setTimeout(() => dialogElement?.focus(), 0);
+    } else {
+      requestAnimationFrame(() => { if (returnFocus?.isConnected) returnFocus.focus(); });
     }
   }
 
@@ -77,6 +81,17 @@
   }
 
   function handleKeydown(event) {
+    if (event.defaultPrevented) return;
+    if (isVisible && event.key === "Tab") {
+      const controls = [...dialogElement.querySelectorAll("button:not([disabled]), a[href], [tabindex='0']")];
+      const first = controls[0], last = controls.at(-1);
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === dialogElement)) {
+        event.preventDefault(); last?.focus();
+      } else if (!event.shiftKey && (document.activeElement === last || document.activeElement === dialogElement)) {
+        event.preventDefault(); first?.focus();
+      }
+      return;
+    }
     if (event.key === "k" && (event.metaKey || event.ctrlKey)) {
       event.preventDefault();
       toggleMenu();
@@ -133,13 +148,13 @@
       shortcut.action();
       setTimeout(() => {
         activeShortcut = null;
-        toggleMenu();
+        if (isVisible) toggleMenu();
       }, 100);
     } else {
       shortcut.action();
       setTimeout(() => {
         activeShortcut = null;
-        toggleMenu();
+        if (isVisible) toggleMenu();
       }, 300);
     }
   }
@@ -169,6 +184,8 @@
 
   function handleOverlayKeydown(event) {
     if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopPropagation();
       toggleMenu();
     }
   }

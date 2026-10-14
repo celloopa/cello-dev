@@ -2,7 +2,7 @@
   "id": "over-hood",
   "place": "Over Hood",
   "month": "September",
-  "status": "photo-treatment and cut candidate; aesthetic approval pending; wing-edge motion cleanup needed",
+  "status": "Cutover candidate: registered hidden-fill cleanup, inspected at the documented caps.",
   "sourceSize": [
     2172,
     1448
@@ -20,26 +20,40 @@
     1448
   ],
   "expandedSides": "AI outpainted; original stylized portrait center mechanically preserved with zero difference",
-  "exportOrigin": "Figma native isolated PNG renders at full source resolution; alpha exact and visible RGB checked",
+  "exportOrigin": "Local registered cleanup of existing native cuts; visible RGB restored from the locked people-free master. Not re-exported from Figma.",
   "layers": [
     {
       "name": "sky",
       "src": "/scenes/over-hood/sky.webp",
       "depth": 0.97,
-      "testedHorizontalSourcePx": 0
+      "testedHorizontalSourcePx": 0,
+      "capSourcePx": [
+        0,
+        0
+      ],
+      "recommendedHorizontalSourcePx": 0
     },
     {
       "name": "terrain",
       "src": "/scenes/over-hood/terrain.webp",
       "depth": 0.8,
-      "testedHorizontalSourcePx": 1
+      "testedHorizontalSourcePx": 1,
+      "capSourcePx": [
+        2,
+        0
+      ],
+      "recommendedHorizontalSourcePx": 2
     },
     {
       "name": "wing",
       "src": "/scenes/over-hood/wing.webp",
       "depth": 0.05,
       "testedHorizontalSourcePx": 5,
-      "recommendedHorizontalSourcePx": 0
+      "recommendedHorizontalSourcePx": 8,
+      "capSourcePx": [
+        8,
+        0
+      ]
     }
   ],
   "checks": {
@@ -61,11 +75,55 @@
     "figmaRoundtrip": "figma-roundtrip.json"
   },
   "limitations": [
-    "Thin original wing edge remains in background where model matte is inset; ghost visible at tested 5 px. Use still composition until refined.",
-    "Atmosphere, Mount Hood, cloud bank and ridges share one terrain plane; upper boundary passes through blue sky above cloud band.",
-    "Outpaint center joins have slight tone/grain seams, particularly at left boundary. Original center remains unmodified.",
-    "Photo treatment changes haze into cream cloud bands, simplifies forest and strengthens sunlight contrast.",
-    "Exact restack proves coverage/color, not segmentation quality.",
-    "Portrait mobile crop is at 53% horizontal center. No tilt/scroll runtime implemented."
-  ]
+    "Hidden scenery is generated continuation, not photographed.",
+    "Only the documented horizontal caps are tested; no independent cable/ground travel on Meadows lift.",
+    "Historical scene run records describe the earlier cuts; these web cuts supersede them."
+  ],
+  "cutoverCleanup": {
+    "sourceSize": [
+      2172,
+      1448
+    ],
+    "restackMaxDifference": 0,
+    "restackMeanDifference": 0.0,
+    "motionTestSourcePx": {
+      "sky": 0,
+      "terrain": 2,
+      "wing": 8
+    },
+    "layers": [
+      {
+        "name": "sky",
+        "sourceSize": [
+          2172,
+          1448
+        ],
+        "pngSha256": "a52c66e5054625ca28f31766b23f4cce7955e124991d3ec8098fa7b400244d7f"
+      },
+      {
+        "name": "terrain",
+        "sourceSize": [
+          2172,
+          1448
+        ],
+        "pngSha256": "8dbe10296b2e21c6cbcfec7c9e9a82e532f72232e436b63b2db618d4e0a9e810"
+      },
+      {
+        "name": "wing",
+        "sourceSize": [
+          2172,
+          1448
+        ],
+        "pngSha256": "d5d7bd9da7617bef2385ea372c4988d44de825d9d48c37628490c470e204638b"
+      }
+    ],
+    "origin": "local registered cleanup, not a Figma re-export",
+    "method": "original visible RGB + original/refined binary mattes + generated occluded fill"
+  },
+  "motion": {
+    "recommendation": "Bounded horizontal depth at the listed caps; reading drift uses one fifth of the cap.",
+    "testOnly": false,
+    "reducedMotion": "same registered composition still",
+    "mobile": "documented crop; no tilt dependence"
+  }
 }

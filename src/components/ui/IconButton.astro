@@ -61,11 +61,18 @@ const Tag = href ? "a" : "button";
       color var(--motion-ui) var(--ease-out);
   }
 
-  .icon-button:hover,
   .icon-button:focus-visible {
     border-color: var(--action-primary);
     background: var(--action-primary);
     color: var(--text-inverse);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .icon-button:hover {
+      border-color: var(--action-primary);
+      background: var(--action-primary);
+      color: var(--text-inverse);
+    }
   }
 
   .icon-button:active {

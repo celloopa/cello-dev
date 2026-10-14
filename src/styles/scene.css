@@ -201,12 +201,6 @@ html.scene-gl-on:not([data-theme="light"]) .scene-backdrop-item::after {
   background: var(--atmos-read);
   opacity: 0;
 }
-html.scene-admire .scene-atmos-arrive {
-  opacity: 0;
-}
-html.scene-admire .scene-atmos-view {
-  opacity: 1;
-}
 html:is(.scene-reading, .scene-focus-page) .scene-atmos-arrive,
 html:is(.scene-reading, .scene-focus-page) .scene-atmos-view {
   opacity: 0;
@@ -215,7 +209,7 @@ html:is(.scene-reading, .scene-focus-page) .scene-atmos-read {
   opacity: 1;
 }
 
-/* ---------- PlaceLabel: shown while exploring; gone while reading (D4) and in Admire ---------- */
+/* ---------- PlaceLabel: shown while exploring; gone while reading (D4) ---------- */
 .place-label {
   position: fixed;
   left: var(--space-48);
@@ -232,8 +226,7 @@ html:is(.scene-reading, .scene-focus-page) .scene-atmos-read {
   color: var(--text-on-art);
   transition: opacity var(--motion-handoff) var(--ease-out);
 }
-html:is(.scene-reading, .scene-focus-page) .place-label,
-html.scene-admire .place-label {
+html:is(.scene-reading, .scene-focus-page) .place-label {
   opacity: 0;
 }
 @media (max-width: 768px) {
@@ -251,7 +244,8 @@ html.scene-admire .place-label {
   content: "";
   position: absolute;
   z-index: -1;
-  inset: -46% -22% -26% -20%;
+  /* Keep the mask's opaque core beneath the entire copy block as it crosses bright art. */
+  inset: -55% -42% -45%;
   pointer-events: none;
   background: var(--scrim-copy-fill);
   -webkit-mask-image: var(--scrim-copy-mask);
@@ -260,86 +254,16 @@ html.scene-admire .place-label {
   mask-composite: intersect;
 }
 
-/* ---------- Admire: "Take in the view" / "Back to Cello" ---------- */
-.admire-btn,
-.admire-return {
-  min-height: var(--touch-target);
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--text-on-art);
-  font: inherit;
-  font-size: var(--type-ui);
-  letter-spacing: var(--track-caps);
-  cursor: pointer;
-}
-.admire-btn {
-  opacity: 0.85;
-}
-/* it needs scenery.js: without JavaScript there's nothing to toggle (html.js is set before paint) */
-html:not(.js) .admire-btn {
-  display: none;
-}
-.admire-btn:hover,
-.admire-btn:focus-visible {
-  opacity: 1;
-  text-decoration: underline;
-  text-underline-offset: var(--space-8);
-}
-/* In Admire the intro fades out; scenery.js makes it inert (out of the tab order and the
-   accessibility tree), so focus can return to "Take in the view" the moment it comes back. */
-[data-scene-intro] {
-  transition: opacity var(--motion-ui) var(--ease-out);
-}
-html.scene-admire [data-scene-intro] {
-  opacity: 0;
-  pointer-events: none;
-}
-.admire-view {
-  position: absolute;
-  left: var(--scene-copy-start);
-  bottom: var(--scene-copy-bottom);
-  z-index: 1;
-  color: var(--text-on-art);
-  animation: enter-fade var(--motion-handoff) var(--ease-out) calc(var(--motion-ui) / 2) both;
-}
-.admire-view[hidden] {
-  display: none;
-}
-.admire-place {
-  margin: 0 0 var(--space-16);
-  font-family: var(--font-place);
-  font-size: var(--type-place-name);
-  font-weight: var(--weight-regular);
-  line-height: var(--leading-tight);
-  letter-spacing: var(--track-caps);
-  text-transform: uppercase;
-}
-.admire-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--space-8) var(--space-24);
-}
-.admire-return {
-  min-height: 0;
-  padding-bottom: var(--space-4);
-  font-weight: var(--weight-bold);
-  text-transform: uppercase;
-  border-bottom: var(--stroke-control) solid var(--action-primary);
-}
-@media (max-width: 768px) {
-  .admire-view {
-    left: var(--layout-gutter);
-    right: var(--layout-gutter);
-    bottom: var(--space-96);
-  }
-}
+
 
 /* reduced motion: animations.css zeroes durations; nothing here waits on a delay either */
 @media (prefers-reduced-motion: reduce) {
-  .admire-view,
   html.scene-reading .bar-context {
     animation: none;
   }
 }
+
+/* Registered reading planes: overscan contains every slow, capped shift. */
+.scene-reading-layers { position: absolute; inset: -2%; filter: var(--focus-filter); transform: scale(var(--focus-scale)); }
+.scene-backdrop .scene-reading-layers img { filter: none; transform: none; }
+@media (max-width: 768px) { .scene-reading-layers { filter: var(--focus-filter-mobile); } }

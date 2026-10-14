@@ -7,8 +7,8 @@
       "name": "Cottage Grove waterfall",
       "exactPlaceName": "uncertain; Cello to confirm",
       "month": "June",
-      "status": "candidate; aesthetic approval pending; people removed from the art 2026-10-12",
-      "method": "Photo composition → screenprint treatment → locked-center outpaint → source RGB registered cuts",
+      "status": "Cutover candidate: registered hidden-fill cleanup, inspected at the documented caps.",
+      "method": "Photo composition \u2192 screenprint treatment \u2192 locked-center outpaint \u2192 source RGB registered cuts",
       "sourceSize": [
         2172,
         1448
@@ -66,7 +66,7 @@
         "restackMeanDifference": 0,
         "visual": [
           "isolated mid and near",
-          "motion left/right ±2/±4sourcepx",
+          "motion left/right \u00b12/\u00b14sourcepx",
           "desktop1440x900crop",
           "mobile390x844crop",
           "Figma screenshot and shared-origin rectangle dimensions"
@@ -79,10 +79,10 @@
         "Three coherent planes; waterfall/forest not individually separable",
         "No actual runtime motion or device test"
       ],
-      "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
+      "exportOrigin": "Local registered cleanup of existing native cuts; not re-exported from Figma.",
       "place": "Cottage Grove waterfall",
       "mobileCenter": 50.0,
-      "motionReadiness": "Still preferred: hidden foreground edges need cleanup.",
+      "motionReadiness": "Registered hidden-fill cleanup; use only the documented horizontal caps in the web manifest.",
       "peopleRemoval": {
         "decision": "removed (not shrunk); the fallen log, rocks and trail continue with no composition break",
         "method": "one image edit of the locked treated portrait; only the changed region (mask built from the diff map, x290-700 y740-1400, feathered 7px) taken from the edit, everything else is the original locked pixels; wide master rebuilt by pasting the new portrait into [543,0,1629,1448]",
@@ -181,7 +181,7 @@
       "id": "meadows-lift",
       "place": "Meadows lift line",
       "month": "June",
-      "status": "photo-treatment and cut candidate; aesthetic approval pending; still preferred until thin cable cleanup",
+      "status": "Cutover candidate: registered hidden-fill cleanup, inspected at the documented caps.",
       "sourceSize": [
         1448,
         1086
@@ -191,7 +191,7 @@
         1080
       ],
       "master": "/scenes/meadows-lift/master-wide.webp",
-      "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
+      "exportOrigin": "Local registered cleanup of existing native cuts; not re-exported from Figma.",
       "expandedSides": "None: original landscape4:3 aspect retained",
       "mobileCropCenter": [
         0.72,
@@ -245,7 +245,7 @@
         "No physical-device motion or runtime implemented."
       ],
       "mobileCenter": 72.0,
-      "motionReadiness": "Still preferred: thin cable masks need cleanup."
+      "motionReadiness": "Registered hidden-fill cleanup; use only the documented horizontal caps in the web manifest."
     },
     {
       "id": "ecola",
@@ -316,7 +316,7 @@
       "id": "salmon-ridge",
       "place": "Salmon ridge (exact location unconfirmed)",
       "month": "Unconfirmed",
-      "status": "photo treatment and cut candidate; anonymous figure removed 2026-10-12; still-first until expansion seam and hidden-fill cleanup",
+      "status": "Cutover candidate: registered hidden-fill cleanup, inspected at the documented caps.",
       "sourceSize": [
         2172,
         1448
@@ -334,7 +334,7 @@
         1448
       ],
       "expandedSides": "AI outpainted; original stylized center mechanically preserved",
-      "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
+      "exportOrigin": "Local registered cleanup of existing native cuts; not re-exported from Figma.",
       "layers": [
         {
           "name": "sky",
@@ -381,11 +381,11 @@
         "Exact location and month unconfirmed; no project-place claim.",
         "AI treatment alters fine grass/branch/tree detail; the portrait was re-edited 2026-10-12 to remove the anonymous figure (no people in the scene); aesthetic approval pending.",
         "Wide outpaint has a noticeable left vertical join beside deadwood; center diff0 does not prove seamless extension. Prefer original portrait/mobile crop or still until corrected.",
-        "Near matte dilation removes most fringe ghosts but small edge residuals and sky continuation outlines remain; tiny far±1/near±3 source-pixel extremes inspected, no production motion clearance.",
+        "Near matte dilation removes most fringe ghosts but small edge residuals and sky continuation outlines remain; tiny far\u00b11/near\u00b13 source-pixel extremes inspected, no production motion clearance.",
         "Three planes: near slope and framing trees stay connected. Near plane RGB/alpha changed only in the former figure zone (x 603-1252, y 795-1447); sky unchanged.",
         "Centered desktop clips near trail base; mobile .40 center keeps the empty trail and ridge. Actual responsive canvas arrangement pending."
       ],
-      "motionReadiness": "Still preferred: outpaint seam and near edges need cleanup.",
+      "motionReadiness": "Registered hidden-fill cleanup; use only the documented horizontal caps in the web manifest.",
       "peopleRemoval": {
         "date": "2026-10-12",
         "decision": "Cello: \"Make them tiny or remove\"",
@@ -460,7 +460,7 @@
         "AI style treatment changes fine needles, branches, clouds and water ribbons; broad upward viewpoint/low cascade retained, user approval pending.",
         "Expanded sides are invented; stylized portrait center is mechanically unchanged.",
         "Three planes only; waterfall and basalt stay connected. Water motion would require a separate shader/mask.",
-        "Only forest ±2 and cascade ±4 source pixels inspected. Fine-edge color halos remain possible; do not increase travel without cleanup.",
+        "Only forest \u00b12 and cascade \u00b14 source pixels inspected. Fine-edge color halos remain possible; do not increase travel without cleanup.",
         "Cascade silhouette is conservative and retains forest at extreme bottom corners; hidden fill has faint residual water near left edge.",
         "Centered desktop cover crop clips waterfall base. Mobile center crop keeps opening and cascade; actual responsive canvas composition pending.",
         "Isolated sky plate contains dark/cream continuation specks under occluding foliage; these stay hidden at rest. Tiny motion only, further sky fill cleanup before wider depth travel."
@@ -472,7 +472,7 @@
       "id": "over-hood",
       "place": "Over Hood",
       "month": "September",
-      "status": "photo-treatment and cut candidate; aesthetic approval pending; wing-edge motion cleanup needed",
+      "status": "Cutover candidate: registered hidden-fill cleanup, inspected at the documented caps.",
       "sourceSize": [
         2172,
         1448
@@ -490,7 +490,7 @@
         1448
       ],
       "expandedSides": "AI outpainted; original stylized portrait center mechanically preserved with zero difference",
-      "exportOrigin": "Figma native isolated PNG renders at full source resolution; alpha exact and visible RGB checked",
+      "exportOrigin": "Local registered cleanup of existing native cuts; not re-exported from Figma.",
       "layers": [
         {
           "name": "sky",
@@ -539,7 +539,7 @@
         "Portrait mobile crop is at 53% horizontal center. No tilt/scroll runtime implemented."
       ],
       "mobileCenter": 53.0,
-      "motionReadiness": "Still preferred: wing edge needs cleanup before motion."
+      "motionReadiness": "Registered hidden-fill cleanup; use only the documented horizontal caps in the web manifest."
     },
     {
       "id": "bald-mountain",
@@ -715,7 +715,7 @@
       "limitations": [
         "Storm clouds remain one sky plane; hills/field/empty wagons remain one land plane",
         "AI treatment simplifies cloud contours and fine ground details; the portrait was re-edited 2026-10-12 to remove the wagon riders and the standing group (no people in the scene); it is not a deterministic shader",
-        "Only ±2 px far and ±5 px near source-pixel movement inspected; larger travel unproven",
+        "Only \u00b12 px far and \u00b15 px near source-pixel movement inspected; larger travel unproven",
         "Outer translated image edges require overscan/viewport clipping",
         "Scene/project association not selected"
       ],

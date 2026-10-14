@@ -93,6 +93,7 @@ interface Manifest {
   sourceSize?: [number, number];
   webSize?: [number, number];
   layers: ManifestLayer[];
+  cutoverCleanup?: unknown;
 }
 interface LibraryEntry {
   id: string;
@@ -116,7 +117,7 @@ export function loadScene(id: string): SceneData {
   const [webW, webH] = man.webSize ?? grid;
   const mobileX = (entry.mobileCenter ?? 50) / 100;
   // Still-first scenes (the catalog's motion readiness says so) keep every layer at rest.
-  const still = /^still preferred/i.test(entry.motionReadiness ?? "");
+  const still = !man.cutoverCleanup && /^still preferred/i.test(entry.motionReadiness ?? "");
   const layers = man.layers.map((l): SceneLayer => {
     const own = cfg.layer?.[l.name] ?? {};
     const tested = l.recommendedHorizontalSourcePx ?? l.testedHorizontalSourcePx ?? l.testedTravelSourcePx;
@@ -186,6 +187,7 @@ export interface SceneBackdrop {
   height: number;
   /** object-position, desktop and phone (as the Scene's own reading still). */
   position: string;
+  scene: SceneData;
 }
 
 /**
@@ -200,6 +202,7 @@ export function sceneBackdrop(id: string): SceneBackdrop {
   const pct = (v: number) => `${+(v * 100).toFixed(2)}%`;
   return {
     id,
+    scene,
     src: scene.read.src,
     width: scene.read.width,
     height: scene.read.height,

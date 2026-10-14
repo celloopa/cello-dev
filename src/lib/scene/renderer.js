@@ -32,7 +32,7 @@ import {
 } from "three";
 import { DUSK, artVert, colorGLSL, motionGLSL, motionDefines, prepareLayerTexture, MOTION_MAX_UV } from "./art-shader.js";
 
-const ADMIRE_RATE = 4;
+import { readingDrift } from "./reading-drift.js";
 const AMBIENT_IDLE = 15000;   // ms of ambient micro-motion after the last input
 const AMBIENT_FPS = 30;
 const POINTER_TRAVEL = 1;     // × caps at the pointer extremes
@@ -240,8 +240,9 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
 
   /* ---- state ---- */
   // a reading page starts (and stays) fully focused: no focus transition on arrival
-  const target = { reading: reading ? 1 : 0, admire: 0, scroll: 0 };
-  let focus = target.reading, admire = 0, ambient = 0;
+  const target = { reading: reading ? 1 : 0, scroll: 0 };
+  let focus = target.reading, ambient = 0;
+  let covered = false, restTimer = 0;
   // fully read: travel and micro-motion are 0, so pointer and scroll input change nothing on
   // screen and wake no frames (the loop stays stopped while reading)
   const settledReading = () => target.reading === 1 && focus === 1;
@@ -253,8 +254,6 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     // attention
     focus += (target.reading - focus) * (1 - Math.exp(-dt * FOCUS_RATE));
     if (Math.abs(target.reading - focus) < 0.002) focus = target.reading;
-    admire += (target.admire - admire) * (1 - Math.exp(-dt * ADMIRE_RATE));
-    if (Math.abs(target.admire - admire) < 0.002) admire = target.admire;
     const wantAmbient = hasMotion && target.reading === 0 && now - lastInput < AMBIENT_IDLE ? 1 : 0;
     ambient += clamp(wantAmbient - ambient, -dt * 0.8, dt * 1.5);
     shared.uMotion.value = ambient * (1 - focus);
@@ -285,7 +284,9 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
       if (Math.abs(p.x - tx) + Math.abs(p.y - ty) + Math.abs(p.vx) + Math.abs(p.vy) < 0.01) { p.x = tx; p.y = ty; p.vx = p.vy = 0; }
       else moving = true;
       // never past the tested travel, even on a spring's overshoot
-      const ox = clamp(p.x, -p.cap[0], p.cap[0]), oy = clamp(p.y, -p.cap[1], p.cap[1]);
+      const drift = readingDrift(now,p.cap);
+      const ox = clamp(p.x + drift.x * focus, -p.cap[0], p.cap[0]);
+      const oy = clamp(p.y + drift.y * focus, -p.cap[1], p.cap[1]);
       // arrival
       const t = at - p.arrive.start;
       const fade = clamp(t / p.arrive.fade, 0, 1);
@@ -296,8 +297,10 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
       p.mesh.position.set(p.base[0] + ox, p.base[1] + oy - drop, 0);
     }
     const arriving = layers.some((p) => at - p.arrive.start < 2.2);
-    const transitioning = focus !== target.reading || admire !== target.admire;
-    const ambientOn = ambient > 0.001 && focus < 1;
+    const transitioning = focus !== target.reading;
+    const reading = readingDrift(now,[0,0]);
+    const ambientOn = (ambient > 0.001 && focus < 1) || (focus > 0 && reading.active);
+    if (focus > 0 && !reading.active && !restTimer && !covered) restTimer = setTimeout(() => { restTimer=0; request(); },reading.rest);
     return { busy: moving || (arriving && arrivalHeld === null) || transitioning || ambient !== wantAmbient, ambientOn };
   }
 
@@ -344,7 +347,7 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     if (frames === 1) onFirstFrame?.(); // first frame drawn on screen (frames never run while hidden)
     if (st.busy || st.ambientOn) request();
   }
-  function request() { if (!raf && running && !lost && !document.hidden) raf = requestAnimationFrame(frame); }
+  function request() { if (!raf && running && !lost && (!covered || frames === 0) && !document.hidden) raf = requestAnimationFrame(frame); }
   const wake = () => { lastInput = performance.now(); request(); };
 
   /* ---- input ---- */
@@ -370,16 +373,17 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
 
   return {
     start() { running = true; last = performance.now(); wake(); },
-    setState({ reading, admire: a }) { target.reading = reading ? 1 : 0; target.admire = a ? 1 : 0; wake(); },
+    setState({ reading }) { target.reading = reading ? 1 : 0; wake(); },
+    setCovered(on) { covered=on; clearTimeout(restTimer);restTimer=0;if (on) {cancelAnimationFrame(raf);raf=0;} else request(); },
     setScroll(p) { if (Math.abs(p - target.scroll) > 1e-4) { target.scroll = p; if (isMobile && !settledReading()) wake(); } },
     setDark(d) { shared.uDusk.value = d ? 1 : 0; wake(); },
-    stop() { running = false; lost = true; cancelAnimationFrame(raf); },
+    stop() { running = false; lost = true; cancelAnimationFrame(raf); clearTimeout(restTimer); },
     /** Review hooks: hold the arrival at t seconds (null resumes), and report plane offsets. */
     seekArrival(t) { arrivalHeld = t; wake(); },
     /** The still has been on screen: arrive already settled (no assembly from a full picture). */
     skipArrival() { if (frames === 0) arrivalT = 99; },
     info: () => ({
-      fit, focus, admire, ambient, mobile: isMobile, frames, calls: renderer.info.render.calls,
+      fit, focus, ambient, covered, mobile: isMobile, frames, calls: renderer.info.render.calls,
       planes: layers.map((p) => ({
         name: p.l.name, depth: p.l.depth, capSourcePx: p.l.cap, capSource: p.l.capSource,
         capScreenPx: p.cap.map((v) => +v.toFixed(2)), offset: p.out.map((v) => +v.toFixed(2)),

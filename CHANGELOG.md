@@ -2,6 +2,15 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## Unreleased: landscape cutover candidate (2026-10-13)
+
+- Keep the existing scrolling landscape portfolio. Remove the separate “Take in the view” mode; the scenery is the space throughout.
+- Clean hidden fills and registered edges for Over Hood, Moss Falls, Meadows Lift and Salmon Ridge. All ten scenes retain bounded cut layers. Add slow reading drift at one fifth of each inspected cap, 24 seconds of movement followed by 60 seconds at rest, at most 30 fps. Load only the active backdrop’s cut stack; suspend the covered renderer. Reduced motion, Save-Data, missing WebGL/textures and hidden tabs keep the still fallback.
+- Give case-study summaries the full artifact frame, with two columns and a full-width Tools row; center the reading column and allow media to use the wider frame. Fix phone TOC focus clipping, touch hover states, Menu spacing, and keyboard-menu Tab/focus return.
+- Add MP4 sources and poster images for all 15 currently linked videos (20 placements), including home previews. Home previews use the same Pause/Play control as case-study media.
+- Fix Day text contrast during the arrival-to-reading scroll range. Add the reading motion values to the token source and existing Figma library. Correct utility-page canonicals and canonical trailing slashes.
+- Verification and release limitations: `docs/landscape/POLISH.md`. This entry describes a candidate; production is not cut over yet.
+
 ## 2026-10-12
 
 ### Design system, stage 9: Figma follows code (foundations)

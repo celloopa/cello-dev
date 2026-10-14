@@ -3,8 +3,8 @@
   "name": "Cottage Grove waterfall",
   "exactPlaceName": "uncertain; Cello to confirm",
   "month": "June",
-  "status": "candidate; aesthetic approval pending; people removed from the art 2026-10-12",
-  "method": "Photo composition → screenprint treatment → locked-center outpaint → source RGB registered cuts",
+  "status": "Cutover candidate: registered hidden-fill cleanup, inspected at the documented caps.",
+  "method": "Photo composition \u2192 screenprint treatment \u2192 locked-center outpaint \u2192 source RGB registered cuts",
   "sourceSize": [
     2172,
     1448
@@ -25,26 +25,41 @@
       "name": "sky",
       "src": "/scenes/moss-falls/sky.webp",
       "depth": 0.98,
-      "testedTravelSourcePx": 0
+      "testedTravelSourcePx": 0,
+      "capSourcePx": [
+        0,
+        0
+      ],
+      "recommendedHorizontalSourcePx": 0
     },
     {
       "name": "mid",
       "src": "/scenes/moss-falls/mid.webp",
       "depth": 0.55,
-      "testedTravelSourcePx": 2
+      "testedTravelSourcePx": 2,
+      "capSourcePx": [
+        2,
+        0
+      ],
+      "recommendedHorizontalSourcePx": 2
     },
     {
       "name": "near",
       "src": "/scenes/moss-falls/near.webp",
       "depth": 0.12,
-      "testedTravelSourcePx": 4
+      "testedTravelSourcePx": 4,
+      "capSourcePx": [
+        6,
+        0
+      ],
+      "recommendedHorizontalSourcePx": 6
     }
   ],
   "motion": {
-    "recommendation": "still preferred until hidden-fill cleanup",
-    "testOnly": true,
-    "reducedMotion": "same composition still",
-    "mobile": "centered portrait crop; no tilt dependence"
+    "recommendation": "Bounded horizontal depth at the listed caps; reading drift uses one fifth of the cap.",
+    "testOnly": false,
+    "reducedMotion": "same registered composition still",
+    "mobile": "documented crop; no tilt dependence"
   },
   "composition": {
     "originalBounds": [
@@ -62,7 +77,7 @@
     "restackMeanDifference": 0,
     "visual": [
       "isolated mid and near",
-      "motion left/right ±2/±4sourcepx",
+      "motion left/right \u00b12/\u00b14sourcepx",
       "desktop1440x900crop",
       "mobile390x844crop",
       "Figma screenshot and shared-origin rectangle dimensions"
@@ -70,12 +85,11 @@
     "peopleRemoval": "full-size inspection of the whole portrait and native crops around the former positions and both seams: no people, no animals, no ghost silhouettes, no text"
   },
   "limitations": [
-    "People removed from the art by an image edit; the edited region (about 11% of the portrait) is newly drawn rock/log/trail continuation, not photographed",
-    "Hidden foreground boundary has soft halos/doubled-edge regions: larger parallax unsafe",
-    "Three coherent planes; waterfall/forest not individually separable",
-    "No actual runtime motion or device test"
+    "Hidden scenery is generated continuation, not photographed.",
+    "Only the documented horizontal caps are tested; no independent cable/ground travel on Meadows lift.",
+    "Historical scene run records describe the earlier cuts; these web cuts supersede them."
   ],
-  "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
+  "exportOrigin": "Local registered cleanup of existing native cuts; visible RGB restored from the locked people-free master. Not re-exported from Figma.",
   "peopleRemoval": {
     "decision": "removed (not shrunk); the fallen log, rocks and trail continue with no composition break",
     "method": "one image edit of the locked treated portrait; only the changed region (mask built from the diff map, x290-700 y740-1400, feathered 7px) taken from the edit, everything else is the original locked pixels; wide master rebuilt by pasting the new portrait into [543,0,1629,1448]",
@@ -90,5 +104,46 @@
     "sidesDiffVsPreviousWide": 0,
     "nearMatte": "regenerated (near-raw-v2.png); forest matte and clean plate reused",
     "imageCalls": "1 removal edit + near matte (1 invocation produced no file)"
+  },
+  "cutoverCleanup": {
+    "sourceSize": [
+      2172,
+      1448
+    ],
+    "restackMaxDifference": 0,
+    "restackMeanDifference": 0.0,
+    "motionTestSourcePx": {
+      "sky": 0,
+      "mid": 2,
+      "near": 6
+    },
+    "layers": [
+      {
+        "name": "sky",
+        "sourceSize": [
+          2172,
+          1448
+        ],
+        "pngSha256": "fccc26f2f74c02c55f8643244887ed5ac3a8aecbe84778949f149236018d6c83"
+      },
+      {
+        "name": "mid",
+        "sourceSize": [
+          2172,
+          1448
+        ],
+        "pngSha256": "c14263e7c161beaa2f712806871a0b069b0ddd1b61388862d86cb2b1a2a0620c"
+      },
+      {
+        "name": "near",
+        "sourceSize": [
+          2172,
+          1448
+        ],
+        "pngSha256": "7f3b61ab2a0d51662e945445c61a60f44d3d5c76971cb1c4051d9413db67120f"
+      }
+    ],
+    "origin": "local registered cleanup, not a Figma re-export",
+    "method": "original visible RGB + original/refined binary mattes + generated occluded fill"
   }
 }

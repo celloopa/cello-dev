@@ -11,6 +11,7 @@
  *     pauses, scrolling never restarts it. The button (a secondary sm Button) appears only with
  *     JavaScript.
  */
+import { videoFallbacks } from "@/lib/video";
 import Button from "@/components/ui/Button.astro";
 
 interface Props {
@@ -21,7 +22,10 @@ interface Props {
   class?: string;
 }
 
-const { src, mp4, poster, label, class: className } = Astro.props;
+const { src, label, class: className } = Astro.props;
+const fallback = await videoFallbacks(src);
+const mp4 = Astro.props.mp4 ?? fallback.mp4;
+const poster = Astro.props.poster ?? fallback.poster;
 const type = (s: string) => (s.endsWith(".mp4") ? "video/mp4" : "video/webm");
 ---
 
@@ -31,7 +35,9 @@ const type = (s: string) => (s.endsWith(".mp4") ? "video/mp4" : "video/webm");
     loop
     muted
     playsinline
-    preload="metadata"
+    preload="none"
+    width={fallback.width}
+    height={fallback.height}
     poster={poster}
     aria-label={label || undefined}
   >

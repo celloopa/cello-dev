@@ -2,7 +2,7 @@
   "id": "salmon-ridge",
   "place": "Salmon ridge (exact location unconfirmed)",
   "month": "Unconfirmed",
-  "status": "photo treatment and cut candidate; anonymous figure removed 2026-10-12; still-first until expansion seam and hidden-fill cleanup",
+  "status": "Cutover candidate: registered hidden-fill cleanup, inspected at the documented caps.",
   "sourceSize": [
     2172,
     1448
@@ -20,28 +20,40 @@
     1448
   ],
   "expandedSides": "AI outpainted; original stylized center mechanically preserved",
-  "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
+  "exportOrigin": "Local registered cleanup of existing native cuts; visible RGB restored from the locked people-free master. Not re-exported from Figma.",
   "layers": [
     {
       "name": "sky",
       "src": "/scenes/salmon-ridge/sky.webp",
       "depth": 0.97,
       "testedHorizontalSourcePx": 0,
-      "recommendedHorizontalSourcePx": 0
+      "recommendedHorizontalSourcePx": 0,
+      "capSourcePx": [
+        0,
+        0
+      ]
     },
     {
       "name": "far",
       "src": "/scenes/salmon-ridge/far.webp",
       "depth": 0.6,
       "testedHorizontalSourcePx": 1,
-      "recommendedHorizontalSourcePx": 0
+      "recommendedHorizontalSourcePx": 1,
+      "capSourcePx": [
+        1,
+        0
+      ]
     },
     {
       "name": "near",
       "src": "/scenes/salmon-ridge/near.webp",
       "depth": 0.12,
       "testedHorizontalSourcePx": 3,
-      "recommendedHorizontalSourcePx": 0
+      "recommendedHorizontalSourcePx": 5,
+      "capSourcePx": [
+        5,
+        0
+      ]
     }
   ],
   "checks": {
@@ -64,12 +76,9 @@
   },
   "mobileCenter": 0.4,
   "limitations": [
-    "Exact location and month unconfirmed; no project-place claim.",
-    "AI treatment alters fine grass/branch/tree detail; the portrait was re-edited 2026-10-12 to remove the anonymous figure (no people in the scene); aesthetic approval pending.",
-    "Wide outpaint has a noticeable left vertical join beside deadwood; center diff0 does not prove seamless extension. Prefer original portrait/mobile crop or still until corrected.",
-    "Near matte dilation removes most fringe ghosts but small edge residuals and sky continuation outlines remain; tiny far±1/near±3 source-pixel extremes inspected, no production motion clearance.",
-    "Three planes: near slope and framing trees stay connected. Near plane RGB/alpha changed only in the former figure zone (x 603-1252, y 795-1447); sky unchanged.",
-    "Centered desktop clips near trail base; mobile .40 center keeps the empty trail and ridge. Actual responsive canvas arrangement pending."
+    "Hidden scenery is generated continuation, not photographed.",
+    "Only the documented horizontal caps are tested; no independent cable/ground travel on Meadows lift.",
+    "Historical scene run records describe the earlier cuts; these web cuts supersede them."
   ],
   "peopleRemoval": {
     "date": "2026-10-12",
@@ -78,5 +87,52 @@
     "method": "image edit of locked portrait master, blended only inside a feathered patch around the former figure; wide master rebuilt by pasting into the same bounds; near matte regenerated in the former figure zone only",
     "raw": "before-figure-removal/nofigure-raw-v1.png (local, ignored)",
     "previousMasters": "before-figure-removal/ (local, ignored)"
+  },
+  "cutoverCleanup": {
+    "sourceSize": [
+      2172,
+      1448
+    ],
+    "restackMaxDifference": 0,
+    "restackMeanDifference": 0.0,
+    "motionTestSourcePx": {
+      "sky": 0,
+      "far": 1,
+      "near": 5
+    },
+    "layers": [
+      {
+        "name": "sky",
+        "sourceSize": [
+          2172,
+          1448
+        ],
+        "pngSha256": "2b06963fd032e8cc41092962d192aa4917af3e4a40f5ac54ebfe14dba77da2f7"
+      },
+      {
+        "name": "far",
+        "sourceSize": [
+          2172,
+          1448
+        ],
+        "pngSha256": "a2dd7e1ea3cc87a8392af34a5b73e8dadc1fd1fc7ddbf2c103a8aa96c9e378c4"
+      },
+      {
+        "name": "near",
+        "sourceSize": [
+          2172,
+          1448
+        ],
+        "pngSha256": "b9d548a703e1b6222266bfb22664d32f8dcd7716fbc6b22780f9cf3b586a780a"
+      }
+    ],
+    "origin": "local registered cleanup, not a Figma re-export",
+    "method": "original visible RGB + original/refined binary mattes + generated occluded fill"
+  },
+  "motion": {
+    "recommendation": "Bounded horizontal depth at the listed caps; reading drift uses one fifth of the cap.",
+    "testOnly": false,
+    "reducedMotion": "same registered composition still",
+    "mobile": "documented crop; no tilt dependence"
   }
 }

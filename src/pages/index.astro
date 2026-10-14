@@ -1,8 +1,7 @@
 ---
 /*
  * Home in the landscape (landscape build S1). The scene is Mirror Lake; the words are today's
- * home page, unchanged. Arrival: the hero copy over the scene, readable at first paint. Admire:
- * "Take in the view". Reading: once the Work section reaches the reading line, the scene
+ * home page, unchanged. Arrival: the hero copy over the scene, readable at first paint. Reading: once the Work section reaches the reading line, the scene
  * softens and dims, the bar names the project in view, and the place behind the words follows
  * the reading line: each case study's paired scene, then each section's own (scene-pairings.json
  * `projects` and `homeSections`), and Mirror Lake again behind the footer.
@@ -16,12 +15,10 @@ import Button from "@/components/ui/Button.astro";
 import ArrowLink from "@/components/ui/ArrowLink.astro";
 import Eyebrow from "@/components/ui/Eyebrow.astro";
 import Section from "@/components/ui/Section.astro";
-import { loadScene } from "@/lib/scene/catalog";
 import { homeScene, homeSection, sceneForProject } from "@/lib/scene/pairing";
 import { basics } from "@cv";
 
 const PLACE = homeScene(); // Mirror Lake (src/data/scene-pairings.json)
-const scene = loadScene(PLACE);
 const { email } = basics;
 
 const allProjects = await getCollection("projects");
@@ -63,16 +60,9 @@ const homeDescription =
       <div class="hero-actions">
         <Button href="#work">View Case Studies</Button>
         <ArrowLink href="/resume">View Resume</ArrowLink>
-        <button class="admire-btn" type="button" data-admire-open>Take in the view</button>
       </div>
     </div>
-    <div class="admire-view copy-scrim" data-admire-view hidden>
-      <p class="admire-place">{scene.place} · {scene.month}</p>
-      <div class="admire-actions">
-        <button class="admire-return" type="button" data-admire-close>Back to Cello</button>
-        <ArrowLink href="#work" variant="down" data-admire-work>View Case Studies</ArrowLink>
-      </div>
-    </div>
+
   </section>
 
   <Section
@@ -165,27 +155,7 @@ const homeDescription =
   </Section>
 </SceneLayout>
 
-<script>
-  // Case-study videos play only while they're on screen (and never under reduced motion, where
-  // they show their first frame).
-  const videos = document.querySelectorAll<HTMLVideoElement>("[data-work-video]");
-  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (still || !("IntersectionObserver" in window)) {
-    videos.forEach((v) => (v.preload = "metadata"));
-  } else {
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          const v = e.target as HTMLVideoElement;
-          if (e.isIntersecting) v.play().catch(() => {});
-          else v.pause();
-        }
-      },
-      { rootMargin: "200px 0px" },
-    );
-    videos.forEach((v) => io.observe(v));
-  }
-</script>
+
 
 <style>
   /* ---------- arrival: identity, role and the route to work, over the scene at once ---------- */

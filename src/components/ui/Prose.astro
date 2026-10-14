@@ -5,7 +5,7 @@
  *
  * Long reading (A2, stage 2c, unchanged): the article's own paragraphs, lists and quotes (the
  * direct children) are set in Geist Sans (--font-read) at --layout-measure-read (31em, about 69
- * characters). Headings and media keep the wider column; embedded components (CaseMeta,
+ * characters). Headings align with that reading column; media keeps the wider frame; embedded components (CaseMeta,
  * FlowDiagram, media captions), h3 and code stay Geist Mono; h2 is National Park. The pages
  * import the Geist face themselves (2c: only the two [slug] pages load it).
  *
@@ -20,8 +20,19 @@
 
 <style>
   .prose {
-    max-width: var(--layout-measure);
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) min(100%, var(--layout-measure-read)) minmax(0, 1fr);
+    font-size: var(--type-body);
   }
+
+  .prose > :global(*) { grid-column: 1 / -1; min-width: 0; }
+  .prose > :global(p),
+  .prose > :global(ul),
+  .prose > :global(ol),
+  .prose > :global(blockquote),
+  .prose > :global(h2),
+  .prose > :global(h3) { grid-column: 2; }
 
   .prose > :global(p),
   .prose > :global(ul),
@@ -29,6 +40,13 @@
   .prose > :global(blockquote) {
     font-family: var(--font-read);
     max-width: var(--layout-measure-read);
+    margin-inline: 0;
+  }
+
+  .prose > :global(h2),
+  .prose > :global(h3) {
+    max-width: var(--layout-measure-read);
+    margin-inline: 0;
   }
 
   .prose :global(h2) {
@@ -183,5 +201,14 @@
   .prose :global(h2),
   .prose :global(h3) {
     scroll-margin-top: var(--space-96);
+  }
+  /* Center the reading measure within the shared wide artifact frame. */
+  .prose > :global(p),
+  .prose > :global(ul),
+  .prose > :global(ol),
+  .prose > :global(blockquote),
+  .prose > :global(h2),
+  .prose > :global(h3) {
+    margin-inline: 0;
   }
 </style>

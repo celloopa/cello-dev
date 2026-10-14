@@ -10,7 +10,9 @@ more limited”. The four-landmark prototype is preserved at `0c339ff` on
 Resume release preparation from `b471641`. Its site source, public assets, package manifest,
 lockfile and Astro configuration match preview pin `250cd03` (PR14 tree `d94e121`). The two
 commits differ only in planning docs. This is an experience baseline, not a new release pin.
-Keep the existing scrolling work, backdrop swaps, Admire view and full case-study routes.
+Keep the existing scrolling work, backdrop swaps and full case-study routes. A subsequent
+Cello correction removes Admire: the scenery should simply be the space, with subtle motion
+behind the work. See POLISH.md for the resulting candidate.
 The unbuilt C0–C5 chapters plan has not been reapproved by this preference.
 
 ## Evidence and remaining release work
