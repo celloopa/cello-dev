@@ -13,13 +13,15 @@ interface Props {
   caption?: string;
   poster?: string;
   mp4?: string;
+  /** Preserve the entire image when its edges carry context, such as a concept screen. */
+  uncropped?: boolean;
 }
 
-const { src, alt = "", caption, poster, mp4 } = Astro.props;
+const { src, alt = "", caption, poster, mp4, uncropped = false } = Astro.props;
 const isVideo = src?.endsWith(".webm") || src?.endsWith(".mp4");
 ---
 
-<div class="media-gallery media-full">
+<div class:list={["media-gallery", "media-full", { uncropped }]}>
   <figure class="media-item">
     {
       isVideo ? (
@@ -66,5 +68,9 @@ const isVideo = src?.endsWith(".webm") || src?.endsWith(".mp4");
     .media-full img.project-media {
       max-height: 300px;
     }
+  }
+  .media-full.uncropped img.project-media {
+    height: auto;
+    max-height: none;
   }
 </style>
