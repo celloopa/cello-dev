@@ -2,6 +2,14 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-10-14 — Blog embeds
+
+- Register a shared `<Embed />` component for blog MDX: native Threads and X/Twitter posts, responsive YouTube players, and article link previews with supplied metadata.
+- Load social SDKs near the viewport, once per provider, with Astro navigation re-scans and permanent original-source links. Use YouTube's privacy-enhanced domain, a titled player and optional start time.
+- Validate author-supplied URLs and provider IDs; keep article rendering independent of remote metadata services.
+- Added the Threads source embed beneath its mention in “When will the future of design arrive?”; approved prose and the concept exploration remain unchanged.
+- Authoring examples and local responsive/blocked-provider checks: `docs/writing/embeds.md`.
+
 ## 2026-10-14 — Writing
 
 ### Writing: future of design and a conversational voice
