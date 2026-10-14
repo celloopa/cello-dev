@@ -231,10 +231,19 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     const k = s * srcToWeb;
     const boxW = w + 2 * ox, boxH = h + 2 * oy, Wd = iw * s, Hd = ih * s;
     for (const p of layers) {
-      const [ax, ay] = isMobile ? p.l.mobileAnchor : p.l.anchor;
-      p.base = [(Wd - boxW) * (0.5 - ax), -(Hd - boxH) * (0.5 - ay)];
       p.cap = [p.l.cap[0] * k, p.l.cap[1] * k];
-      p.mesh.scale.set(Wd, Hd, 1);
+      if (p.l.sprite) {
+        const sprite = p.l.sprite;
+        const height = Math.min(h * (isMobile ? sprite.mobileHeight : sprite.height), sprite.maxHeight);
+        const width = height * p.size[0] / p.size[1];
+        const [ax, ay] = isMobile ? sprite.mobileAnchor : sprite.anchor;
+        p.base = [w * ax - w / 2, h / 2 - h * ay + height / 2];
+        p.mesh.scale.set(width, height, 1);
+      } else {
+        const [ax, ay] = isMobile ? p.l.mobileAnchor : p.l.anchor;
+        p.base = [(Wd - boxW) * (0.5 - ax), -(Hd - boxH) * (0.5 - ay)];
+        p.mesh.scale.set(Wd, Hd, 1);
+      }
     }
     fit = { w, h, scale: s, screenPerSourcePx: k, overscan: [ox, oy], art: [Wd, Hd] };
     return true;
@@ -293,7 +302,7 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
       const fade = clamp(t / p.arrive.fade, 0, 1);
       const res = springResidual(t, p.arrive.zeta, p.arrive.omega);
       const drop = p.drop * (Math.abs(res) < 0.0005 && t > 0 ? 0 : res);
-      p.uFade.value = fade * fade * (3 - 2 * fade);
+      p.uFade.value = fade * fade * (3 - 2 * fade) * (p.l.sprite ? 1 - focus : 1);
       p.out = [ox, oy - drop];
       p.mesh.position.set(p.base[0] + ox, p.base[1] + oy - drop, 0);
     }

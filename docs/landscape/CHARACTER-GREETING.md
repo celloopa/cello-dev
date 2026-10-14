@@ -1,0 +1,19 @@
+# Cello’s layered hiking greeting
+
+Preview iteration, October 14, 2026. Production remains unchanged.
+
+The selected character uses Cello’s current likeness cues, modern mullet, thin round glasses, subtle facial hair, rain jacket and backpack. The face and body share one simplified cut-paper style. Source portrait and hiking photographs remain private. Generated with the built-in imagegen tool; the selected transparent PNG is retained in the private generation output and a 384×576 WebP derivative lives at `public/images/characters/cello-hiker-v1.webp` (34,342 bytes).
+
+## Runtime depth
+
+Home explicitly opts into a fifth scene plane: sky → mountain → terrain/trees → Cello → foreground flowers. The character is not baked into the scenery. It uses the existing Three.js shader, grading, bounded spring, arrival and cursor frame loop. Its horizontal/vertical travel is capped at 28/14 source pixels, between the terrain’s 18/9 and foreground’s 38/19. One additional texture and plane; no separate animation loop or new framework.
+
+Sprite size and position are separate from the cover-fit landscape planes. The shared scene metadata drives both the HTML still and WebGL layout, including phone placement. The guide fades away in reading; the case-study renderer and backdrop scenes do not receive it. Chat text and links stay fixed. Reduced motion, no JavaScript and failed WebGL retain the registered still stack and transparent character. The scrim is scoped to the speech and routes so it does not muddy the character.
+
+## Generation prompt
+
+Create one friendly full-body illustrated cut-paper hiking character on a truly transparent background. This is a COMPLETE UNIFIED REDRAW, not a face pasted onto another body. Input1 is the actual landscape illustration style of the portfolio: simple bold painted shapes, limited colors, slight paper grain. Input2 is the real person for a few identifying cues only. Input3 is the earlier cheerful character the user liked, for friendly approachable character design, NOT for its younger haircut/clothes. Aim for the warmth and appealing simplicity of input3 rendered with the flatter cut-paper technique of input1, consistently from head to boots. The recent attempt failed because its face was too realistic while its body was cartoony. Make face MUCH SIMPLER: two or three broad warm flat color shapes, tiny relaxed dark eyes, a simple friendly smile, simple nose mark, understated moustache/stubble as one soft shape. NO portrait rendering, NO realistic facial anatomy shading, NO individual hair strands or beard hairs, NO skin detail, NO gradients, NO glossy eyes. Current likeness cues: adult man, dark wavy MODERN MULLET with short sides and a longer back, large thin round glasses, subtle facial hair, warm olive skin. Do not make him a child. Wear a plain charcoal waterproof hooded rain jacket (hood down), dark backpack, dark trail pants and hiking boots. Keep jacket shadows sparse and quiet, not camouflage. Slightly stylized friendly adult proportions; one hand raised in a relaxed hello, other on backpack strap. All details at the SAME simplified level. Crisp irregular painted-paper silhouette, restrained grain, muted charcoal/bluegreen/olive and warm skin palette, no thick comic outline. Whole figure head to boots, small transparent margin. NO camera, NO scenery, NO halo, NO glow, NO vignette, NO ground, NO shadow, NO words. Deliver actual alpha outside the person.
+
+## Checks
+
+Local build passes with zero errors/warnings. GPU-enabled Chrome confirms five planes in the expected order, distinct left/right cursor offsets for the guide, travel within caps, and identical chat geometry. Synthetic context loss returns to the static stack with the guide still present. Phone/tablet/desktop flows and reduced-motion stills pass. The final published version receives the same focused check before delivery. This checks implementation, not human preference or measured conversion.

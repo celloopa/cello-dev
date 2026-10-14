@@ -93,6 +93,11 @@ html.scene-page main {
     object-position: var(--mx) var(--my);
   }
 }
+/* Greeting is an independent transparent plane, between the mid and near artwork.
+   These still coordinates match the sprite branch in the WebGL layout. */
+.scene-layer-guide { inset: auto; left: var(--guide-x); top: var(--guide-y); width: auto; height: var(--guide-height); max-height: var(--guide-max); object-fit: contain; transform: translate(-50%, -100%); }
+html.scene-reading .scene-layer-guide { opacity: 0; }
+@media (max-width: 768px) { .scene-layer-guide { left: var(--guide-mobile-x); top: var(--guide-mobile-y); height: var(--guide-mobile-height); } }
 /* A reading or index page's still is the half-size flattened scene (Scene `focused`); the full
    layers load hidden, for the renderer only, so they never become a late largest paint. */
 .scene-read {

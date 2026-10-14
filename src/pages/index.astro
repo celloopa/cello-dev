@@ -34,13 +34,14 @@ const homeDescription =
   place={PLACE}
   backdrops={backdrops}
   footerPlace={sections.footer}
+  guide
 >
   <ChapterRail projects={featuredProjects.map(p => ({ slug: p.slug, title: p.data.title }))} />
   <section id="arrival" class="hero" aria-labelledby="hero-name" data-scene-hero>
-    <div class="hero-copy copy-scrim" data-scene-intro>
+    <div class="hero-copy" data-scene-intro>
       <div class="hero-greeting">
-        <img class="hero-avatar" src="/images/avatar.webp" alt="Illustrated Cello with a camera" width="88" height="88" fetchpriority="high" />
-        <div class="hero-bubbles">
+        <span class="hero-avatar" aria-hidden="true"></span>
+        <div class="hero-bubbles copy-scrim">
           <h1 class="hero-name message-row" id="hero-name" data-intro-message><span class="message-copy">Hi, I’m Cello.</span><span class="message-visual" aria-hidden="true"></span></h1>
           <p class="hero-bubble message-row" data-intro-message><span class="message-copy">Welcome to Mt. Hood. I come here a lot, so I thought I’d bring you along this time.</span><span class="message-visual" aria-hidden="true"></span></p>
           <p class="hero-bubble message-row" data-intro-message><span class="message-copy">I love to design and prototype helpful experiences. Products, systems, and the code that brings them to life.</span><span class="message-visual" aria-hidden="true"></span></p>
@@ -48,7 +49,7 @@ const homeDescription =
         </div>
       </div>
       <div class="intro-controls"><button type="button" data-intro-control hidden>Show all messages</button></div>
-      <nav class="hero-routes" aria-label="Start exploring">
+      <nav class="hero-routes copy-scrim" aria-label="Start exploring">
         <a href="#work"><strong>Here for the work? <span aria-hidden="true">↓</span></strong><span>Scroll down, or choose a project logo on the rail to jump straight to it.</span></a>
         <a href="/blog/"><strong>See what I’m learning <span aria-hidden="true">↗</span></strong><span>I document my work and share what I learn in Writing.</span></a>
         <a href="/about/"><strong>A little more about me <span aria-hidden="true">↗</span></strong><span>I’m taken, but you can still read my About page.</span></a>
@@ -134,10 +135,8 @@ const homeDescription =
         control.textContent = "Show all messages";
         intro.classList.add("intro-playing");
         rows.forEach(row => { row.classList.remove("message-revealed"); row.querySelector(".message-visual")!.textContent = ""; });
-        const avatar = intro.querySelector(".hero-avatar");
-        avatar?.animate([{ opacity: 0, transform: "translateY(8px) scale(.9)" }, { opacity: 1, transform: "none" }], { duration: duration("--motion-entry"), easing: css.getPropertyValue("--ease-out").trim() });
         let index = 0;
-        let start = performance.now() + gap;
+        let start = performance.now() + duration("--motion-entry");
         let lastCount = -1;
         const tick = (now: number) => {
           if (!playing) return;
@@ -197,8 +196,9 @@ const homeDescription =
     color: var(--text-on-art);
   }
 
+  .hero-bubbles::before, .hero-routes::before { inset: -12% -8%; }
   .hero-greeting { display: flex; align-items: start; gap: var(--space-16); }
-  .hero-avatar { width: 80px; height: 80px; flex: none; border-radius: var(--radius-circle); border: var(--stroke-control) solid var(--border-strong); }
+  .hero-avatar { width: 80px; height: 80px; flex: none; }
   .hero-bubbles { min-width: 0; }
   .hero-bubble { max-width: 48ch; margin: 0 0 var(--space-8); padding: var(--space-12) var(--space-16); background: var(--bg-plate); color: var(--text-primary); border: 1px solid var(--border-strong); border-radius: var(--space-12); font-size: var(--type-ui); line-height: var(--leading-read); }
   .message-row { display: grid; }
@@ -209,6 +209,7 @@ const homeDescription =
   .intro-playing .message-copy { opacity: 0; }
   .intro-playing .message-visual { display: block; }
   .intro-controls { margin: 0 0 var(--space-12) var(--space-96); min-height: var(--space-24); }
+  .intro-controls:has(button[hidden]) { display: none; }
   .intro-controls button { padding: 0; border: 0; background: none; color: inherit; font: inherit; font-size: var(--type-small); text-decoration: underline; text-underline-offset: .25em; cursor: pointer; }
   @media (prefers-reduced-motion: reduce) { .intro-playing .message-row, .intro-playing .message-copy { opacity: 1; transform: none; } .intro-playing .message-visual { display: none; } }
   .hero-aside { margin: var(--space-12) 0 var(--space-24); font-size: var(--type-small); }
@@ -222,6 +223,7 @@ const homeDescription =
   .hero-name {
     margin: 0 0 var(--space-12);
     font-family: var(--font-title);
+    text-shadow: 0 var(--stroke-control) var(--space-8) var(--bg-canvas);
     font-size: var(--type-page-title);
     font-weight: var(--weight-semibold);
     line-height: var(--leading-display);
@@ -276,5 +278,6 @@ const homeDescription =
   @media (width < 900px) {
     :global(body:has(.chapter-rail)) { padding-bottom: var(--space-96); }
     :global(body:has(.chapter-rail) .place-label) { bottom: var(--space-96); }
+    .intro-controls { margin-top: calc(var(--space-24) * -1); }
   }
 </style>

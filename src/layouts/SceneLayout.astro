@@ -62,6 +62,8 @@ interface Props {
   backdrops?: string[];
   /** The place behind the footer while it's in view (a backdrop, or the page's own scene). */
   footerPlace?: string;
+  /** Home greeting character, between the terrain and foreground. */
+  guide?: boolean;
 }
 
 const siteName = "Cello - Product Designer & Design Engineer";
@@ -69,7 +71,7 @@ const siteDescription =
   "Product designer and design engineer focused on design systems and human-centered AI tools. I build and run what I design.";
 const siteImage = "/images/thumbnail.png";
 
-const { title = siteName, description = siteDescription, image, canonicalPath, place, reading, focus, backdrops, footerPlace } = Astro.props;
+const { title = siteName, description = siteDescription, image, canonicalPath, place, reading, focus, backdrops, footerPlace, guide } = Astro.props;
 // the backdrop places' stills, as data at the end of the page (scenery.js builds their layer)
 const readingImage = reading || focus ? loadScene(place).read?.src : undefined;
 const backdropData = [...new Set(backdrops ?? [])].filter((id) => id !== place).map(sceneBackdrop);
@@ -150,7 +152,7 @@ const current = (href: string) => {
   <body>
     <a class="skip" href="#main">Skip to content</a>
     <ContextBar context={reading?.title} all={reading?.all} />
-    <Scene place={place} focused={!!reading || !!focus} backdrops={backdrops} />
+    <Scene place={place} focused={!!reading || !!focus} backdrops={backdrops} guide={guide} />
     <main id="main">
       <slot />
     </main>
