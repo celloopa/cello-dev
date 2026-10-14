@@ -41,12 +41,13 @@ const homeDescription =
       <div class="hero-greeting">
         <img class="hero-avatar" src="/images/avatar.webp" alt="Illustrated Cello with a camera" width="88" height="88" fetchpriority="high" />
         <div class="hero-bubbles">
-          <h1 class="hero-name" id="hero-name">Hi, I’m Cello.</h1>
-          <p class="hero-bubble">Welcome to Mt. Hood. I come here a lot, so I thought I’d bring you along this time.</p>
-          <p class="hero-bubble">I love to design and prototype helpful experiences. Products, systems, and the code that brings them to life.</p>
-          <p class="hero-aside">I’d call myself a builder, but lowkey hate that word.</p>
+          <h1 class="hero-name message-row" id="hero-name" data-intro-message><span class="message-copy">Hi, I’m Cello.</span><span class="message-visual" aria-hidden="true"></span></h1>
+          <p class="hero-bubble message-row" data-intro-message><span class="message-copy">Welcome to Mt. Hood. I come here a lot, so I thought I’d bring you along this time.</span><span class="message-visual" aria-hidden="true"></span></p>
+          <p class="hero-bubble message-row" data-intro-message><span class="message-copy">I love to design and prototype helpful experiences. Products, systems, and the code that brings them to life.</span><span class="message-visual" aria-hidden="true"></span></p>
+          <p class="hero-aside message-row" data-intro-message><span class="message-copy">I’d call myself a builder, but lowkey hate that word.</span><span class="message-visual" aria-hidden="true"></span></p>
         </div>
       </div>
+      <div class="intro-controls"><button type="button" data-intro-control hidden>Show all messages</button></div>
       <nav class="hero-routes" aria-label="Start exploring">
         <a href="#work"><strong>Here for the work? <span aria-hidden="true">↓</span></strong><span>Scroll down, or choose a project logo on the rail to jump straight to it.</span></a>
         <a href="/blog/"><strong>See what I’m learning <span aria-hidden="true">↗</span></strong><span>I document my work and share what I learn in Writing.</span></a>
@@ -101,6 +102,74 @@ const homeDescription =
       </div>
   </Section>
   <noscript><p class="container"><a href="/about/">About and How I Build →</a></p></noscript>
+  <script>
+    const intro = document.querySelector<HTMLElement>("[data-scene-intro]");
+    if (intro) {
+      const rows = [...intro.querySelectorAll<HTMLElement>("[data-intro-message]")];
+      const control = intro.querySelector<HTMLButtonElement>("[data-intro-control]")!;
+      const motion = matchMedia("(prefers-reduced-motion: reduce)");
+      const css = getComputedStyle(document.documentElement);
+      const duration = (name: string) => { const value = css.getPropertyValue(name).trim(); return parseFloat(value) * (value.endsWith("ms") ? 1 : 1000); };
+      const letterTime = duration("--motion-stagger-dense");
+      const gap = duration("--motion-ui");
+      let frame = 0;
+      let playing = false;
+      let seen = false;
+      try { seen = sessionStorage.getItem("cello-hello-seen") === "yes"; } catch { /* Greeting works without storage. */ }
+      const remember = () => { try { sessionStorage.setItem("cello-hello-seen", "yes"); } catch { /* Optional session preference. */ } };
+      const finish = () => {
+        cancelAnimationFrame(frame);
+        playing = false;
+        intro.classList.remove("intro-playing");
+        rows.forEach(row => row.classList.remove("message-revealed"));
+        control.textContent = "Replay hello";
+        control.hidden = motion.matches;
+        remember();
+      };
+      const play = () => {
+        if (motion.matches || document.hidden) { finish(); return; }
+        cancelAnimationFrame(frame);
+        playing = true;
+        control.hidden = false;
+        control.textContent = "Show all messages";
+        intro.classList.add("intro-playing");
+        rows.forEach(row => { row.classList.remove("message-revealed"); row.querySelector(".message-visual")!.textContent = ""; });
+        const avatar = intro.querySelector(".hero-avatar");
+        avatar?.animate([{ opacity: 0, transform: "translateY(8px) scale(.9)" }, { opacity: 1, transform: "none" }], { duration: duration("--motion-entry"), easing: css.getPropertyValue("--ease-out").trim() });
+        let index = 0;
+        let start = performance.now() + gap;
+        let lastCount = -1;
+        const tick = (now: number) => {
+          if (!playing) return;
+          if (now >= start) {
+            const row = rows[index];
+            row.classList.add("message-revealed");
+            const text = Array.from(row.querySelector(".message-copy")!.textContent || "");
+            const count = Math.min(text.length, Math.floor((now - start) / letterTime));
+            if (count !== lastCount) { row.querySelector(".message-visual")!.textContent = text.slice(0, count).join(""); lastCount = count; }
+            if (count === text.length) {
+              index++;
+              if (index === rows.length) { finish(); return; }
+              start = now + gap;
+              lastCount = -1;
+            }
+          }
+          frame = requestAnimationFrame(tick);
+        };
+        frame = requestAnimationFrame(tick);
+      };
+      control.addEventListener("click", () => playing ? finish() : play());
+      motion.addEventListener("change", () => { if (motion.matches) finish(); else control.hidden = false; });
+      document.addEventListener("visibilitychange", () => { if (document.hidden && playing) finish(); });
+      // Leaving the greeting or choosing a route should never leave unfinished text on return.
+      intro.querySelector(".hero-routes")?.addEventListener("click", finish);
+      const observer = new IntersectionObserver(entries => { if (!entries[0].isIntersecting && playing) finish(); });
+      observer.observe(intro);
+      addEventListener("pagehide", () => { finish(); observer.disconnect(); }, { once: true });
+      if (!seen && !motion.matches && scrollY < innerHeight / 2 && !location.hash) play();
+      else { control.hidden = motion.matches; control.textContent = "Replay hello"; }
+    }
+  </script>
   <script is:inline>
     // URL fragments never reach the server. Keep historical section links usable.
     if (location.hash === "#about" || location.hash === "#how") location.replace("/about/" + location.hash);
@@ -132,6 +201,16 @@ const homeDescription =
   .hero-avatar { width: 80px; height: 80px; flex: none; border-radius: var(--radius-circle); border: var(--stroke-control) solid var(--border-strong); }
   .hero-bubbles { min-width: 0; }
   .hero-bubble { max-width: 48ch; margin: 0 0 var(--space-8); padding: var(--space-12) var(--space-16); background: var(--bg-plate); color: var(--text-primary); border: 1px solid var(--border-strong); border-radius: var(--space-12); font-size: var(--type-ui); line-height: var(--leading-read); }
+  .message-row { display: grid; }
+  .message-copy, .message-visual { grid-area: 1 / 1; min-width: 0; }
+  .message-visual { display: none; }
+  .intro-playing .message-row { opacity: 0; transform: translateY(var(--space-8)); transition: opacity var(--motion-ui) var(--ease-out), transform var(--motion-ui) var(--ease-out); }
+  .intro-playing .message-revealed { opacity: 1; transform: none; }
+  .intro-playing .message-copy { opacity: 0; }
+  .intro-playing .message-visual { display: block; }
+  .intro-controls { margin: 0 0 var(--space-12) var(--space-96); min-height: var(--space-24); }
+  .intro-controls button { padding: 0; border: 0; background: none; color: inherit; font: inherit; font-size: var(--type-small); text-decoration: underline; text-underline-offset: .25em; cursor: pointer; }
+  @media (prefers-reduced-motion: reduce) { .intro-playing .message-row, .intro-playing .message-copy { opacity: 1; transform: none; } .intro-playing .message-visual { display: none; } }
   .hero-aside { margin: var(--space-12) 0 var(--space-24); font-size: var(--type-small); }
   .hero-routes { display: grid; gap: var(--space-12); margin: 0 0 var(--space-24) var(--space-96); }
   .hero-routes a { display: grid; gap: var(--space-4); color: inherit; text-decoration: none; }
@@ -139,7 +218,7 @@ const homeDescription =
   .hero-routes a:hover strong { color: var(--text-accent); }
   .hero-routes a > span { font-size: var(--type-small); line-height: var(--leading-read); max-width: 48ch; }
   .work :global(.container) { max-width: var(--ds-container-wide); padding-inline: var(--layout-gutter); }
-  @media (width <= 700px) { .hero-avatar { width: 52px; height: 52px; } .hero-greeting { gap: var(--space-12); } .hero-routes { margin-left: 0; } }
+  @media (width <= 700px) { .hero-avatar { width: 52px; height: 52px; } .hero-greeting { gap: var(--space-12); } .hero-routes, .intro-controls { margin-left: 0; } }
   .hero-name {
     margin: 0 0 var(--space-12);
     font-family: var(--font-title);

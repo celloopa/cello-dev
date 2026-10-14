@@ -4,6 +4,8 @@ All notable changes to this portfolio site should be documented here.
 
 ## Preview iteration: conversational home
 
+- Let the circle avatar enter and the intro messages write themselves in sequence. Add Show all and Replay hello, session-aware return behavior, stable layout, and immediate complete copy for reduced motion/no JavaScript. Keep direct routes available during the greeting.
+
 - Add Cello’s existing avatar, Mt. Hood greeting and immediate routes to Work, Writing and About. Keep YouTube hidden pending the new channel.
 - Enlarge home project artifacts, pair project marks with names, and introduce a problem/decision/result opening before case-study media. Condense Ghosted’s main navigation to six chapters while retaining supporting evidence and anchors.
 - Preserve the landscape renderer, cursor depth, still fallbacks and approved production release. See `docs/landscape/PREVIEW-CONVERSATIONAL-HOME.md` for scope and checks.
