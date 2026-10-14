@@ -1,0 +1,110 @@
+---
+import SceneLayout from "@/layouts/SceneLayout.astro";
+import Section from "@/components/ui/Section.astro";
+import Button from "@/components/ui/Button.astro";
+import ArrowLink from "@/components/ui/ArrowLink.astro";
+import { homeSection } from "@/lib/scene/pairing";
+import { basics } from "@cv";
+const sections = { about: homeSection("about"), how: homeSection("how"), contact: homeSection("contact") };
+---
+<SceneLayout title="About Cello" description="My path through visual journalism, brand systems, and product design, and how I carry design into production." canonicalPath="/about" place={sections.about} reading={{ title: "About", all: { href: "/#work", label: "All work" } }} backdrops={[sections.how, sections.contact]}>
+  <section class="about-intro container" id="about" aria-labelledby="about-title">
+    <h1 id="about-title">About</h1>
+    <p>I came to product design through visual journalism, brand systems, and front-end engineering. That range lets me translate creative intent into product rules, prototype behavior, make constraints legible, and speak the language of the team shipping it.</p>
+    <ArrowLink href="/resume">View Resume</ArrowLink>
+  </section>
+  <Section
+    class="how"
+    id="how"
+    title="How I Build"
+    titleId="how-heading"
+    intro="I build what I design, so the system reaches production intact. Code does everything it can, the model gets the smallest job it can be trusted with, and a person approves wherever the consequences are."
+    data-scene-stop="How I Build"
+    data-scene-backdrop={sections.how}
+  >
+      <div class="proof-strip">
+        <a class="proof-item" href="/projects/asheville-dispensary">
+          <h3>Code First</h3>
+          <p>
+            A script checks for new product drops before any model runs. An idle day costs about
+            $0.30 instead of $12.
+          </p>
+          <span class="proof-link">Proof: Asheville automations →</span>
+        </a>
+        <a class="proof-item" href="/projects/ghosted">
+          <h3>A Small, Checkable Job</h3>
+          <p>
+            The agent edits the resume, but every change arrives highlighted and versioned, for
+            the person to accept or reject.
+          </p>
+          <span class="proof-link">Proof: Ghosted →</span>
+        </a>
+        <a class="proof-item" href="/projects/vegavengers">
+          <h3>Approval Where It Matters</h3>
+          <p>
+            An AI checker proposes festival updates as ordinary CMS drafts. Editors publish; the
+            AI never does.
+          </p>
+          <span class="proof-link">Proof: VegAvengers →</span>
+        </a>
+      </div>
+  </Section>
+
+  <Section class="contact" title="Let’s Talk" titleId="contact-heading" intro="Open to design systems, brand and product design roles, remote in the US or in Portland. The fastest way to reach me is email." data-scene-stop="Let’s Talk" data-scene-backdrop={sections.contact}>
+    <div class="contact-actions"><Button href={`mailto:${basics.email}`}>Email Me</Button><ArrowLink href="/#work">Explore the work</ArrowLink></div>
+  </Section>
+</SceneLayout>
+<style>
+  .about-intro { padding-block: var(--space-96) var(--space-64); }
+  h1 { margin: 0; font: var(--weight-bold) var(--type-display-scene)/var(--leading-tight) var(--font-title); }
+  .about-intro p { max-width: var(--layout-measure); margin-block: var(--space-32); }
+  .how, .contact { padding-block: var(--space-64); }
+  .contact-actions { display: flex; flex-wrap: wrap; gap: var(--space-24); margin-top: var(--space-24); align-items: center; }
+  .proof-strip {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-24);
+    margin-top: var(--space-48);
+  }
+
+  .proof-item {
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--space-16);
+    border-top: var(--stroke-frame) solid var(--border-strong);
+    color: var(--text-on-art);
+    transition: border-color var(--motion-ui) var(--ease-out);
+  }
+
+  .proof-item:hover,
+  .proof-item:focus-visible {
+    border-top-color: var(--action-primary);
+  }
+
+  .proof-item h3 {
+    margin: 0 0 var(--space-12);
+    font-size: var(--type-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-title);
+    text-transform: uppercase;
+  }
+
+  .proof-item p {
+    margin: 0 0 var(--space-16);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .proof-link {
+    margin-top: auto;
+    /* small text over the focused scene: green measured 4.46:1 on the still, so it reads in the
+       on-art label color; the card's top rule turns green on hover instead */
+    color: var(--text-on-art-muted);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+  }
+
+  @media (width <= 900px) { .proof-strip { grid-template-columns: 1fr; } }
+</style>

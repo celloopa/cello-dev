@@ -26,7 +26,7 @@ const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
 const href = `/projects/${slug}`;
 ---
 
-<li class="work-item" data-scene-stop={title} data-scene-backdrop={place} data-flip={index % 2 === 1 ? "" : undefined}>
+<li id={`project-${slug}`} class="work-item" data-scene-stop={title} data-scene-backdrop={place} data-flip={index % 2 === 1 ? "" : undefined}>
   <div class="work-media">
     {
       image ? (

@@ -1,0 +1,102 @@
+---
+interface Props { projects: { slug: string; title: string }[] }
+const { projects } = Astro.props;
+const stops = [
+  { id: "arrival", title: "Arrival", number: "○" },
+  ...projects.map((p, i) => ({ id: `project-${p.slug}`, title: p.title, number: String(i + 1).padStart(2, "0") })),
+  { id: "contact", title: "Let’s Talk", number: "↗" },
+];
+---
+<nav class="chapter-rail" aria-label="Project timeline">
+  <span class="rail-current" aria-hidden="true" data-rail-title>Arrival</span>
+  <ol class="rail-stops">
+    {stops.map((stop, i) => <li><a draggable="false" href={`#${stop.id}`} aria-label={stop.title} aria-current={i === 0 ? "location" : undefined}><span aria-hidden="true">{stop.number}</span><span class="rail-label" aria-hidden="true">{stop.title}</span></a></li>)}
+  </ol>
+</nav>
+<script>
+  const rail = document.querySelector<HTMLElement>(".chapter-rail");
+  if (rail) {
+    const links = [...rail.querySelectorAll<HTMLAnchorElement>("a")];
+    const targets = links.map(link => document.getElementById(link.hash.slice(1))!);
+    const title = rail.querySelector<HTMLElement>("[data-rail-title]")!;
+    const list = rail.querySelector<HTMLElement>("ol")!;
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+    let pending = false;
+    const update = () => {
+      pending = false;
+      const line = innerHeight * .35;
+      let current = 0;
+      targets.forEach((target, i) => { if (target.getBoundingClientRect().top <= line) current = i; });
+      links.forEach((link, i) => { if (i === current) link.setAttribute("aria-current", "location"); else link.removeAttribute("aria-current"); });
+      title.textContent = links[current].getAttribute("aria-label");
+    };
+    const schedule = () => { if (!pending) { pending = true; requestAnimationFrame(update); } };
+    addEventListener("scroll", schedule, { passive: true });
+    addEventListener("resize", schedule);
+    addEventListener("pageshow", schedule);
+    update();
+    // Anchors remain ordinary links with keyboard/no-JS support. Enhance click and drag only.
+    const go = (index: number, smooth: boolean) => {
+      targets[index].scrollIntoView({ block: "start", behavior: smooth && !reduced.matches ? "smooth" : "instant" });
+    };
+    let start: { x: number; y: number; id: number } | null = null;
+    let dragged = false;
+    let last = -1;
+    list.addEventListener("pointerdown", event => {
+      if (event.button !== 0 || !event.isPrimary) return;
+      start = { x: event.clientX, y: event.clientY, id: event.pointerId };
+      dragged = false; last = -1;
+    });
+    list.addEventListener("pointermove", event => {
+      if (!start || start.id !== event.pointerId) return;
+      const horizontal = matchMedia("(width < 900px)").matches;
+      const distance = horizontal ? Math.abs(event.clientX - start.x) : Math.abs(event.clientY - start.y);
+      if (!dragged && distance < 6) return;
+      dragged = true;
+      list.setPointerCapture(event.pointerId);
+      const position = horizontal ? event.clientX : event.clientY;
+      const centers = links.map(link => { const r = link.getBoundingClientRect(); return horizontal ? r.x + r.width / 2 : r.y + r.height / 2; });
+      const index = centers.reduce((best, center, i) => Math.abs(center - position) < Math.abs(centers[best] - position) ? i : best, 0);
+      if (index !== last) { last = index; go(index, false); }
+    });
+    const release = () => { start = null; };
+    addEventListener("pointerup", release);
+    list.addEventListener("pointercancel", () => { release(); dragged = false; });
+    list.addEventListener("click", event => {
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (dragged) { event.preventDefault(); dragged = false; return; }
+      const link = (event.target as Element).closest("a");
+      if (!link) return;
+      event.preventDefault();
+      history.replaceState(null, "", link.hash);
+      go(links.indexOf(link), true);
+    });
+  }
+</script>
+<style>
+  .chapter-rail {
+    position: fixed;
+    z-index: 90;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-primary);
+    background: var(--bg-canvas);
+    border: var(--stroke-control) solid var(--border-strong);
+  }
+  .rail-current { display: none; }
+  .rail-stops { margin: 0; padding: 0; list-style: none; touch-action: pan-x; user-select: none; }
+  a { position: relative; display: flex; align-items: center; justify-content: center; width: var(--touch-target); height: var(--touch-target); font-size: var(--type-label); font-weight: var(--weight-bold); }
+  a[aria-current] { background: var(--action-primary); color: var(--text-inverse); }
+  .rail-label { position: absolute; right: 100%; padding: var(--space-12) var(--space-16); background: var(--bg-canvas); color: var(--text-primary); border: var(--stroke-control) solid var(--border-strong); white-space: nowrap; visibility: hidden; }
+  a:hover .rail-label, a:focus-visible .rail-label { visibility: visible; }
+  @media (width < 900px) {
+    .chapter-rail { inset: auto var(--space-12) max(var(--space-12),env(safe-area-inset-bottom)); transform: none; }
+    .rail-current { display: block; padding: var(--space-8) var(--space-12) 0; font-size: var(--type-label); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .rail-stops { display: flex; touch-action: pan-y; }
+    li { flex: 1; min-width: 0; }
+    a { width: 100%; }
+    .rail-label { display: none; }
+  }
+  @media print { .chapter-rail { display: none; } }
+</style>

@@ -1,15 +1,9 @@
 ---
-/*
- * Home in the landscape (landscape build S1). The scene is Mirror Lake; the words are today's
- * home page, unchanged. Arrival: the hero copy over the scene, readable at first paint. Reading: once the Work section reaches the reading line, the scene
- * softens and dims, the bar names the project in view, and the place behind the words follows
- * the reading line: each case study's paired scene, then each section's own (scene-pairings.json
- * `projects` and `homeSections`), and Mirror Lake again behind the footer.
- * Retired from today's home: the typewriter lock-in and the marquee (proposal §10), and the
- * hero photo (a rewrite moves it to About).
- */
+/* Home keeps the existing landscape and cursor depth. Arrival, featured work, and contact
+ * share a project timeline; About and How I Build now live at /about. */
 import { getCollection } from "astro:content";
 import SceneLayout from "@/layouts/SceneLayout.astro";
+import ChapterRail from "@/components/scene/ChapterRail.astro";
 import WorkItem from "@/components/scene/WorkItem.astro";
 import Button from "@/components/ui/Button.astro";
 import ArrowLink from "@/components/ui/ArrowLink.astro";
@@ -27,7 +21,7 @@ const featuredProjects = allProjects
   .sort((a, b) => a.data.order - b.data.order);
 
 // the places behind the reading parts (backdrops): each case study's, then each section's
-const sections = { how: homeSection("how"), about: homeSection("about"), contact: homeSection("contact"), footer: homeSection("footer") };
+const sections = { contact: homeSection("contact"), footer: homeSection("footer") };
 const backdrops = [...featuredProjects.map((p) => sceneForProject(p.slug)), ...Object.values(sections)];
 
 const homeTitle = "Cello — Digital Designer, Brand & Design Systems";
@@ -42,7 +36,8 @@ const homeDescription =
   backdrops={backdrops}
   footerPlace={sections.footer}
 >
-  <section class="hero" aria-labelledby="hero-name" data-scene-hero>
+  <ChapterRail projects={featuredProjects.map(p => ({ slug: p.slug, title: p.data.title }))} />
+  <section id="arrival" class="hero" aria-labelledby="hero-name" data-scene-hero>
     <div class="hero-copy copy-scrim" data-scene-intro>
       <h1 class="hero-name" id="hero-name">Cello</h1>
       <Eyebrow class="kicker">
@@ -95,53 +90,8 @@ const homeDescription =
   </Section>
 
   <Section
-    class="how"
-    title="How I Build"
-    titleId="how-heading"
-    intro="I build what I design, so the system reaches production intact. Code does everything it can, the model gets the smallest job it can be trusted with, and a person approves wherever the consequences are."
-    data-scene-stop="How I Build"
-    data-scene-backdrop={sections.how}
-  >
-      <div class="proof-strip">
-        <a class="proof-item" href="/projects/asheville-dispensary">
-          <h3>Code First</h3>
-          <p>
-            A script checks for new product drops before any model runs. An idle day costs about
-            $0.30 instead of $12.
-          </p>
-          <span class="proof-link">Proof: Asheville automations →</span>
-        </a>
-        <a class="proof-item" href="/projects/ghosted">
-          <h3>A Small, Checkable Job</h3>
-          <p>
-            The agent edits the resume, but every change arrives highlighted and versioned, for
-            the person to accept or reject.
-          </p>
-          <span class="proof-link">Proof: Ghosted →</span>
-        </a>
-        <a class="proof-item" href="/projects/vegavengers">
-          <h3>Approval Where It Matters</h3>
-          <p>
-            An AI checker proposes festival updates as ordinary CMS drafts. Editors publish; the
-            AI never does.
-          </p>
-          <span class="proof-link">Proof: VegAvengers →</span>
-        </a>
-      </div>
-  </Section>
-
-  <Section
-    class="about"
-    id="about"
-    title="About"
-    titleId="about-heading"
-    intro="I came to product design through visual journalism, brand systems, and front-end engineering. That range lets me translate creative intent into product rules, prototype behavior, make constraints legible, and speak the language of the team shipping it."
-    data-scene-stop="About"
-    data-scene-backdrop={sections.about}
-  />
-
-  <Section
     class="contact"
+    id="contact"
     title="Let’s Talk"
     titleId="contact-heading"
     intro="Open to design systems, brand and product design roles, remote in the US or in Portland. The fastest way to reach me is email."
@@ -153,6 +103,14 @@ const homeDescription =
         <ArrowLink href="/resume">View Resume</ArrowLink>
       </div>
   </Section>
+  <noscript><p class="container"><a href="/about/">About and How I Build →</a></p></noscript>
+  <script is:inline>
+    // URL fragments never reach the server. Keep historical section links usable.
+    if (location.hash === "#about" || location.hash === "#how") location.replace("/about/" + location.hash);
+    addEventListener("hashchange", () => {
+      if (location.hash === "#about" || location.hash === "#how") location.replace("/about/" + location.hash);
+    });
+  </script>
 </SceneLayout>
 
 
@@ -247,56 +205,8 @@ const homeDescription =
     margin-top: var(--space-32);
   }
 
-  .how,
-  .about,
   .contact {
     padding-block: var(--space-64);
-  }
-
-  .proof-strip {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-24);
-    margin-top: var(--space-48);
-  }
-
-  .proof-item {
-    display: flex;
-    flex-direction: column;
-    padding-top: var(--space-16);
-    border-top: var(--stroke-frame) solid var(--border-strong);
-    color: var(--text-on-art);
-    transition: border-color var(--motion-ui) var(--ease-out);
-  }
-
-  .proof-item:hover,
-  .proof-item:focus-visible {
-    border-top-color: var(--action-primary);
-  }
-
-  .proof-item h3 {
-    margin: 0 0 var(--space-12);
-    font-size: var(--type-title);
-    font-weight: var(--weight-bold);
-    line-height: var(--leading-title);
-    text-transform: uppercase;
-  }
-
-  .proof-item p {
-    margin: 0 0 var(--space-16);
-    font-size: var(--type-small);
-    line-height: var(--leading-small);
-  }
-
-  .proof-link {
-    margin-top: auto;
-    /* small text over the focused scene: green measured 4.46:1 on the still, so it reads in the
-       on-art label color; the card's top rule turns green on hover instead */
-    color: var(--text-on-art-muted);
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--track-wide);
-    text-transform: uppercase;
   }
 
   .contact {
@@ -319,9 +229,6 @@ const homeDescription =
     }
   }
 
-  @media (width <= 900px) {
-    .proof-strip {
-      grid-template-columns: 1fr;
-    }
-  }
+  @media (width >= 900px) { :global(main:has(.chapter-rail)) { padding-right: var(--space-48); } }
+  @media (width < 900px) { :global(body:has(.chapter-rail)) { padding-bottom: var(--space-96); } }
 </style>

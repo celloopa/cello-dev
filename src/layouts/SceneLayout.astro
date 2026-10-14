@@ -161,7 +161,7 @@ const current = (href: string) => {
           <nav class="footer-nav" aria-label="Footer navigation">
             <a href="/projects" aria-current={current("/projects")}>Work</a>
             <ul class="footer-utils" aria-label="Utilities">
-              <li><a href="/#about">About</a></li>
+              <li><a href="/about" aria-current={current("/about")}>About</a></li>
               <li><a href="/blog" aria-current={current("/blog")}>Writing</a></li>
               {email && <li><a href={`mailto:${email}`}>Contact</a></li>}
               <li><a href="/resume" aria-current={current("/resume")}>Resume</a></li>

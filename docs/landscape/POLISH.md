@@ -1,6 +1,6 @@
 # Existing landscape: cutover polish, 2026-10-13
 
-This supersedes the earlier chapters hold and four still-first scene limits. Cello chose the existing scrolling portfolio over the separate world prototype, requested motion behind the work, and removed “Take in the view”: the scenery is simply the space. C0–C5 and the prototype route are outside this candidate.
+This supersedes the earlier chapters hold and four still-first scene limits. Cello chose the existing scrolling portfolio over the separate world prototype, requested motion behind the work, and removed “Take in the view”: the scenery is simply the space. The separate world prototype remains outside this candidate. Cello subsequently restored the separate About page and project timeline while retaining this landscape implementation (see below).
 
 ## Implemented
 
@@ -59,3 +59,25 @@ Cello chose stills for all fallbacks after seeing imagery appear then disappear 
 ## Release boundary
 
 PR14 is a review preview, never a merge vehicle. Refresh it with a fresh single commit parented directly on live master; do not push historical landscape ancestry. Keep CV JSON, resume PDF and URL redirects byte-identical. Production requires Cello's go on the concrete candidate and the cutover checklist. Physical iPhone and Firefox are not verified in this pass. The prior deferred class-name guard and unrelated unlinked legacy assets remain outside this polish.
+
+## Separate About and project timeline (2026-10-13)
+
+Baseline: the prior candidate placed About and How I Build after all four projects on home, linked utilities to `/#about`, and had no timeline. Cello restored these two navigation decisions from the chapters plan while keeping the existing scenery and cursor depth.
+
+Home now runs arrival → selected work → contact. `/about/` contains the original About and How I Build copy and proof links, then contact. It opens over Bald Mountain with the existing reading renderer; its sections retain their paired scenes. Header/footer utilities and the event card link to it. Historical `/#about` and `/#how` forward in-page to the new route; without JavaScript the footer and explicit fallback link still reach About.
+
+The homepage timeline is a right rail at ≥900px and a bottom bar below that, with arrival, four projects, and contact. Ordinary named anchor links support keyboard and no-JavaScript use. Click/tap jumps, pointer dragging scrubs, and the current stop follows scroll and browser restoration. Reduced motion jumps immediately. Mobile reserves space after the footer and places the bar within the safe area. The scene renderer, cut assets, cursor tuning, and still-fallback rules are unchanged.
+
+Quick persona: Morgan, a hiring manager comparing case studies and then checking the designer's approach, English, public pages only. No seeded/private data.
+
+| Flow | Result | Evidence |
+| --- | --- | --- |
+| Jump among all projects and contact, see current stop | Pass at 1440, 768, 390px | `shots/navigation/home-390-dark.webp` |
+| Scrub backwards from contact to the first project | Pass at all three widths | Private navigation-check driver |
+| Use timeline with keyboard; follow links without JS | Pass | Private navigation-check driver |
+| Read About/How I Build; open old section links | Pass at all three widths, canonical `/about/` verified | `shots/navigation/about-1440-dark.webp` |
+| Preserve cursor-driven scenery with fixed content | Verified with existing cursor driver plus new About check | Private cursor-results and about-depth results |
+
+Build: 114 Astro files, zero errors/warnings/hints, 15 pages; token/family/Figma checks pass. Desktop/phone Day/Dusk screenshots use the existing `ui:shots` driver. Physical touch-device behavior remains unverified. Preview only; production boundary above still applies.
+
+Helium resolution: Cello confirmed the current preview works. Native inspection found the earlier tab was still showing an old deployment with the removed viewing control; this supports a stale-tab explanation, without attributing every earlier symptom to one proven cause.
