@@ -231,6 +231,12 @@ any interaction changes belong in Cello's review of the direction.
    named destinations, or exploratory interactions? Recommendation: carry visual coherence into
    the approved landscapes first; interaction changes need a separate decision.
 
+**Follow-up, 2026-10-13:** Cello answered question 5: the illustrated world **and exploring it**;
+the site should feel like a discoverable place while keeping work easy to find. Exploration
+belongs in the next storyboard. Mechanics remain open. His requested
+[quick Efecto REA](RESEARCH-efecto-quick.md) records candidate art workflows and the proposed
+one-place/one-project experiment; no plan or application changes were applied.
+
 ## Completion and handoff
 
 | Requested question | Result |
