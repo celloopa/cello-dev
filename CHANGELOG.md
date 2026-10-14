@@ -4,6 +4,7 @@ All notable changes to this portfolio site should be documented here.
 
 ## Unreleased: landscape cutover candidate (2026-10-13)
 
+- Apply the hero’s cursor-driven depth and shared per-layer spring tuning across scene backdrops and case-study backgrounds, without moving content; keep tested caps and reduced-motion stills.
 - Keep the existing scrolling landscape portfolio. Remove the separate “Take in the view” mode; the scenery is the space throughout.
 - Clean hidden fills and registered edges for Over Hood, Moss Falls, Meadows Lift and Salmon Ridge. All ten scenes retain bounded cut layers. Add slow reading drift at one fifth of each inspected cap, 24 seconds of movement followed by 60 seconds at rest, at most 30 fps. Load only the active backdrop’s cut stack; suspend the covered renderer. Reduced motion, Save-Data, missing WebGL/textures and hidden tabs keep the still fallback.
 - Give case-study summaries the full artifact frame, with two columns and a full-width Tools row; center the reading column and allow media to use the wider frame. Fix phone TOC focus clipping, touch hover states, Menu spacing, and keyboard-menu Tab/focus return.

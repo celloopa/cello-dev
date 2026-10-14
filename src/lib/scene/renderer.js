@@ -32,7 +32,7 @@ import {
 } from "three";
 import { DUSK, artVert, colorGLSL, motionGLSL, motionDefines, prepareLayerTexture, MOTION_MAX_UV } from "./art-shader.js";
 
-import { readingDrift } from "./reading-drift.js";
+import { readingDrift, DEPTH_SPRINGS as SPRING } from "./reading-drift.js";
 const AMBIENT_IDLE = 15000;   // ms of ambient micro-motion after the last input
 const AMBIENT_FPS = 30;
 const POINTER_TRAVEL = 1;     // × caps at the pointer extremes
@@ -64,7 +64,7 @@ function tuning(tokens) {
   };
 }
 // pointer / scroll springs, by layer from the back (ζ lower = livelier near layers)
-const SPRING = [{ zeta: 1, omega: 6 }, { zeta: 0.9, omega: 6 }, { zeta: 0.75, omega: 6.5 }, { zeta: 0.62, omega: 7 }];
+
 
 const artFrag = /* glsl */ `
   uniform sampler2D uMap; uniform float uTime, uFade, uDusk, uShore, uMotion, uBright, uSat; uniform vec3 uDuskInk;
@@ -243,8 +243,7 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
   const target = { reading: reading ? 1 : 0, scroll: 0 };
   let focus = target.reading, ambient = 0;
   let covered = false, restTimer = 0;
-  // fully read: travel and micro-motion are 0, so pointer and scroll input change nothing on
-  // screen and wake no frames (the loop stays stopped while reading)
+  // Reading keeps cursor depth; mobile scroll travel still settles while reading.
   const settledReading = () => target.reading === 1 && focus === 1;
   let arrivalT = settled() ? 99 : 0, arrivalHeld = null;
   const pointer = { x: 0, y: 0 };
@@ -268,13 +267,13 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     if (arrivalHeld === null) arrivalT += dt;
     const at = arrivalHeld ?? arrivalT;
 
-    const travel = 1 - focus; // reading: no travel at all
+    const travel = 1 - focus; // mobile scroll travel only
     let moving = false;
     for (const p of layers) {
       // depth targets: pointer (desktop) or scroll (mobile); pointer right → near layers slide left
       let tx = 0, ty = 0;
       if (isMobile) ty = target.scroll * p.cap[1] * travel;
-      else { tx = -pointer.x * p.cap[0] * POINTER_TRAVEL * travel; ty = -pointer.y * p.cap[1] * POINTER_TRAVEL * travel; }
+      else { tx = -pointer.x * p.cap[0] * POINTER_TRAVEL; ty = -pointer.y * p.cap[1] * POINTER_TRAVEL; }
       // damped spring (semi-implicit Euler, fixed substeps)
       const { zeta, omega } = p.spring;
       for (let n = Math.max(1, Math.ceil(dt * 240)), h = dt / n, i = 0; i < n; i++) {
@@ -356,11 +355,11 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     if (!fine.matches || isMobile || e.pointerType === "touch") return;
     pointer.x = clamp((e.clientX / innerWidth) * 2 - 1, -1, 1);
     pointer.y = clamp(-(((e.clientY - canvas.getBoundingClientRect().top) / H) * 2 - 1), -1, 1);
-    if (!settledReading()) wake();
+    wake();
   }, { passive: true });
   // pointer leaves the window → spring back to rest
-  document.documentElement.addEventListener("pointerleave", () => { pointer.x = 0; pointer.y = 0; if (!settledReading()) wake(); });
-  addEventListener("blur", () => { pointer.x = 0; pointer.y = 0; if (!settledReading()) wake(); });
+  document.documentElement.addEventListener("pointerleave", () => { pointer.x = 0; pointer.y = 0; wake(); });
+  addEventListener("blur", () => { pointer.x = 0; pointer.y = 0; wake(); });
   addEventListener("resize", () => { if (layout()) { renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.5 : 2)); renderer.setSize(W, H, false); wake(); } });
   new ResizeObserver(() => { if (layout()) wake(); }).observe(canvas);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) { last = performance.now(); wake(); } });

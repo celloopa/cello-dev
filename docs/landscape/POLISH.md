@@ -5,6 +5,7 @@ This supersedes the earlier chapters hold and four still-first scene limits. Cel
 ## Implemented
 
 - Remove the separate viewing mode. Keep work and case studies directly available.
+- Cello clarified that all scenes must use the hero’s cursor-driven depth, including case-study backgrounds, with content fixed. Both WebGL reading scenes and lazy backdrop layers now use the same back-to-front spring tuning and full inspected pointer caps; subtle idle drift remains additive and clamped. Pointer leave/blur returns layers toward center; reduced motion retains stills.
 - Case-study summary fills the same frame as the cover and artifacts: two columns, Tools spanning the final row, one column on phones. Headings and body share a centered reading column; media uses the wider frame.
 - All ten places have registered depth planes. Reading drift uses 20% of inspected caps, with a 24-second phrase followed by 60 seconds at rest, capped at 30fps. Only the current backdrop stack stays loaded after crossfade; the covered base renderer sleeps. Reduced motion, Save-Data and unavailable WebGL keep stills.
 - Four former still-first scenes have repaired hidden fills and edges. Visible source RGB is restored from the locked masters; generated pixels supply only occluded continuation. Native PNG restack max/mean difference is zero for all four. WebP is a lossy delivery derivative. This is a local registered cleanup, not a new Figma art export.
@@ -41,6 +42,7 @@ Three reading-motion tokens were added to the existing Figma Dimensions collecti
 - All ten scenes at 390/1440px: 20 passes, offsets stay within caps and reading offsets change. No page errors.
 
 - Phone Slow 4G (1.44Mbps, 562.5ms latency, 4× CPU, cold cache, gzip), three runs: Ghosted LCP 1.712/2.012/2.008s, median 2.008s; CLS 0.0001; no console errors. The prior 0.0531 layout shift is fixed. The strict 2.000s target is narrowly missed; record it as open rather than rounding to a pass. Earlier unchanged home/card measurements were 1.776/1.792s, CLS 0.
+- Cursor follow-up: build passes; directional pointer checks cover Ghosted, Asheville and the scrolling work backdrop, with case-summary bounds unchanged and offsets within caps; reduced motion remains static.
 - CV JSON and resume PDF remain byte-identical to live; redirects unchanged. Staged privacy patterns and whitespace checks pass.
 - Native Safari check was attempted but the Mac was locked; no Safari pass is claimed.
 
