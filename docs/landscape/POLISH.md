@@ -81,3 +81,7 @@ Quick persona: Morgan, a hiring manager comparing case studies and then checking
 Build: 114 Astro files, zero errors/warnings/hints, 15 pages; token/family/Figma checks pass. Desktop/phone Day/Dusk screenshots use the existing `ui:shots` driver. Physical touch-device behavior remains unverified. Preview only; production boundary above still applies.
 
 Helium resolution: Cello confirmed the current preview works. Native inspection found the earlier tab was still showing an old deployment with the removed viewing control; this supports a stale-tab explanation, without attributing every earlier symptom to one proven cause.
+
+## Node rail correction (2026-10-14)
+
+Cello meant the earlier small rail with connected nodes, not numbered timeline cells. Replace all numbers and endpoint symbols with nodes, a connecting line, and a green current node. Keep desktop hover/focus names and the compact current-name label on phones. Click, scrub, keyboard, no-JavaScript anchors, scene depth, and About separation retain their existing behavior.

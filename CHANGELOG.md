@@ -2,7 +2,9 @@
 
 All notable changes to this portfolio site should be documented here.
 
-## Unreleased: landscape cutover candidate (2026-10-13)
+## Unreleased: landscape cutover candidate (2026-10-14)
+
+- Correct the project timeline to the small connected-node rail Cello intended, with a green current node instead of numbers. Retain existing navigation and scenery.
 
 - Restore a separate `/about/` for About and How I Build; update utility/event-card links and forward historical home fragments. Add a homepage project timeline with desktop rail, mobile bottom bar, click/tap, scrubbing, current-stop tracking, and keyboard/no-JavaScript links. Retain the existing scenery and cursor depth. Navigation checks: `docs/landscape/POLISH.md`.
 

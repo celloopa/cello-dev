@@ -2,15 +2,15 @@
 interface Props { projects: { slug: string; title: string }[] }
 const { projects } = Astro.props;
 const stops = [
-  { id: "arrival", title: "Arrival", number: "○" },
-  ...projects.map((p, i) => ({ id: `project-${p.slug}`, title: p.title, number: String(i + 1).padStart(2, "0") })),
-  { id: "contact", title: "Let’s Talk", number: "↗" },
+  { id: "arrival", title: "Arrival" },
+  ...projects.map(p => ({ id: `project-${p.slug}`, title: p.title })),
+  { id: "contact", title: "Let’s Talk" },
 ];
 ---
 <nav class="chapter-rail" aria-label="Project timeline">
   <span class="rail-current" aria-hidden="true" data-rail-title>Arrival</span>
   <ol class="rail-stops">
-    {stops.map((stop, i) => <li><a draggable="false" href={`#${stop.id}`} aria-label={stop.title} aria-current={i === 0 ? "location" : undefined}><span aria-hidden="true">{stop.number}</span><span class="rail-label" aria-hidden="true">{stop.title}</span></a></li>)}
+    {stops.map((stop, i) => <li><a draggable="false" href={`#${stop.id}`} aria-label={stop.title} aria-current={i === 0 ? "location" : undefined}><span class="rail-node" aria-hidden="true"></span><span class="rail-label" aria-hidden="true">{stop.title}</span></a></li>)}
   </ol>
 </nav>
 <script>
@@ -77,25 +77,27 @@ const stops = [
   .chapter-rail {
     position: fixed;
     z-index: 90;
-    right: 0;
+    right: var(--space-4);
     top: 50%;
     transform: translateY(-50%);
     color: var(--text-primary);
-    background: var(--bg-canvas);
-    border: var(--stroke-control) solid var(--border-strong);
   }
   .rail-current { display: none; }
-  .rail-stops { margin: 0; padding: 0; list-style: none; touch-action: pan-x; user-select: none; }
+  .rail-stops { position: relative; margin: 0; padding: 0; list-style: none; touch-action: pan-x; user-select: none; }
   a { position: relative; display: flex; align-items: center; justify-content: center; width: var(--touch-target); height: var(--touch-target); font-size: var(--type-label); font-weight: var(--weight-bold); }
-  a[aria-current] { background: var(--action-primary); color: var(--text-inverse); }
+  .rail-stops::before { content: ""; position: absolute; top: calc(var(--touch-target) / 2); bottom: calc(var(--touch-target) / 2); left: 50%; width: var(--stroke-control); transform: translateX(-50%); background: var(--text-muted); box-shadow: 0 0 0 var(--stroke-control) var(--bg-canvas); }
+  .rail-node { width: var(--space-8); height: var(--space-8); border-radius: var(--radius-circle); background: var(--bg-canvas); border: var(--stroke-control) solid var(--text-primary); box-shadow: 0 0 0 var(--stroke-frame) var(--bg-canvas); }
+  a[aria-current] .rail-node { width: var(--space-12); height: var(--space-12); background: var(--action-primary); border-color: var(--action-primary); }
+  a:hover .rail-node, a:focus-visible .rail-node { border-color: var(--action-primary); }
   .rail-label { position: absolute; right: 100%; padding: var(--space-12) var(--space-16); background: var(--bg-canvas); color: var(--text-primary); border: var(--stroke-control) solid var(--border-strong); white-space: nowrap; visibility: hidden; }
   a:hover .rail-label, a:focus-visible .rail-label { visibility: visible; }
   @media (width < 900px) {
-    .chapter-rail { inset: auto var(--space-12) max(var(--space-12),env(safe-area-inset-bottom)); transform: none; }
-    .rail-current { display: block; padding: var(--space-8) var(--space-12) 0; font-size: var(--type-label); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .chapter-rail { inset: auto auto max(var(--space-12),env(safe-area-inset-bottom)) 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - var(--space-24)); padding-inline: var(--space-12); background: var(--bg-canvas); }
+    .rail-current { display: block; padding: var(--space-8) 0 0; text-align: center; max-width: calc(var(--touch-target) * 6); font-size: var(--type-label); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .rail-stops { display: flex; touch-action: pan-y; }
     li { flex: 1; min-width: 0; }
-    a { width: 100%; }
+    a { width: var(--touch-target); }
+    .rail-stops::before { top: 50%; bottom: auto; left: calc(var(--touch-target) / 2); right: calc(var(--touch-target) / 2); width: auto; height: var(--stroke-control); transform: translateY(-50%); }
     .rail-label { display: none; }
   }
   @media print { .chapter-rail { display: none; } }
