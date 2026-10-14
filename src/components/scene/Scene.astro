@@ -1,0 +1,81 @@
+---
+/*
+ * Scene (amendment A3; components.md "Rewrite" tier): one place's cut layers behind the page.
+ * The still (stacked <img>s) is in the HTML; scenery.js runs the attention states and, when the
+ * 3D gate allows, loads the WebGL renderer after paint (a dynamic import of three.js) and hands
+ * over to it. Also renders the PlaceLabel (Switchback, the place-name role).
+ *
+ * Backdrops: other places the page brings in behind its focused content (scenery.js), each as its
+ * reading still over the scene, focused like it. Home: the place of the case study or section in
+ * view; /projects: the place of the story pointed at. Scene renders only their (empty) layer; the
+ * places themselves are data at the end of the page (SceneLayout), so not a byte of them comes
+ * before the first screen's words, and scenery.js loads each still only as its part of the page
+ * nears (or on hover).
+ */
+import { loadScene } from "@/lib/scene/catalog";
+
+interface Props {
+  place: string;
+  /**
+   * A reading or index page: the still it paints is the half-size flattened scene (it's only
+   * ever seen through the focus blur), fetched first, while the full layers load hidden for the
+   * renderer. On a slow link the page's largest paint then lands early instead of whenever the
+   * first full layer gets through.
+   */
+  focused?: boolean;
+  /** Scene ids the page may bring in behind its content (the page's own place is skipped). */
+  backdrops?: string[];
+}
+
+const scene = loadScene(Astro.props.place);
+const read = Astro.props.focused ? scene.read : null;
+const anchor = scene.layers[0]?.anchor ?? [0.5, 0.5];
+const label = `${scene.place} · ${scene.month}`;
+const backdrops = (Astro.props.backdrops ?? []).filter((id) => id !== scene.id);
+const pct = (v: number) => `${+(v * 100).toFixed(2)}%`;
+---
+
+<div class="scene" data-scene aria-hidden="true">
+  <div class="scene-still" data-read-still={read ? "" : undefined}>
+    {
+      read && (
+        <img
+          class="scene-read"
+          src={read.src}
+          width={read.width}
+          height={read.height}
+          alt=""
+          fetchpriority="high"
+          decoding="async"
+          style={`--ax:${pct(anchor[0])};--ay:${pct(anchor[1])};--mx:${pct(read.mobileX)};--my:50%`}
+        />
+      )
+    }
+    {
+      scene.layers.map((l) => (
+        <img
+          class={`scene-layer scene-layer-${l.name}`}
+          src={read ? undefined : l.src}
+          data-src={read ? l.src : undefined}
+          width={l.width}
+          height={l.height}
+          alt=""
+          decoding="async"
+          style={`--ax:${pct(l.anchor[0])};--ay:${pct(l.anchor[1])};--mx:${pct(l.mobileAnchor[0])};--my:${pct(l.mobileAnchor[1])}`}
+        />
+      ))
+    }
+  </div>
+  {backdrops.length > 0 && <div class="scene-backdrop" data-scene-backdrops />}
+  <div class="scene-atmos">
+    <i class="scene-atmos-arrive"></i><i class="scene-atmos-view"></i><i
+      class="scene-atmos-read"></i>
+  </div>
+  <script is:inline type="application/json" data-scene-json set:html={JSON.stringify(scene)} />
+</div>
+<p class="place-label" aria-hidden="true">{label}</p>
+
+<script>
+  import { start } from "@/lib/scene/scenery.js";
+  start();
+</script>

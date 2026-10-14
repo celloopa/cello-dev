@@ -1,0 +1,71 @@
+{
+  "id": "bald-mountain",
+  "place": "Bald Mountain",
+  "month": "September",
+  "status": "photo treatment and cut candidate; people removed from the art 2026-10-12; aesthetic approval pending; exact trail identification unconfirmed",
+  "sourceSize": [
+    2172,
+    1448
+  ],
+  "webSize": [
+    1536,
+    1024
+  ],
+  "master": "/scenes/bald-mountain/master-wide.webp",
+  "portrait": "/scenes/bald-mountain/master.webp",
+  "originalPortraitBounds": [
+    543,
+    0,
+    1629,
+    1448
+  ],
+  "expandedSides": "AI outpainted; treated portrait center mechanically preserved",
+  "exportOrigin": "Figma native isolated PNG renders; source resolution; visible RGB and alpha exact against local cuts",
+  "mobileObjectPosition": "46% 50%",
+  "layers": [
+    {
+      "name": "sky",
+      "src": "/scenes/bald-mountain/sky.webp",
+      "depth": 0.97,
+      "testedHorizontalSourcePx": 0
+    },
+    {
+      "name": "far",
+      "src": "/scenes/bald-mountain/far.webp",
+      "depth": 0.8,
+      "testedHorizontalSourcePx": 1
+    },
+    {
+      "name": "near",
+      "src": "/scenes/bald-mountain/near.webp",
+      "depth": 0.05,
+      "testedHorizontalSourcePx": 4
+    }
+  ],
+  "checks": {
+    "restack": "cut-check.json",
+    "center": "expansion.json",
+    "motion": [
+      "motion-left.jpg",
+      "motion-right.jpg"
+    ],
+    "crops": [
+      "crop-desktop.jpg",
+      "crop-mobile.jpg"
+    ]
+  },
+  "limitations": [
+    "Mountain and forested valley share one plane; no people in the art (the prominent anonymous figure and the small distant group were removed 2026-10-12)",
+    "Fine skyline cleanup needed before increasing mountain travel; motion bounds are source pixels",
+    "AI treatment changes fine trees/rocks/snow, side expansion invents geography",
+    "Still/reduced-motion is reliable baseline; no runtime or physical-device test claimed"
+  ],
+  "peopleRemoved": {
+    "date": "2026-10-12",
+    "decision": "Cello: make them tiny or remove; public repo keeps people subtle",
+    "prominentFigure": "removed",
+    "distantGroup": "removed",
+    "method": "image edit of the locked portrait master; result composited only inside a feathered mask around the former figures, every other portrait pixel byte-identical to the previous master; wide master rebuilt by pasting the portrait into the same center bounds",
+    "nearMatte": "regenerated from the people-free wide master (near-raw-v2.png); sky/far reuse the terrain matte and clean plate"
+  }
+}

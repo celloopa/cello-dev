@@ -276,9 +276,17 @@ Later that night I asked whether the steps were as short as they could be. They 
 
 Testers never see the landing page, but everyone else does first, and a page of screenshots can't show what a proposal feels like. I asked for something "stupidly flashy… more of an experience," then reacted to three live prototypes: a scroll loop, a kinetic editorial page and a hands-on playground. I picked the loop and pulled in the playground's Keep and Reject and the editorial page's mouse-following ghost.
 
-One fictional resume performs the whole product as you scroll, in five chapters: paste a link, review the proposal as it swipes in, keep or reject it, check fit and research, and track the job on the board. At the end of each chapter it hands you the controls. You can press Tailor, click a line to edit it, burst the highlights into sparks with Keep or break them into shards with Reject, switch Fit and Research, and drag the card to Applied. If you just keep scrolling, each step plays by itself.
+One fictional resume performs the whole product as you scroll, in six chapters: paste a link, check the posting for ghost-job signs, review the proposal as it swipes in, keep or reject it, check fit and research, and track the job on the board. At the end of each chapter it hands you the controls. You can press Tailor, click a line to edit it, burst the highlights into sparks with Keep or break them into shards with Reject, switch Fit and Research, and drag the card to Applied. If you just keep scrolling, each step plays by itself.
 
-It's a showcase, so it gets its own motion tier, written down as a decision: no animation library, no scroll hijacking (snap points only catch a fling, so a trackpad can't skip a chapter), a Pause motion toggle for WCAG 2.2.2, and five still panels with reduced motion. Splitting the signed-in app into its own bundle took the landing's JavaScript from 288 kB to 81 kB gzipped. On mobile, Lighthouse performance went from 93 to 98 and page weight from 978 KiB to 349 KiB (the live page against the new build, measured locally). A phone audit afterwards found taps landing on faded layers and scrolling that re-styled about 300 elements every frame. Moving the scrubbed parts onto one scroll timeline cut frames over 33 ms from 21 to 3 on a throttled desktop, and every hands-on moment now works on a phone.
+<MediaFull
+  src="/images/projects/ghosted/v3/ghosted-loop.webm"
+  mp4="/images/projects/ghosted/v3/ghosted-loop.mp4"
+  poster="/images/projects/ghosted/v3/ghosted-loop-poster.webp"
+  alt="Ghosted's landing page scrolling through six chapters with one made-up resume, Rowan Ellis: paste a job link, a ghost-job check, an AI proposal highlighted in yellow, Keep, Fit and Research, and the page shrinking into its card on the board"
+  caption="The Loop on Ghosted's landing page, scrolled from start to finish: a job link is pasted, the posting gets a ghost check, the AI's proposal swipes in highlighted, it is kept, Fit and Research arrive, and the page lands as a card on the board. (Demo data: a fictional resume.)"
+/>
+
+It's a showcase, so it gets its own motion tier, written down as a decision: no animation library, no scroll hijacking (snap points only catch a fling, so a trackpad can't skip a chapter), a Pause motion toggle for WCAG 2.2.2, and six still panels with reduced motion. Splitting the signed-in app into its own bundle took the landing's JavaScript from 288 kB to 81 kB gzipped. On mobile, Lighthouse performance went from 93 to 98 and page weight from 978 KiB to 349 KiB (the live page against the new build, measured locally). A phone audit afterwards found taps landing on faded layers and scrolling that re-styled about 300 elements every frame. Moving the scrubbed parts onto one scroll timeline cut frames over 33 ms from 21 to 3 on a throttled desktop, and every hands-on moment now works on a phone.
 
 ## A Leaner, Faster AI
 

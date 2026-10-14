@@ -1,0 +1,120 @@
+---
+/*
+ * MediaVideo: a muted, looping demo video (proposal §7 "Media"; used by MediaFull, MediaTwo,
+ * MediaThree and the case-study cover).
+ *   - Sources: `src` (.webm or .mp4) plus an optional `mp4` fallback, as <source> pairs.
+ *   - `poster`: shown before the first frame, and instead of motion under reduced motion.
+ *   - `label`: the video's accessible name (the alt text of a video).
+ *   - Plays only while on screen and only when motion is allowed; never autoplays from markup,
+ *     so reduced motion and no JavaScript keep the poster (or the first frame).
+ *   - A visible Pause / Play button (WCAG 2.2.2): a loop runs longer than 5 s. Once a visitor
+ *     pauses, scrolling never restarts it. The button (a secondary sm Button) appears only with
+ *     JavaScript.
+ */
+import { videoFallbacks } from "@/lib/video";
+import Button from "@/components/ui/Button.astro";
+
+interface Props {
+  src: string;
+  mp4?: string;
+  poster?: string;
+  label?: string;
+  class?: string;
+}
+
+const { src, label, class: className } = Astro.props;
+const fallback = await videoFallbacks(src);
+const mp4 = Astro.props.mp4 ?? fallback.mp4;
+const poster = Astro.props.poster ?? fallback.poster;
+const type = (s: string) => (s.endsWith(".mp4") ? "video/mp4" : "video/webm");
+---
+
+<div class="media-video" data-media-video>
+  <video
+    class={className}
+    loop
+    muted
+    playsinline
+    preload="none"
+    width={fallback.width}
+    height={fallback.height}
+    poster={poster}
+    aria-label={label || undefined}
+  >
+    <source src={src} type={type(src)} />
+    {mp4 && mp4 !== src && <source src={mp4} type="video/mp4" />}
+  </video>
+  <Button class="media-video-toggle" variant="secondary" size="sm" data-media-video-toggle hidden>Pause</Button>
+</div>
+
+<script>
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)");
+
+  for (const box of document.querySelectorAll<HTMLElement>("[data-media-video]")) {
+    const video = box.querySelector("video")!;
+    const button = box.querySelector<HTMLButtonElement>("[data-media-video-toggle]")!;
+    let userPaused = false;
+    let onScreen = !("IntersectionObserver" in window);
+
+    const sync = () => {
+      const paused = video.paused;
+      button.textContent = paused ? "Play" : "Pause";
+      button.setAttribute("aria-label", paused ? "Play video" : "Pause video");
+    };
+    const play = () => video.play().catch(sync);
+    const settle = () => {
+      if (onScreen && !userPaused && !reduce.matches) play();
+      else if (!video.paused) video.pause();
+    };
+
+    video.addEventListener("play", sync);
+    video.addEventListener("pause", sync);
+    button.addEventListener("click", () => {
+      if (video.paused) {
+        userPaused = false;
+        play();
+      } else {
+        userPaused = true;
+        video.pause();
+      }
+    });
+    reduce.addEventListener("change", () => {
+      // turning reduced motion on stops the loop; turning it off doesn't start one by surprise
+      if (reduce.matches) {
+        userPaused = true;
+        video.pause();
+      }
+    });
+    if (!onScreen) {
+      new IntersectionObserver(
+        ([entry]) => {
+          onScreen = entry.isIntersecting;
+          settle();
+        },
+        { rootMargin: "100px 0px" },
+      ).observe(video);
+    }
+    button.hidden = false;
+    sync();
+    settle();
+  }
+</script>
+
+<style>
+  .media-video {
+    position: relative;
+  }
+
+  .media-video video {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Pause / Play (a secondary Button) sits on the video corner */
+  .media-video-toggle {
+    position: absolute;
+    right: var(--space-12);
+    bottom: var(--space-12);
+  }
+</style>

@@ -1,0 +1,111 @@
+---
+/*
+ * One case study in the scene's Work list: today's ProjectCard content as a poster row over the
+ * focused scene: the media (decorative; the title is the link), then a Card (project, lg) with
+ * the role, title, description, two tech tags + count and the live-site link. A reading stop:
+ * the bar names it while it's in view, and its paired place (`place`) comes in behind it.
+ */
+import MediaVideo from "@/components/media/MediaVideo.astro";
+import Card from "@/components/ui/Card.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+  url?: string;
+  techStack: string[];
+  role: string;
+  slug: string;
+  index?: number;
+  /** The scene this case study is paired with (a backdrop on home's Scene). */
+  place?: string;
+}
+
+const { title, description, image, url, techStack, role, slug, index = 0, place } = Astro.props;
+const isVideo = image?.endsWith(".webm") || image?.endsWith(".mp4");
+const href = `/projects/${slug}`;
+---
+
+<li id={`project-${slug}`} class="work-item" data-scene-stop={title} data-scene-backdrop={place} data-flip={index % 2 === 1 ? "" : undefined}>
+  <div class="work-media">
+    {
+      image ? (
+        isVideo ? (
+          <MediaVideo src={image} label={`${title} preview`} />
+        ) : (
+          <a href={href} tabindex="-1" aria-hidden="true"><img src={image} alt="" loading="lazy" decoding="async" /></a>
+        )
+      ) : (
+        <span class="work-media-empty" />
+      )
+    }
+  </div>
+  <Card
+    variant="project"
+    size="lg"
+    heading="h3"
+    href={href}
+    title={title}
+    eyebrow={role}
+    description={description}
+    tags={techStack}
+    live={url}
+  />
+</li>
+
+<style>
+  .work-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: var(--space-48);
+    align-items: center;
+    min-height: 72svh;
+    padding-block: var(--space-32);
+  }
+
+  .work-item[data-flip] .work-media {
+    order: 2;
+  }
+
+  .work-media {
+    display: block;
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background: var(--bg-canvas);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--accent-ground);
+    transition: transform var(--motion-ui) var(--ease-out);
+  }
+
+  .work-item:hover .work-media {
+    transform: translate(-4px, -4px);
+  }
+
+  .work-media :global(img),
+  .work-media :global(video) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .work-media :global(.media-video),
+  .work-media > a { display: block; height: 100%; }
+
+  @media (width <= 700px) {
+    .work-item {
+      grid-template-columns: 1fr;
+      gap: var(--space-24);
+      min-height: auto;
+      padding-block: var(--space-48);
+    }
+
+    .work-item[data-flip] .work-media {
+      order: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .work-item:hover .work-media {
+      transform: none;
+    }
+  }
+</style>

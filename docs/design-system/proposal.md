@@ -363,6 +363,54 @@ approved.** It applies only to the rewrite and stays off today's site until Cell
 6. **Place label** (the `place-name` role in Switchback) and the **Admire** control.
 7. **Scene selector**: storyboarded, not built.
 
+How the landscape build (`claude/landscape-build`, S0–S2) encodes this, for review:
+- **Tokens**, group "Scene" in `tokens.json`, each with a use-line: focus recipe `--focus-blur`,
+  `--focus-brightness`, `--focus-saturate` (+ `-mobile`), `--focus-scale`, and the composed
+  `--focus-filter`/`--focus-filter-mobile` for the DOM still; copy scrim `--scrim-copy` 64%,
+  `--scrim-copy-mobile` 70%, `--scrim-copy-ecola`/`-ecola-mobile` 85%/80%, with
+  `--scrim-copy-fill` and `--scrim-copy-mask`; the ink atmosphere `--atmos-arrive` (+ mobile),
+  `--atmos-view`, `--atmos-read`; signature motion `--motion-arrival-stagger` 120ms,
+  `--motion-arrival-overshoot` 0.107 (≈11%, damping .58), `--motion-focus` 550ms,
+  `--motion-scene-fade` 700ms, `--motion-handoff` 400ms; `--scene-bar` and the copy insets
+  `--scene-copy-start/end/bottom`. The WebGL renderer reads the same tokens at runtime.
+- **Motion caps are not tokens.** They live in each scene's manifest (`public/scenes/<id>/scene.json`),
+  because they're measured per cut; still-first scenes get 0 travel.
+- **Type and color** it needed beyond the list above: `--type-display-scene`, `--type-hero-line`,
+  `--type-place-name`, `--type-place-label`, `--text-on-art`, `--text-on-art-muted`,
+  `--font-place-rough`. Switchback is declared from `tokens.json` ("faces"), so a family still only
+  enters through the type tokens.
+- **The contrast conflict (item 4) in the build:** scene pages use the rule here, and today's
+  pages keep I3 until Cello picks. Every line of text over art is measured against the
+  99th-percentile brightest pixel under it, at 1440 and 390, in Day and Dusk, WebGL and the still,
+  in arrival, Admire and reading (`docs/landscape/CHECKS.md`). A line that fails gets a stronger
+  scrim or an on-art color, never a weaker check.
+- **Reading pages (S2).** A case study or a post is a scene page that opens in the reading state
+  and stays there (`SceneLayout reading`, `html.scene-read-page`): the focus recipe and
+  `--atmos-read` from the first paint, the renderer arriving settled and focused (no assembly,
+  no travel, no micro-motion, no frames while idle), and ContextBar's reading context
+  server-rendered (the title + "All work", or "All posts"), with the menu and theme buttons
+  kept. Which scene a page gets is data (`src/data/scene-pairings.json`; posts rotate by a hash
+  of the slug). No new tokens.
+- **Pieces S2 adds**, all on existing tokens: **Prose** (§7; 2c's `--font-read` scoping
+  unchanged), **MediaVideo** under MediaFull/Two/Three (poster, mp4 fallback, Pause/Play for
+  WCAG 2.2.2, the poster under reduced motion), **ReadHead** (eyebrow, title, lede, tags,
+  cover) and **StoryEnd** (the next story, then the previous one and the index; storyboard
+  frame 08). Text on small labels over art uses `--text-on-art-muted`; anything else small and
+  green (CaseMeta, FlowDiagram, table heads, quotes, inline code) sits on `bg-plate` (A1).
+- **Indexes, /card and 404 (S3).** SceneLayout `focus` (html.scene-focus-page) keeps an index
+  page's scene in the focus recipe from the first paint, like a reading page, with the bar left in
+  the exploring context. Reading and index pages now paint their focused still at first paint and
+  the settled renderer takes over without a visible change (the Slow 4G LCP fix). **SceneSelector**
+  (item 7) is built: /projects and /blog list today's stories with the swatch of their place
+  (`pnpm scenes:derive` flattens each scene's layers into a swatch, and the case-study scenes into
+  a web-size picture and a 9:16 phone crop); on /projects, hover or focus brings the place in
+  behind the list, focused. /card is the event landing page: the name and the two actions over
+  Mirror Lake's arrival, then each case study over its own place, revealed by scrolling (a window
+  onto a fixed picture, settling from `--focus-scale` to rest along a scroll timeline, never under
+  reduced motion). One new token, `--type-display-card` (the full name on one line from 769px), and
+  one shared keyframe, `sceneSettle`. The A1 art inks (`--art-<month>-*`) appear for the first
+  time, as each /card panel's placeholder while its picture loads.
+
 What the migration owes the rewrite:
 - National Park self-hosted (stage 2b).
 - Switchback self-hosted, which can land with 2b as a defined but unused face.

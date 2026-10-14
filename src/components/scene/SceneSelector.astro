@@ -1,0 +1,154 @@
+---
+/*
+ * SceneSelector (A3 item 7, storyboard frame 04; landscape build S3): an index of stories, each
+ * with the swatch of the place it opens over. The list sits over the focused scene of an index
+ * page (SceneLayout `focus`). With `preview`, pointing at or focusing a story brings its place
+ * in behind the list (focused like the scene, so the words keep their contrast); a click or a
+ * tap opens the story. Phones just open it.
+ * Each row: the swatch, then a Card (md, stretched so the row is one target) with today's card
+ * content: the eyebrow (role or date), the title, the description, then the place name, two
+ * tags + a count, and the live link on a case study.
+ */
+import type { SceneArt } from "@/lib/scene/catalog";
+import Card from "@/components/ui/Card.astro";
+
+export interface SelectorItem {
+  href: string;
+  title: string;
+  eyebrow: string;
+  description: string;
+  tags?: string[];
+  /** The live product, opened in a new tab (case studies only). */
+  live?: string;
+  scene: SceneArt;
+}
+
+interface Props {
+  items: SelectorItem[];
+  /** Bring the hovered or focused story's place in behind the list (pointer devices). */
+  preview?: boolean;
+  label: string;
+  /** What the rows are: case studies (with their live links) or posts. */
+  kind?: "project" | "post";
+}
+
+const { items, preview = false, label, kind = "project" } = Astro.props;
+---
+
+<ol class="selector" aria-label={label} data-selector={preview ? "preview" : undefined}>
+  {
+    items.map((item) => (
+      <li class="selector-item" data-preview={preview ? item.scene.id : undefined}>
+        <a class="selector-swatch" href={item.href} tabindex="-1" aria-hidden="true">
+          <img src={item.scene.swatch} alt="" width="480" height="320" loading="lazy" decoding="async" />
+        </a>
+        <Card
+          variant={kind}
+          size="md"
+          heading="h2"
+          stretch
+          href={item.href}
+          title={item.title}
+          eyebrow={item.eyebrow}
+          description={item.description}
+          tags={item.tags}
+          live={item.live}
+        >
+          <p class="selector-place" slot="meta">
+            {item.scene.place} · {item.scene.month}
+          </p>
+        </Card>
+      </li>
+    ))
+  }
+</ol>
+
+<script>
+  import { setBackdrop } from "@/lib/scene/scenery.js";
+  // Preview: the place of the story under the pointer or keyboard focus cross-fades in behind
+  // the list, on the Scene's backdrop layer (the page passes the places as SceneLayout
+  // `backdrops`), as home's reading parts do. Only on devices that hover; a tap opens the story.
+  const list = document.querySelector<HTMLElement>("[data-selector=preview]");
+  if (list && matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    const show = (id: string) => setBackdrop(id);
+    const from = (t: EventTarget | null) => (t instanceof Element ? (t.closest<HTMLElement>("[data-preview]")?.dataset.preview ?? "") : "");
+    list.addEventListener("pointerover", (e) => show(from(e.target)));
+    list.addEventListener("pointerleave", () => show(from(document.activeElement)));
+    list.addEventListener("focusin", (e) => show(from(e.target)));
+    list.addEventListener("focusout", (e) => {
+      if (!list.contains(e.relatedTarget as Node | null)) show("");
+    });
+  }
+</script>
+
+<style>
+  .selector {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .selector-item {
+    display: grid;
+    grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
+    gap: var(--space-32);
+    align-items: start;
+    padding-block: var(--space-32);
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .selector-swatch {
+    display: block;
+    aspect-ratio: 3 / 2;
+    background: var(--bg-plate);
+    border: var(--stroke-frame) solid var(--text-on-art);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--accent-ground);
+    transition:
+      transform var(--motion-ui) var(--ease-out),
+      box-shadow var(--motion-ui) var(--ease-out);
+  }
+
+  .selector-swatch img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .selector-item:hover .selector-swatch,
+  .selector-item:focus-within .selector-swatch {
+    transform: translate(calc(var(--space-4) * -1), calc(var(--space-4) * -1));
+    box-shadow: calc(var(--shadow-offset) + var(--space-4)) calc(var(--shadow-offset) + var(--space-4)) 0 var(--action-primary);
+  }
+
+  /* the row is one target: the Card's stretched title link covers it */
+  .selector-item {
+    position: relative;
+  }
+
+  /* the place name leads the Card's meta row, in Switchback */
+  .selector-place {
+    margin: 0;
+    color: var(--text-on-art-muted);
+    font-family: var(--font-place);
+    font-size: var(--type-label);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-ui);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+
+  @media (width <= 700px) {
+    .selector-item {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-20);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .selector-item:hover .selector-swatch,
+    .selector-item:focus-within .selector-swatch {
+      transform: none;
+    }
+  }
+</style>

@@ -1,0 +1,50 @@
+---
+/*
+ * Eyebrow (proposal §7): the small uppercase label above or inside a block: a role, a date, a
+ * "Next story", a panel's label. Replaces the hand-built `.work-role`, `.selector-eyebrow`,
+ * `.story-end-label`, `.story-end-eyebrow`, the TOC's label, `.panel-role`, `.card-where`,
+ * `.card-qr-title`, the kicker, CaseMeta's label and FlowDiagram's title.
+ *
+ *   tone   inherit  the text color it sits in (the default)
+ *          on-art   --text-on-art-muted: a label over scene art (A3)
+ *          accent   --text-accent: a label on a plate (never over art: small green text over
+ *                   the focused scene measured under 4.5:1)
+ *   as     p (the default), span, figcaption, or a heading level when it names a section
+ *
+ * The `label` type role with wide tracking. Not interactive.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"p"> & {
+  tone?: "inherit" | "on-art" | "accent";
+  as?: "p" | "span" | "figcaption" | "h2" | "h3";
+};
+
+const { tone = "inherit", as: Tag = "p", class: className, ...rest } = Astro.props;
+---
+
+<Tag class:list={["eyebrow", tone !== "inherit" && `eyebrow--${tone}`, className]} {...rest}><slot /></Tag>
+
+<style>
+  /* margin and display in :where(), so a parent can space it without a specificity fight */
+  :where(.eyebrow) {
+    display: block;
+    margin: 0;
+  }
+
+  .eyebrow {
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-ui);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+  }
+
+  .eyebrow--on-art {
+    color: var(--text-on-art-muted);
+  }
+
+  .eyebrow--accent {
+    color: var(--text-accent);
+  }
+</style>

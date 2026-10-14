@@ -1,0 +1,124 @@
+{
+  "id": "meadows-lift",
+  "place": "Meadows lift line",
+  "month": "June",
+  "status": "Cutover candidate: registered hidden-fill cleanup, inspected at the documented caps.",
+  "sourceSize": [
+    1448,
+    1086
+  ],
+  "webSize": [
+    1440,
+    1080
+  ],
+  "master": "/scenes/meadows-lift/master-wide.webp",
+  "exportOrigin": "Local registered cleanup of existing native cuts; visible RGB restored from the locked people-free master. Not re-exported from Figma.",
+  "expandedSides": "None: original landscape4:3 aspect retained",
+  "mobileCropCenter": [
+    0.72,
+    0.5
+  ],
+  "layers": [
+    {
+      "name": "sky",
+      "src": "/scenes/meadows-lift/sky.webp",
+      "depth": 0.97,
+      "testedHorizontalSourcePx": 0,
+      "recommendedHorizontalSourcePx": 0,
+      "capSourcePx": [
+        0,
+        0
+      ]
+    },
+    {
+      "name": "terrain",
+      "src": "/scenes/meadows-lift/terrain.webp",
+      "depth": 0.7,
+      "testedHorizontalSourcePx": 1,
+      "recommendedHorizontalSourcePx": 2,
+      "capSourcePx": [
+        2,
+        0
+      ]
+    },
+    {
+      "name": "lift",
+      "src": "/scenes/meadows-lift/lift.webp",
+      "depth": 0.08,
+      "testedHorizontalSourcePx": 2,
+      "recommendedHorizontalSourcePx": 2,
+      "capSourcePx": [
+        2,
+        0
+      ]
+    }
+  ],
+  "checks": {
+    "restack": "cut-check.json",
+    "motion": [
+      "motion-left.jpg",
+      "motion-right.jpg"
+    ],
+    "isolated": [
+      "isolated-sky.jpg",
+      "isolated-terrain.jpg",
+      "isolated-lift.jpg"
+    ],
+    "crops": [
+      "crop-desktop.jpg",
+      "crop-mobile.jpg"
+    ]
+  },
+  "limitations": [
+    "Hidden scenery is generated continuation, not photographed.",
+    "Only the documented horizontal caps are tested; no independent cable/ground travel on Meadows lift.",
+    "Historical scene run records describe the earlier cuts; these web cuts supersede them."
+  ],
+  "cutoverCleanup": {
+    "sourceSize": [
+      1448,
+      1086
+    ],
+    "restackMaxDifference": 0,
+    "restackMeanDifference": 0.0,
+    "motionTestSourcePx": {
+      "sky": 0,
+      "terrain": 2,
+      "lift": 2
+    },
+    "layers": [
+      {
+        "name": "sky",
+        "sourceSize": [
+          1448,
+          1086
+        ],
+        "pngSha256": "9579a3e14d1215d7c704fbebe42d0803268f3425c2bc88991de072f511153485"
+      },
+      {
+        "name": "terrain",
+        "sourceSize": [
+          1448,
+          1086
+        ],
+        "pngSha256": "e7fbe784dd547b4236a68ddcecb4d9fae55d8c253a517e41bed0ec437fff299c"
+      },
+      {
+        "name": "lift",
+        "sourceSize": [
+          1448,
+          1086
+        ],
+        "pngSha256": "8446f34847fab360b3c0f9a7ccc30c56979275ebe2764e73b15f944c0c1f422a"
+      }
+    ],
+    "origin": "local registered cleanup, not a Figma re-export",
+    "method": "original visible RGB + original/refined binary mattes + generated occluded fill"
+  },
+  "motion": {
+    "recommendation": "Bounded horizontal depth at the listed caps; reading drift uses one fifth of the cap.",
+    "testOnly": false,
+    "reducedMotion": "same registered composition still",
+    "mobile": "documented crop; no tilt dependence"
+  }
+}

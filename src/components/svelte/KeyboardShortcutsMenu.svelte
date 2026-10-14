@@ -12,6 +12,7 @@
   let selectedShortcutIndex = $state(0);
   let dialogElement = $state();
   let overlayElement = $state();
+  let returnFocus;
 
   // Map network names to shortcut keys
   const networkKeyMap = {
@@ -35,6 +36,7 @@
       shortcuts: [
         { key: "h", label: "Home", action: () => navigate("/") },
         { key: "c", label: "Case Studies", action: () => navigate("/projects") },
+        { key: "a", label: "About", action: () => navigate("/about") },
         { key: "r", label: "Resume", action: () => navigate("/resume") },
         { key: "w", label: "Writing", action: () => navigate("/blog") },
       ],
@@ -63,10 +65,13 @@
   ];
 
   function toggleMenu() {
+    if (!isVisible) returnFocus = document.activeElement;
     isVisible = !isVisible;
     updateFooterButton();
     if (isVisible) {
-      setTimeout(() => dialogElement.focus(), 0);
+      setTimeout(() => dialogElement?.focus(), 0);
+    } else {
+      requestAnimationFrame(() => { if (returnFocus?.isConnected) returnFocus.focus(); });
     }
   }
 
@@ -77,6 +82,17 @@
   }
 
   function handleKeydown(event) {
+    if (event.defaultPrevented) return;
+    if (isVisible && event.key === "Tab") {
+      const controls = [...dialogElement.querySelectorAll("button:not([disabled]), a[href], [tabindex='0']")];
+      const first = controls[0], last = controls.at(-1);
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === dialogElement)) {
+        event.preventDefault(); last?.focus();
+      } else if (!event.shiftKey && (document.activeElement === last || document.activeElement === dialogElement)) {
+        event.preventDefault(); first?.focus();
+      }
+      return;
+    }
     if (event.key === "k" && (event.metaKey || event.ctrlKey)) {
       event.preventDefault();
       toggleMenu();
@@ -133,13 +149,13 @@
       shortcut.action();
       setTimeout(() => {
         activeShortcut = null;
-        toggleMenu();
+        if (isVisible) toggleMenu();
       }, 100);
     } else {
       shortcut.action();
       setTimeout(() => {
         activeShortcut = null;
-        toggleMenu();
+        if (isVisible) toggleMenu();
       }, 300);
     }
   }
@@ -169,6 +185,8 @@
 
   function handleOverlayKeydown(event) {
     if (event.key === "Escape") {
+      event.preventDefault();
+      event.stopPropagation();
       toggleMenu();
     }
   }
@@ -203,7 +221,7 @@
       onkeydown={handleOverlayKeydown}
       tabindex="-1"
     >
-      <h2 id="dialog-title" class="sr-only">Keyboard Shortcuts Menu</h2>
+      <header class="menu-head"><h2 id="dialog-title">Menu</h2><button class="close-menu" aria-label="Close menu" onclick={toggleMenu} onkeydown={(event) => { if (event.key === "Enter" || event.key === " ") event.stopPropagation(); }}>×</button></header>
       {#each shortcutCategories as category, categoryIndex}
         <section>
           <h3>{category.title}</h3>
@@ -233,224 +251,28 @@
           <hr />
         {/if}
       {/each}
+      <p class="menu-hint">Esc to close · ↑↓ to move · Enter to open</p>
     </div>
   </div>
 {/if}
 
 <style>
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--scrim);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-    backdrop-filter: blur(4px);
-  }
-
-  .menu {
-    background-color: var(--bg-canvas);
-    border: 4px solid var(--text-primary);
-    padding: var(--space-24);
-    width: 420px;
-    max-width: calc(90% - 16px);
-    color: var(--text-primary);
-    position: relative;
-    animation: menuSlideIn var(--motion-ui) var(--ease-out);
-  }
-
-  .menu::before {
-    content: "";
-    position: absolute;
-    top: 8px;
-    left: 8px;
-    right: -8px;
-    bottom: -8px;
-    border: 4px solid var(--color-accent);
-    z-index: -1;
-    pointer-events: none;
-  }
-
-  @media (max-width: 480px) {
-    .menu {
-      padding: var(--space-12);
-      max-width: calc(100% - 2rem);
-      max-height: calc(100vh - 3rem);
-      overflow-y: auto;
-    }
-
-    .menu::before {
-      top: 4px;
-      left: 4px;
-      right: -4px;
-      bottom: -4px;
-    }
-
-    section {
-      margin-bottom: var(--space-8);
-    }
-
-    h3 {
-      font-size: var(--type-label);
-      margin-bottom: var(--space-4);
-    }
-
-    li {
-      margin-bottom: 0.125rem;
-    }
-
-    button {
-      padding: var(--space-4) var(--space-8);
-    }
-
-    .key {
-      font-size: var(--type-label);
-      padding: var(--space-4) var(--space-4);
-      margin-right: var(--space-8);
-    }
-
-    .label {
-      font-size: var(--type-label);
-    }
-
-    hr {
-      margin: var(--space-8) 0;
-    }
-  }
-
-  @keyframes menuSlideIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px) scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border-width: 0;
-  }
-
-  section {
-    margin-bottom: var(--space-16);
-  }
-
-  section:last-of-type {
-    margin-bottom: 0;
-  }
-
-  h3 {
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    text-transform: uppercase;
-    letter-spacing: var(--track-wide);
-    color: var(--color-accent);
-    margin: 0 0 var(--space-8) 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    gap: var(--space-8);
-  }
-
-  h3::after {
-    content: "";
-    flex: 1;
-    height: 2px;
-    background: var(--color-accent);
-    opacity: 0.3;
-  }
-
-  ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  li {
-    margin-bottom: var(--space-4);
-  }
-
-  button {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    text-align: left;
-    background: transparent;
-    border: 2px solid transparent;
-    padding: var(--space-8) var(--space-12);
-    cursor: pointer;
-    color: inherit;
-    font: inherit;
-    transition:
-      background-color var(--motion-ui) var(--ease-out),
-      border-color var(--motion-ui) var(--ease-out);
-  }
-
-  button:hover,
-  button.active,
-  button.selected {
-    background-color: var(--color-accent);
-    border-color: var(--color-accent);
-  }
-
-  .key {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 1.5rem;
-    background-color: var(--text-primary);
-    color: var(--bg-canvas);
-    font-weight: var(--weight-bold);
-    font-size: var(--type-small);
-    padding: var(--space-4) var(--space-8);
-    margin-right: var(--space-12);
-    text-transform: uppercase;
-    letter-spacing: var(--track-caps);
-    transition:
-      background-color var(--motion-ui) var(--ease-out),
-      color var(--motion-ui) var(--ease-out);
-  }
-
-  .label {
-    color: var(--text-primary);
-    font-size: var(--type-ui);
-    font-weight: var(--weight-semibold);
-    text-transform: uppercase;
-    letter-spacing: var(--track-caps);
-    transition: color var(--motion-ui) var(--ease-out);
-  }
-
-  button:hover .key,
-  button.active .key,
-  button.selected .key {
-    background-color: var(--bg-canvas);
-    color: var(--color-accent);
-  }
-
-  button:hover .label,
-  button.active .label,
-  button.selected .label {
-    color: var(--bg-canvas);
-  }
-
-  hr {
-    border: none;
-    border-top: 2px solid var(--text-primary);
-    opacity: 0.15;
-    margin: var(--space-16) 0;
-  }
+  .overlay { position: fixed; inset: 0; background: var(--scrim); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+  .menu { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-24); position: relative; width: min(var(--layout-measure), calc(100% - var(--space-32))); max-height: calc(100svh - var(--space-32)); overflow-y: auto; padding: var(--space-24); background: var(--bg-canvas); color: var(--text-primary); border: var(--stroke-control) solid var(--border-strong); box-shadow: var(--space-8) var(--space-8) 0 var(--accent-ground); animation: enter-fade var(--motion-ui) var(--ease-out); }
+  .menu-head { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: var(--space-24); margin-bottom: 0; }
+  h2 { margin: 0; font-family: var(--font-title); font-size: var(--type-section-title); line-height: var(--leading-tight); }
+  section { margin: 0; }
+  section:first-of-type { grid-row: span 3; }
+  h3 { margin: 0 0 var(--space-8); color: var(--text-muted); font-size: var(--type-label); font-weight: var(--weight-bold); letter-spacing: var(--track-wide); }
+  ul { list-style: none; margin: 0; padding: 0; }
+  button { display: flex; align-items: center; width: 100%; min-height: var(--touch-target); padding: var(--space-8) var(--space-12); gap: var(--space-24); color: inherit; background: transparent; border: 0; border-left: var(--stroke-frame) solid transparent; text-align: left; cursor: pointer; font: inherit; transition: background-color var(--motion-ui) var(--ease-out), border-color var(--motion-ui) var(--ease-out); }
+  button:hover, button.selected, button.active { background: var(--bg-muted); border-left-color: var(--action-primary); }
+  .label { order: 0; font-size: var(--type-ui); font-weight: var(--weight-semibold); }
+  .key { order: 1; margin-left: auto; display: inline-flex; align-items: center; justify-content: center; min-width: var(--space-24); padding: var(--space-4); border: var(--stroke-control) solid var(--border-muted); color: var(--text-muted); font-size: var(--type-label); text-transform: uppercase; }
+  button.selected .key, button:hover .key { color: var(--action-primary); border-color: var(--action-primary); }
+  .close-menu { flex: none; width: var(--touch-target); height: var(--touch-target); padding: 0; justify-content: center; border: var(--stroke-control) solid var(--border-muted); font-size: var(--type-heading); }
+  hr { display: none; border: 0; border-top: var(--stroke-control) solid var(--border-muted); margin: var(--space-16) 0; }
+  .menu-hint { grid-column: 1 / -1; margin: 0; color: var(--text-muted); font-size: var(--type-label); line-height: var(--leading-small); }
+  @media (width <= 700px) { .menu { grid-template-columns: 1fr; padding: var(--space-16); gap: var(--space-16); } section:first-of-type { grid-row: auto; } .menu-head { margin-bottom: 0; } h2 { font-size: var(--type-heading); } }
+  @media (hover: none) { .menu-hint { display: none; } }
 </style>

@@ -1,0 +1,45 @@
+{
+  "id": "mirror-lake",
+  "place": "Mirror Lake",
+  "month": "September",
+  "status": "Selected screenprint style (anchor frame A); four-layer runtime from the rewrite prototype",
+  "sourceSize": [
+    1536,
+    1024
+  ],
+  "webSize": [
+    1536,
+    1024
+  ],
+  "master": "/scenes/mirror-lake/master.webp",
+  "layers": [
+    {
+      "name": "sky",
+      "src": "/scenes/mirror-lake/sky.webp",
+      "depth": 0.97,
+      "capSourcePx": [1.2, 0.6]
+    },
+    {
+      "name": "far",
+      "src": "/scenes/mirror-lake/far.webp",
+      "depth": 0.85,
+      "capSourcePx": [6, 3]
+    },
+    {
+      "name": "mid",
+      "src": "/scenes/mirror-lake/mid.webp",
+      "depth": 0.55,
+      "capSourcePx": [18, 9]
+    },
+    {
+      "name": "near",
+      "src": "/scenes/mirror-lake/near.webp",
+      "depth": 0.05,
+      "capSourcePx": [38, 19]
+    }
+  ],
+  "capSource": "Written by the landscape build from the rewrite prototype (shared/scenery.js): the window prototype's runtime travel, SHIFT·(1 − depth)·width with vertical at half, measured at 1280, 1440 and 1920 px wide and constant in source px. capSourcePx is [horizontal, vertical] in source px; the renderer never moves a layer past it.",
+  "limitations": [
+    "Forest, shore, lake and reflection share the mid plane."
+  ]
+}

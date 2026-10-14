@@ -1,0 +1,69 @@
+---
+/*
+ * ArrowLink (proposal §7): a text link that says where it goes with an arrow. Replaces the
+ * hand-built `.scene-arrow` (home, 404, /card, StoryEnd).
+ *
+ *   variant   forward   label →  (another page)
+ *             back      ← label  (the way back: the previous story)
+ *             external  label ↗  (another site; opens a new tab, and says so to screen readers)
+ *             down      label ↓  (a jump further down this page; added for Admire's "View Case
+ *                                 Studies", which §7 didn't list)
+ *
+ * The `ui` type role, a 2px green rule under it, and the text color it sits in (on scene pages
+ * that's --text-on-art). Hover and focus-visible turn it green; the global ring adds focus.
+ * Every other attribute passes through to the <a>.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"a"> & {
+  href: string;
+  variant?: "forward" | "back" | "external" | "down";
+};
+
+const { variant = "forward", class: className, ...rest } = Astro.props;
+const glyph = { forward: "→", back: "←", external: "↗", down: "↓" }[variant];
+const external = variant === "external";
+---
+
+<a
+  class:list={["arrow-link", className]}
+  target={external ? "_blank" : undefined}
+  rel={external ? "noopener noreferrer" : undefined}
+  {...rest}
+>
+  {variant === "back" && <span aria-hidden="true">{glyph}</span>}
+  <slot />
+  {variant !== "back" && <span aria-hidden="true">{glyph}</span>}
+  {external && <span class="arrow-link-note">(opens in a new tab)</span>}
+</a>
+
+<style>
+  .arrow-link {
+    display: inline-flex;
+    gap: var(--space-8);
+    align-items: center;
+    padding-bottom: var(--space-4);
+    border-bottom: var(--stroke-control) solid var(--action-primary);
+    color: inherit;
+    font-size: var(--type-ui);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color var(--motion-ui) var(--ease-out);
+  }
+
+  .arrow-link:hover,
+  .arrow-link:focus-visible {
+    color: var(--action-primary);
+  }
+
+  .arrow-link-note {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+</style>

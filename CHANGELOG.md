@@ -2,6 +2,26 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-10-14 — Landscape portfolio
+
+- Add Home/Contact icons and project marks to the connected rail, including Daybreak’s newer Rail and block icon. Enlarge the rail on the hero, shrink it by 10% in reading, and restore its size on hover or keyboard focus. Restyle the menu with a clear close control, grouped rows and About navigation.
+
+- Correct the project timeline to the small connected-node rail Cello intended, with a green current node instead of numbers. Retain existing navigation and scenery.
+
+- Restore a separate `/about/` for About and How I Build; update utility/event-card links and forward historical home fragments. Add a homepage project timeline with desktop rail, mobile bottom bar, click/tap, scrubbing, current-stop tracking, and keyboard/no-JavaScript links. Retain the existing scenery and cursor depth. Navigation checks: `docs/landscape/POLISH.md`.
+
+- Keep all failed-renderer fallbacks static. Shader failures and context loss cannot earn the image-to-canvas handoff; wait for a successful frame with a visible sky. Document the rendering performance investigation.
+
+- Keep background images visible until WebGL actually draws, including when browser protections block the scene module.
+
+- Apply the hero’s cursor-driven depth and shared per-layer spring tuning across scene backdrops and case-study backgrounds, without moving content; keep tested caps and reduced-motion stills.
+- Keep the existing scrolling landscape portfolio. Remove the separate “Take in the view” mode; the scenery is the space throughout.
+- Clean hidden fills and registered edges for Over Hood, Moss Falls, Meadows Lift and Salmon Ridge. All ten scenes retain bounded cut layers. Add slow reading drift at one fifth of each inspected cap, 24 seconds of movement followed by 60 seconds at rest, at most 30 fps. Load only the active backdrop’s cut stack; suspend the covered renderer. Reduced motion, Save-Data, missing WebGL/textures and hidden tabs keep the still fallback.
+- Give case-study summaries the full artifact frame, with two columns and a full-width Tools row; center the reading column and allow media to use the wider frame. Fix phone TOC focus clipping, touch hover states, Menu spacing, and keyboard-menu Tab/focus return.
+- Add MP4 sources and poster images for all 15 currently linked videos (20 placements), including home previews. Home previews use the same Pause/Play control as case-study media.
+- Fix Day text contrast during the arrival-to-reading scroll range. Add the reading motion values to the token source and existing Figma library. Correct utility-page canonicals and canonical trailing slashes.
+- Verification and release limitations: `docs/landscape/POLISH.md`. Release checks and cutover procedure: `docs/landscape/RELEASE-2026-10-14.md`.
+
 ## 2026-10-12
 
 ### Design system, stage 9: Figma follows code (foundations)

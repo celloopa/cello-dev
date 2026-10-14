@@ -1,0 +1,67 @@
+---
+/*
+ * Section (proposal §7): a page section in the one container, with its title (h2) and an
+ * optional intro. Replaces the `.section-title` / `.section-intro` / `.card-section-title`
+ * copies that home and /card declared for themselves.
+ *
+ *   title      the h2; leave it off for a section without one
+ *   titleId    the h2's id (the section is labelled by it). Required with a title.
+ *   intro      a short paragraph under the title, at the reading measure
+ *   stop       names the title block as a reading stop (data-scene-stop: the bar shows it while
+ *              it's in view); without it the page can put data-scene-stop on the section itself
+ *   contained  false: only the title block sits in the container, so the slot can run
+ *              full-bleed (/card's panels)
+ *
+ * The section title is National Park in --text-accent (A1 I4), which passes over the focused
+ * scene as large text. Padding between sections is the page's (it passes a class). Every other
+ * attribute passes through to the <section>.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"section"> & {
+  title?: string;
+  titleId?: string;
+  intro?: string;
+  stop?: string;
+  contained?: boolean;
+};
+
+const { title, titleId, intro, stop, contained = true, class: className, ...rest } = Astro.props;
+const Inner = contained ? "div" : Fragment;
+---
+
+<section class:list={["section", className]} aria-labelledby={title ? titleId : undefined} {...rest}>
+  <Inner {...(contained ? { class: "container" } : {})}>
+    {
+      title && (
+        <header class:list={["section-head", !contained && "container"]} data-scene-stop={stop}>
+          <h2 class="section-title" id={titleId}>
+            {title}
+          </h2>
+          {intro && <p class="section-intro">{intro}</p>}
+        </header>
+      )
+    }
+    <slot />
+  </Inner>
+</section>
+
+<style>
+  .section-title {
+    margin: 0;
+    color: var(--text-accent);
+    font-family: var(--font-title);
+    font-size: var(--type-section-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+
+  .section-intro {
+    max-width: var(--layout-measure);
+    margin: var(--space-24) 0 0;
+    font-size: var(--type-body);
+    line-height: var(--leading-read);
+  }
+</style>

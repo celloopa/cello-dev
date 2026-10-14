@@ -1,0 +1,76 @@
+{
+  "id": "meadows",
+  "place": "Mt Hood Meadows",
+  "month": "June",
+  "status": "photo-treatment and cut candidate; aesthetic approval pending",
+  "sourceSize": [
+    2172,
+    1448
+  ],
+  "webSize": [
+    1536,
+    1024
+  ],
+  "master": "/scenes/meadows/master-wide.webp",
+  "portrait": "/scenes/meadows/master.webp",
+  "originalPortraitBounds": [
+    543,
+    0,
+    1629,
+    1448
+  ],
+  "expandedSides": "AI outpainted; original stylized center mechanically preserved",
+  "exportOrigin": "Figma native isolated PNG renders at full source resolution; alpha exact and visible RGB checked",
+  "layers": [
+    {
+      "name": "sky",
+      "src": "/scenes/meadows/sky.webp",
+      "depth": 0.97,
+      "testedHorizontalSourcePx": 0
+    },
+    {
+      "name": "far",
+      "src": "/scenes/meadows/far.webp",
+      "depth": 0.85,
+      "testedHorizontalSourcePx": 1
+    },
+    {
+      "name": "mid",
+      "src": "/scenes/meadows/mid.webp",
+      "depth": 0.35,
+      "testedHorizontalSourcePx": 3
+    },
+    {
+      "name": "near",
+      "src": "/scenes/meadows/near.webp",
+      "depth": 0.05,
+      "testedHorizontalSourcePx": 5
+    }
+  ],
+  "checks": {
+    "restack": "cut-check.json",
+    "center": "expansion.json",
+    "motion": [
+      "motion-left.jpg",
+      "motion-right.jpg"
+    ],
+    "silhouettes": [
+      "isolated-far.jpg",
+      "isolated-mid.jpg",
+      "isolated-near.jpg"
+    ],
+    "crops": [
+      "crop-desktop.jpg",
+      "crop-mobile.jpg"
+    ],
+    "mobileCropHorizontalCenter": 0.62,
+    "figmaRoundtrip": "figma-roundtrip.json"
+  },
+  "limitations": [
+    "AI treatment simplifies fine tree/grass/snow shapes and brightens olive greens; style approval pending",
+    "Subtle vertical sky-tone seams at expanded side boundaries; expanded master needs review",
+    "Far mountain hidden fill has faint branch-tone continuation near occluders; larger separation needs cleanup",
+    "Near meadow strip duplicates mid ground and crossing shadows; only small horizontal preview tested",
+    "Exact restack validates coverage/color, not segmentation quality"
+  ]
+}

@@ -1,0 +1,89 @@
+---
+/*
+ * IconButton (proposal §7): a square control with only an icon in it. 44px, always (the touch
+ * target), and `label` is required: it's the control's accessible name, since the icon has none.
+ * Replaces the hand-built `.work-external`, `.selector-live`, the scene footer's social links,
+ * the bar's theme button and the resume hero's 36px icon links.
+ *
+ *   href      renders an <a>; without it, a <button type="button">
+ *   label     the accessible name (aria-label). Required.
+ *   disabled  buttons only
+ *
+ * An outline in the text color it sits in. Hover and focus-visible fill it green with inverse
+ * text (the same as a secondary Button); active presses 1px; disabled drops to the muted roles.
+ * The icon goes in the slot and should be aria-hidden or carry no title of its own.
+ * Every other attribute passes through to the root.
+ */
+import type { HTMLAttributes } from "astro/types";
+
+type Props = Omit<HTMLAttributes<"a"> & HTMLAttributes<"button">, "type"> & {
+  label: string;
+  href?: string;
+  disabled?: boolean;
+};
+
+const { label, href, disabled, class: className, ...rest } = Astro.props;
+const Tag = href ? "a" : "button";
+---
+
+<Tag
+  class:list={["icon-button", className]}
+  href={href}
+  type={href ? undefined : "button"}
+  disabled={href ? undefined : disabled}
+  aria-label={label}
+  {...rest}
+>
+  <slot />
+</Tag>
+
+<style>
+  /* margin in :where(), so a parent can space it without a specificity fight */
+  :where(.icon-button) {
+    margin: 0;
+  }
+
+  .icon-button {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: var(--touch-target);
+    height: var(--touch-target);
+    padding: 0;
+    border: var(--stroke-control) solid var(--border-strong);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition:
+      background-color var(--motion-ui) var(--ease-out),
+      border-color var(--motion-ui) var(--ease-out),
+      color var(--motion-ui) var(--ease-out);
+  }
+
+  .icon-button:focus-visible {
+    border-color: var(--action-primary);
+    background: var(--action-primary);
+    color: var(--text-inverse);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .icon-button:hover {
+      border-color: var(--action-primary);
+      background: var(--action-primary);
+      color: var(--text-inverse);
+    }
+  }
+
+  .icon-button:active {
+    transform: translateY(1px);
+  }
+
+  .icon-button:disabled {
+    border-color: var(--border-muted);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: not-allowed;
+    transform: none;
+  }
+</style>

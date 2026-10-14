@@ -1,0 +1,103 @@
+---
+/*
+ * ReadHead: the opening of a reading page (a case study or a post), over the focused scene.
+ * The eyebrow (role or date), the title, the lede, tags (with a +N count), anything the page
+ * slots in (the live links, the updated date), then the cover image or video.
+ * One header for both templates, so the two never drift apart again.
+ */
+import MediaVideo from "@/components/media/MediaVideo.astro";
+import Tag from "@/components/ui/Tag.astro";
+
+interface Props {
+  eyebrow: string;
+  /** What the eyebrow is: a case study's role, or a post's date (both a green Tag). */
+  eyebrowKind?: "role" | "date";
+  title: string;
+  lede: string;
+  tags?: string[];
+  /** Show this many tags, then a "+N" count. */
+  maxTags?: number;
+  tagsLabel?: string;
+  cover?: { src: string; alt: string };
+}
+
+const { eyebrow, eyebrowKind = "role", title, lede, tags = [], maxTags = tags.length, tagsLabel = "Tags", cover } = Astro.props;
+const isVideo = (src: string) => src.endsWith(".webm") || src.endsWith(".mp4");
+---
+
+<header class="read-head container">
+  <Tag as="p" variant={eyebrowKind} class="read-eyebrow">{eyebrow}</Tag>
+  <h1 class="read-title">{title}</h1>
+  <p class="read-lede">{lede}</p>
+  {
+    tags.length > 0 && (
+      <ul class="read-tags" aria-label={tagsLabel}>
+        {tags.slice(0, maxTags).map((tag) => (
+          <Tag>{tag}</Tag>
+        ))}
+        {tags.length > maxTags && <Tag variant="count">+{tags.length - maxTags}</Tag>}
+      </ul>
+    )
+  }
+  <slot />
+</header>
+{
+  cover && (
+    <div class="read-cover container">
+      {isVideo(cover.src) ? (
+        <MediaVideo src={cover.src} class="read-cover-media" />
+      ) : (
+        <img src={cover.src} alt={cover.alt} class="read-cover-media" fetchpriority="high" />
+      )}
+    </div>
+  )
+}
+
+<style>
+  .read-head {
+    max-width: var(--layout-measure);
+    margin-bottom: var(--space-48);
+    color: var(--text-on-art);
+  }
+
+  .read-eyebrow {
+    margin-bottom: var(--space-24);
+  }
+
+  .read-title {
+    max-width: var(--layout-measure);
+    margin: 0 0 var(--space-16);
+    font-family: var(--font-title);
+    font-size: var(--type-page-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    overflow-wrap: anywhere;
+  }
+
+  .read-lede {
+    max-width: var(--layout-measure-narrow);
+    margin: 0 0 var(--space-32);
+    font-size: var(--type-body-lg);
+    line-height: var(--leading-read);
+  }
+
+  .read-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    margin: 0 0 var(--space-32);
+    padding: 0;
+    list-style: none;
+  }
+
+  .read-cover {
+    margin-bottom: var(--space-48);
+  }
+
+  .read-cover :global(.read-cover-media) {
+    width: 100%;
+    max-height: 600px;
+    border: var(--stroke-bar) solid var(--border-strong);
+    object-fit: cover;
+  }
+</style>

@@ -1,0 +1,270 @@
+/*
+  Scene pages (the landscape build; amendment A3, pending Cello). Loaded by SceneLayout only.
+
+  The scene fills the page under the dark bar and the content sits in front of it (D1: text may
+  sit over scene art, with the copy scrim or the focus dim under it). Every surface here is the
+  scene, so the roles take their Dusk values in both themes; the theme picks the scene's grade
+  (Day art, or the Dusk grade in WebGL). Ported from the rewrite prototype's
+  shared/landscape.css, on tokens.
+
+  Root state classes (scenery.js and the head script): scene-3d, scene-still-on, scene-gl-on,
+  scene-admire, scene-reading; from the server, scene-read-page (a case study or a post) and
+  scene-focus-page (an index: focused like a reading page, with the exploring bar). data-place
+  names the scene.
+*/
+
+/* Roles: Dusk in both themes on scene pages (same values as tokens.json's dusk column). */
+html:root.scene-page {
+  --bg-canvas: var(--ink-950);
+  --bg-raised: color-mix(in srgb, var(--paper-200) 3.5%, transparent);
+  --bg-muted: color-mix(in srgb, var(--paper-200) 8%, transparent);
+  --bg-inverse: var(--paper-200);
+  --text-primary: var(--paper-200);
+  --text-muted: color-mix(in srgb, var(--paper-200) 82%, transparent);
+  --text-inverse: var(--ink-950);
+  --text-accent: var(--signal-500);
+  --action-primary: var(--signal-500);
+  --focus-ring: var(--signal-500);
+  --accent-ground: var(--earth-400);
+  --border-muted: color-mix(in srgb, var(--paper-200) 18%, transparent);
+  --scrim: color-mix(in srgb, var(--ink-950) 60%, transparent);
+  --color-accent: var(--action-primary);
+  --color-background: var(--bg-canvas);
+  --scrim-copy-strength: var(--scrim-copy);
+  color-scheme: dark;
+}
+@media (max-width: 768px) {
+  html:root.scene-page {
+    --scrim-copy-strength: var(--scrim-copy-mobile);
+  }
+}
+html:root.scene-page[data-place="ecola"] {
+  --scrim-copy-strength: var(--scrim-copy-ecola);
+}
+@media (max-width: 768px) {
+  html:root.scene-page[data-place="ecola"] {
+    --scrim-copy-strength: var(--scrim-copy-ecola-mobile);
+  }
+}
+
+/* The focus ring over art. --focus-ring (signal-500) is 2.4:1 against a bright sky, cloud or snow,
+   under the 3:1 a focus indicator needs against what's next to it. So on scene pages the ring
+   (focus.css: 3px, offset 3px) gets ink either side: a 9px --focus-halo shadow, drawn under the
+   outline, fills the 3px offset gap and the 3px just outside the ring. The color stays. */
+html.scene-page :focus-visible {
+  box-shadow: 0 0 0 calc(var(--stroke-frame) * 3) var(--focus-halo);
+}
+
+/* Everything in main sits over the scene, so its text defaults to the on-art role; a plate
+   (bg-plate: CaseMeta, tables, Panel, a secondary Button) sets --text-primary for its own.
+   Components (ArrowLink, IconButton, Tag, Card) take the text color they sit in. */
+html.scene-page main {
+  color: var(--text-on-art);
+}
+
+/* ---------- the scene (fixed, decorative) ---------- */
+.scene {
+  position: fixed;
+  inset: var(--scene-bar) 0 0 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--bg-canvas);
+}
+.scene-still {
+  position: absolute;
+  inset: 0;
+  transition:
+    opacity var(--motion-handoff) var(--ease-out),
+    filter var(--motion-scene-fade) var(--ease-out),
+    transform var(--motion-scene-fade) var(--ease-out);
+}
+.scene-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: var(--ax) var(--ay);
+}
+@media (max-width: 768px) {
+  .scene-layer {
+    object-position: var(--mx) var(--my);
+  }
+}
+/* A reading or index page's still is the half-size flattened scene (Scene `focused`); the full
+   layers load hidden, for the renderer only, so they never become a late largest paint. */
+.scene-read {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: var(--ax) var(--ay);
+}
+@media (max-width: 768px) {
+  .scene-read {
+    object-position: var(--mx) var(--my);
+  }
+}
+.scene-still[data-read-still] .scene-layer {
+  visibility: hidden;
+}
+/* Keep the image visible even if module loading is blocked or initialization never runs. */
+html.scene-gl-on:not(.scene-still-on) .scene-still {
+  opacity: 0;
+}
+html:is(.scene-reading, .scene-focus-page) .scene-still {
+  filter: var(--focus-filter);
+  transform: scale(var(--focus-scale));
+}
+@media (max-width: 768px) {
+  html:is(.scene-reading, .scene-focus-page) .scene-still {
+    filter: var(--focus-filter-mobile);
+  }
+}
+.scene-gl {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+  transition: opacity var(--motion-handoff) linear;
+}
+html.scene-gl-on .scene-gl {
+  opacity: 1;
+}
+
+/* ---------- backdrops: another place's reading still over the scene (scenery.js) ----------
+   Only while reading (home's Work list and sections) or pointing at a story (/projects), so
+   always in the focus recipe, under the same reading atmosphere as the scene. Each item fades in
+   on top of the last; the base scene (WebGL or the still) is under them all. */
+.scene-backdrop,
+.scene-backdrop-item {
+  position: absolute;
+  inset: 0;
+}
+/* its own stacking context: the items' z-index orders them among themselves, never above the
+   atmosphere that follows */
+.scene-backdrop {
+  z-index: 0;
+}
+.scene-backdrop-item {
+  opacity: 0;
+  transition: opacity var(--motion-scene-fade) var(--ease-out);
+}
+.scene-backdrop-item.is-on {
+  opacity: 1;
+}
+.scene-backdrop img {
+  filter: var(--focus-filter);
+  transform: scale(var(--focus-scale));
+}
+@media (max-width: 768px) {
+  .scene-backdrop img {
+    filter: var(--focus-filter-mobile);
+  }
+}
+/* The stills are Day art. In Dusk, while the renderer draws the page's own place in the Dusk
+   grade, each backdrop gets the grade's darkening as ink (under the reading atmosphere), so a
+   place doesn't brighten as it comes in. Under the still (no WebGL: Day art in both themes), the
+   backdrops stay Day too. */
+html.scene-gl-on:not([data-theme="light"]) .scene-backdrop-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--atmos-dusk);
+}
+.scene-atmos,
+.scene-atmos i {
+  position: absolute;
+  inset: 0;
+}
+.scene-atmos i {
+  transition: opacity var(--motion-scene-fade) var(--ease-out);
+}
+.scene-atmos-arrive {
+  background: var(--atmos-arrive);
+}
+@media (max-width: 768px) {
+  .scene-atmos-arrive {
+    background: var(--atmos-arrive-mobile);
+  }
+}
+.scene-atmos-view {
+  background: var(--atmos-view);
+  opacity: 0;
+}
+.scene-atmos-read {
+  background: var(--atmos-read);
+  opacity: 0;
+}
+html:is(.scene-reading, .scene-focus-page) .scene-atmos-arrive,
+html:is(.scene-reading, .scene-focus-page) .scene-atmos-view {
+  opacity: 0;
+}
+html:is(.scene-reading, .scene-focus-page) .scene-atmos-read {
+  opacity: 1;
+}
+
+/* ---------- PlaceLabel: shown while exploring; gone while reading (D4) ---------- */
+.place-label {
+  position: fixed;
+  left: var(--space-48);
+  bottom: var(--space-24);
+  z-index: 1;
+  margin: 0;
+  pointer-events: none;
+  font-family: var(--font-place);
+  font-size: var(--type-place-label);
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-ui);
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  color: var(--text-on-art);
+  transition: opacity var(--motion-handoff) var(--ease-out);
+}
+html:is(.scene-reading, .scene-focus-page) .place-label {
+  opacity: 0;
+}
+@media (max-width: 768px) {
+  .place-label {
+    left: var(--layout-gutter);
+  }
+}
+
+/* ---------- CopyScrim: flat ink under every line of copy over art, feathered ---------- */
+.copy-scrim {
+  position: relative;
+  isolation: isolate;
+}
+.copy-scrim::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  /* Keep the mask's opaque core beneath the entire copy block as it crosses bright art. */
+  inset: -55% -42% -45%;
+  pointer-events: none;
+  background: var(--scrim-copy-fill);
+  -webkit-mask-image: var(--scrim-copy-mask);
+  -webkit-mask-composite: source-in;
+  mask-image: var(--scrim-copy-mask);
+  mask-composite: intersect;
+}
+
+
+
+/* reduced motion: animations.css zeroes durations; nothing here waits on a delay either */
+@media (prefers-reduced-motion: reduce) {
+  html.scene-reading .bar-context {
+    animation: none;
+  }
+}
+
+/* Registered reading planes: overscan contains every slow, capped shift. */
+.scene-reading-layers { position: absolute; inset: -2%; filter: var(--focus-filter); transform: scale(var(--focus-scale)); }
+.scene-backdrop .scene-reading-layers img { filter: none; transform: none; }
+@media (max-width: 768px) { .scene-reading-layers { filter: var(--focus-filter-mobile); } }
