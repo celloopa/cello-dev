@@ -57,6 +57,34 @@ const homeDescription =
       </nav>
     </div>
 
+    <script is:inline>
+      // Before first paint, put the greeting in the state the module below will start from, so it
+      // never paints both messages stacked and then collapses (links jumping, messages crossfading).
+      (() => {
+        const intro = document.querySelector("[data-scene-intro]");
+        if (!intro || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        let seen = false;
+        try { seen = sessionStorage.getItem("cello-hello-seen") === "yes"; } catch { /* storage optional */ }
+        const rows = [...intro.querySelectorAll("[data-intro-message]")];
+        const settle = () => {
+          intro.classList.remove("intro-playing");
+          rows.forEach((row, i) => {
+            row.classList.toggle("message-active", i === rows.length - 1);
+            row.classList.toggle("message-past", i > 0 && i < rows.length - 1);
+          });
+        };
+        intro.classList.add("intro-focused");
+        if (!seen && scrollY < innerHeight / 2 && !location.hash) {
+          intro.classList.add("intro-playing");
+          // if the greeting module never arrives, show the words rather than an empty bubble
+          setTimeout(() => {
+            if ("introBound" in intro.dataset) return;
+            settle();
+            try { sessionStorage.setItem("cello-hello-seen", "yes"); } catch { /* a late module then finishes instead of replaying */ }
+          }, 3000);
+        } else settle();
+      })();
+    </script>
   </section>
 
   <Section
@@ -107,6 +135,7 @@ const homeDescription =
   <script>
     const intro = document.querySelector<HTMLElement>("[data-scene-intro]");
     if (intro) {
+      intro.dataset.introBound = "";
       const rows = [...intro.querySelectorAll<HTMLElement>("[data-intro-message]")];
       const control = intro.querySelector<HTMLButtonElement>("[data-intro-control]")!;
       const motion = matchMedia("(prefers-reduced-motion: reduce)");
@@ -345,7 +374,8 @@ const homeDescription =
     .hero-bubbles::before { inset: -30% -6% -20%; }
     .hero-routes::before { inset: -25% -6% -12% -12%; }
     .intro-controls { grid-column: 1 / -1; }
-    .hero-routes { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; column-gap: var(--space-16); row-gap: var(--space-24); margin: var(--space-32) 0 0; }
+    /* one left-aligned column: the primary route, then the two smaller ones stacked */
+    .hero-routes { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; row-gap: var(--space-16); margin: var(--space-32) 0 0; }
     .hero-routes a:first-child { grid-column: 1 / -1; }
     .hero-routes a:nth-child(n + 2) { grid-area: auto; margin-top: 0; }
     .hero-name { font-size: var(--type-section-title); }

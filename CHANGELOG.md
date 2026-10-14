@@ -4,6 +4,8 @@ All notable changes to this portfolio site should be documented here.
 
 ## Preview iteration: conversational home
 
+- Fix the greeting's load flash: an inline script sets the greeting's starting state before first paint (one message slot; the final message on return, hidden-until-typing on a first visit), so the links never jump and the messages never crossfade on load. If the greeting module never arrives, the final message shows after 3s. On phones the two smaller routes stack under the primary one.
+
 - One grade on every scene page, between the art's Day colors and the full Dusk grade (`--scene-dusk-strength: .5`; the still is dimmed to match). The Day/Dusk button and the menu's theme command are gone from scene pages; Layout pages (resume, design system) keep theirs.
 - The guide walks in from the right, breathes, and waves hello on a loop (a sway from his feet about every 8s); the routes rise in one after another. Reduced motion keeps all of it still.
 - Phone home reads shorter and sits lower: route titles only, the guide stands beside the whole greeting with his feet on the first route's line and his wave in front of the chat's corner, and the copy shade is lighter.
