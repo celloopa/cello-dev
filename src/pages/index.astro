@@ -51,7 +51,7 @@ const homeDescription =
       </div>
       <div class="intro-controls"><button type="button" data-intro-control hidden>Skip intro</button></div>
       <nav class="hero-routes copy-scrim" aria-label="Start exploring">
-        <a href="#work"><strong>Here for the work? <span aria-hidden="true">↓</span></strong><span>Scroll down, or choose a project logo on the rail to jump straight to it.</span><small class="mobile-route-hint">Scroll, or tap a project below.</small></a>
+        <a href="#work"><strong>Here for the work? <span aria-hidden="true">↓</span></strong><span>Scroll down, or choose a project logo on the rail to jump straight to it.</span></a>
         <a href="/blog/"><strong>See what I’m learning <span aria-hidden="true">↗</span></strong><span>I document my work and share what I learn in Writing.</span></a>
         <a href="/about/"><strong>A little more about me <span aria-hidden="true">↗</span></strong><span>I’m taken, but you can still read my About page.</span></a>
       </nav>
@@ -201,15 +201,18 @@ const homeDescription =
     overflow-x: clip; /* the copy scrim must not widen the page */
     display: grid;
     align-items: end;
+    justify-items: center;
     min-height: calc(100svh - var(--scene-bar));
-    padding: var(--space-48) var(--scene-copy-end) var(--scene-copy-bottom) var(--scene-copy-start);
+    padding: var(--space-96) var(--space-96) var(--scene-copy-bottom);
   }
 
+  /* Greeting on the left, the guide standing on his own to its right with his feet level with the
+     first route; the two smaller routes share a row underneath. */
   .hero-copy {
     display: grid;
-    grid-template-columns: calc(var(--space-64) * 2 + var(--space-48)) minmax(0, 1fr);
-    column-gap: var(--space-40);
-    max-width: 44rem;
+    grid-template-columns: minmax(0, 30rem) calc(var(--space-96) * 2 + var(--space-64));
+    grid-template-rows: auto auto auto auto;
+    column-gap: var(--space-96);
     color: var(--text-on-art);
   }
 
@@ -217,11 +220,11 @@ const homeDescription =
   .hero-greeting { display: contents; }
   /* The guide stands beside what he says: feet level with the bottom of the chat.
      The negative top margin lets him rise above a short greeting without stretching its row. */
-  .hero-avatar { grid-column: 1; grid-row: 1; align-self: end; margin-top: calc(var(--space-64) * -2); width: 100%; height: auto; position: relative; z-index: 2; pointer-events: none; transform-origin: 50% 100%; --enter-distance: var(--space-12); }
+  .hero-avatar { grid-column: 2; grid-row: 1 / 4; align-self: end; margin-top: calc(var(--space-96) * -2); width: 100%; height: auto; position: relative; z-index: 2; pointer-events: none; transform-origin: 50% 100%; --enter-distance: var(--space-12); }
   /* He stays planted while the scenery takes the cursor: a slow breath, and a small sway as each message starts. */
   .hero-avatar { animation: enter-rise var(--motion-entry) var(--ease-out) both, guide-idle calc(var(--motion-entry) * 7) var(--ease-out) infinite alternate; }
   .hero-avatar.guide-hello { animation: enter-rise var(--motion-entry) var(--ease-out) both, guide-idle calc(var(--motion-entry) * 7) var(--ease-out) infinite alternate, guide-hello calc(var(--motion-entry) * 2) var(--ease-out); }
-  .hero-bubbles { grid-column: 2; min-width: 0; }
+  .hero-bubbles { grid-column: 1; grid-row: 1; min-width: 0; }
   .hero-bubble { max-width: 48ch; margin: 0 0 var(--space-8); padding: var(--space-12) var(--space-16); background: var(--bg-plate); color: var(--text-primary); border: 1px solid var(--border-strong); border-radius: var(--space-12); font-size: var(--type-ui); line-height: var(--leading-read); }
   .message-row { display: grid; }
   .message-copy, .message-visual { grid-area: 1 / 1; min-width: 0; }
@@ -234,7 +237,7 @@ const homeDescription =
   .intro-playing .hero-name.message-revealed { opacity: 1; transform: none; }
   .intro-playing .message-copy { opacity: 0; }
   .intro-playing .message-visual { display: block; }
-  .intro-controls { grid-column: 2; margin: var(--space-8) 0 var(--space-24); min-height: var(--space-24); }
+  .intro-controls { grid-column: 1; grid-row: 2; margin: var(--space-8) 0 var(--space-24); min-height: var(--space-24); }
   .intro-controls:has(button[hidden]) { display: none; }
   .intro-controls button { padding: 0; border: 0; background: none; color: inherit; font: inherit; font-size: var(--type-small); text-decoration: underline; text-underline-offset: .25em; cursor: pointer; }
   @media (prefers-reduced-motion: reduce) {
@@ -243,18 +246,20 @@ const homeDescription =
     .intro-playing .message-visual { display: none; }
     .hero-avatar, .hero-avatar.guide-hello { animation: none; }
   }
-  .hero-routes { grid-column: 2; display: grid; gap: var(--space-12); margin: 0 0 var(--space-24); }
-  .mobile-route-hint { display: none; }
-  .hero-routes a { display: grid; gap: var(--space-4); color: inherit; text-decoration: none; }
+  .hero-routes { grid-column: 1 / -1; grid-row: 3 / 5; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; column-gap: var(--space-96); row-gap: 0; margin: var(--space-8) 0 var(--space-24); }
+  .hero-routes a { display: grid; align-content: start; gap: var(--space-4); color: inherit; text-decoration: none; }
+  .hero-routes a:first-child { grid-column: 1; }
+  /* spaced with a top margin rather than the subgrid's row spacing, which would be split onto the first route's row and lift it off the guide's feet */
+  .hero-routes a:nth-child(n + 2) { margin-top: var(--space-32); }
+  .hero-routes a:nth-child(2) { grid-area: 2 / 1; }
+  .hero-routes a:nth-child(3) { grid-area: 2 / 2; }
   .hero-routes strong { text-decoration: underline; text-underline-offset: .25em; font-size: var(--type-ui); }
   .hero-routes a:hover strong { color: var(--text-accent); }
   .hero-routes a > span { font-size: var(--type-small); line-height: var(--leading-read); max-width: 48ch; }
+  /* the secondary pair: smaller, side by side */
+  .hero-routes a:not(:first-child) strong { font-size: var(--type-small); }
+  .hero-routes a:not(:first-child) > span { font-size: var(--type-label); }
   .work :global(.container) { max-width: var(--ds-container-wide); padding-inline: var(--layout-gutter); }
-  @media (width <= 900px) {
-    .hero-copy { grid-template-columns: calc(var(--space-64) + var(--space-24)) minmax(0, 1fr); column-gap: var(--space-12); }
-    .hero-avatar { margin-top: calc(var(--space-64) * -1); }
-    .hero-routes { grid-column: 1 / -1; }
-  }
   .hero-name {
     margin: 0 0 var(--space-12);
     font-family: var(--font-title);
@@ -302,29 +307,24 @@ const homeDescription =
     margin-top: var(--space-24);
   }
 
-  /* ---------- phones ---------- */
-  @media (max-width: 768px) {
-    :global(html:has(.chapter-rail)) { --scene-bar: 0px; }
-    :global(body:has(.chapter-rail) .bar) { display: none; }
-    :global(body:has(.chapter-rail) .place-label) { bottom: calc(var(--space-96) * 1.5); }
-    .hero-routes a > span { display: none; }
-    .mobile-route-hint { display: block; font-size: var(--type-small); line-height: var(--leading-read); }
-    /* Phones: the guide leads and the chat steps back. */
-    .hero-copy { grid-template-columns: calc(var(--space-96) + var(--space-24)) minmax(0, 1fr); }
+  /* ---------- phones: the guide stands on the right, behind the greeting; the rail is in the top row ---------- */
+  @media (width < 900px) {
+    /* the place caption would sit on the routes when the greeting runs long; the scene speaks for itself here */
+    :global(body:has(.chapter-rail) .place-label) { display: none; }
+    .hero {
+      justify-items: stretch;
+      padding: var(--space-96) var(--layout-gutter) var(--space-64);
+    }
+    /* clear the fixed top row, with room for the guide to rise above the name */
+    .hero-copy { grid-template-columns: minmax(0, 1fr) calc(var(--space-96) + var(--space-64)); column-gap: 0; margin-top: var(--space-48); }
+    .hero-bubbles { grid-column: 1 / -1; max-width: calc(100% - var(--space-96) - var(--space-16)); z-index: 2; }
+    .hero-avatar { grid-row: 1; justify-self: end; z-index: 1; }
+    .intro-controls { grid-column: 1 / -1; }
+    .hero-routes { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; column-gap: var(--space-16); row-gap: var(--space-24); margin: var(--space-32) 0 0; }
+    .hero-routes a:first-child { grid-column: 1 / -1; }
+    .hero-routes a:nth-child(n + 2) { grid-area: auto; margin-top: 0; }
     .hero-name { font-size: var(--type-section-title); }
     .hero-bubble { padding: var(--space-8) var(--space-12); font-size: var(--type-small); line-height: var(--leading-ui); }
-    /* Three tiers: greeting, then a clear break before the routes, then the place caption on its own. */
     .intro-controls { margin-bottom: 0; }
-    .hero-routes { margin: var(--space-32) 0 var(--space-64); }
-    .hero {
-      padding: var(--space-32) var(--layout-gutter) calc(var(--space-96) * 1.5);
-    }
-
-  }
-
-  @media (width < 900px) {
-    :global(body:has(.chapter-rail)) { padding-bottom: var(--space-96); }
-    @media (width > 768px) { :global(body:has(.chapter-rail) .place-label) { bottom: var(--space-96); } }
-
   }
 </style>

@@ -40,17 +40,35 @@ const current = (href: string) => {
 ---
 
 <header class="bar">
-  <nav class="bar-inner container" aria-label="Main">
-    <a class="bar-brand" href="/" aria-label="Cello, home">
-      <Mark class="bar-mark" />
-      <span>Cello</span>
-    </a>
-    <a class="bar-link bar-work" href="/projects" aria-current={current("/projects")}>Work</a>
-    <div class="bar-context" data-scene-context>
-      <span class="bar-context-title" data-scene-context-title>{context}</span>
-      <a class="bar-allwork" href={all.href}>{all.label}</a>
+  <nav class="bar-inner" aria-label="Main">
+    <div class="bar-start">
+      <a class="bar-brand" href="/" aria-label="Cello, home">
+        <Mark class="bar-mark" />
+      </a>
+      <div class="bar-actions">
+        <Button
+          class="bar-menu"
+          variant="secondary"
+          size="sm"
+          data-bar-menu
+          aria-haspopup="dialog"
+          aria-controls="keyboard-shortcuts-menu"
+          aria-keyshortcuts="Meta+K Control+K"
+        >
+          <span class="bar-key" data-bar-key></span>
+          <span class="bar-menu-word">Menu</span>
+        </Button>
+        <IconButton class="bar-theme" data-theme-toggle label="Switch between Day and Dusk">
+          <Sun />
+        </IconButton>
+      </div>
+      <div class="bar-context" data-scene-context>
+        <span class="bar-context-title" data-scene-context-title>{context}</span>
+        <a class="bar-allwork" href={all.href}>{all.label}</a>
+      </div>
     </div>
     <ul class="bar-utils">
+      <li class="bar-work"><a class="bar-link" href="/projects" aria-current={current("/projects")}>Work</a></li>
       {
         utilities.map((u) => (
           <li>
@@ -61,23 +79,6 @@ const current = (href: string) => {
         ))
       }
     </ul>
-    <div class="bar-actions">
-      <Button
-        class="bar-menu"
-        variant="secondary"
-        size="sm"
-        data-bar-menu
-        aria-haspopup="dialog"
-        aria-controls="keyboard-shortcuts-menu"
-        aria-keyshortcuts="Meta+K Control+K"
-      >
-        <span class="bar-key" data-bar-key></span>
-        <span>Menu</span>
-      </Button>
-      <IconButton data-theme-toggle label="Switch between Day and Dusk">
-        <Sun />
-      </IconButton>
-    </div>
   </nav>
 </header>
 
@@ -85,48 +86,88 @@ const current = (href: string) => {
   // The key label (⌘K / Ctrl+K, or a dot on touch screens) is set before paint by SceneLayout's
   // head script (html.touch and --bar-kbd), so the bar never shifts when this runs.
   const menu = document.querySelector<HTMLButtonElement>("[data-bar-menu]");
-  menu?.addEventListener("click", () => window.dispatchEvent(new CustomEvent("toggleKeyboardMenu")));</script>
+  if (menu) {
+    menu.setAttribute("aria-expanded", "false");
+    // focus first, so the menu hands focus back here when it closes (touch taps don't focus buttons)
+    menu.addEventListener("click", () => { menu.focus(); window.dispatchEvent(new CustomEvent("toggleKeyboardMenu")); });
+    addEventListener("menuVisibilityChanged", (event) => {
+      menu.setAttribute("aria-expanded", String((event as CustomEvent<{ isVisible: boolean }>).detail.isVisible));
+    });
+  }</script>
 
 <style>
+  /* Corners, not a band: the scene runs to the top edge. Identity and the menu hold the top-left
+     corner while you scroll; the page links stack in the top-right and scroll away with the page.
+     Phones (< 900px) put the logo and menu in one fixed top row; home's project rail sits between. */
+  :global(html.scene-page) {
+    --scene-bar: 0px;
+  }
+
+  :global(html.scene-page:not(:has(.chapter-rail)) main) {
+    padding-top: var(--space-64);
+  }
+
   .bar {
-    position: sticky;
-    top: 0;
+    position: absolute;
+    inset: 0 0 auto;
     z-index: 100;
-    height: var(--scene-bar);
-    background: var(--bg-canvas);
     color: var(--text-primary);
-    border-bottom: var(--stroke-rule) solid var(--border-muted);
+    pointer-events: none;
   }
 
   .bar-inner {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: space-between;
     gap: var(--space-24);
-    height: 100%;
+    padding: var(--space-16);
+  }
+
+  .bar-start {
+    position: fixed;
+    top: var(--space-16);
+    left: var(--space-16);
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    pointer-events: auto;
+  }
+
+  .bar-utils {
+    display: grid;
+    justify-items: end;
+    gap: var(--space-8);
+    margin: 0 0 0 auto;
+    padding: 0;
+    list-style: none;
+    pointer-events: auto;
+  }
+
+  /* home reaches the work by its rail and greeting; every other page lists it first */
+  :global(html:has(.chapter-rail)) .bar-work {
+    display: none;
   }
 
   .bar-brand {
-    display: inline-flex;
-    flex: none;
-    align-items: center;
-    gap: var(--space-12);
-    font-size: var(--type-ui);
-    font-weight: var(--weight-extrabold);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
+    display: grid;
+    place-items: center;
+    width: var(--touch-target);
+    height: var(--touch-target);
+    background: var(--bg-canvas);
   }
 
   .bar-brand :global(.bar-mark) {
-    width: 32px;
-    height: 34px;
+    width: var(--space-24);
+    height: var(--space-24);
   }
 
   .bar-link,
   .bar-allwork {
     display: block;
-    padding-block: var(--space-8);
+    padding: var(--space-8) var(--space-12);
+    background: var(--bg-canvas);
     border-bottom: var(--stroke-control) solid transparent;
-    font-size: var(--type-ui);
+    font-size: var(--type-label);
     font-weight: var(--weight-bold);
     letter-spacing: var(--track-caps);
     text-transform: uppercase;
@@ -135,33 +176,25 @@ const current = (href: string) => {
       color var(--motion-ui) var(--ease-out);
   }
 
-  .bar-link:hover,
-  .bar-link:focus-visible,
-  .bar-link[aria-current] {
-    border-bottom-color: var(--action-primary);
-  }
-
-  .bar-utils {
-    display: flex;
-    gap: var(--space-24);
-    margin: 0 0 0 auto;
-    padding: 0;
-    list-style: none;
-  }
-
-  .bar-utils .bar-link {
+  .bar-link {
     color: var(--text-muted);
   }
 
-  .bar-utils .bar-link:hover,
-  .bar-utils .bar-link:focus-visible {
+  .bar-link:hover,
+  .bar-link:focus-visible,
+  .bar-link[aria-current] {
     color: var(--text-primary);
+    border-bottom-color: var(--action-primary);
   }
 
   .bar-actions {
     display: flex;
     flex: none;
     gap: var(--space-8);
+  }
+
+  .bar-actions :global(.bar-theme) {
+    background: var(--bg-canvas);
   }
 
   .bar-key {
@@ -195,18 +228,19 @@ const current = (href: string) => {
     content: none;
   }
 
-  /* reading: the project in view + All work; Work and the utilities step aside */
+  /* reading: the project in view + All work join the corner; the page links step aside */
   .bar-context {
     display: none;
-    flex: 1;
     min-width: 0;
     align-items: center;
-    gap: var(--space-16);
+    gap: var(--space-8);
   }
 
   .bar-context-title {
-    margin-inline: auto;
+    max-width: 28ch;
+    padding: var(--space-8) var(--space-12);
     overflow: hidden;
+    background: var(--bg-canvas);
     white-space: nowrap;
     text-overflow: ellipsis;
     font-size: var(--type-label);
@@ -214,6 +248,10 @@ const current = (href: string) => {
     letter-spacing: var(--track-wide);
     text-transform: uppercase;
     color: var(--text-on-art-muted);
+  }
+
+  .bar-context-title:empty {
+    display: none;
   }
 
   .bar-allwork {
@@ -226,62 +264,62 @@ const current = (href: string) => {
     animation: enter-fade var(--motion-handoff) var(--ease-out);
   }
 
-  :global(html.scene-reading) .bar-work,
-  :global(html.scene-reading) .bar-utils,
-  :global(html.scene-reading) .bar-actions {
+  :global(html.scene-reading) .bar-utils {
     display: none;
   }
 
-  /* a reading page opens in this context and stays in it: no hand-off to fade, and the menu and
-     theme buttons stay (home gets them back by scrolling up; a reading page never does) */
   :global(html.scene-read-page) .bar-context {
     animation: none;
   }
 
-  :global(html.scene-read-page) .bar-actions {
-    display: flex;
+  /* a reading page already names itself in its heading */
+  :global(html.scene-read-page) .bar-context-title {
+    display: none;
   }
 
-  @media (width <= 900px) {
+  @media (width < 900px) {
+    .bar-start {
+      inset: max(var(--space-12), env(safe-area-inset-top)) var(--space-12) auto;
+      justify-content: space-between;
+      pointer-events: none; /* the row's empty middle belongs to home's rail */
+    }
+
+    .bar-start > * {
+      pointer-events: auto;
+    }
+
     .bar-utils {
       display: none;
     }
 
     .bar-actions {
-      margin-left: auto;
-    }
-  }
-
-  @media (width <= 700px) {
-    .bar-inner {
-      gap: var(--space-16);
-    }
-
-    .bar-brand span {
-      display: none;
+      order: 3;
     }
 
     .bar-context-title {
-      font-size: var(--type-label);
+      display: none;
     }
 
-    .bar-allwork {
-      font-size: var(--type-label);
-    }
-
-    /* reading page on a phone: the menu button keeps its dot and its name, not its word */
-    :global(html.scene-read-page) .bar-menu {
+    /* the menu keeps its dot and its name, not its word */
+    .bar-actions :global(.bar-menu) {
+      min-width: var(--touch-target);
       padding-inline: var(--space-12);
       justify-content: center;
     }
 
-    :global(html.scene-read-page) .bar-menu span:not(.bar-key) {
+    .bar-menu-word {
       position: absolute;
       width: 1px;
       height: 1px;
       overflow: hidden;
       clip-path: inset(50%);
       white-space: nowrap;
+    }
+
+    /* home: the rail takes the middle of the row */
+    :global(html:has(.chapter-rail) .bar-theme),
+    :global(html:has(.chapter-rail)) .bar-context {
+      display: none;
     }
   }
 </style>
