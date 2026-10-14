@@ -1,6 +1,6 @@
 # Cello’s layered hiking greeting
 
-Preview iteration, October 14, 2026. Production remains unchanged.
+Preview iteration, October 14, 2026. Character and greeting changes remain preview-only; the preview includes the independent writing publication `b2f753d`.
 
 The selected character uses Cello’s current likeness cues, modern mullet, thin round glasses, subtle facial hair, rain jacket and backpack. The face and body share one simplified cut-paper style. Source portrait and hiking photographs remain private. Generated with the built-in imagegen tool; the selected transparent PNG is retained in the private generation output and the current 384×576 WebP derivative lives at `public/images/characters/cello-hiker-v2.webp`. The prior v1 derivative remains available.
 

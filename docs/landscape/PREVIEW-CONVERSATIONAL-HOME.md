@@ -1,6 +1,6 @@
 # Conversational home and clearer work
 
-Preview iteration, October 14, 2026. Production remains the approved landscape release at `192d143`.
+Preview iteration, October 14, 2026. This iteration began from landscape release `192d143`. The current preview also preserves the independently published writing update `b2f753d`; greeting changes remain preview-only.
 
 ## Changes
 
