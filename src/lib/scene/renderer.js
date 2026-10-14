@@ -135,6 +135,8 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
 
   let isMobile = mobile();
   const renderer = new WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: "high-performance" });
+  let shaderFailed = false;
+  renderer.debug.onShaderError = () => { shaderFailed = true; };
   renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.5 : 2));
   renderer.setClearColor(new Color("#001a11"), 1);
 
@@ -247,7 +249,7 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
   const settledReading = () => target.reading === 1 && focus === 1;
   let arrivalT = settled() ? 99 : 0, arrivalHeld = null;
   const pointer = { x: 0, y: 0 };
-  let lastInput = performance.now(), last = performance.now(), lastDraw = 0, time = 0, raf = 0, lost = false, running = false, frames = 0;
+  let lastInput = performance.now(), last = performance.now(), lastDraw = 0, time = 0, raf = 0, lost = false, running = false, frames = 0, handedOff = false;
 
   function update(dt, now) {
     // attention
@@ -331,6 +333,12 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     renderer.autoClear = true;
   }
 
+  function checkedDraw() {
+    if (renderer.getContext().isContextLost()) throw new Error('Scene WebGL context unavailable');
+    draw();
+    if (shaderFailed || renderer.getContext().isContextLost()) throw new Error('Scene render failed');
+  }
+
   function frame(now) {
     raf = 0;
     if (lost || !running) return;
@@ -341,12 +349,17 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     last = now;
     time += dt;
     lastDraw = now;
+    try { checkedDraw(); }
+    catch (error) {
+      console.warn('[scene] keeping the still after a render failure', error);
+      lost = true; running = false; clearTimeout(restTimer); onLost?.(); return;
+    }
     frames++;
-    draw();
-    if (frames === 1) onFirstFrame?.(); // first frame drawn on screen (frames never run while hidden)
+    // A successful draw with an opaque sky, not merely a render() call, earns the handoff.
+    if (!handedOff && layers[0].uFade.value >= .99) { handedOff = true; onFirstFrame?.(); }
     if (st.busy || st.ambientOn) request();
   }
-  function request() { if (!raf && running && !lost && (!covered || frames === 0) && !document.hidden) raf = requestAnimationFrame(frame); }
+  function request() { if (!raf && running && !lost && (!covered || !handedOff) && !document.hidden) raf = requestAnimationFrame(frame); }
   const wake = () => { lastInput = performance.now(); request(); };
 
   /* ---- input ---- */
@@ -368,7 +381,7 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
   layout();
   last = performance.now();
   update(0, last);
-  draw(); // first frame (sky still transparent: just the ink)
+  checkedDraw(); // validate initialization; the still stays until the sky is visible
 
   return {
     start() { running = true; last = performance.now(); wake(); },

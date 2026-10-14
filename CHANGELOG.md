@@ -4,6 +4,8 @@ All notable changes to this portfolio site should be documented here.
 
 ## Unreleased: landscape cutover candidate (2026-10-13)
 
+- Keep all failed-renderer fallbacks static. Shader failures and context loss cannot earn the image-to-canvas handoff; wait for a successful frame with a visible sky. Document the rendering performance investigation.
+
 - Keep background images visible until WebGL actually draws, including when browser protections block the scene module.
 
 - Apply the hero’s cursor-driven depth and shared per-layer spring tuning across scene backdrops and case-study backgrounds, without moving content; keep tested caps and reduced-motion stills.

@@ -52,6 +52,10 @@ Screenshots: [desktop](shots/polish/ghosted-desktop.png), [phone](shots/polish/g
 
 A fresh automated Helium session loaded the scene images, so the reported profile-specific failure was not reproduced directly. An initialization gap was found: the inline gate hid the still before the module ran, leaving a blank background if modules were blocked. The CSS now hides it only after `scene-gl-on` confirms a rendered frame. Helium checks cover home and Asheville, both normally and with all external JavaScript blocked: image decoding and visible stills pass. Build guards pass.
 
+## Renderer handoff follow-up
+
+Cello chose stills for all fallbacks after seeing imagery appear then disappear in Helium. The unpublished DOM fallback-motion experiment was removed. Successful rendering now requires no shader-error flag and a valid context; RAF draw failures restore the still, and handoff waits for the sky to be visible. Forced shader failure and post-handoff context loss pass in GPU-enabled Helium. Normal/blocked-script Helium stills and working-renderer cursor checks pass. The exact user-profile cause remains unconfirmed. See [rendering research](RESEARCH-rendering-performance.md) for the measured code costs and next optimization recommendation.
+
 ## Release boundary
 
 PR14 is a review preview, never a merge vehicle. Refresh it with a fresh single commit parented directly on live master; do not push historical landscape ancestry. Keep CV JSON, resume PDF and URL redirects byte-identical. Production requires Cello's go on the concrete candidate and the cutover checklist. Physical iPhone and Firefox are not verified in this pass. The prior deferred class-name guard and unrelated unlinked legacy assets remain outside this polish.

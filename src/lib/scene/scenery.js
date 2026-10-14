@@ -127,7 +127,7 @@ function createBackdrop(host, covered) {
     if (img.complete && img.naturalWidth) reveal();
     else img.addEventListener("load", reveal, { once: true });
   };
-  return { show, load, current: () => current, refresh: () => {
+  return { show, load, freeze: () => { drift.forEach(stop => stop?.()); drift.clear(); }, current: () => current, refresh: () => {
     const item=items.get(current);
     if (item?.classList.contains('is-on')) animate(current,item,item.querySelector('img'));
   } };
@@ -290,6 +290,7 @@ export function start() {
     clearTimeout(stillOff);
     root.classList.add("scene-still-on");
     root.classList.remove("scene-gl-on");
+    backdrop?.freeze();
   };
 
   // review hook (also used by the build's checks)
