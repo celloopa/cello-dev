@@ -4,6 +4,8 @@ All notable changes to this portfolio site should be documented here.
 
 ## Preview iteration: conversational home
 
+- Phone home spacing reads in three tiers: the greeting, a clear break before the routes, and the place caption on its own, whether one message shows or both.
+
 - On phones, the guide grows to 120px wide and the chat steps back: smaller name, text and padding, so the chat takes less room.
 
 - Ground the hiking guide: his feet now line up with the bottom of the chat instead of hanging beside the name, and he is about 1.4× larger (88px wide on phones, 176px on desktop). He can rise above a short greeting without stretching it.
