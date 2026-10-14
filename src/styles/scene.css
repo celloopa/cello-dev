@@ -112,7 +112,8 @@ html.scene-page main {
 .scene-still[data-read-still] .scene-layer {
   visibility: hidden;
 }
-html.scene-3d:not(.scene-still-on) .scene-still {
+/* Keep the image visible even if module loading is blocked or initialization never runs. */
+html.scene-gl-on:not(.scene-still-on) .scene-still {
   opacity: 0;
 }
 html:is(.scene-reading, .scene-focus-page) .scene-still {

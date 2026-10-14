@@ -115,7 +115,7 @@ const current = (href: string) => {
         if ("ontouchstart" in window || navigator.maxTouchPoints > 0) r.classList.add("touch");
         else r.style.setProperty("--bar-kbd", /mac|iphone|ipad/i.test(navigator.userAgent) ? '"⌘K"' : '"Ctrl+K"');
         // the scene's 3D gate, before paint (scenery.js adds the WebGL check): a renderer is
-        // expected, so the still waits under the ink for the arrival; a page that loads hidden
+        // expected, but the still remains visible until a rendered frame arrives; a page that loads hidden
         // keeps the still and its renderer arrives settled. A reading or index page has no
         // arrival: its still shows (focused) from the first paint and the renderer, which
         // arrives settled and focused too, takes over without a visible change.
