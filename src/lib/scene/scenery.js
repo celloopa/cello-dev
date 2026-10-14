@@ -36,7 +36,6 @@ export { afterFirstScreen, whenNear };
 const root = document.documentElement;
 const reduce = matchMedia("(prefers-reduced-motion: reduce)");
 const mobileQ = matchMedia("(max-width: 768px)");
-const isDark = () => (root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches);
 const clamp01 = (v) => Math.min(1, Math.max(0, v));
 
 /**
@@ -337,7 +336,7 @@ export function start() {
         canvas, scene, imgs,
         tokens: readTokens(),
         mobile: () => mobileQ.matches,
-        dark: isDark(),
+        dark: true, // scene pages hold one grade (strength from --scene-dusk-strength); no Day/Dusk switch
         reading: readPage || focusPage,
         // the still took over meanwhile, or this is a reading or index page (no assembly behind
         // an article or a list): arrive already settled, then cross-fade in
@@ -349,9 +348,6 @@ export function start() {
       gl.setCovered(!!backdrop?.current());
       gl.setScroll(clamp01(scrollY / Math.max(1, hero?.offsetHeight ?? innerHeight)));
       gl.start(); // its first on-screen frame calls handoff (deferred while the tab is hidden)
-      const onTheme = () => gl?.setDark(isDark());
-      new MutationObserver(onTheme).observe(root, { attributes: true, attributeFilter: ["data-theme"] });
-      matchMedia("(prefers-color-scheme: dark)").addEventListener("change", onTheme);
     } catch (err) {
       clearTimeout(giveUp);
       gl?.stop(); gl = null;

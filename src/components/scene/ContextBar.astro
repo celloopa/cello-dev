@@ -7,14 +7,11 @@
  * A reading page (a case study or a post) is in the reading context from the first paint: its
  * title and "All" link are server-rendered here, and the menu and theme buttons stay, since
  * the page never returns to exploring.
- * The menu button and ⌘K open today's KeyboardShortcutsMenu. The theme button is a plain
- * <button data-theme-toggle>, bound and labelled by SceneLayout through src/utils/themeToggle.js
- * (it picks the scene's Day or Dusk grade; the bar stays dark either way).
+ * The menu button and ⌘K open today's KeyboardShortcutsMenu. Scene pages hold one grade, so there
+ * is no theme button here (Layout pages keep theirs).
  */
 import Mark from "./Mark.astro";
-import Sun from "@/icons/Sun.astro";
 import Button from "@/components/ui/Button.astro";
-import IconButton from "@/components/ui/IconButton.astro";
 
 interface Props {
   /** A reading page's title, shown from the first paint (else scenery.js names the stop in view). */
@@ -58,9 +55,6 @@ const current = (href: string) => {
           <span class="bar-key" data-bar-key></span>
           <span class="bar-menu-word">Menu</span>
         </Button>
-        <IconButton class="bar-theme" data-theme-toggle label="Switch between Day and Dusk">
-          <Sun />
-        </IconButton>
       </div>
       <div class="bar-context" data-scene-context>
         <span class="bar-context-title" data-scene-context-title>{context}</span>
@@ -193,9 +187,6 @@ const current = (href: string) => {
     gap: var(--space-8);
   }
 
-  .bar-actions :global(.bar-theme) {
-    background: var(--bg-canvas);
-  }
 
   .bar-key {
     padding-inline: var(--space-4);
@@ -317,7 +308,6 @@ const current = (href: string) => {
     }
 
     /* home: the rail takes the middle of the row */
-    :global(html:has(.chapter-rail) .bar-theme),
     :global(html:has(.chapter-rail)) .bar-context {
       display: none;
     }

@@ -224,10 +224,6 @@ const homeDescription =
   .intro-controls { position: relative; z-index: 4; } /* above the routes' shade, which reaches up behind it */
   /* Let the mountains breathe: on arrival the screen-wide ink is lighter and fades out toward the
      top of the hero. The copy keeps its own local shade. */
-  /* home eases the Dusk grade ~15% (renderer reads this once); every line keeps its own shade */
-  :global(html:has(.chapter-rail)) { --scene-dusk-strength: .85; --scene-day-bright: .8; }
-  /* Day arrives ~20% dimmer (WebGL reads --scene-day-bright; the still matches here) */
-  :global(html[data-theme="light"]:has(.chapter-rail):not(.scene-reading) .scene-still) { filter: brightness(.8); }
   :global(html:has(.chapter-rail):not(.scene-reading) .scene-atmos-arrive) { opacity: var(--hero-atmos, .4); -webkit-mask-image: linear-gradient(to top, black 20%, transparent 50%); mask-image: linear-gradient(to top, black 20%, transparent 50%); }
   /* A tight ink halo also hugs each letter over snow and sky. */
   .hero { --hero-halo: 0 0 var(--space-4) var(--bg-canvas), 0 0 var(--space-12) var(--bg-canvas), 0 0 var(--space-24) var(--bg-canvas); }
@@ -237,10 +233,15 @@ const homeDescription =
   .hero-greeting { display: contents; }
   /* The guide stands beside what he says: feet level with the bottom of the chat.
      The negative top margin lets him rise above a short greeting without stretching its row. */
-  .hero-avatar { grid-column: 2; grid-row: 1 / 4; align-self: end; justify-self: end; margin-top: calc(var(--space-96) * -3); width: calc(var(--space-64) * 5); max-width: none; height: auto; /* wider than his column: he grows leftward into the gap, over the space above the pair */ position: relative; z-index: 2; pointer-events: none; transform-origin: 50% 100%; filter: drop-shadow(0 0 var(--space-8) var(--bg-muted)) drop-shadow(0 0 var(--space-24) var(--border-muted)); /* a soft light lifts his hair off the dark trees */ --enter-distance: var(--space-12); }
+  .hero-avatar { grid-column: 2; grid-row: 1 / 4; align-self: end; justify-self: end; margin-top: calc(var(--space-96) * -3); width: calc(var(--space-64) * 5); max-width: none; height: auto; /* wider than his column: he grows leftward into the gap, over the space above the pair */ position: relative; z-index: 2; pointer-events: none; transform-origin: 50% 100%; filter: drop-shadow(0 0 var(--space-8) var(--bg-muted)) drop-shadow(0 0 var(--space-24) var(--border-muted)); /* a soft light lifts his hair off the dark trees */ }
   /* He stays planted while the scenery takes the cursor: a slow breath, and a small sway as each message starts. */
-  .hero-avatar { animation: enter-rise var(--motion-entry) var(--ease-out) both, guide-idle calc(var(--motion-entry) * 7) var(--ease-out) infinite alternate; }
-  .hero-avatar.guide-hello { animation: enter-rise var(--motion-entry) var(--ease-out) both, guide-idle calc(var(--motion-entry) * 7) var(--ease-out) infinite alternate, guide-hello calc(var(--motion-entry) * 2) var(--ease-out); }
+  /* he walks in from the right, then breathes, and waves hello every ~8s (a sway from his feet) */
+  .hero-avatar { --enter-distance: var(--space-48); animation: enter-from-right calc(var(--motion-entry) * 2) var(--ease-out) both, guide-idle calc(var(--motion-entry) * 7) var(--ease-out) infinite alternate, guide-wave calc(var(--motion-entry) * 14) var(--ease-out) calc(var(--motion-entry) * 4) infinite; }
+  .hero-avatar.guide-hello { animation: enter-from-right calc(var(--motion-entry) * 2) var(--ease-out) both, guide-idle calc(var(--motion-entry) * 7) var(--ease-out) infinite alternate, guide-wave calc(var(--motion-entry) * 14) var(--ease-out) calc(var(--motion-entry) * 4) infinite, guide-hello calc(var(--motion-entry) * 2) var(--ease-out); }
+  /* the routes rise in one after another, quickly: they never wait on the greeting */
+  .hero-routes a { animation: enter-rise var(--motion-entry) var(--ease-out) both; --enter-distance: var(--space-16); }
+  .hero-routes a:nth-child(2) { animation-delay: calc(var(--motion-stagger) * 2); }
+  .hero-routes a:nth-child(3) { animation-delay: calc(var(--motion-stagger) * 4); }
   .hero-bubbles { grid-column: 1; grid-row: 1; min-width: 0; }
   .hero-bubble { max-width: 48ch; margin: 0 0 var(--space-8); padding: var(--space-12) var(--space-16); background: var(--bg-plate); color: var(--text-primary); border: 1px solid var(--border-strong); border-radius: var(--space-12); font-size: var(--type-ui); line-height: var(--leading-read); }
   .message-row { display: grid; }
@@ -261,7 +262,7 @@ const homeDescription =
     .intro-focused .message-deck { display: block; }
     .intro-focused .message-deck .message-row, .intro-playing .hero-name, .intro-playing .message-copy { opacity: 1; transform: none; }
     .intro-playing .message-visual { display: none; }
-    .hero-avatar, .hero-avatar.guide-hello { animation: none; }
+    .hero-avatar, .hero-avatar.guide-hello, .hero-routes a { animation: none; }
   }
   .hero-routes { grid-column: 1 / -1; grid-row: 3 / 5; display: grid; grid-template-columns: subgrid; grid-template-rows: subgrid; column-gap: var(--space-96); row-gap: 0; margin: var(--space-8) 0 var(--space-24); }
   .hero-routes a { display: grid; align-content: start; gap: var(--space-4); color: inherit; text-decoration: none; }
@@ -334,8 +335,15 @@ const homeDescription =
     }
     /* clear the fixed top row, with room for the guide to rise above the name */
     .hero-copy { grid-template-columns: minmax(0, 1fr) calc(var(--space-96) + var(--space-64)); column-gap: 0; margin-top: var(--space-48); }
-    .hero-bubbles { grid-column: 1 / -1; max-width: calc(100% - var(--space-96) - var(--space-16)); z-index: 2; }
-    .hero-avatar { grid-row: 1; justify-self: end; z-index: 1; width: 100%; margin-top: calc(var(--space-96) * -2); }
+    .hero-bubbles { grid-column: 1 / -1; max-width: calc(100% - var(--space-96) - var(--space-40)); z-index: 2; }
+    /* he stands beside the whole greeting, feet on the first route's line, like desktop */
+    .hero-avatar { grid-row: 1 / 4; justify-self: end; z-index: 3; /* in front of the chat's corner, so his wave reads */ width: 100%; margin-top: calc(var(--space-96) * -2); }
+    /* titles only: the phone reads short */
+    .hero-routes a > span { display: none; }
+    /* a lighter, tighter shade (the letter halo carries more of the contrast here) */
+    .hero .copy-scrim::before { opacity: .7; }
+    .hero-bubbles::before { inset: -30% -6% -20%; }
+    .hero-routes::before { inset: -25% -6% -12% -12%; }
     .intro-controls { grid-column: 1 / -1; }
     .hero-routes { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: none; column-gap: var(--space-16); row-gap: var(--space-24); margin: var(--space-32) 0 0; }
     .hero-routes a:first-child { grid-column: 1 / -1; }

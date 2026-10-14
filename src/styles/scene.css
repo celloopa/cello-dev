@@ -121,6 +121,14 @@ html.scene-reading .scene-layer-guide { opacity: 0; }
 html.scene-gl-on:not(.scene-still-on) .scene-still {
   opacity: 0;
 }
+/* One grade on every scene page, between the art's Day colors and the full Dusk grade (Cello,
+   2026-10-14): WebGL takes --scene-dusk-strength; the Day-art still is dimmed to match. */
+html.scene-page {
+  --scene-dusk-strength: .5;
+}
+html.scene-page:not(.scene-reading, .scene-focus-page) .scene-still {
+  filter: brightness(.8);
+}
 html:is(.scene-reading, .scene-focus-page) .scene-still {
   filter: var(--focus-filter);
   transform: scale(var(--focus-scale));
@@ -177,7 +185,7 @@ html.scene-gl-on .scene-gl {
    grade, each backdrop gets the grade's darkening as ink (under the reading atmosphere), so a
    place doesn't brighten as it comes in. Under the still (no WebGL: Day art in both themes), the
    backdrops stay Day too. */
-html.scene-gl-on:not([data-theme="light"]) .scene-backdrop-item::after {
+html.scene-gl-on .scene-backdrop-item::after {
   content: "";
   position: absolute;
   inset: 0;

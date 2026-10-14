@@ -45,7 +45,8 @@
       title: "ACTIONS",
       shortcuts: [
         { key: "d", label: "Download Resume", action: () => downloadResume() },
-        { key: "t", label: "Switch Day / Dusk", action: toggleTheme },
+        // scene pages hold one grade; the switch is for the other pages
+        ...(document.documentElement.classList.contains("scene-page") ? [] : [{ key: "t", label: "Switch Day / Dusk", action: toggleTheme }]),
       ],
     },
     {
