@@ -52,9 +52,6 @@ const homeDescription =
         <a href="/blog/"><strong>See what I’m learning <span aria-hidden="true">↗</span></strong><span>I document my work and share what I learn in Writing.</span></a>
         <a href="/about/"><strong>A little more about me <span aria-hidden="true">↗</span></strong><span>I’m taken, but you can still read my About page.</span></a>
       </nav>
-      <div class="hero-actions">
-        <ArrowLink href="/resume">View Resume</ArrowLink>
-      </div>
     </div>
 
   </section>
@@ -141,9 +138,8 @@ const homeDescription =
   .hero-routes strong { text-decoration: underline; text-underline-offset: .25em; font-size: var(--type-ui); }
   .hero-routes a:hover strong { color: var(--text-accent); }
   .hero-routes a > span { font-size: var(--type-small); line-height: var(--leading-read); max-width: 48ch; }
-  .hero-actions { margin-left: var(--space-96); }
   .work :global(.container) { max-width: var(--ds-container-wide); padding-inline: var(--layout-gutter); }
-  @media (width <= 700px) { .hero-avatar { width: 52px; height: 52px; } .hero-greeting { gap: var(--space-12); } .hero-routes, .hero-actions { margin-left: 0; } }
+  @media (width <= 700px) { .hero-avatar { width: 52px; height: 52px; } .hero-greeting { gap: var(--space-12); } .hero-routes { margin-left: 0; } }
   .hero-name {
     margin: 0 0 var(--space-12);
     font-family: var(--font-title);
@@ -153,7 +149,6 @@ const homeDescription =
     letter-spacing: var(--track-tight);
   }
 
-  .hero-actions,
   .contact-actions {
     display: flex;
     flex-wrap: wrap;
@@ -199,5 +194,8 @@ const homeDescription =
 
   }
 
-  @media (width < 900px) { :global(body:has(.chapter-rail)) { padding-bottom: var(--space-96); } }
+  @media (width < 900px) {
+    :global(body:has(.chapter-rail)) { padding-bottom: var(--space-96); }
+    :global(body:has(.chapter-rail) .place-label) { bottom: var(--space-96); }
+  }
 </style>

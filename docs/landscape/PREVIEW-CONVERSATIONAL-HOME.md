@@ -26,3 +26,5 @@ Persona: Morgan, an invented product-design hiring lead, English, first visit. N
 | Read Writing or About | Direct normal links; YouTube hidden | Pass |
 
 Local build passed with zero errors or warnings. New intro/work/case/Writing/About flows passed at 390, 768, 1440 and 1676 pixels. The Ghosted media width at 1676 is 967px. Rail click/scrub/current state/keyboard, separate About and no-JavaScript navigation passed at 390, 768 and 1440 pixels. Browser checks establish mechanics and recorded appearance, not human comprehension or hiring conversion.
+
+Shipped preview `30032ff` passed deployed route/metadata/identity smoke and bounded REA. REA found a minor 390×844 rail overlap; the follow-up removes the duplicate intro Resume link and puts the place caption above the mobile rail. Local 390×844 geometry checks confirm intro routes/caption clear the rail. Browser Back returns from Ghosted to home. The deployed REA record and its exact coverage limits are in `RESEARCH-2d-three-websites.md`.
