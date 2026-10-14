@@ -4,6 +4,10 @@ All notable changes to this portfolio site should be documented here.
 
 ## Preview iteration: conversational home
 
+- Bring the clean-shaven character forward beside the chat, preserving independent cursor depth. Replace the builder joke with a useful-product sentiment; fade earlier body messages upward as the next takes focus. On phone home, move Menu to the bottom project rail and hide the duplicate top bar, while retaining case-study back navigation.
+
+- Give the hiking character a clean shave; keep its depth layer and greeting behavior.
+
 - Place the simplified hiking character on Mt. Hood as an independent fifth depth plane between terrain and foreground. Share the existing cursor spring, shader and static fallback; keep chat fixed. Preserve the character’s current haircut, glasses, rain jacket and backpack, with private source photographs kept out of the repository.
 
 - Let the circle avatar enter and the intro messages write themselves in sequence. Add Show all and Replay hello, session-aware return behavior, stable layout, and immediate complete copy for reduced motion/no JavaScript. Keep direct routes available during the greeting.

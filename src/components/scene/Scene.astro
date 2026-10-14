@@ -31,12 +31,12 @@ interface Props {
 const scene = loadScene(Astro.props.place);
 if (Astro.props.guide) {
   const guide: SceneLayer = {
-    name: "guide", src: "/images/characters/cello-hiker-v1.webp", width: 384, height: 576,
-    depth: .22, motion: null, cap: [28, 14], capSource: "Independent bounded greeting sprite; source-pixel travel between terrain and foreground.",
+    name: "guide", src: "/images/characters/cello-hiker-v2.webp", width: 384, height: 576,
+    depth: .22, motion: null, cap: [28, 14], capSource: "Independent foreground greeting sprite with bounded source-pixel travel.",
     anchor: [.5, .5], mobileAnchor: [.5, .5], touchesTop: false,
-    sprite: { height: .42, maxHeight: 340, anchor: [.37, .80], mobileHeight: .16, mobileAnchor: [.12, .21] },
+    sprite: { foreground: true, height: .42, maxHeight: 340, anchor: [.37, .80], mobileHeight: .16, mobileAnchor: [.12, .21] },
   };
-  scene.layers.splice(Math.max(1, scene.layers.length - 1), 0, guide);
+  scene.layers.push(guide);
 }
 const read = Astro.props.focused ? scene.read : null;
 const anchor = scene.layers[0]?.anchor ?? [0.5, 0.5];

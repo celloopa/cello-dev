@@ -2,13 +2,15 @@
 
 Preview iteration, October 14, 2026. Production remains unchanged.
 
-The selected character uses Cello’s current likeness cues, modern mullet, thin round glasses, subtle facial hair, rain jacket and backpack. The face and body share one simplified cut-paper style. Source portrait and hiking photographs remain private. Generated with the built-in imagegen tool; the selected transparent PNG is retained in the private generation output and a 384×576 WebP derivative lives at `public/images/characters/cello-hiker-v1.webp` (34,342 bytes).
+The selected character uses Cello’s current likeness cues, modern mullet, thin round glasses, subtle facial hair, rain jacket and backpack. The face and body share one simplified cut-paper style. Source portrait and hiking photographs remain private. Generated with the built-in imagegen tool; the selected transparent PNG is retained in the private generation output and the current 384×576 WebP derivative lives at `public/images/characters/cello-hiker-v2.webp`. The prior v1 derivative remains available.
 
 ## Runtime depth
 
-Home explicitly opts into a fifth scene plane: sky → mountain → terrain/trees → Cello → foreground flowers. The character is not baked into the scenery. It uses the existing Three.js shader, grading, bounded spring, arrival and cursor frame loop. Its horizontal/vertical travel is capped at 28/14 source pixels, between the terrain’s 18/9 and foreground’s 38/19. One additional texture and plane; no separate animation loop or new framework.
+Current placement follows Cello’s feedback that the guide was lost in the scene’s shadow. The character is now a foreground DOM cutout beside the text, above the scenery’s grading, atmosphere and copy scrim. The four landscape planes remain separate in Three.js. The existing renderer’s bounded guide spring updates the foreground’s CSS offsets within the same frame loop; no additional pointer listener or animation loop is introduced. The guide metadata appears last in the depth inventory, with `surface: foreground`, rather than creating another textured GPU mesh.
 
-Sprite size and position are separate from the cover-fit landscape planes. The shared scene metadata drives both the HTML still and WebGL layout, including phone placement. The guide fades away in reading; the case-study renderer and backdrop scenes do not receive it. Chat text and links stay fixed. Reduced motion, no JavaScript and failed WebGL retain the registered still stack and transparent character. The scrim is scoped to the speech and routes so it does not muddy the character.
+Character travel remains capped at 28/14 source pixels, scaled through the scene’s current fit. Chat geometry is fixed. HTML layout anchors the foreground directly beside the chat on desktop and phone. Without JavaScript/WebGL, under reduced motion, or after context loss, the character stays as a normal transparent image at rest. It scrolls out naturally with the hero.
+
+The original prototype placed the guide between terrain and foreground; this front placement supersedes that composition. The old v1 asset is retained; v2 is clean-shaven.
 
 ## Generation prompt
 
@@ -17,3 +19,13 @@ Create one friendly full-body illustrated cut-paper hiking character on a truly 
 ## Checks
 
 Local build passes with zero errors/warnings. GPU-enabled Chrome confirms five planes in the expected order, distinct left/right cursor offsets for the guide, travel within caps, and identical chat geometry. Synthetic context loss returns to the static stack with the guide still present. Phone/tablet/desktop flows and reduced-motion stills pass. The final published version receives the same focused check before delivery. This checks implementation, not human preference or measured conversion.
+
+## Clean-shaven version
+
+Cello requested a clean shave after showing the character to his fiancée. Built-in imagegen removed the moustache and chin/jaw stubble while retaining the character design. The same 384×576 alpha cutout is now `public/images/characters/cello-hiker-v2.webp`; v1 remains available as the prior version. The clean shave changes only the raster asset. The later foreground placement is described above.
+
+Edit prompt:
+
+Edit only the facial hair on this exact existing illustrated character. Give him a clean shave: remove the moustache above the lip, the stubble marks along the jaw and chin, and the small facial-hair patch below the lip. Replace these areas with the same simple flat warm skin colors and subtle paper grain used elsewhere on his face. Preserve the existing smile, nose, face shape, eyes and eyebrows, round glasses, modern mullet, pose, waving hand, rain jacket, backpack, pants, boots, palette, proportions, cut-paper shapes and exact full-body framing. Do not redraw or restyle any other part. No beard shadow, no moustache, no stubble. Keep the transparent alpha background and all transparent margins; no scenery or extra objects.
+
+Current local checks also pass for the foreground DOM offset following the shared spring, four background canvas draw calls, context-loss return to the resting image, one active body message with its predecessor faded, and phone bottom-Menu touch/focus behavior.

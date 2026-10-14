@@ -11,7 +11,10 @@ const stops = [
 ];
 ---
 <nav class="chapter-rail" aria-label="Project timeline">
-  <span class="rail-current" aria-hidden="true" data-rail-title>Home</span>
+  <div class="rail-toolbar">
+    <span class="rail-current" aria-hidden="true" data-rail-title>Home</span>
+    <button class="rail-menu" type="button" data-rail-menu aria-label="Open menu" aria-haspopup="dialog" aria-controls="keyboard-shortcuts-menu" aria-expanded="false"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16" /></svg><span>Menu</span></button>
+  </div>
   <ol class="rail-stops">
     {stops.map((stop, i) => <li><a draggable="false" href={`#${stop.id}`} aria-label={stop.title} aria-current={i === 0 ? "location" : undefined}><span class="rail-node" aria-hidden="true">{stop.id === "arrival" ? <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" focusable="false"><path d="m3 10 9-7 9 7v11h-6v-7H9v7H3Z" /></svg> : stop.id === "contact" ? <Mail /> : stop.mark?.endsWith(".webp") ? <img src={stop.mark} alt="" width="20" height="20" draggable="false" /> : stop.mark ? <span class="rail-mark" style={`--rail-mark: url('${stop.mark}')`}></span> : null}</span><span class="rail-label" aria-hidden="true">{stop.title}</span></a></li>)}
   </ol>
@@ -19,6 +22,12 @@ const stops = [
 <script>
   const rail = document.querySelector<HTMLElement>(".chapter-rail");
   if (rail) {
+    const menu = rail.querySelector<HTMLButtonElement>("[data-rail-menu]")!;
+    menu.addEventListener("click", () => { menu.focus(); window.dispatchEvent(new CustomEvent("toggleKeyboardMenu")); });
+    addEventListener("menuVisibilityChanged", event => {
+      const open = (event as CustomEvent<{ isVisible: boolean }>).detail.isVisible;
+      menu.setAttribute("aria-expanded", String(open));
+    });
     const links = [...rail.querySelectorAll<HTMLAnchorElement>("a")];
     const targets = links.map(link => document.getElementById(link.hash.slice(1))!);
     const title = rail.querySelector<HTMLElement>("[data-rail-title]")!;
@@ -87,7 +96,9 @@ const stops = [
     transform: translateY(-50%);
     color: var(--text-primary);
   }
-  .rail-current { display: none; }
+  .rail-toolbar, .rail-menu, .rail-current { display: none; }
+  .rail-menu { align-items: center; justify-content: center; gap: var(--space-8); min-height: var(--touch-target); padding: var(--space-8); border: 0; background: none; color: inherit; font: inherit; font-size: var(--type-label); cursor: pointer; }
+  .rail-menu svg { width: var(--space-16); height: var(--space-16); }
   .rail-stops { transform: scale(var(--rail-rest-scale, 1.15)); transform-origin: center; transition: transform var(--motion-ui) var(--ease-out); position: relative; margin: 0; padding: 0; list-style: none; touch-action: pan-x; user-select: none; }
   a { position: relative; display: flex; align-items: center; justify-content: center; width: var(--touch-target); height: var(--touch-target); font-size: var(--type-label); font-weight: var(--weight-bold); }
   .rail-stops::before { content: ""; position: absolute; top: calc(var(--touch-target) / 2); bottom: calc(var(--touch-target) / 2); left: 50%; width: var(--stroke-control); transform: translateX(-50%); background: var(--text-muted); box-shadow: 0 0 0 var(--stroke-control) var(--bg-canvas); }
@@ -101,12 +112,17 @@ const stops = [
   a:hover .rail-label, a:focus-visible .rail-label { visibility: visible; }
   @media (width < 900px) {
     .chapter-rail { inset: auto auto max(var(--space-12),env(safe-area-inset-bottom)) 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - var(--space-24)); padding-inline: var(--space-12); background: var(--bg-canvas); }
-    .rail-current { display: block; padding: var(--space-8) 0 0; text-align: center; max-width: calc(var(--touch-target) * 6); font-size: var(--type-label); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .rail-toolbar { display: flex; align-items: center; }
+    .rail-current { flex: 1; min-width: 0; display: block; padding: var(--space-8) 0 0; text-align: center; max-width: calc(var(--touch-target) * 6); font-size: var(--type-label); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .rail-stops { display: flex; touch-action: pan-y; }
     li { flex: 1; min-width: 0; }
     a { width: var(--touch-target); }
     .rail-stops::before { top: 50%; bottom: auto; left: calc(var(--touch-target) / 2); right: calc(var(--touch-target) / 2); width: auto; height: var(--stroke-control); transform: translateY(-50%); }
     .rail-label { display: none; }
+  }
+  @media (width <= 768px) {
+    .rail-menu { display: inline-flex; }
+    .rail-current { padding: 0 var(--space-8); text-align: left; }
   }
   @media (hover: hover) { .chapter-rail:hover .rail-stops { transform: scale(1.15); } }
   .chapter-rail:has(a:focus-visible) .rail-stops { transform: scale(1.15); }

@@ -36,3 +36,13 @@ Cello asked for each greeting message to arrive and write itself out. The circle
 Local checks pass for sequencing, skip/replay, session return, runtime reduced-motion changes, full sequence completion, no-JavaScript content, stable route geometry, and the existing390/768/1440/1676 flows. Character exploration is separate: Cello supplied current portrait/hiking references and requested a modern mullet, rain jacket, existing backpack, and the landscape’s consistent flat cutout treatment. Keep the circle while that likeness/style is being refined; personal source photographs stay outside the public repo.
 
 Character follow-up: Cello selected the simpler unified illustration and requested it against Mt. Hood with depth. Home now opts into the independent character plane, between terrain and foreground. The four landscape cuts remain separate, and the chat stays fixed. See `CHARACTER-GREETING.md` for the asset, exact prompt, depth boundary and fallback behavior.
+
+## Foreground character, focused messages and phone navigation
+
+Cello reported that the character disappeared into shadow, the builder joke did not flow, and the phone view was busy. The clean-shaven character now sits beside the chat as a foreground cutout driven by the existing depth spring. The builder line is removed; the product message becomes “I love to design and prototype helpful experiences, taking an idea all the way to something you can use.”
+
+Normal motion keeps the name in place and gives the body messages one shared slot. Each types in, pauses for reading, then fades upward as the next takes focus. The final product message remains. Skip intro and Replay hello remain available; direct routes never wait. Reduced motion/no JavaScript show both complete messages in ordinary reading order.
+
+On home at phone widths (≤768px), the top context bar is hidden and its Menu entry moves into a toolbar on the bottom project rail. Six connected project stops stay intact. The phone routes use shorter labels and one brief scroll/tap hint. Case-study headers remain available because those routes do not have a project rail. Desktop navigation stays in its existing place. Menu touch activation, Escape/focus return, expanded state and case-study header retention are checked alongside the responsive flows.
+
+Validation for the combined pass: build passes with zero errors/warnings;375px emulated-touch bottom Menu/rail/back-header checks pass. GPU foreground depth, fixed-copy geometry, static context-loss fallback, focused typing/skip/replay/session/reduced-motion/noJS and390/768/1440/1676 flows pass. Screenshots and exact driver output are retained in the private landscape-polish session directory (`mobile-greeting-check.log`).
