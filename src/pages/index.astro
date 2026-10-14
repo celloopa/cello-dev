@@ -303,6 +303,10 @@ const homeDescription =
     :global(body:has(.chapter-rail) .place-label) { bottom: calc(var(--space-96) * 1.5); }
     .hero-routes a > span { display: none; }
     .mobile-route-hint { display: block; font-size: var(--type-small); line-height: var(--leading-read); }
+    /* Phones: the guide leads and the chat steps back. */
+    .hero-copy { grid-template-columns: calc(var(--space-96) + var(--space-24)) minmax(0, 1fr); }
+    .hero-name { font-size: var(--type-section-title); }
+    .hero-bubble { padding: var(--space-8) var(--space-12); font-size: var(--type-small); line-height: var(--leading-ui); }
     .hero {
       padding: var(--space-32) var(--layout-gutter) calc(var(--space-96) * 1.5);
     }
