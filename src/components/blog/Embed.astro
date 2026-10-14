@@ -1,0 +1,166 @@
+---
+import { embedSource, previewImage, type EmbedType } from "@/lib/blog/embed";
+
+interface Props {
+  url: string;
+  type?: EmbedType;
+  title?: string;
+  description?: string;
+  image?: string;
+  imageAlt?: string;
+  siteName?: string;
+  caption?: string;
+  start?: number;
+}
+
+const { url, type, title, description, image, imageAlt = "", siteName, caption, start } = Astro.props;
+const source = embedSource(url, type, start);
+const thumb = previewImage(image);
+const labels = { threads: "Threads", tweet: "X / Twitter", youtube: "YouTube", article: siteName || source.host };
+const label = labels[source.provider];
+if (source.provider === "youtube" && !title) throw new Error("[Embed] Give YouTube videos a descriptive title for the iframe's accessible name.");
+---
+
+<figure class:list={["blog-embed", `blog-embed--${source.provider}`]}>
+  {source.provider === "article" ? (
+    <a class="article-preview" href={source.href}>
+      {thumb && <img src={thumb} alt={imageAlt} loading="lazy" decoding="async" />}
+      <span class="article-copy">
+        <span class="embed-source">{label}</span>
+        <span class="article-title">{title || source.host}</span>
+        {description && <span class="article-description">{description}</span>}
+        <span class="article-action">Read article <span aria-hidden="true">↗</span></span>
+      </span>
+    </a>
+  ) : (
+    <>
+      <div class="embed-content" data-social-embed={source.provider === "youtube" ? undefined : source.provider} data-url={source.href} data-post-id={source.id} data-embed-title={title || `Post on ${label}`}>
+        {source.provider === "youtube" ? (
+          <iframe
+            src={source.src}
+            title={title}
+            loading="lazy"
+            allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+            allowfullscreen
+            referrerpolicy="strict-origin-when-cross-origin"
+          />
+        ) : (
+          <div class="social-fallback" data-social-fallback>
+            <span class="embed-source">{label}</span>
+            <span class="article-title">{title || `Post on ${label}`}</span>
+            {description && <span class="article-description">{description}</span>}
+          </div>
+        )}
+      </div>
+      <a class="embed-original" href={source.href}>Open on {label} <span aria-hidden="true">↗</span></a>
+    </>
+  )}
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<script>
+  import "@/lib/blog/social-embeds";
+</script>
+
+<style>
+  .blog-embed {
+    width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    margin: var(--space-32) 0;
+  }
+
+  .blog-embed--threads,
+  .blog-embed--tweet,
+  .blog-embed--article {
+    max-width: var(--layout-measure-read);
+    justify-self: center;
+  }
+
+  .embed-content { min-width: 0; width: 100%; }
+  .blog-embed--youtube .embed-content {
+    aspect-ratio: 16 / 9;
+    min-height: calc(var(--touch-target) * 5);
+  }
+
+  iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .embed-content :global(iframe) { max-width: 100%; }
+
+  .social-fallback,
+  .article-preview {
+    display: block;
+    padding: var(--space-24);
+    border: var(--stroke-control) solid var(--border-muted);
+    background: var(--bg-plate);
+    color: var(--text-primary);
+  }
+
+  .blog-embed .article-preview {
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+  .article-copy { display: grid; gap: var(--space-12); }
+  .social-fallback { display: grid; gap: var(--space-12); }
+  .social-fallback[hidden] { display: none; }
+
+  .article-preview img {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-bottom: var(--space-20);
+  }
+
+  .embed-source {
+    font-family: var(--font-mono);
+    font-size: var(--type-label);
+    line-height: var(--leading-small);
+    overflow-wrap: anywhere;
+  }
+
+  .article-title {
+    font-family: var(--font-read);
+    font-size: var(--type-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-title);
+  }
+
+  .article-description {
+    font-family: var(--font-read);
+    font-size: var(--type-body);
+    line-height: var(--leading-read);
+  }
+
+  .article-action,
+  .embed-original {
+    font-size: var(--type-small);
+    line-height: var(--leading-read);
+    text-decoration: underline;
+    text-decoration-color: var(--action-primary);
+  }
+
+  .embed-original {
+    display: inline-flex;
+    align-items: center;
+    min-height: var(--touch-target);
+    gap: var(--space-8);
+    padding-block: var(--space-8);
+  }
+
+  figcaption {
+    padding-block: var(--space-12);
+    border-top: var(--stroke-rule) solid var(--border-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-read);
+  }
+
+  @media (width <= 700px) {
+    .social-fallback,
+    .article-preview { padding: var(--space-16); }
+  }
+</style>

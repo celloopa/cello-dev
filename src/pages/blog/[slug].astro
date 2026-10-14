@@ -11,6 +11,7 @@ import "@fontsource-variable/geist/wght-italic.css";
 import { getCollection, render } from "astro:content";
 import SceneLayout from "@/layouts/SceneLayout.astro";
 import Prose from "@/components/ui/Prose.astro";
+import Embed from "@/components/blog/Embed.astro";
 import ReadHead from "@/components/scene/ReadHead.astro";
 import StoryEnd from "@/components/scene/StoryEnd.astro";
 import { sceneForPost } from "@/lib/scene/pairing";
@@ -71,7 +72,7 @@ const all = { href: "/blog", label: "All posts" };
 
     <div class="read-body container">
       <Prose>
-        <Content />
+        <Content components={{ Embed }} />
       </Prose>
 
       {posts.length > 1 && <StoryEnd next={next} previous={previous} all={all} />}
