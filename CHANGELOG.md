@@ -4,6 +4,8 @@ All notable changes to this portfolio site should be documented here.
 
 ## Preview iteration: conversational home
 
+- Let the mountains breathe on home: the arrival's screen-wide ink is lighter (40%) and fades out by halfway up the hero. The copy keeps its own local shade, now reaching past the name, plus a tight ink halo on each line. Every hero line passes 4.5:1 (small) / 3:1 (large) against the brightest art under it, still and WebGL, at 1440 and 390. Phones omit the place caption on every page.
+
 - Follow Cello's layout sketch. Scene pages lose the full-width top band: the logo and ⌘K menu hold the top-left corner, page links stack top-right, and home's project rail moves to the left edge. On phones, one fixed top row carries the logo, the rail and the menu. The home greeting sits left with the larger guide standing to its right (feet level with "Here for the work?"); "See what I'm learning" and "A little more about me" become a smaller pair underneath. Phone home drops the place caption.
 
 - The guide no longer follows the cursor (it was a lot): he stays planted beside the chat with a slow breathing bob and a small sway as each message starts, while the scenery keeps its cursor depth. Reduced motion keeps him still.

@@ -235,9 +235,10 @@ html:is(.scene-reading, .scene-focus-page) .scene-atmos-read {
 html:is(.scene-reading, .scene-focus-page) .place-label {
   opacity: 0;
 }
+/* phones: the place speaks for itself; no caption */
 @media (max-width: 768px) {
   .place-label {
-    left: var(--layout-gutter);
+    display: none;
   }
 }
 

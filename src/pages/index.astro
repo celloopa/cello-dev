@@ -216,7 +216,20 @@ const homeDescription =
     color: var(--text-on-art);
   }
 
-  .hero-bubbles::before, .hero-routes::before { inset: -12% -8%; }
+  /* the shade's solid core reaches up past the name (its feathered top edge would sit on the name otherwise) */
+  .hero-bubbles::before { inset: -45% -10% -40%; }
+  .hero-routes::before { inset: -45% -8% -12% -25%; } /* the left feather would otherwise fall on the first route */
+  /* the controls and routes paint above the greeting's extended shade */
+  .hero-routes { position: relative; z-index: 3; }
+  .intro-controls { position: relative; z-index: 4; } /* above the routes' shade, which reaches up behind it */
+  /* Let the mountains breathe: on arrival the screen-wide ink is lighter and fades out toward the
+     top of the hero. The copy keeps its own local shade. */
+  :global(html:has(.chapter-rail):not(.scene-reading) .scene-atmos-arrive) { opacity: var(--hero-atmos, .4); -webkit-mask-image: linear-gradient(to top, black 20%, transparent 50%); mask-image: linear-gradient(to top, black 20%, transparent 50%); }
+  /* A tight ink halo also hugs each letter over snow and sky. */
+  .hero { --hero-halo: 0 0 var(--space-4) var(--bg-canvas), 0 0 var(--space-12) var(--bg-canvas), 0 0 var(--space-24) var(--bg-canvas); }
+  .hero-routes a { text-shadow: var(--hero-halo); }
+  /* thin text: only the soft outer halo, or the tight layer eats its strokes and it reads grey */
+  .intro-controls button { text-shadow: 0 0 var(--space-12) var(--bg-canvas), 0 0 var(--space-24) var(--bg-canvas); }
   .hero-greeting { display: contents; }
   /* The guide stands beside what he says: feet level with the bottom of the chat.
      The negative top margin lets him rise above a short greeting without stretching its row. */
@@ -263,7 +276,7 @@ const homeDescription =
   .hero-name {
     margin: 0 0 var(--space-12);
     font-family: var(--font-title);
-    text-shadow: 0 var(--stroke-control) var(--space-8) var(--bg-canvas);
+    text-shadow: var(--hero-halo);
     font-size: var(--type-page-title);
     font-weight: var(--weight-semibold);
     line-height: var(--leading-display);
