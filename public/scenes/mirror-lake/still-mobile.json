@@ -1,0 +1,11 @@
+{
+  "src": "/scenes/mirror-lake/still-mobile.webp",
+  "width": 473,
+  "height": 1024,
+  "crops": {
+    "sky": 532,
+    "far": 532,
+    "mid": 532,
+    "near": 96
+  }
+}

@@ -6,9 +6,9 @@
  * JavaScript), the scene data is embedded by the build (catalog.ts), and the focus and motion
  * values come from the A3 tokens.
  *
- * - The scene's cut layers as a stacked-<img> still. It IS the page when there's no WebGL, under
+ * - A complete flattened poster is the page when there's no WebGL, under
  *   reduced motion, with ?gl=0, or if textures fail; otherwise the WebGL renderer (renderer.js)
- *   draws the same <img>s (no second download) and the still stays hidden.
+ *   loads the original cuts hidden and replaces the poster after a complete frame.
  * - Attention states, all reversible:
  *     arrival  the intro copy over the scene, readable at once (nothing waits for the assembly)
  *     reading  once the focus target (the Work section) reaches the reading line, the scene
@@ -320,9 +320,13 @@ export function start() {
   const handoff = () => {
     ready = true;
     clearTimeout(giveUp);
-    root.classList.add("scene-gl-on");
+    // The opaque canvas fades over a complete, opaque still. Fading both at once exposes the
+    // dark scene background and causes a brightness dip even when their pixels match.
+    root.classList.add("scene-still-on", "scene-gl-on");
     backdrop?.refresh();
-    if (root.classList.contains("scene-still-on")) stillOff = setTimeout(() => root.classList.remove("scene-still-on"), 400);
+    const duration = getComputedStyle(host.querySelector(".scene-gl")).transitionDuration.split(",")[0].trim();
+    const fadeMs = parseFloat(duration) * (duration.endsWith("ms") ? 1 : 1000) || 0;
+    stillOff = setTimeout(() => root.classList.remove("scene-still-on"), fadeMs + 50);
   };
   const go = async () => {
     if (skip3D()) return;
@@ -337,13 +341,12 @@ export function start() {
         tokens: readTokens(),
         mobile: () => mobileQ.matches,
         dark: true, // scene pages hold one grade (strength from --scene-dusk-strength); no Day/Dusk switch
-        reading: readPage || focusPage,
-        // the still took over meanwhile, or this is a reading or index page (no assembly behind
-        // an article or a list): arrive already settled, then cross-fade in
-        settled: () => readPage || focusPage || root.classList.contains("scene-still-on"),
+        reading: glState().reading,
         onLost: () => { gl = null; showStill("WebGL context lost"); },
         onFirstFrame: handoff,
       });
+      // A preference change while decode/import was pending must not re-enable animation.
+      if (reduce.matches) { gl.stop(); gl = null; return; }
       gl.setState(glState());
       gl.setCovered(!!backdrop?.current());
       gl.setScroll(clamp01(scrollY / Math.max(1, hero?.offsetHeight ?? innerHeight)));
@@ -361,10 +364,10 @@ export function start() {
     if (document.hidden) document.addEventListener('visibilitychange',queue,{once:true});
     else idle(go,{timeout:600});
   };
-  const readingStill = host.querySelector('.scene-read');
-  if (readingStill) {
-    // Paint the small reading still and text before fetching full, initially hidden cuts.
-    Promise.all([readingStill.decode().catch(() => {}), document.fonts.ready]).then(() =>
+  const poster = host.querySelector('[data-scene-poster]');
+  if (poster) {
+    // Paint the complete poster and text before fetching the initially hidden cuts.
+    Promise.all([poster.decode().catch(() => {}), document.fonts.ready]).then(() =>
       requestAnimationFrame(() => requestAnimationFrame(queue)));
   } else queue();
 }

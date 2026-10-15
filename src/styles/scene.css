@@ -114,9 +114,14 @@ html.scene-reading .scene-layer-guide { opacity: 0; }
     object-position: var(--mx) var(--my);
   }
 }
-.scene-still[data-read-still] .scene-layer {
+.scene-still:is([data-read-still], [data-composite-still]) .scene-layer {
   visibility: hidden;
 }
+/* Decode the single composite before showing any of it. The inline reveal also runs with
+   blocked modules; without JavaScript the browser still has one complete image to paint. */
+html.js .scene-poster:not([data-ready]) { visibility: hidden; }
+.scene-still[data-cut-fallback] .scene-layer { visibility: visible; }
+.scene-still[data-cut-fallback] .scene-poster { visibility: hidden; }
 /* Keep the image visible even if module loading is blocked or initialization never runs. */
 html.scene-gl-on:not(.scene-still-on) .scene-still {
   opacity: 0;

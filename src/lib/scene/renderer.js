@@ -10,9 +10,8 @@
  * below the bar with one scale (so they stay registered) plus just enough overscan for every
  * movement below. Texture handling, the Dusk grade and the micro-motion are in art-shader.js.
  *
- * - Arrival: sky fades in, then far → mid → near rise into place with a short stagger, each an
- *   analytic damped spring; the nearest layer has the least damping (≈11% overshoot), the far
- *   layer almost none. Half the drop on mobile.
+ * - Handoff: a complete frame matches the DOM still, then eases into the motion framing and
+ *   grade after the canvas fade. The arrival recipe remains seekable for review only.
  * - Depth: desktop pointer, mobile native scroll. Each layer follows its target with a damped
  *   spring and its offset is clamped to the scene's tested travel ("caps", source px → screen px
  *   through the cover-fit scale), so no hidden fill beyond what was inspected is ever shown.
@@ -36,6 +35,7 @@ import { readingDrift, DEPTH_SPRINGS as SPRING } from "./reading-drift.js";
 const AMBIENT_IDLE = 15000;   // ms of ambient micro-motion after the last input
 const AMBIENT_FPS = 30;
 const POINTER_TRAVEL = 1;     // × caps at the pointer extremes
+const HANDOFF_SETTLE = 0.9;   // s, after the CSS canvas fade, to acquire the motion framing/grade
 const ARRIVE_LEAD = 0.02;     // s: the far layer starts this much after the first stagger step
 
 /** Damping ζ that gives this overshoot (fraction) on a unit step: the inverse of overshoot() below. */
@@ -127,7 +127,7 @@ function springResidual(t, zeta, omega) {
 const overshoot = (zeta) => (zeta >= 1 ? 0 : Math.exp((-zeta * Math.PI) / Math.sqrt(1 - zeta * zeta)));
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
-export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dark = false, reading = false, settled = () => false, onLost, onFirstFrame }) {
+export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dark = false, reading = false, onLost, onFirstFrame }) {
   // Upload from detached copies: three.js sizes a texture from an <img>'s *displayed* width, and the
   // layers are stretched to cover the screen, so past ~2048px wide it asked for more mip levels than
   // a 1536px image has and WebGL rejected every layer (a black scene on large displays). A detached
@@ -138,7 +138,7 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     try { await copy.decode(); return copy; } catch { return img; }
   }));
   const { REF, READ_SCALE, FOCUS_RATE, ARRIVE } = tuning(tokens);
-  // textures straight from the still's <img>s: no second download
+  // Decoded detached images: no second download
   await Promise.all(imgs.map((img) => (img.complete && img.naturalWidth ? null : img.decode())));
   if (imgs.some((img) => !img.naturalWidth)) throw new Error("layer images failed to load");
 
@@ -219,6 +219,11 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
 
   /* ---- layout: cover-fit + overscan, caps in screen px ---- */
   let H = 0, fit = null;
+  const stillEl = canvas.previousElementSibling;
+  const readStill = stillEl?.hasAttribute("data-read-still");
+  const compositeStill = stillEl?.hasAttribute("data-composite-still") && !stillEl.hasAttribute("data-cut-fallback");
+  const handoffValue = getComputedStyle(canvas).transitionDuration.split(",")[0].trim();
+  const handoffSeconds = parseFloat(handoffValue) * (handoffValue.endsWith("ms") ? .001 : 1) || 0;
   function layout() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return false;
@@ -267,6 +272,21 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
       } else {
         const [ax, ay] = isMobile ? p.l.mobileAnchor : p.l.anchor;
         p.base = [(Wd - boxW) * (0.5 - ax), -(Hd - boxH) * (0.5 - ay)];
+        // object-fit: cover, including the flattened reading still's phone anchor.
+        const domScale = Math.max(w / iw, h / ih);
+        const domW = iw * domScale, domH = ih * domScale;
+        const domAx = isMobile && readStill && scene.read ? scene.read.mobileX
+          : isMobile && compositeStill ? scene.still.mobileX : ax;
+        p.domBase = [(domW - w) * (.5 - domAx), -(domH - h) * (.5 - ay)];
+        p.domSize = [domW, domH];
+        if (isMobile && compositeStill && scene.still.mobile) {
+          // Reconstruct the phone poster's registered source crops at ANY viewport ratio.
+          // The first canvas frame therefore matches it even on a short or wide phone.
+          const m = scene.still.mobile, scale = Math.max(w / m.width, h / m.height);
+          const left = m.crops[p.l.name];
+          p.domSize = [iw * scale, ih * scale];
+          p.domBase = [((iw - m.width) / 2 - left) * scale, 0];
+        }
         p.mesh?.scale.set(Wd, Hd, 1);
       }
     }
@@ -281,21 +301,30 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
   let covered = false, restTimer = 0;
   // Reading keeps cursor depth; mobile scroll travel still settles while reading.
   const settledReading = () => target.reading === 1 && focus === 1;
-  let arrivalT = settled() ? 99 : 0, arrivalHeld = null;
+  // The still already showed a complete landscape. Never replay its assembly on upgrade.
+  // Keep the first canvas frame identical in crop/filter; acquire overscan only once visible.
+  let arrivalT = 99, arrivalHeld = null, handoffT = 0, handoffMix = 0;
   const pointer = { x: 0, y: 0 };
   let lastInput = performance.now(), last = performance.now(), lastDraw = 0, time = 0, raf = 0, lost = false, running = false, frames = 0, handedOff = false;
 
   function update(dt, now) {
+    // Hold DOM framing through the opacity fade, then smoothly acquire the existing GL look.
+    if (handedOff) handoffT += dt;
+    const progress = clamp((handoffT - handoffSeconds) / HANDOFF_SETTLE, 0, 1);
+    handoffMix = progress * progress * (3 - 2 * progress);
     // attention
     focus += (target.reading - focus) * (1 - Math.exp(-dt * FOCUS_RATE));
     if (Math.abs(target.reading - focus) < 0.002) focus = target.reading;
     const wantAmbient = hasMotion && target.reading === 0 && now - lastInput < AMBIENT_IDLE ? 1 : 0;
     ambient += clamp(wantAmbient - ambient, -dt * 0.8, dt * 1.5);
-    shared.uMotion.value = ambient * (1 - focus);
+    shared.uMotion.value = ambient * (1 - focus) * handoffMix;
+    shared.uDusk.value = (dark ? duskStrength : 0) * handoffMix;
     shared.uTime.value = time;
 
     const ref = isMobile ? REF.mobile : REF.desktop;
-    shared.uBright.value = 1 + (ref.bright - 1) * focus;
+    const domBright = .8 + (ref.bright - .8) * focus;
+    const glBright = 1 + (ref.bright - 1) * focus;
+    shared.uBright.value = domBright + (glBright - domBright) * handoffMix;
     shared.uSat.value = 1 + (ref.sat - 1) * focus;
     group.scale.setScalar(1 + READ_SCALE * focus);
 
@@ -328,19 +357,27 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
       const res = springResidual(t, p.arrive.zeta, p.arrive.omega);
       const drop = p.drop * (Math.abs(res) < 0.0005 && t > 0 ? 0 : res);
       p.uFade.value = fade * fade * (3 - 2 * fade) * (p.l.sprite ? 1 - focus : 1);
-      p.out = [ox, oy - drop];
+      p.out = [ox * handoffMix, oy * handoffMix - drop];
       if (p.foreground) {
         p.foreground.style.setProperty("--guide-shift-x", `${ox}px`);
         p.foreground.style.setProperty("--guide-shift-y", `${-oy}px`);
       }
-      p.mesh?.position.set(p.base[0] + ox, p.base[1] + oy - drop, 0);
+      if (p.mesh) {
+        const base = p.domBase ?? p.base;
+        if (p.domSize) p.mesh.scale.set(
+          p.domSize[0] + (fit.art[0] - p.domSize[0]) * handoffMix,
+          p.domSize[1] + (fit.art[1] - p.domSize[1]) * handoffMix, 1);
+        p.mesh.position.set(
+          base[0] + (p.base[0] - base[0]) * handoffMix + p.out[0],
+          base[1] + (p.base[1] - base[1]) * handoffMix + p.out[1], 0);
+      }
     }
     const arriving = layers.some((p) => at - p.arrive.start < 2.2);
     const transitioning = focus !== target.reading;
     const reading = readingDrift(now,[0,0]);
     const ambientOn = (ambient > 0.001 && focus < 1) || (focus > 0 && reading.active);
     if (focus > 0 && !reading.active && !restTimer && !covered) restTimer = setTimeout(() => { restTimer=0; request(); },reading.rest);
-    return { busy: moving || (arriving && arrivalHeld === null) || transitioning || ambient !== wantAmbient, ambientOn };
+    return { busy: handoffMix < 1 || moving || (arriving && arrivalHeld === null) || transitioning || ambient !== wantAmbient, ambientOn };
   }
 
   function draw() {
@@ -380,7 +417,8 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
   function frame(now) {
     raf = 0;
     if (lost || !running) return;
-    const dt = Math.min((now - last) / 1000, 1 / 20);
+    // A RAF timestamp can precede start() after synchronous texture/shader work.
+    const dt = clamp((now - last) / 1000, 0, 1 / 20);
     const st = update(dt, now);
     // ambient-only frames are capped at 30 fps
     if (!st.busy && st.ambientOn && now - lastDraw < 1000 / AMBIENT_FPS - 2) { request(); return; }
@@ -393,8 +431,8 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
       lost = true; running = false; clearTimeout(restTimer); onLost?.(); return;
     }
     frames++;
-    // A successful draw with an opaque sky, not merely a render() call, earns the handoff.
-    if (!handedOff && layers[0].uFade.value >= .99) { handedOff = true; onFirstFrame?.(); }
+    // Only a complete landscape earns the handoff, never the sky alone.
+    if (!handedOff && layers.every((p) => p.l.sprite || p.uFade.value >= .99)) { handedOff = true; onFirstFrame?.(); }
     if (st.busy || st.ambientOn) request();
   }
   function request() { if (!raf && running && !lost && (!covered || !handedOff) && !document.hidden) raf = requestAnimationFrame(frame); }
@@ -426,14 +464,14 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     setState({ reading }) { target.reading = reading ? 1 : 0; wake(); },
     setCovered(on) { covered=on; clearTimeout(restTimer);restTimer=0;if (on) {cancelAnimationFrame(raf);raf=0;} else request(); },
     setScroll(p) { if (Math.abs(p - target.scroll) > 1e-4) { target.scroll = p; if (isMobile && !settledReading()) wake(); } },
-    setDark(d) { shared.uDusk.value = d ? duskStrength : 0; wake(); },
+    setDark(d) { dark = d; wake(); },
     stop() { running = false; lost = true; cancelAnimationFrame(raf); clearTimeout(restTimer); },
     /** Review hooks: hold the arrival at t seconds (null resumes), and report plane offsets. */
     seekArrival(t) { arrivalHeld = t; wake(); },
     /** The still has been on screen: arrive already settled (no assembly from a full picture). */
     skipArrival() { if (frames === 0) arrivalT = 99; },
     info: () => ({
-      fit, focus, ambient, covered, mobile: isMobile, frames, calls: renderer.info.render.calls,
+      fit, focus, ambient, handoffMix, covered, mobile: isMobile, frames, calls: renderer.info.render.calls,
       planes: layers.map((p) => ({
         name: p.l.name, surface: p.foreground ? "foreground" : "canvas", depth: p.l.depth, capSourcePx: p.l.cap, capSource: p.l.capSource,
         capScreenPx: p.cap.map((v) => +v.toFixed(2)), offset: p.out.map((v) => +v.toFixed(2)),

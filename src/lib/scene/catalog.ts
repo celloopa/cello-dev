@@ -14,6 +14,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import library from "@/data/scene-library.json";
+import framing from "@/data/scene-framing.json";
 
 export type MotionKind = "drift" | "shimmer" | "sway";
 
@@ -45,8 +46,10 @@ export interface SceneData {
   /** The source pixel grid the cuts (and their tested caps) are measured on. */
   grid: [number, number];
   layers: SceneLayer[];
-  /** The reading still (scripts/scene-derivatives.mjs): the layers flattened at half size, for the
-   * pages that only ever show the scene through the focus blur. Null if it hasn't been made. */
+  /** Complete, sharp initial image. A phone variant preserves independently anchored cuts. */
+  still: { src: string; width: number; height: number; mobileX: number;
+    mobile: { src: string; width: number; height: number; crops: Record<string, number> } | null };
+  /** Half-size flattened reading still, only shown through the focus blur. */
   read: { src: string; width: number; height: number; mobileX: number } | null;
 }
 
@@ -63,22 +66,8 @@ interface Settings {
  * webp's first row). A scene without an entry gets a centered anchor and every layer treated as
  * touching the top (more overscan, never a gap).
  */
-const SETTINGS: Record<string, Settings> = {
-  "mirror-lake": {
-    anchor: [0.46, 0.34], // Mt Hood's summit stays in view
-    mobileLayer: { near: [0.09, 0.5] }, // storyboard hero board: only the transparent fireweed reframes
-    layer: {
-      sky: { motion: "drift" },
-      mid: { motion: "shimmer", shore: 0.745 },
-      near: { motion: "sway" },
-    },
-    touchesTop: ["mid"], // 3% of the first row (tree tips)
-  },
-  ecola: {
-    anchor: [0.5, 0.5],
-    touchesTop: ["mid"], // 73% of the first row (forest canopy)
-  },
-};
+// Shared with the derivative builder: Mirror Lake keeps its approved 9% phone fireweed anchor.
+const SETTINGS = framing as unknown as Record<string, Settings>;
 
 interface ManifestLayer {
   name: string;
@@ -144,7 +133,12 @@ export function loadScene(id: string): SceneData {
   const read = fs.existsSync(readFile)
     ? { src: `/scenes/${id}/read.webp`, width: 768, height: Math.round((768 * webH) / webW), mobileX }
     : null;
-  return { id, place: entry.place ?? man.place ?? id, month: entry.month ?? man.month ?? "", grid, layers, read };
+  const stillPath = path.join(process.cwd(), "public", "scenes", id, "still.webp");
+  if (!fs.existsSync(stillPath)) throw new Error(`[scene] ${id} has no still.webp: run pnpm scenes:derive`);
+  const mobilePath = path.join(process.cwd(), "public", "scenes", id, "still-mobile.json");
+  const mobile = fs.existsSync(mobilePath) ? JSON.parse(fs.readFileSync(mobilePath, "utf8")) : null;
+  const composite = { src: `/scenes/${id}/still.webp`, width: webW, height: webH, mobileX, mobile };
+  return { id, place: entry.place ?? man.place ?? id, month: entry.month ?? man.month ?? "", grid, layers, read, still: composite };
 }
 
 export interface SceneArt {

@@ -2,6 +2,13 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-10-15 — Continuous landscape handoff
+
+- Paint a single decoded composite first, then load the hidden cut planes. Mirror Lake has a registered phone composite preserving its foreground crop, so a slow lake layer cannot expose the sky.
+- Replace the still with a fully assembled canvas frame matching its crop and brightness, keep the still opaque through the canvas fade, then ease into the existing motion framing and grade. This removes the visible reassembly and dark dip when animation loads late.
+- Preserve registered artwork and travel limits, reduced-motion/no-WebGL fallbacks, reading focus and the large-display drawing-buffer cap. Respect a reduced-motion change during loading and prevent a negative first-frame time delta.
+- Local before/after recordings, first-frame comparison and experience checks: `docs/runs/2026-10-15-scene-handoff.md`. Publication approved after reviewing both fixes.
+
 ## Preview iteration: conversational home
 
 - Fix the black scene on large displays: three.js sized each layer texture from the stretched <img>'s displayed width, so past ~2048px wide it requested more mip levels than the 1536px art has and WebGL rejected every layer. Layers now upload from detached copies (true size); the WebGL drawing buffer is capped at 3072px (2x the art); and any WebGL upload error now keeps the still instead of a black scene. Verified at 1440-3840px wide at 2x in Helium.
