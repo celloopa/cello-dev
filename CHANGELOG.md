@@ -4,6 +4,8 @@ All notable changes to this portfolio site should be documented here.
 
 ## Preview iteration: conversational home
 
+- Fix the black scene on large displays: three.js sized each layer texture from the stretched <img>'s displayed width, so past ~2048px wide it requested more mip levels than the 1536px art has and WebGL rejected every layer. Layers now upload from detached copies (true size); the WebGL drawing buffer is capped at 3072px (2x the art); and any WebGL upload error now keeps the still instead of a black scene. Verified at 1440-3840px wide at 2x in Helium.
+
 - Fix the greeting's load flash: an inline script sets the greeting's starting state before first paint (one message slot; the final message on return, hidden-until-typing on a first visit), so the links never jump and the messages never crossfade on load. If the greeting module never arrives, the final message shows after 3s. On phones the two smaller routes stack under the primary one.
 
 - One grade on every scene page, between the art's Day colors and the full Dusk grade (`--scene-dusk-strength: .5`; the still is dimmed to match). The Day/Dusk button and the menu's theme command are gone from scene pages; Layout pages (resume, design system) keep theirs.

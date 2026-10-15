@@ -128,6 +128,15 @@ const overshoot = (zeta) => (zeta >= 1 ? 0 : Math.exp((-zeta * Math.PI) / Math.s
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 
 export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dark = false, reading = false, settled = () => false, onLost, onFirstFrame }) {
+  // Upload from detached copies: three.js sizes a texture from an <img>'s *displayed* width, and the
+  // layers are stretched to cover the screen, so past ~2048px wide it asked for more mip levels than
+  // a 1536px image has and WebGL rejected every layer (a black scene on large displays). A detached
+  // image reports its own size. Cached, so no second download.
+  imgs = await Promise.all(imgs.map(async (img) => {
+    const copy = new Image();
+    copy.src = img.currentSrc || img.src;
+    try { await copy.decode(); return copy; } catch { return img; }
+  }));
   const { REF, READ_SCALE, FOCUS_RATE, ARRIVE } = tuning(tokens);
   // textures straight from the still's <img>s: no second download
   await Promise.all(imgs.map((img) => (img.complete && img.naturalWidth ? null : img.decode())));
@@ -137,7 +146,11 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
   const renderer = new WebGLRenderer({ canvas, antialias: false, alpha: false, powerPreference: "high-performance" });
   let shaderFailed = false;
   renderer.debug.onShaderError = () => { shaderFailed = true; };
-  renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.5 : 2));
+  // The art is 1536px wide, so a drawing buffer past ~2x that adds no detail, and on large
+  // high-DPI displays (2560pt+ at 2x) WebGL failed to allocate it and drew nothing (black).
+  const MAX_BUFFER = 3072;
+  const pixelRatio = (w, h) => Math.min(devicePixelRatio, isMobile ? 1.5 : 2, MAX_BUFFER / Math.max(w, h, 1));
+  renderer.setPixelRatio(pixelRatio(canvas.clientWidth, canvas.clientHeight));
   renderer.setClearColor(new Color("#001a11"), 1);
 
   const artScene = new Scene();
@@ -181,6 +194,9 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
       out: [0, 0],
     };
   });
+  // Any WebGL error while uploading the art would leave a black scene: bail out so the still stays.
+  const uploadError = renderer.getContext().getError();
+  if (uploadError) throw new Error(`WebGL error ${uploadError} while uploading the scene`);
   const hasMotion = layers.some((p) => p.l.motion);
 
   /* ---- passes: half-res scene → H blur → V blur → composite ---- */
@@ -202,12 +218,13 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
   let kernel = null; // per σ, rebuilt when the tier changes
 
   /* ---- layout: cover-fit + overscan, caps in screen px ---- */
-  let W = 0, H = 0, fit = null;
+  let H = 0, fit = null;
   function layout() {
     const w = canvas.clientWidth, h = canvas.clientHeight;
     if (!w || !h) return false;
     isMobile = mobile();
-    W = w; H = h;
+    H = h;
+    renderer.setPixelRatio(pixelRatio(w, h));
     renderer.setSize(w, h, false);
     cam.left = -w / 2; cam.right = w / 2; cam.top = h / 2; cam.bottom = -h / 2;
     cam.updateProjectionMatrix();
@@ -394,7 +411,7 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
   // pointer leaves the window → spring back to rest
   document.documentElement.addEventListener("pointerleave", () => { pointer.x = 0; pointer.y = 0; wake(); });
   addEventListener("blur", () => { pointer.x = 0; pointer.y = 0; wake(); });
-  addEventListener("resize", () => { if (layout()) { renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.5 : 2)); renderer.setSize(W, H, false); wake(); } });
+  addEventListener("resize", () => { if (layout()) wake(); });
   new ResizeObserver(() => { if (layout()) wake(); }).observe(canvas);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) { last = performance.now(); wake(); } });
   canvas.addEventListener("webglcontextlost", (e) => { e.preventDefault(); lost = true; cancelAnimationFrame(raf); onLost?.(); });
