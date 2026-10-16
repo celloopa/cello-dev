@@ -1,6 +1,6 @@
 {
-  "$description": "The scene catalog (ten places, all people-free). Copied from the rewrite prototype (claude/rewrite-exploration, docs/rewrite/prototypes/public/gen/scene-library.json) with paths moved to /scenes/<id>/ and private source-photo filenames removed. Per-scene manifests: public/scenes/<id>/scene.json.",
-  "version": 1,
+  "$description": "Registered scene catalog. availability controls recommended choices; parked source assets remain retained. scene-slots.json defines interchangeable background slots.",
+  "version": 2,
   "scenes": [
     {
       "id": "moss-falls",
@@ -8,7 +8,7 @@
       "exactPlaceName": "uncertain; Cello to confirm",
       "month": "June",
       "status": "Cutover candidate: registered hidden-fill cleanup, inspected at the documented caps.",
-      "method": "Photo composition \u2192 screenprint treatment \u2192 locked-center outpaint \u2192 source RGB registered cuts",
+      "method": "Photo composition → screenprint treatment → locked-center outpaint → source RGB registered cuts",
       "sourceSize": [
         2172,
         1448
@@ -66,7 +66,7 @@
         "restackMeanDifference": 0,
         "visual": [
           "isolated mid and near",
-          "motion left/right \u00b12/\u00b14sourcepx",
+          "motion left/right ±2/±4sourcepx",
           "desktop1440x900crop",
           "mobile390x844crop",
           "Figma screenshot and shared-origin rectangle dimensions"
@@ -81,7 +81,7 @@
       ],
       "exportOrigin": "Local registered cleanup of existing native cuts; not re-exported from Figma.",
       "place": "Cottage Grove waterfall",
-      "mobileCenter": 50.0,
+      "mobileCenter": 50,
       "motionReadiness": "Registered hidden-fill cleanup; use only the documented horizontal caps in the web manifest.",
       "peopleRemoval": {
         "decision": "removed (not shrunk); the fallen log, rocks and trail continue with no composition break",
@@ -97,7 +97,9 @@
         "sidesDiffVsPreviousWide": 0,
         "nearMatte": "regenerated (near-raw-v2.png); forest matte and clean plate reused",
         "imageCalls": "1 removal edit + near matte (1 invocation produced no file)"
-      }
+      },
+      "availability": "parked",
+      "curationNote": "Parked by Cello 2026-10-15: too busy and cutting not working; source retained."
     },
     {
       "id": "meadows",
@@ -125,27 +127,43 @@
       "layers": [
         {
           "name": "sky",
-          "src": "/scenes/meadows/sky.webp",
+          "slot": "sky",
+          "src": "/scenes/meadows/sky-depth-clean.webp",
           "depth": 0.97,
-          "testedHorizontalSourcePx": 0
+          "capSourcePx": [
+            1.697,
+            0.848
+          ]
         },
         {
           "name": "far",
-          "src": "/scenes/meadows/far.webp",
+          "slot": "far",
+          "src": "/scenes/meadows/far-depth-clean.webp",
           "depth": 0.85,
-          "testedHorizontalSourcePx": 1
+          "capSourcePx": [
+            8.484,
+            4.242
+          ]
         },
         {
           "name": "mid",
-          "src": "/scenes/meadows/mid.webp",
-          "depth": 0.35,
-          "testedHorizontalSourcePx": 3
+          "slot": "mid",
+          "src": "/scenes/meadows/mid-depth-clean.webp",
+          "depth": 0.55,
+          "capSourcePx": [
+            25.453,
+            12.727
+          ]
         },
         {
           "name": "near",
-          "src": "/scenes/meadows/near.webp",
+          "slot": "near",
+          "src": "/scenes/meadows/near-depth-clean.webp",
           "depth": 0.05,
-          "testedHorizontalSourcePx": 5
+          "capSourcePx": [
+            53.734,
+            26.867
+          ]
         }
       ],
       "checks": {
@@ -174,8 +192,10 @@
         "Near meadow strip duplicates mid ground and crossing shadows; only small horizontal preview tested",
         "Exact restack validates coverage/color, not segmentation quality"
       ],
-      "mobileCenter": 62.0,
-      "motionReadiness": "Only the small source-pixel shifts documented in the run log have been inspected."
+      "mobileCenter": 62,
+      "motionReadiness": "Clean isolated depth-plane candidate; Mirror Lake semantic offsets; source foreground RGB and generated hidden scenery",
+      "availability": "active",
+      "curationNote": "Curated by Cello 2026-10-15; retain manifest motion bounds."
     },
     {
       "id": "meadows-lift",
@@ -200,24 +220,43 @@
       "layers": [
         {
           "name": "sky",
-          "src": "/scenes/meadows-lift/sky.webp",
+          "slot": "sky",
+          "src": "/scenes/meadows-lift/sky-depth-clean.webp",
           "depth": 0.97,
-          "testedHorizontalSourcePx": 0,
-          "recommendedHorizontalSourcePx": 0
+          "capSourcePx": [
+            1.131,
+            0.636
+          ]
         },
         {
-          "name": "terrain",
-          "src": "/scenes/meadows-lift/terrain.webp",
-          "depth": 0.7,
-          "testedHorizontalSourcePx": 1,
-          "recommendedHorizontalSourcePx": 0
+          "name": "far",
+          "slot": "far",
+          "src": "/scenes/meadows-lift/far-depth-clean.webp",
+          "depth": 0.85,
+          "capSourcePx": [
+            5.656,
+            3.182
+          ]
         },
         {
           "name": "lift",
-          "src": "/scenes/meadows-lift/lift.webp",
-          "depth": 0.08,
-          "testedHorizontalSourcePx": 2,
-          "recommendedHorizontalSourcePx": 0
+          "slot": "near",
+          "src": "/scenes/meadows-lift/lift-cables.webp",
+          "depth": 0.05,
+          "capSourcePx": [
+            35.823,
+            20.15
+          ]
+        },
+        {
+          "name": "terrain",
+          "slot": "mid",
+          "src": "/scenes/meadows-lift/terrain-cable-occlusion.webp",
+          "depth": 0.55,
+          "capSourcePx": [
+            16.969,
+            9.545
+          ]
         }
       ],
       "checks": {
@@ -244,8 +283,10 @@
         "Exact restack proves source coverage/color, not segmentation quality.",
         "No physical-device motion or runtime implemented."
       ],
-      "mobileCenter": 72.0,
-      "motionReadiness": "Registered hidden-fill cleanup; use only the documented horizontal caps in the web manifest."
+      "mobileCenter": 72,
+      "motionReadiness": "Clean isolated depth-plane candidate; Mirror Lake semantic offsets; source foreground RGB and generated hidden scenery",
+      "availability": "active",
+      "curationNote": "Curated by Cello 2026-10-15; retain manifest motion bounds."
     },
     {
       "id": "ecola",
@@ -273,7 +314,7 @@
       "layers": [
         {
           "name": "sky",
-          "src": "/scenes/ecola/sky.webp",
+          "src": "/scenes/ecola/sky-v2.webp",
           "depth": 0.97,
           "testedHorizontalSourcePx": 0
         },
@@ -309,8 +350,10 @@
         "Exact restack proves coverage/color, not segmentation quality",
         "AI treatment alters fine branches and haze; deterministic shader fallback remains open"
       ],
-      "mobileCenter": 51.0,
-      "motionReadiness": "Only the small source-pixel shifts documented in the run log have been inspected."
+      "mobileCenter": 51,
+      "motionReadiness": "Only the small source-pixel shifts documented in the run log have been inspected.",
+      "availability": "active",
+      "curationNote": "Sky-only repair in local review; other cuts preserved."
     },
     {
       "id": "salmon-ridge",
@@ -338,7 +381,7 @@
       "layers": [
         {
           "name": "sky",
-          "src": "/scenes/salmon-ridge/sky.webp",
+          "src": "/scenes/salmon-ridge/sky-v2.webp",
           "depth": 0.97,
           "testedHorizontalSourcePx": 0,
           "recommendedHorizontalSourcePx": 0
@@ -376,12 +419,12 @@
         ],
         "peopleRemovedReview": "people-removed-review.jpg"
       },
-      "mobileCenter": 40.0,
+      "mobileCenter": 40,
       "limitations": [
         "Exact location and month unconfirmed; no project-place claim.",
         "AI treatment alters fine grass/branch/tree detail; the portrait was re-edited 2026-10-12 to remove the anonymous figure (no people in the scene); aesthetic approval pending.",
         "Wide outpaint has a noticeable left vertical join beside deadwood; center diff0 does not prove seamless extension. Prefer original portrait/mobile crop or still until corrected.",
-        "Near matte dilation removes most fringe ghosts but small edge residuals and sky continuation outlines remain; tiny far\u00b11/near\u00b13 source-pixel extremes inspected, no production motion clearance.",
+        "Near matte dilation removes most fringe ghosts but small edge residuals and sky continuation outlines remain; tiny far±1/near±3 source-pixel extremes inspected, no production motion clearance.",
         "Three planes: near slope and framing trees stay connected. Near plane RGB/alpha changed only in the former figure zone (x 603-1252, y 795-1447); sky unchanged.",
         "Centered desktop clips near trail base; mobile .40 center keeps the empty trail and ridge. Actual responsive canvas arrangement pending."
       ],
@@ -393,7 +436,9 @@
         "method": "image edit of locked portrait master, blended only inside a feathered patch around the former figure; wide master rebuilt by pasting into the same bounds; near matte regenerated in the former figure zone only",
         "raw": "before-figure-removal/nofigure-raw-v1.png (local, ignored)",
         "previousMasters": "before-figure-removal/ (local, ignored)"
-      }
+      },
+      "availability": "active",
+      "curationNote": "Sky-only repair in local review; other cuts preserved."
     },
     {
       "id": "ramona",
@@ -460,13 +505,15 @@
         "AI style treatment changes fine needles, branches, clouds and water ribbons; broad upward viewpoint/low cascade retained, user approval pending.",
         "Expanded sides are invented; stylized portrait center is mechanically unchanged.",
         "Three planes only; waterfall and basalt stay connected. Water motion would require a separate shader/mask.",
-        "Only forest \u00b12 and cascade \u00b14 source pixels inspected. Fine-edge color halos remain possible; do not increase travel without cleanup.",
+        "Only forest ±2 and cascade ±4 source pixels inspected. Fine-edge color halos remain possible; do not increase travel without cleanup.",
         "Cascade silhouette is conservative and retains forest at extreme bottom corners; hidden fill has faint residual water near left edge.",
         "Centered desktop cover crop clips waterfall base. Mobile center crop keeps opening and cascade; actual responsive canvas composition pending.",
         "Isolated sky plate contains dark/cream continuation specks under occluding foliage; these stay hidden at rest. Tiny motion only, further sky fill cleanup before wider depth travel."
       ],
-      "mobileCenter": 50.0,
-      "motionReadiness": "Only the small source-pixel shifts documented in the run log have been inspected."
+      "mobileCenter": 50,
+      "motionReadiness": "Only the small source-pixel shifts documented in the run log have been inspected.",
+      "availability": "active",
+      "curationNote": "Curated by Cello 2026-10-15; retain manifest motion bounds."
     },
     {
       "id": "over-hood",
@@ -538,8 +585,10 @@
         "Exact restack proves coverage/color, not segmentation quality.",
         "Portrait mobile crop is at 53% horizontal center. No tilt/scroll runtime implemented."
       ],
-      "mobileCenter": 53.0,
-      "motionReadiness": "Registered hidden-fill cleanup; use only the documented horizontal caps in the web manifest."
+      "mobileCenter": 53,
+      "motionReadiness": "Registered hidden-fill cleanup; use only the documented horizontal caps in the web manifest.",
+      "availability": "experimental",
+      "curationNote": "Plane-passage cutting model under local motion review; not a recommended interchangeable option."
     },
     {
       "id": "bald-mountain",
@@ -568,21 +617,33 @@
       "layers": [
         {
           "name": "sky",
-          "src": "/scenes/bald-mountain/sky.webp",
+          "slot": "sky",
+          "src": "/scenes/bald-mountain/sky-depth-clean.webp",
           "depth": 0.97,
-          "testedHorizontalSourcePx": 0
+          "capSourcePx": [
+            1.697,
+            0.848
+          ]
         },
         {
           "name": "far",
-          "src": "/scenes/bald-mountain/far.webp",
-          "depth": 0.8,
-          "testedHorizontalSourcePx": 1
+          "slot": "far",
+          "src": "/scenes/bald-mountain/far-depth-clean.webp",
+          "depth": 0.85,
+          "capSourcePx": [
+            8.484,
+            4.242
+          ]
         },
         {
           "name": "near",
-          "src": "/scenes/bald-mountain/near.webp",
+          "slot": "near",
+          "src": "/scenes/bald-mountain/near-depth-clean.webp",
           "depth": 0.05,
-          "testedHorizontalSourcePx": 4
+          "capSourcePx": [
+            53.734,
+            26.867
+          ]
         }
       ],
       "checks": {
@@ -603,8 +664,8 @@
         "AI treatment changes fine trees/rocks/snow, side expansion invents geography",
         "Still/reduced-motion is reliable baseline; no runtime or physical-device test claimed"
       ],
-      "mobileCenter": 50.0,
-      "motionReadiness": "Only the small source-pixel shifts documented in the run log have been inspected.",
+      "mobileCenter": 50,
+      "motionReadiness": "Clean isolated depth-plane candidate; Mirror Lake semantic offsets; source foreground RGB and generated hidden scenery",
       "peopleRemoved": {
         "date": "2026-10-12",
         "decision": "Cello: make them tiny or remove; public repo keeps people subtle",
@@ -612,7 +673,9 @@
         "distantGroup": "removed",
         "method": "image edit of the locked portrait master; result composited only inside a feathered mask around the former figures, every other portrait pixel byte-identical to the previous master; wide master rebuilt by pasting the portrait into the same center bounds",
         "nearMatte": "regenerated from the people-free wide master (near-raw-v2.png); sky/far reuse the terrain matte and clean plate"
-      }
+      },
+      "availability": "active",
+      "curationNote": "Curated by Cello 2026-10-15; retain manifest motion bounds."
     },
     {
       "id": "mirror-lake",
@@ -641,8 +704,10 @@
       "limitations": [
         "Forest, shore, lake and reflection share the mid plane."
       ],
-      "mobileCenter": 50.0,
-      "motionReadiness": "Existing runtime prototype; pointer behavior not manually verified here."
+      "mobileCenter": 50,
+      "motionReadiness": "Existing runtime prototype; pointer behavior not manually verified here.",
+      "availability": "active",
+      "curationNote": "Curated by Cello 2026-10-15; retain manifest motion bounds."
     },
     {
       "id": "sauvie",
@@ -715,7 +780,7 @@
       "limitations": [
         "Storm clouds remain one sky plane; hills/field/empty wagons remain one land plane",
         "AI treatment simplifies cloud contours and fine ground details; the portrait was re-edited 2026-10-12 to remove the wagon riders and the standing group (no people in the scene); it is not a deterministic shader",
-        "Only \u00b12 px far and \u00b15 px near source-pixel movement inspected; larger travel unproven",
+        "Only ±2 px far and ±5 px near source-pixel movement inspected; larger travel unproven",
         "Outer translated image edges require overscan/viewport clipping",
         "Scene/project association not selected"
       ],
@@ -733,8 +798,10 @@
         ],
         "pastBackups": "pre-removal masters and planes kept outside the repo; pre-removal WebPs are in git history"
       },
-      "mobileCenter": 53.0,
-      "motionReadiness": "Only the small source-pixel shifts documented in the run log have been inspected."
+      "mobileCenter": 53,
+      "motionReadiness": "Only the small source-pixel shifts documented in the run log have been inspected.",
+      "availability": "parked",
+      "curationNote": "Parked by Cello 2026-10-15; retained, excluded from active slots."
     }
   ]
 }

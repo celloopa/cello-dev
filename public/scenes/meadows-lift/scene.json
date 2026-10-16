@@ -2,7 +2,7 @@
   "id": "meadows-lift",
   "place": "Meadows lift line",
   "month": "June",
-  "status": "Cutover candidate: registered hidden-fill cleanup, inspected at the documented caps.",
+  "status": "Clean isolated depth planes; original foreground RGB, generated hidden terrain and sky",
   "sourceSize": [
     1448,
     1086
@@ -21,35 +21,42 @@
   "layers": [
     {
       "name": "sky",
-      "src": "/scenes/meadows-lift/sky.webp",
+      "slot": "sky",
+      "src": "/scenes/meadows-lift/sky-depth-clean.webp",
       "depth": 0.97,
-      "testedHorizontalSourcePx": 0,
-      "recommendedHorizontalSourcePx": 0,
       "capSourcePx": [
-        0,
-        0
+        1.131,
+        0.636
       ]
     },
     {
-      "name": "terrain",
-      "src": "/scenes/meadows-lift/terrain.webp",
-      "depth": 0.7,
-      "testedHorizontalSourcePx": 1,
-      "recommendedHorizontalSourcePx": 2,
+      "name": "far",
+      "slot": "far",
+      "src": "/scenes/meadows-lift/far-depth-clean.webp",
+      "depth": 0.85,
       "capSourcePx": [
-        2,
-        0
+        5.656,
+        3.182
       ]
     },
     {
       "name": "lift",
-      "src": "/scenes/meadows-lift/lift.webp",
-      "depth": 0.08,
-      "testedHorizontalSourcePx": 2,
-      "recommendedHorizontalSourcePx": 2,
+      "slot": "near",
+      "src": "/scenes/meadows-lift/lift-cables.webp",
+      "depth": 0.05,
       "capSourcePx": [
-        2,
-        0
+        35.823,
+        20.15
+      ]
+    },
+    {
+      "name": "terrain",
+      "slot": "mid",
+      "src": "/scenes/meadows-lift/terrain-cable-occlusion.webp",
+      "depth": 0.55,
+      "capSourcePx": [
+        16.969,
+        9.545
       ]
     }
   ],
@@ -67,12 +74,13 @@
     "crops": [
       "crop-desktop.jpg",
       "crop-mobile.jpg"
-    ]
+    ],
+    "historical": true
   },
   "limitations": [
-    "Hidden scenery is generated continuation, not photographed.",
-    "Only the documented horizontal caps are tested; no independent cable/ground travel on Meadows lift.",
-    "Historical scene run records describe the earlier cuts; these web cuts supersede them."
+    "Hidden scenery and clean sky are generated continuations.",
+    "Independent horizontal and vertical travel tested at the listed source caps.",
+    "Earlier restack/cutover checks refer to superseded cuts; current cleanup evidence is in the local independent-planes bundle."
   ],
   "cutoverCleanup": {
     "sourceSize": [
@@ -80,7 +88,7 @@
       1086
     ],
     "restackMaxDifference": 0,
-    "restackMeanDifference": 0.0,
+    "restackMeanDifference": 0,
     "motionTestSourcePx": {
       "sky": 0,
       "terrain": 2,
@@ -113,12 +121,41 @@
       }
     ],
     "origin": "local registered cleanup, not a Figma re-export",
-    "method": "original visible RGB + original/refined binary mattes + generated occluded fill"
+    "method": "original visible RGB + original/refined binary mattes + generated occluded fill",
+    "supersededBy": "independentPlanes.cleanup"
   },
   "motion": {
     "recommendation": "Bounded horizontal depth at the listed caps; reading drift uses one fifth of the cap.",
     "testOnly": false,
     "reducedMotion": "same registered composition still",
     "mobile": "documented crop; no tilt dependence"
+  },
+  "independentPlanes": {
+    "date": "2026-10-15",
+    "status": "local review candidate",
+    "reference": "Mirror Lake per-plane travel and semantic springs",
+    "generatedHiddenFill": true,
+    "previousSources": [
+      "/scenes/meadows-lift/sky.webp",
+      "/scenes/meadows-lift/terrain.webp",
+      "/scenes/meadows-lift/lift.webp"
+    ],
+    "cleanup": {
+      "date": "2026-10-15",
+      "method": "AI clean sky + clean distant silhouette + source-refined forest matte; old contaminated alpha not reused",
+      "foregroundMaxDifference": 0,
+      "mountainBluePixelsOnMid": 0,
+      "restackNote": "The old exact-restack assertion preserved the reported artifacts; this cleanup corrects background and boundary pixels."
+    },
+    "previousCandidateRestackMaxDiff": 0,
+    "cables": {
+      "method": "Source-fitted continuous antialiased mattes, decontaminated dark ink, tails extended to web y760 and occluded by terrain",
+      "depthRole": "near; drawn before mid for tree-line occlusion",
+      "sourceCanvas": [
+        1440,
+        1080
+      ],
+      "minimumRowCoverage": 1.015625
+    }
   }
 }

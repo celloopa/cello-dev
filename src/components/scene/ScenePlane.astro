@@ -1,0 +1,16 @@
+---
+import type { SceneLayer } from "@/lib/scene/catalog";
+interface Props { plane: SceneLayer; }
+const { plane: l } = Astro.props;
+const pct = (v: number) => `${+(v * 100).toFixed(2)}%`;
+---
+<img
+  class={`scene-layer scene-layer-${l.name}`}
+  data-plane-slot={l.slot ?? undefined}
+  data-src={l.src}
+  width={l.width}
+  height={l.height}
+  alt=""
+  decoding="async"
+  style={`--ax:${pct(l.anchor[0])};--ay:${pct(l.anchor[1])};--mx:${pct(l.mobileAnchor[0])};--my:${pct(l.mobileAnchor[1])}${l.sprite ? `;--guide-x:${pct(l.sprite.anchor[0])};--guide-y:${pct(l.sprite.anchor[1])};--guide-height:${pct(l.sprite.height)};--guide-max:${l.sprite.maxHeight}px;--guide-mobile-x:${pct(l.sprite.mobileAnchor[0])};--guide-mobile-y:${pct(l.sprite.mobileAnchor[1])};--guide-mobile-height:${pct(l.sprite.mobileHeight)}` : ""}`}
+/>

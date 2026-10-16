@@ -24,7 +24,7 @@
   "layers": [
     {
       "name": "sky",
-      "src": "/scenes/salmon-ridge/sky.webp",
+      "src": "/scenes/salmon-ridge/sky-v2.webp",
       "depth": 0.97,
       "testedHorizontalSourcePx": 0,
       "recommendedHorizontalSourcePx": 0,
@@ -94,7 +94,7 @@
       1448
     ],
     "restackMaxDifference": 0,
-    "restackMeanDifference": 0.0,
+    "restackMeanDifference": 0,
     "motionTestSourcePx": {
       "sky": 0,
       "far": 1,
@@ -134,5 +134,17 @@
     "testOnly": false,
     "reducedMotion": "same registered composition still",
     "mobile": "documented crop; no tilt dependence"
+  },
+  "skyRepair": {
+    "date": "2026-10-15",
+    "status": "local review candidate",
+    "method": "Full-grid sky-only image edit; original ridge and foreground remain in unchanged far/near cuts. Supersedes rejected streaked masked candidate.",
+    "original": "/scenes/salmon-ridge/sky.webp",
+    "sourceGrid": [
+      1536,
+      1024
+    ],
+    "otherPlanes": "unchanged bytes",
+    "origin": "local image edit; Figma plane fill updated separately"
   }
 }

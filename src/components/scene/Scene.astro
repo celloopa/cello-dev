@@ -1,108 +1,34 @@
 ---
-/*
- * Scene (amendment A3; components.md "Rewrite" tier): one place's cut layers behind the page.
- * A complete flattened still is in the HTML; scenery.js runs the attention states and, when the
- * 3D gate allows, loads the WebGL renderer after paint (a dynamic import of three.js) and hands
- * over to it. Also renders the PlaceLabel (Switchback, the place-name role).
- *
- * Backdrops: other places the page brings in behind its focused content (scenery.js), each as its
- * reading still over the scene, focused like it. Home: the place of the case study or section in
- * view; /projects: the place of the story pointed at. Scene renders only their (empty) layer; the
- * places themselves are data at the end of the page (SceneLayout), so not a byte of them comes
- * before the first screen's words, and scenery.js loads each still only as its part of the page
- * nears (or on hover).
- */
-import { loadScene, type SceneLayer } from "@/lib/scene/catalog";
-
-interface Props {
-  place: string;
-  guide?: boolean;
-  /**
-   * A reading or index page: the still it paints is the half-size flattened scene (it's only
-   * ever seen through the focus blur), fetched first, while the full layers load hidden for the
-   * renderer. On a slow link the page's largest paint then lands early instead of whenever the
-   * first full layer gets through.
-   */
-  focused?: boolean;
-  /** Scene ids the page may bring in behind its content (the page's own place is skipped). */
-  backdrops?: string[];
-}
-
-const scene = loadScene(Astro.props.place);
-if (Astro.props.guide) {
-  const guide: SceneLayer = {
-    name: "guide", src: "/images/characters/cello-hiker-v2.webp", width: 384, height: 576,
-    depth: .22, motion: null, cap: [0, 0], capSource: "Planted beside the chat: no cursor or scroll travel; a CSS idle animates him instead (Cello, 2026-10-14).",
-    anchor: [.5, .5], mobileAnchor: [.5, .5], touchesTop: false,
-    sprite: { foreground: true, height: .42, maxHeight: 340, anchor: [.37, .80], mobileHeight: .16, mobileAnchor: [.12, .21] },
-  };
-  scene.layers.push(guide);
-}
-const read = Astro.props.focused ? scene.read : null;
-const anchor = scene.layers[0]?.anchor ?? [0.5, 0.5];
-const poster = read ?? scene.still;
-const mobilePoster = !read ? scene.still.mobile : null;
-const label = `${scene.place} · ${scene.month}`;
-const backdrops = (Astro.props.backdrops ?? []).filter((id) => id !== scene.id);
-const pct = (v: number) => `${+(v * 100).toFixed(2)}%`;
+import { loadScene } from "@/lib/scene/catalog";
+import SceneFrame from "./SceneFrame.astro";
+interface Props { place: string; guide?: boolean; focused?: boolean; backdrops?: string[]; choices?: string[]; }
+const { place, guide, focused, backdrops, choices = [] } = Astro.props;
+const options = [...new Set(choices)];
 ---
-
-<div class="scene" data-scene aria-hidden="true">
-  <div class="scene-still" data-read-still={read ? "" : undefined} data-composite-still={!read ? "" : undefined}>
-    <picture>
-      {mobilePoster && <source media="(max-width: 768px)" srcset={mobilePoster.src} />}
-      <img
-        class="scene-read scene-poster"
-        data-scene-poster
-        src={poster.src}
-        width={poster.width}
-        height={poster.height}
-        alt=""
-        fetchpriority="high"
-        decoding="async"
-        style={`--ax:${pct(anchor[0])};--ay:${pct(anchor[1])};--mx:${pct(mobilePoster ? .5 : poster.mobileX)};--my:50%`}
-      />
-    </picture>
-    {
-      scene.layers.map((l) => (
-        <img
-          class={`scene-layer scene-layer-${l.name}`}
-          data-src={l.src}
-          width={l.width}
-          height={l.height}
-          alt=""
-          decoding="async"
-          style={`--ax:${pct(l.anchor[0])};--ay:${pct(l.anchor[1])};--mx:${pct(l.mobileAnchor[0])};--my:${pct(l.mobileAnchor[1])}${l.sprite ? `;--guide-x:${pct(l.sprite.anchor[0])};--guide-y:${pct(l.sprite.anchor[1])};--guide-height:${pct(l.sprite.height)};--guide-max:${l.sprite.maxHeight}px;--guide-mobile-x:${pct(l.sprite.mobileAnchor[0])};--guide-mobile-y:${pct(l.sprite.mobileAnchor[1])};--guide-mobile-height:${pct(l.sprite.mobileHeight)}` : ""}`}
-        />
-      ))
-    }
-  </div>
+{options.length > 0 ? <>
+  <noscript><SceneFrame scene={loadScene(place)} {guide} {focused} {backdrops} /></noscript>
+  {options.map(id => <template data-scene-choice={id}><SceneFrame scene={loadScene(id)} {guide} {focused} {backdrops} /></template>)}
   <script is:inline>
     (() => {
-      const host = document.currentScript.closest("[data-scene]");
-      const img = host.querySelector("[data-scene-poster]");
-      const reveal = () => img.decode().then(() => img.setAttribute("data-ready", "")).catch(() => {});
-      reveal();
-      img.addEventListener("load", reveal);
-      // If only the derivative fails, recover the original stack atomically.
-      img.addEventListener("error", async () => {
-        const cuts = [...host.querySelectorAll(".scene-layer")];
-        try {
-          await Promise.all(cuts.map(i => { i.src = i.dataset.src; return i.decode(); }));
-          host.querySelector(".scene-still").setAttribute("data-cut-fallback", "");
-        } catch {}
-      });
+      const templates = [...document.querySelectorAll("template[data-scene-choice]")];
+      if (!templates.length) return;
+      const ids = templates.map(t => t.dataset.sceneChoice);
+      const requested = new URLSearchParams(location.search).get("scene");
+      let selected = ids.includes(requested) ? requested : null;
+      if (!selected) {
+        let previous;
+        try { previous = sessionStorage.getItem("cello-hero-scene"); } catch { /* storage is optional */ }
+        const candidates = ids.filter(id => id !== previous);
+        selected = candidates[Math.floor(Math.random() * candidates.length)] || ids[0];
+        try { sessionStorage.setItem("cello-hero-scene", selected); } catch { /* storage is optional */ }
+      }
+      const chosen = templates.find(t => t.dataset.sceneChoice === selected) || templates[0];
+      // Inert templates fetch no art. Mount one complete scene before the greeting or modules.
+      chosen.before(chosen.content.cloneNode(true));
+      templates.forEach(t => t.remove());
     })();
   </script>
-  {backdrops.length > 0 && <div class="scene-backdrop" data-scene-backdrops />}
-  <div class="scene-atmos">
-    <i class="scene-atmos-arrive"></i><i class="scene-atmos-view"></i><i
-      class="scene-atmos-read"></i>
-  </div>
-  <script is:inline type="application/json" data-scene-json set:html={JSON.stringify(scene)} />
-</div>
-<p class="place-label" aria-hidden="true">{label}</p>
-
+</> : <SceneFrame scene={loadScene(place)} {guide} {focused} {backdrops} />}
 <script>
   import { start } from "@/lib/scene/scenery.js";
   start();

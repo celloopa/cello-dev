@@ -69,7 +69,7 @@
   "limitations": [
     "Storm clouds remain one sky plane; hills/field/empty wagons remain one land plane",
     "AI treatment simplifies cloud contours and fine ground details; the portrait was re-edited 2026-10-12 to remove the wagon riders and the standing group (no people in the scene); it is not a deterministic shader",
-    "Only ±2 px far and ±5 px near source-pixel movement inspected; larger travel unproven",
+    "Only \u00b12 px far and \u00b15 px near source-pixel movement inspected; larger travel unproven",
     "Outer translated image edges require overscan/viewport clipping",
     "Scene/project association not selected"
   ],
@@ -86,5 +86,7 @@
       1014
     ],
     "pastBackups": "pre-removal masters and planes kept outside the repo; pre-removal WebPs are in git history"
-  }
+  },
+  "availability": "parked",
+  "curationNote": "Cello 2026-10-15: excluded from active background options; sources retained."
 }

@@ -125,5 +125,7 @@
     "testOnly": false,
     "reducedMotion": "same registered composition still",
     "mobile": "documented crop; no tilt dependence"
-  }
+  },
+  "availability": "experimental",
+  "curationNote": "Plane-passage prototype awaits motion review. Production cuts unchanged; excluded from recommended slots."
 }

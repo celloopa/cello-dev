@@ -2,7 +2,7 @@
   "id": "bald-mountain",
   "place": "Bald Mountain",
   "month": "September",
-  "status": "photo treatment and cut candidate; people removed from the art 2026-10-12; aesthetic approval pending; exact trail identification unconfirmed",
+  "status": "Clean isolated depth planes; original foreground RGB, generated hidden terrain and sky",
   "sourceSize": [
     2172,
     1448
@@ -25,21 +25,33 @@
   "layers": [
     {
       "name": "sky",
-      "src": "/scenes/bald-mountain/sky.webp",
+      "slot": "sky",
+      "src": "/scenes/bald-mountain/sky-depth-clean.webp",
       "depth": 0.97,
-      "testedHorizontalSourcePx": 0
+      "capSourcePx": [
+        1.697,
+        0.848
+      ]
     },
     {
       "name": "far",
-      "src": "/scenes/bald-mountain/far.webp",
-      "depth": 0.8,
-      "testedHorizontalSourcePx": 1
+      "slot": "far",
+      "src": "/scenes/bald-mountain/far-depth-clean.webp",
+      "depth": 0.85,
+      "capSourcePx": [
+        8.484,
+        4.242
+      ]
     },
     {
       "name": "near",
-      "src": "/scenes/bald-mountain/near.webp",
+      "slot": "near",
+      "src": "/scenes/bald-mountain/near-depth-clean.webp",
       "depth": 0.05,
-      "testedHorizontalSourcePx": 4
+      "capSourcePx": [
+        53.734,
+        26.867
+      ]
     }
   ],
   "checks": {
@@ -52,13 +64,13 @@
     "crops": [
       "crop-desktop.jpg",
       "crop-mobile.jpg"
-    ]
+    ],
+    "historical": true
   },
   "limitations": [
-    "Mountain and forested valley share one plane; no people in the art (the prominent anonymous figure and the small distant group were removed 2026-10-12)",
-    "Fine skyline cleanup needed before increasing mountain travel; motion bounds are source pixels",
-    "AI treatment changes fine trees/rocks/snow, side expansion invents geography",
-    "Still/reduced-motion is reliable baseline; no runtime or physical-device test claimed"
+    "Hidden scenery and clean sky are generated continuations.",
+    "Independent horizontal and vertical travel tested at the listed source caps.",
+    "Earlier restack/cutover checks refer to superseded cuts; current cleanup evidence is in the local independent-planes bundle."
   ],
   "peopleRemoved": {
     "date": "2026-10-12",
@@ -67,5 +79,24 @@
     "distantGroup": "removed",
     "method": "image edit of the locked portrait master; result composited only inside a feathered mask around the former figures, every other portrait pixel byte-identical to the previous master; wide master rebuilt by pasting the portrait into the same center bounds",
     "nearMatte": "regenerated from the people-free wide master (near-raw-v2.png); sky/far reuse the terrain matte and clean plate"
+  },
+  "independentPlanes": {
+    "date": "2026-10-15",
+    "status": "local review candidate",
+    "reference": "Mirror Lake per-plane travel and semantic springs",
+    "generatedHiddenFill": true,
+    "previousSources": [
+      "/scenes/bald-mountain/sky.webp",
+      "/scenes/bald-mountain/far.webp",
+      "/scenes/bald-mountain/near.webp"
+    ],
+    "cleanup": {
+      "date": "2026-10-15",
+      "method": "AI clean sky + clean distant silhouette + source-refined forest matte; old contaminated alpha not reused",
+      "foregroundMaxDifference": 0,
+      "mountainBluePixelsOnMid": 0,
+      "restackNote": "The old exact-restack assertion preserved the reported artifacts; this cleanup corrects background and boundary pixels."
+    },
+    "previousCandidateRestackMaxDiff": 0
   }
 }

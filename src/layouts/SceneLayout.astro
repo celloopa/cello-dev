@@ -64,6 +64,8 @@ interface Props {
   footerPlace?: string;
   /** Home greeting character, between the terrain and foreground. */
   guide?: boolean;
+  /** Inert alternatives selected once, before first paint; no timer interrupts the greeting. */
+  heroChoices?: string[];
 }
 
 const siteName = "Cello - Product Designer & Design Engineer";
@@ -71,10 +73,10 @@ const siteDescription =
   "Product designer and design engineer focused on design systems and human-centered AI tools. I build and run what I design.";
 const siteImage = socialImage.src;
 
-const { title = siteName, description = siteDescription, image, canonicalPath, place, reading, focus, backdrops, footerPlace, guide } = Astro.props;
+const { title = siteName, description = siteDescription, image, canonicalPath, place, reading, focus, backdrops, footerPlace, guide, heroChoices } = Astro.props;
 // the backdrop places' stills, as data at the end of the page (scenery.js builds their layer)
 const readingImage = reading || focus ? loadScene(place).read?.src : undefined;
-const backdropData = [...new Set(backdrops ?? [])].filter((id) => id !== place).map(sceneBackdrop);
+const backdropData = [...new Set(backdrops ?? [])].filter((id) => heroChoices?.length || id !== place).map(sceneBackdrop);
 const { url, email, profiles } = basics;
 const canonicalUrl = canonicalPath ? new URL(`${canonicalPath.replace(/\/$/, "")}/`, url).toString() : url;
 const ogImage = image ? new URL(image, url).toString() : new URL(siteImage, url).toString();
@@ -158,7 +160,7 @@ const current = (href: string) => {
   <body>
     <a class="skip" href="#main">Skip to content</a>
     <ContextBar context={reading?.title} all={reading?.all} />
-    <Scene place={place} focused={!!reading || !!focus} backdrops={backdrops} guide={guide} />
+    <Scene place={place} focused={!!reading || !!focus} backdrops={backdrops} guide={guide} choices={heroChoices} />
     <main id="main">
       <slot />
     </main>

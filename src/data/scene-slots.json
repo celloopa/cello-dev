@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "hero": {
+    "mode": "per-visit",
+    "fallback": "mirror-lake",
+    "options": [
+      "bald-mountain",
+      "meadows-lift",
+      "meadows",
+      "mirror-lake"
+    ]
+  },
+  "background": {
+    "fallback": "mirror-lake",
+    "options": [
+      "bald-mountain",
+      "meadows-lift",
+      "meadows",
+      "mirror-lake",
+      "ecola",
+      "salmon-ridge",
+      "ramona"
+    ]
+  },
+  "experimental": [
+    "over-hood"
+  ],
+  "parked": [
+    "sauvie",
+    "moss-falls"
+  ]
+}

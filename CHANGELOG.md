@@ -2,6 +2,15 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-10-15 — Curated landscapes and independent depth
+
+- Pick one of four Hood scenes on each visit, avoiding immediate repeats; preserve Mirror Lake without JavaScript and complete still fallbacks. Unselected hero artwork stays unloaded.
+- Share replaceable Sky/Far/Mid/Near artwork and semantic motion springs. Give Bald Mountain, Meadows and Meadows lift the same relative cursor travel as Mirror Lake, with clean isolated plates and hidden fill.
+- Repair the left lift cables with continuous antialiased masks and forest occlusion; keep the guide and page content planted.
+- Curate seven background options, repair Ecola and Salmon skies, and park Sauvie/Cottage Grove while retaining sources. Keep Over Hood experimental; assign Asheville to Bald Mountain and VegAvengers to Ramona.
+- Add native Figma scene/plane swaps and preserve the already-shipped complete landscape handoff and sharing artwork.
+- Validation and artwork provenance: `docs/landscape/CURATED-SCENES.md` and `docs/runs/2026-10-15-curated-scenes.md`.
+
 ## 2026-10-15 — Sharing preview and original logo motion
 
 - Restore the original three-piece logo assembly and hover breakup in the landscape navigation. Touch devices play one entrance that ends assembled; reduced motion shows the complete static mark. The existing navigation size and layout are preserved.

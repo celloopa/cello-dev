@@ -1,0 +1,66 @@
+---
+import type { SceneData, SceneLayer } from "@/lib/scene/catalog";
+import ScenePlane from "./ScenePlane.astro";
+interface Props { scene: SceneData; guide?: boolean; focused?: boolean; backdrops?: string[]; }
+const scene = Astro.props.scene;
+if (Astro.props.guide) {
+  const guide: SceneLayer = {
+    name: "guide", src: "/images/characters/cello-hiker-v2.webp", width: 384, height: 576,
+    depth: .22, motion: null, cap: [0, 0], capSource: "Planted beside the chat: no cursor or scroll travel; a CSS idle animates him instead (Cello, 2026-10-14).",
+    anchor: [.5, .5], mobileAnchor: [.5, .5], touchesTop: false,
+    sprite: { foreground: true, height: .42, maxHeight: 340, anchor: [.37, .80], mobileHeight: .16, mobileAnchor: [.12, .21] },
+  };
+  scene.layers.push(guide);
+}
+const read = Astro.props.focused ? scene.read : null;
+const anchor = scene.layers[0]?.anchor ?? [0.5, 0.5];
+const poster = read ?? scene.still;
+const mobilePoster = !read ? scene.still.mobile : null;
+const label = `${scene.place} · ${scene.month}`;
+const backdrops = (Astro.props.backdrops ?? []).filter((id) => id !== scene.id);
+const pct = (v: number) => `${+(v * 100).toFixed(2)}%`;
+---
+
+<div class="scene" data-scene aria-hidden="true">
+  <div class="scene-still" data-read-still={read ? "" : undefined} data-composite-still={!read ? "" : undefined}>
+    <picture>
+      {mobilePoster && <source media="(max-width: 768px)" srcset={mobilePoster.src} />}
+      <img
+        class="scene-read scene-poster"
+        data-scene-poster
+        src={poster.src}
+        width={poster.width}
+        height={poster.height}
+        alt=""
+        fetchpriority="high"
+        decoding="async"
+        style={`--ax:${pct(anchor[0])};--ay:${pct(anchor[1])};--mx:${pct(mobilePoster ? .5 : poster.mobileX)};--my:50%`}
+      />
+    </picture>
+    {scene.layers.map(plane => <ScenePlane {plane} />)}
+  </div>
+  <script is:inline>
+    (() => {
+      const host = document.currentScript.closest("[data-scene]");
+      const img = host.querySelector("[data-scene-poster]");
+      const reveal = () => img.decode().then(() => img.setAttribute("data-ready", "")).catch(() => {});
+      reveal();
+      img.addEventListener("load", reveal);
+      // If only the derivative fails, recover the original stack atomically.
+      img.addEventListener("error", async () => {
+        const cuts = [...host.querySelectorAll(".scene-layer")];
+        try {
+          await Promise.all(cuts.map(i => { i.src = i.dataset.src; return i.decode(); }));
+          host.querySelector(".scene-still").setAttribute("data-cut-fallback", "");
+        } catch {}
+      });
+    })();
+  </script>
+  {backdrops.length > 0 && <div class="scene-backdrop" data-scene-backdrops />}
+  <div class="scene-atmos">
+    <i class="scene-atmos-arrive"></i><i class="scene-atmos-view"></i><i
+      class="scene-atmos-read"></i>
+  </div>
+  <script is:inline type="application/json" data-scene-json set:html={JSON.stringify(scene)} />
+</div>
+<p class="place-label" aria-hidden="true">{label}</p>

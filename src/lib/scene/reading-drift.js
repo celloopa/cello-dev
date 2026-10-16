@@ -1,3 +1,4 @@
+import { PLANE_SPRING } from "./planes";
 // The same bounded drift for WebGL reading pages and lazy DOM backdrop planes.
 // Twenty-four seconds of slow movement, then a minute at rest. No camera or text movement.
 const css = getComputedStyle(document.documentElement);
@@ -40,7 +41,7 @@ export async function readingLayers(item, scene, still, allowed) {
     img.className = 'scene-layer';
     img.style.cssText = `--ax:${l.anchor[0]*100}%;--ay:${l.anchor[1]*100}%;--mx:${l.mobileAnchor[0]*100}%;--my:${l.mobileAnchor[1]*100}%`;
     stack.append(img);
-    return { img, layer:l, spring:DEPTH_SPRINGS[Math.min(i, DEPTH_SPRINGS.length-1)], x:0, y:0, vx:0, vy:0 };
+    return { img, layer:l, spring:DEPTH_SPRINGS[l.slot ? PLANE_SPRING[l.slot] : Math.min(i, DEPTH_SPRINGS.length-1)], x:0, y:0, vx:0, vy:0 };
   });
   try { await Promise.all(planes.map(p => p.img.decode())); }
   catch { return null; } // the reading still remains visible

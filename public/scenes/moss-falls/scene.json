@@ -145,5 +145,7 @@
     ],
     "origin": "local registered cleanup, not a Figma re-export",
     "method": "original visible RGB + original/refined binary mattes + generated occluded fill"
-  }
+  },
+  "availability": "parked",
+  "curationNote": "Cello 2026-10-15: too busy; cutting not working. Sources retained."
 }

@@ -10,8 +10,9 @@ import ArrowLink from "@/components/ui/ArrowLink.astro";
 import Section from "@/components/ui/Section.astro";
 import { homeScene, homeSection, sceneForProject } from "@/lib/scene/pairing";
 import { basics } from "@cv";
+import { sceneOptions } from "@/lib/scene/slots";
 
-const PLACE = homeScene(); // Mirror Lake (src/data/scene-pairings.json)
+const PLACE = homeScene(); // no-JS fallback from the shared hero slot
 const { email } = basics;
 
 const allProjects = await getCollection("projects");
@@ -32,6 +33,7 @@ const homeDescription =
   title={homeTitle}
   description={homeDescription}
   place={PLACE}
+  heroChoices={sceneOptions("hero")}
   backdrops={backdrops}
   footerPlace={sections.footer}
   guide

@@ -1,5 +1,7 @@
 # Landscape build: plan to cutover (2026-10-12)
 
+> Current local landscape curation supersedes the historical pairing table below: see [CURATED-SCENES.md](CURATED-SCENES.md).
+
 > Current candidate restores the separate `/about/` and project timeline on top of the existing landscape and cursor depth. It does not adopt the full C0–C5 chapter rewrite. See [POLISH.md](POLISH.md).
 
 Branch `claude/landscape-build`, cut from `claude/design-system-migration` @ `42824f2`. Cello picked

@@ -15,11 +15,13 @@ import fs from "node:fs";
 import path from "node:path";
 import library from "@/data/scene-library.json";
 import framing from "@/data/scene-framing.json";
+import { planeSlot, PLANE_DEPTH, type PlaneSlot } from "./planes";
 
 export type MotionKind = "drift" | "shimmer" | "sway";
 
 export interface SceneLayer {
   name: string;
+  slot?: PlaneSlot | null;
   src: string;
   width: number;
   height: number;
@@ -71,6 +73,7 @@ const SETTINGS = framing as unknown as Record<string, Settings>;
 
 interface ManifestLayer {
   name: string;
+  slot?: PlaneSlot;
   src: string;
   depth?: number;
   capSourcePx?: [number, number];
@@ -85,6 +88,7 @@ interface Manifest {
   webSize?: [number, number];
   layers: ManifestLayer[];
   cutoverCleanup?: unknown;
+  independentPlanes?: unknown;
 }
 interface LibraryEntry {
   id: string;
@@ -92,10 +96,11 @@ interface LibraryEntry {
   month?: string;
   mobileCenter?: number;
   motionReadiness?: string;
+  availability?: "active" | "experimental" | "parked";
 }
 
-export function sceneIds(): string[] {
-  return (library.scenes as LibraryEntry[]).map((s) => s.id);
+export function sceneIds(includeInactive = false): string[] {
+  return (library.scenes as LibraryEntry[]).filter((s) => includeInactive || s.availability === "active").map((s) => s.id);
 }
 
 export function loadScene(id: string): SceneData {
@@ -111,15 +116,17 @@ export function loadScene(id: string): SceneData {
   const still = !man.cutoverCleanup && /^still preferred/i.test(entry.motionReadiness ?? "");
   const layers = man.layers.map((l): SceneLayer => {
     const own = cfg.layer?.[l.name] ?? {};
+    const slot = l.slot ?? planeSlot(l.name);
     const tested = l.recommendedHorizontalSourcePx ?? l.testedHorizontalSourcePx ?? l.testedTravelSourcePx;
     let cap: [number, number] = l.capSourcePx ?? (tested !== undefined ? [tested, 0] : [0, 0]);
     if (still) cap = [0, 0];
     return {
       name: l.name,
+      slot,
       src: l.src,
       width: webW,
       height: webH,
-      depth: l.depth ?? 0.5,
+      depth: man.independentPlanes && slot ? PLANE_DEPTH[slot] : l.depth ?? 0.5,
       motion: still ? null : (own.motion ?? null),
       shore: own.shore,
       cap,

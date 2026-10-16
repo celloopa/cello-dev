@@ -2,7 +2,7 @@
   "id": "meadows",
   "place": "Mt Hood Meadows",
   "month": "June",
-  "status": "photo-treatment and cut candidate; aesthetic approval pending",
+  "status": "Clean isolated depth planes; original foreground RGB, generated hidden terrain and sky",
   "sourceSize": [
     2172,
     1448
@@ -24,27 +24,43 @@
   "layers": [
     {
       "name": "sky",
-      "src": "/scenes/meadows/sky.webp",
+      "slot": "sky",
+      "src": "/scenes/meadows/sky-depth-clean.webp",
       "depth": 0.97,
-      "testedHorizontalSourcePx": 0
+      "capSourcePx": [
+        1.697,
+        0.848
+      ]
     },
     {
       "name": "far",
-      "src": "/scenes/meadows/far.webp",
+      "slot": "far",
+      "src": "/scenes/meadows/far-depth-clean.webp",
       "depth": 0.85,
-      "testedHorizontalSourcePx": 1
+      "capSourcePx": [
+        8.484,
+        4.242
+      ]
     },
     {
       "name": "mid",
-      "src": "/scenes/meadows/mid.webp",
-      "depth": 0.35,
-      "testedHorizontalSourcePx": 3
+      "slot": "mid",
+      "src": "/scenes/meadows/mid-depth-clean.webp",
+      "depth": 0.55,
+      "capSourcePx": [
+        25.453,
+        12.727
+      ]
     },
     {
       "name": "near",
-      "src": "/scenes/meadows/near.webp",
+      "slot": "near",
+      "src": "/scenes/meadows/near-depth-clean.webp",
       "depth": 0.05,
-      "testedHorizontalSourcePx": 5
+      "capSourcePx": [
+        53.734,
+        26.867
+      ]
     }
   ],
   "checks": {
@@ -64,13 +80,32 @@
       "crop-mobile.jpg"
     ],
     "mobileCropHorizontalCenter": 0.62,
-    "figmaRoundtrip": "figma-roundtrip.json"
+    "figmaRoundtrip": "figma-roundtrip.json",
+    "historical": true
   },
   "limitations": [
-    "AI treatment simplifies fine tree/grass/snow shapes and brightens olive greens; style approval pending",
-    "Subtle vertical sky-tone seams at expanded side boundaries; expanded master needs review",
-    "Far mountain hidden fill has faint branch-tone continuation near occluders; larger separation needs cleanup",
-    "Near meadow strip duplicates mid ground and crossing shadows; only small horizontal preview tested",
-    "Exact restack validates coverage/color, not segmentation quality"
-  ]
+    "Hidden scenery and clean sky are generated continuations.",
+    "Independent horizontal and vertical travel tested at the listed source caps.",
+    "Earlier restack/cutover checks refer to superseded cuts; current cleanup evidence is in the local independent-planes bundle."
+  ],
+  "independentPlanes": {
+    "date": "2026-10-15",
+    "status": "local review candidate",
+    "reference": "Mirror Lake per-plane travel and semantic springs",
+    "generatedHiddenFill": true,
+    "previousSources": [
+      "/scenes/meadows/sky.webp",
+      "/scenes/meadows/far.webp",
+      "/scenes/meadows/mid.webp",
+      "/scenes/meadows/near.webp"
+    ],
+    "cleanup": {
+      "date": "2026-10-15",
+      "method": "AI clean sky + clean distant silhouette + source-refined forest matte; old contaminated alpha not reused",
+      "foregroundMaxDifference": 1,
+      "mountainBluePixelsOnMid": 0,
+      "restackNote": "The old exact-restack assertion preserved the reported artifacts; this cleanup corrects background and boundary pixels."
+    },
+    "previousCandidateRestackMaxDiff": 0
+  }
 }

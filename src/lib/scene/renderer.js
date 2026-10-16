@@ -32,6 +32,7 @@ import {
 import { DUSK, artVert, colorGLSL, motionGLSL, motionDefines, prepareLayerTexture, MOTION_MAX_UV } from "./art-shader.js";
 
 import { readingDrift, DEPTH_SPRINGS as SPRING } from "./reading-drift.js";
+import { PLANE_SPRING } from "./planes";
 const AMBIENT_IDLE = 15000;   // ms of ambient micro-motion after the last input
 const AMBIENT_FPS = 30;
 const POINTER_TRAVEL = 1;     // × caps at the pointer extremes
@@ -186,7 +187,7 @@ export async function createLandscape({ canvas, scene, imgs, tokens, mobile, dar
     group.add(mesh);
     renderer.initTexture(tex);
     const arrive = ARRIVE[Math.min(i, ARRIVE.length - 1)];
-    const spring = SPRING[Math.min(i, SPRING.length - 1)];
+    const spring = SPRING[l.slot ? PLANE_SPRING[l.slot] : Math.min(i, SPRING.length - 1)];
     return {
       l, mesh, uFade, arrive, spring, size: [imgs[i].naturalWidth, imgs[i].naturalHeight],
       base: [0, 0], cap: [0, 0], drop: 0,
