@@ -138,7 +138,7 @@
         {
           "name": "far",
           "slot": "far",
-          "src": "/scenes/meadows/far-depth-clean.webp",
+          "src": "/scenes/meadows/far-depth-trees-v2.webp",
           "depth": 0.85,
           "capSourcePx": [
             8.484,
@@ -148,7 +148,7 @@
         {
           "name": "mid",
           "slot": "mid",
-          "src": "/scenes/meadows/mid-depth-clean.webp",
+          "src": "/scenes/meadows/mid-depth-trees-v2.webp",
           "depth": 0.55,
           "capSourcePx": [
             25.453,

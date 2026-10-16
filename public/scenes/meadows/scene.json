@@ -2,7 +2,7 @@
   "id": "meadows",
   "place": "Mt Hood Meadows",
   "month": "June",
-  "status": "Clean isolated depth planes; original foreground RGB, generated hidden terrain and sky",
+  "status": "Corrected isolated depth planes; two central fir trees restored to Mid, clean Far mountain",
   "sourceSize": [
     2172,
     1448
@@ -20,7 +20,7 @@
     1448
   ],
   "expandedSides": "AI outpainted; original stylized center mechanically preserved",
-  "exportOrigin": "Figma native isolated PNG renders at full source resolution; alpha exact and visible RGB checked",
+  "exportOrigin": "1536x1024 registered web cuts; corrected Far and Mid synchronized to existing Figma plane masters and exported back with exact alpha and visible RGB",
   "layers": [
     {
       "name": "sky",
@@ -35,7 +35,7 @@
     {
       "name": "far",
       "slot": "far",
-      "src": "/scenes/meadows/far-depth-clean.webp",
+      "src": "/scenes/meadows/far-depth-trees-v2.webp",
       "depth": 0.85,
       "capSourcePx": [
         8.484,
@@ -45,7 +45,7 @@
     {
       "name": "mid",
       "slot": "mid",
-      "src": "/scenes/meadows/mid-depth-clean.webp",
+      "src": "/scenes/meadows/mid-depth-trees-v2.webp",
       "depth": 0.55,
       "capSourcePx": [
         25.453,
@@ -106,6 +106,17 @@
       "mountainBluePixelsOnMid": 0,
       "restackNote": "The old exact-restack assertion preserved the reported artifacts; this cleanup corrects background and boundary pixels."
     },
-    "previousCandidateRestackMaxDiff": 0
+    "previousCandidateRestackMaxDiff": 0,
+    "treeCorrection": {
+      "date": "2026-10-16",
+      "method": "Restore the two central fir silhouettes and missing trunk sections from the locked master onto Mid; repair their occluded mountain on Far with a localized generated fill",
+      "grid": [1536, 1024],
+      "originalCutsRetained": true,
+      "motionCapsUnchanged": true,
+      "figmaPlaneIds": ["12:46", "12:49"],
+      "figmaRoundtripMaxAlphaDifference": 0,
+      "figmaRoundtripMaxVisibleRGBDifference": 0,
+      "evidence": "docs/runs/2026-10-16-meadows-tree-cuts.md"
+    }
   }
 }

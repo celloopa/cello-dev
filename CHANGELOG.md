@@ -2,6 +2,11 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-10-16 — Meadows tree depth correction
+
+- Corrected two Mt Hood Meadows fir trees that were attached to the Far mountain plane. Both silhouettes and their missing trunk sections now belong to Mid, using the original master artwork; the mountain behind them has a localized repair. Sky, Near, composition and motion limits are preserved.
+- Updated the two existing Figma plane masters and rebuilt the complete still, reading image, swatch and card crops. Original cuts remain available. Validation: [tree-correction run](docs/runs/2026-10-16-meadows-tree-cuts.md).
+
 ## 2026-10-15 — Curated landscapes and independent depth
 
 - Pick one of four Hood scenes on each visit, avoiding immediate repeats; preserve Mirror Lake without JavaScript and complete still fallbacks. Unselected hero artwork stays unloaded.
