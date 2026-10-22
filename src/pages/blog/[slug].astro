@@ -21,7 +21,7 @@ export async function getStaticPaths() {
   return posts
     .filter((post) => !post.data.draft)
     .map((post) => ({
-      params: { slug: post.slug },
+      params: { slug: post.id },
       props: { post },
     }));
 }
@@ -38,9 +38,9 @@ const formattedUpdatedDate = updatedDate && formatDate(updatedDate);
 const posts = (await getCollection("blog"))
   .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
-const i = posts.findIndex((p) => p.slug === post.slug);
+const i = posts.findIndex((p) => p.id === post.id);
 const story = (p: (typeof posts)[number]) => ({
-  href: `/blog/${p.slug}`,
+  href: `/blog/${p.id}`,
   title: p.data.title,
   eyebrow: formatDate(p.data.publishDate),
   description: p.data.description,
@@ -54,8 +54,8 @@ const all = { href: "/blog", label: "All posts" };
   title={`${title} - Marcelo Rondon`}
   description={description}
   image={image}
-  canonicalPath={`/blog/${post.slug}`}
-  place={sceneForPost(post.slug)}
+  canonicalPath={`/blog/${post.id}`}
+  place={sceneForPost(post.id)}
   reading={{ title, all }}
 >
   <article class="read">

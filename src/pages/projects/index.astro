@@ -17,13 +17,13 @@ const items = projects
   .filter((project) => project.data.complete)
   .sort((a, b) => a.data.order - b.data.order)
   .map((project) => ({
-    href: `/projects/${project.slug}`,
+    href: `/projects/${project.id}`,
     title: project.data.title,
     eyebrow: project.data.role,
     description: project.data.description,
     tags: project.data.techStack,
     live: project.data.url,
-    scene: sceneArt(sceneForProject(project.slug)),
+    scene: sceneArt(sceneForProject(project.id)),
   }));
 ---
 

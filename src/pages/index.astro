@@ -22,7 +22,7 @@ const featuredProjects = allProjects
 
 // the places behind the reading parts (backdrops): each case study's, then each section's
 const sections = { contact: homeSection("contact"), footer: homeSection("footer") };
-const backdrops = [...featuredProjects.map((p) => sceneForProject(p.slug)), ...Object.values(sections)];
+const backdrops = [...featuredProjects.map((p) => sceneForProject(p.id)), ...Object.values(sections)];
 
 const homeTitle = "Cello — Designer, Products & Prototypes";
 const homeDescription =
@@ -38,7 +38,7 @@ const homeDescription =
   footerPlace={sections.footer}
   guide
 >
-  <ChapterRail projects={featuredProjects.map(p => ({ slug: p.slug, title: p.data.title }))} />
+  <ChapterRail projects={featuredProjects.map(p => ({ slug: p.id, title: p.data.title }))} />
   <section id="arrival" class="hero" aria-labelledby="hero-name" data-scene-hero>
     <div class="hero-copy" data-scene-intro>
       <div class="hero-greeting">
@@ -109,9 +109,9 @@ const homeDescription =
               url={project.data.url}
               techStack={project.data.techStack}
               role={project.data.role}
-              slug={project.slug}
+              slug={project.id}
               index={i}
-              place={sceneForProject(project.slug)}
+              place={sceneForProject(project.id)}
             />
           ))
         }

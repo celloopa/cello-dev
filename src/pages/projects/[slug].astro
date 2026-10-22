@@ -26,7 +26,7 @@ export async function getStaticPaths() {
   return projects
     .filter((project) => project.data.complete)
     .map((project) => ({
-      params: { slug: project.slug },
+      params: { slug: project.id },
       props: { project },
     }));
 }
@@ -39,9 +39,9 @@ const { title, description, image, ogImage, url, github, role, summary, media } 
 const allProjects = (await getCollection("projects"))
   .filter((item) => item.data.complete)
   .sort((a, b) => (a.data.order ?? 999) - (b.data.order ?? 999));
-const i = allProjects.findIndex((item) => item.slug === project.slug);
+const i = allProjects.findIndex((item) => item.id === project.id);
 const story = (p: (typeof allProjects)[number]) => ({
-  href: `/projects/${p.slug}`,
+  href: `/projects/${p.id}`,
   title: p.data.title,
   eyebrow: p.data.role,
   description: p.data.description,
@@ -55,8 +55,8 @@ const all = { href: "/projects", label: "All work" };
   title={`${title} - Marcelo Rondon`}
   description={description}
   image={ogImage || image}
-  canonicalPath={`/projects/${project.slug}`}
-  place={sceneForProject(project.slug)}
+  canonicalPath={`/projects/${project.id}`}
+  place={sceneForProject(project.id)}
   reading={{ title, all }}
 >
   <article class="read">
@@ -66,7 +66,7 @@ const all = { href: "/projects", label: "All work" };
       lede={description}
       cover={image ? { src: image, alt: title } : undefined}
     >
-      <CaseBrief slot="overview" slug={project.slug} ownership={summary?.find(item => item.label === "Role")?.value} />
+      <CaseBrief slot="overview" slug={project.id} ownership={summary?.find(item => item.label === "Role")?.value} />
       {
         (url || github) && (
           <div class="read-links">

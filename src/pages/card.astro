@@ -64,20 +64,20 @@ const projects = (await getCollection("projects"))
   .filter((p) => p.data.featured && p.data.complete)
   .sort((a, b) => a.data.order - b.data.order)
   .map((p) => {
-    const art = sceneArt(sceneForProject(p.slug));
+    const art = sceneArt(sceneForProject(p.id));
     const month = art.month.toLowerCase();
     // the panel's placeholder while its picture loads: the place's month inks (A1 art tokens)
     const inks = MONTHS.includes(month)
       ? `--panel-sky: var(--art-${month}-sky); --panel-far: var(--art-${month}-far); --panel-forest: var(--art-${month}-forest);`
       : "";
     return {
-      slug: p.slug,
+      slug: p.id,
       title: p.data.title,
       role: p.data.role,
       line: oneLine(p.data.description),
       art,
       style: `${inks} --art-x: ${art.anchor[0] * 100}%; --art-y: ${art.anchor[1] * 100}%;`,
-      artifact: `/images/card/${p.slug}.webp`,
+      artifact: `/images/card/${p.id}.webp`,
     };
   });
 
