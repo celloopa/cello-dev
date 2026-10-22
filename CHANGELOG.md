@@ -8,6 +8,7 @@ All notable changes to this portfolio site should be documented here.
 - Every fact, number, date, credit, link and media item is unchanged, and so is the problem → decision → result structure. All frontmatter fields stay; only the prose in a few `description` and `summary` values changed. Résumé-style `highlights` are untouched to avoid drift from `cv.json`.
 - Standing decisions kept: Asheville stays "in-house AI automations and systems" with no internal tool or coworker names; Daybreak is now labelled personal dogfooding in its opening and summary; Ghosted is described as early testing, with a coding agent credited for v0 built from Cello's spec; the cost claim stays the idle-day ~$12 → ~$0.30.
 - Updated the matching home-preview summaries in `src/data/project-stories.ts`.
+- Widened the reading column (`--layout-measure-read`) from 31em to 38em (496px → 608px, about 85 characters a line), because the text felt cramped beside the 1100px media. It's the shared Prose measure, so blog posts, embeds and /card's about text widen too. em values stay in code only, so the emitted Figma sync payload is identical apart from its hash, and the new hash is recorded without a Figma change.
 
 ## 2026-10-22 — Node 24, Astro 7 and current dependencies
 

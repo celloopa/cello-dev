@@ -136,7 +136,7 @@
   --layout-container-wide: 1500px; /* Breakout carousels. */
   --layout-gutter: clamp(1rem, 4vw, 2rem); /* Page side padding; only the page container uses it. */
   --layout-measure: 68ch; /* Reading width for prose. */
-  --layout-measure-read: 31em; /* Reading width for Geist Sans prose (--font-read): about 69 characters per line at body size. Set in em, not ch: Geist averages 0.45em per character but its 0 is 0.66em, so ch would overshoot. */
+  --layout-measure-read: 38em; /* Reading width for Geist Sans prose (--font-read): about 85 characters per line at body size (608px), widened from 31em on 2026-10-22 because the column felt cramped beside the 1100px media. Set in em, not ch: Geist averages 0.45em per character but its 0 is 0.66em, so ch would overshoot. */
   --layout-measure-narrow: 46ch; /* Ledes and card copy. */
   --touch-target: 44px;
 
