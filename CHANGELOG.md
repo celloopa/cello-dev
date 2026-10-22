@@ -2,6 +2,14 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-10-22 — Node 24, Astro 7 and current dependencies
+
+- Run on Node 24 LTS: `.nvmrc` 24, `engines.node` >=24, `packageManager` pnpm@11.0.3. Netlify has no NODE_VERSION override, so it follows `.nvmrc`. Removed the empty `package-lock.json` stub.
+- Astro 5.16 → 7.4 with MDX 8 and the Svelte 9 integration (Svelte 5.57). Content collections use the glob loader and entry `id` instead of the removed legacy `type: "content"` API; `z` comes from `astro/zod` (Zod 4). `compressHTML: true` keeps Astro 5's whitespace, because Astro 7's new default dropped spaces between inline elements.
+- TypeScript 6 (7 isn't supported by `@astrojs/check` or the Svelte integration yet); `tsconfig.json` drops the deprecated `baseUrl`. Also updated `@astrojs/check`, `@astrojs/ts-plugin`, Prettier and its Astro plugin, `playwright-core` and `pixelmatch`. Geist Mono stays pinned at 5.0.3: 5.3.0 redraws the monospace glyphs on every page, so it is a separate design decision.
+- Fixes `/resume` and `/design-system`, which rendered without their header and most styles: Astro 5's compiler left their `<title>` unclosed, so browsers swallowed the head. Astro 7 closes it, and those pages now also declare the default sharing image's dimensions as the layout intended.
+- Validation: clean `pnpm build` (16 pages, 0 check errors/warnings/hints); built pages match master's file list and text; `ui:shots` at 1440/390 in dark and light is pixel-identical to master on every screen except the two fixed pages; dev-only resume import preview works.
+
 ## 2026-10-16 — Meadows tree depth correction
 
 - Corrected two Mt Hood Meadows fir trees that were attached to the Far mountain plane. Both silhouettes and their missing trunk sections now belong to Mid, using the original master artwork; the mountain behind them has a localized repair. Sky, Near, composition and motion limits are preserved.

@@ -22,25 +22,25 @@
     "scenes:derive": "node scripts/scene-derivatives.mjs"
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.6",
+    "@astrojs/check": "^0.9.12",
     "@astrojs/mdx": "^8.1.1",
     "@astrojs/svelte": "^9.1.1",
     "@fontsource-variable/geist": "5.3.0",
     "@fontsource-variable/national-park": "5.3.0",
-    "@fontsource/geist-mono": "^5.0.3",
+    "@fontsource/geist-mono": "5.0.3",
     "astro": "^7.4.2",
     "qrcode": "^1.5.4",
     "svelte": "^5.57.2",
     "three": "^0.186.1",
-    "typescript": "^5.5.4"
+    "typescript": "^6.0.3"
   },
   "devDependencies": {
-    "@astrojs/ts-plugin": "^1.10.4",
+    "@astrojs/ts-plugin": "^1.10.12",
     "@types/node": "24.19.2",
-    "pixelmatch": "5.3.0",
-    "playwright-core": "1.48.2",
+    "pixelmatch": "8.0.0",
+    "playwright-core": "1.64.1",
     "pngjs": "7.0.0",
-    "prettier": "^3.3.3",
-    "prettier-plugin-astro": "^0.13.0"
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.1"
   }
 }
