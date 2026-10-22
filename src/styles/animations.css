@@ -461,3 +461,17 @@
 		rotate: -1deg;
 	}
 }
+
+/* Scene navigation: the original logo entrance, ending assembled on touch. */
+@keyframes markAssembleC {
+  from { opacity: 0; transform: translateX(-30px) rotate(-10deg); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes markAssembleSun {
+  from { opacity: 0; transform: translate(20px, -30px) rotate(15deg); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes markAssembleGround {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: none; }
+}

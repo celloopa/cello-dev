@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from "astro:transitions";
 import { basics } from "@cv";
+import { socialImage } from "@/data/social";
 import "@fontsource/geist-mono/400.css";
 import "@fontsource/geist-mono/500.css";
 import "@fontsource/geist-mono/600.css";
@@ -35,7 +36,7 @@ interface Props {
 const siteName = "Cello - Product Designer & Design Engineer";
 const siteDescription =
   "Product designer and design engineer focused on design systems and human-centered AI tools. I build and run what I design.";
-const siteImage = "/images/thumbnail.png";
+const siteImage = socialImage.src;
 
 const {
   title = siteName,
@@ -99,6 +100,12 @@ const SOCIAL_ICONS: SocialIcon = {
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={image ? `${title} preview` : socialImage.alt} />
+    {!image && <>
+      <meta property="og:image:width" content={String(socialImage.width)} />
+      <meta property="og:image:height" content={String(socialImage.height)} />
+      <meta property="og:image:type" content="image/png" />
+    </>}
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
@@ -107,6 +114,7 @@ const SOCIAL_ICONS: SocialIcon = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={image ? `${title} preview` : socialImage.alt} />
     <title>{title}</title>
     <ClientRouter />
   </head>

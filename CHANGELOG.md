@@ -2,6 +2,14 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## Unreleased — 2026-10-15
+
+- Restore the original three-piece logo assembly and hover breakup in the landscape navigation. Touch devices play one entrance that ends assembled; reduced motion shows the complete static mark. The existing navigation size and layout are preserved.
+- Replace the default legacy sharing thumbnail in both layouts with a versioned 1200 × 630 preview of the current homepage exported from editable Figma artwork. Add image alt text and default-image dimensions; project and article cover overrides remain intact.
+- Set up the personal social/video kit in Figma, including LinkedIn and YouTube assets, an editable logo assembly timeline, and ten resizable landscape components built from 33 nested depth-plane components with visibility controls and source motion metadata. Usage: `docs/00-positioning/SOCIAL_ASSETS.md`.
+- Refine Cello's portrait sharing-card edit with depth-based blur, overlap shadows, a quieter foreground, and an editable copy-contrast falloff. Preserve the original and add Ramona/Meadows portrait-cutout comparisons in Figma; these are separate brand graphics. The default sharing card instead previews the actual homepage, per Cello’s direction.
+- Validation: `pnpm build`, `git diff --check`, 16 targeted browser checks, desktop/phone screenshots, Figma component registration/visibility/resize checks, and sampled intro frames. Website changes are local until published.
+
 ## Preview iteration: conversational home
 
 - Fix the black scene on large displays: three.js sized each layer texture from the stretched <img>'s displayed width, so past ~2048px wide it requested more mip levels than the 1536px art has and WebGL rejected every layer. Layers now upload from detached copies (true size); the WebGL drawing buffer is capped at 3072px (2x the art); and any WebGL upload error now keeps the still instead of a black scene. Verified at 1440-3840px wide at 2x in Helium.
