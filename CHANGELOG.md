@@ -2,6 +2,13 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-10-22 — Case studies in the conversational voice
+
+- Rewrote the Asheville Dispensary, Ghosted, VegAvengers and Daybreak case studies in the first-person, conversational voice the blog moved to on 2026-10-14 (reference: "When will the future of design arrive?"): plain verbs, shorter connected paragraphs, fewer em dashes and less product-strategy jargon. Headings are now sentence case, so the case-study section links read the same way.
+- Every fact, number, date, credit, link and media item is unchanged, and so is the problem → decision → result structure. All frontmatter fields stay; only the prose in a few `description` and `summary` values changed. Résumé-style `highlights` are untouched to avoid drift from `cv.json`.
+- Standing decisions kept: Asheville stays "in-house AI automations and systems" with no internal tool or coworker names; Daybreak is now labelled personal dogfooding in its opening and summary; Ghosted is described as early testing, with a coding agent credited for v0 built from Cello's spec; the cost claim stays the idle-day ~$12 → ~$0.30.
+- Updated the matching home-preview summaries in `src/data/project-stories.ts`.
+
 ## 2026-10-22 — Node 24, Astro 7 and current dependencies
 
 - Run on Node 24 LTS: `.nvmrc` 24, `engines.node` >=24, `packageManager` pnpm@11.0.3. Netlify has no NODE_VERSION override, so it follows `.nvmrc`. Removed the empty `package-lock.json` stub.

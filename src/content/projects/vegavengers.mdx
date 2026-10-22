@@ -20,11 +20,11 @@ highlights:
   - Designed the publish pipeline so a CMS outage can never break the public site
 summary:
   - label: Problem
-    value: "The festival data behind vegavengers.com was rotting: dates changed, links died, and every fix was a developer task. Of 115 festivals with unconfirmed dates, 26 had dead links."
+    value: "The festival data behind vegavengers.com was going stale: dates changed, links died, and every fix was a developer task. Of 115 festivals with unconfirmed dates, 26 had dead links."
   - label: Role
     value: "Solo product designer and design engineer: the content model, the editorial workflow, the admin experience, and the automation around them."
   - label: Key decision
-    value: "Put approval where editors already work. The AI checker writes ordinary Payload drafts, so its proposals look like a colleague's unpublished edit, evidence attached."
+    value: "Put approval where the editors already work. The AI checker writes ordinary Payload drafts, so its proposals look like a colleague's unpublished edit, with the evidence attached."
   - label: Shipped
     value: "A live Payload CMS that two non-technical editors run day to day, publish-triggered rebuilds that survive a CMS outage, and an AI checker that proposes but never publishes."
   - label: Tools
@@ -40,9 +40,11 @@ import MediaTwo from '@/components/media/MediaTwo.astro';
 
 ## Context
 
-VegAvengers connects people with vegan festivals, animal sanctuaries, and advocacy organizations. The first version I built was a fast, searchable Astro site — and it worked, until the data underneath it started to rot. Festival dates changed, websites died, and every correction was a developer task. Of 115 festivals with unconfirmed dates, 26 had links that had quietly gone dead.
+VegAvengers connects people with vegan festivals, animal sanctuaries and advocacy organizations. The first version I built was a fast, searchable Astro site, and it worked.
 
-The real product problem wasn't discovery anymore. It was content operations: who owns the data, how it gets updated, and how much of that work should require me. So I designed and shipped a second product — the system of record — as a Payload CMS the organization's two editors run themselves.
+Then the data underneath it started to rot. Festival dates changed, websites died, and every correction was a developer task. Of 115 festivals with unconfirmed dates, 26 had links that had quietly gone dead.
+
+At that point the problem wasn't really discovery anymore. It was content operations: who owns the data, how it gets updated, and how much of that work should need me at all. So I designed and shipped a second product, the system of record: a Payload CMS the organization's two editors run themselves.
 
 <MediaFull
   src="/images/projects/vegHero.webm"
@@ -50,29 +52,29 @@ The real product problem wasn't discovery anymore. It was content operations: wh
   caption="The public site stayed fast and mission-forward; the new work moved upstream, into where its content comes from."
 />
 
-## Modeling Messy Reality
+## Modeling messy reality
 
-Festival data does not arrive as clean timestamps. It arrives as "6/5-6/7/26", "TBD", or "sometime in the fall." The content model honors that instead of fighting it:
+Festival data doesn't show up as clean timestamps. It shows up as "6/5-6/7/26", "TBD" or "sometime in the fall." I wanted the content model to work with that instead of fighting it.
 
-**One document per festival edition.** A festival's 2026 edition is its own record — "roll into next year" is just duplicate-and-bump, and history stays intact.
+**One document per festival edition.** A festival's 2026 edition is its own record. Rolling into next year is just duplicate and bump, and the history stays intact.
 
-**Verbatim text beside parsed fields.** `displayDate` keeps the original free-text date exactly as published; `dateStart` and `dateEnd` hold parsed values where parsing is possible. The site shows people what the festival actually said, while search still works on real dates.
+**The original text beside the parsed fields.** `displayDate` keeps the free-text date exactly as it was published. `dateStart` and `dateEnd` hold parsed values where parsing is possible. People see what the festival actually said, and search still works on real dates.
 
-**Provenance and confidence as first-class fields.** Every record knows whether it came from a CSV import, a human, or AI discovery — and the fields the AI checker maintains are read-only in the admin, so the boundary between machine bookkeeping and editorial judgment is visible in the interface itself.
+**Provenance and confidence as real fields.** Every record knows whether it came from a CSV import, a person or AI discovery. The fields the AI checker maintains are read-only in the admin, so you can see the line between machine bookkeeping and editorial judgment right in the interface.
 
 <MediaFull
   src="/images/projects/cms/cms-festivals.webm"
   alt="Festival Database list in the Payload admin showing Somerset Vegan Festival's 2025 and 2026 editions"
-  caption="One festival, two edition records: 2025 confirmed and published, 2026 still TBD — carrying a pending draft the AI checker proposed."
+  caption="One festival, two edition records: 2025 confirmed and published, 2026 still TBD and carrying a pending draft the AI checker proposed."
 />
 
-## An Admin Two Editors Actually Use
+## An admin two editors actually use
 
-Payload gives you a capable admin for free; the design work was deciding what the editors should *not* have to see. Lynn and Harris are not developers, and the dashboard treats that as a requirement rather than a limitation.
+Payload gives you a capable admin for free. The design work was deciding what the editors *shouldn't* have to see. Lynn and Harris aren't developers, and I treated that as a requirement, not a limitation.
 
-- Rich-text controls are deliberately trimmed: editors mark meaning — emphasis, links, structure — while templates own presentation. Nobody fights alignment buttons at midnight.
-- Photo galleries carry per-image credits through a custom field editor, because attribution is an editorial value, not a nice-to-have. The first real post (a photo essay) drove this design.
-- The admin is branded, welcoming, and grouped by mental model — "Festival Database" is a different place than the blog, because it is a different job.
+- I trimmed the rich-text controls on purpose. Editors mark meaning (emphasis, links, structure), and the templates handle presentation. Nobody should be fighting alignment buttons at midnight.
+- Photo galleries carry a credit on every image through a custom field editor, because attribution is an editorial value, not a nice-to-have. The first real post, a photo essay, drove that design.
+- The admin is branded and welcoming, and it's grouped the way the editors think about the work. "Festival Database" is a different place from the blog, because it's a different job.
 
 <MediaFull
   src="/images/projects/cms/cms-editorial.webm"
@@ -80,31 +82,31 @@ Payload gives you a capable admin for free; the design work was deciding what th
   caption="The editorial surfaces: a photo-essay post with its gallery, and the media library where every image carries alt text and a credit."
 />
 
-## Publishing Without Fear
+## Publishing without fear
 
-The public site prerenders from the CMS, which raises an obvious question: what happens when the CMS is down, or an editor publishes at 2 a.m.?
+The public site prerenders from the CMS, which raises an obvious question. What happens when the CMS is down, or an editor publishes at 2 a.m.?
 
-- A publish triggers a **debounced build hook**, so a burst of edits becomes one rebuild. Media edits trigger selectively — alt-text changes rebuild, focal-point nudges don't — and that policy has its own test suite.
-- Builds **fall back to fixtures** if the CMS is unreachable, and live search falls back to a local dataset. An outage degrades freshness, never availability.
-- A nightly rebuild acts as a backstop, so the site can never drift more than a day from the system of record.
+- A publish triggers a **debounced build hook**, so a burst of edits becomes one rebuild. Media edits trigger it selectively: alt-text changes rebuild, focal-point nudges don't. That policy has its own test suite.
+- Builds **fall back to fixtures** if the CMS is unreachable, and live search falls back to a local dataset. An outage can make the site less fresh, but it can't take it down.
+- A nightly rebuild is the backstop, so the site never drifts more than a day from the system of record.
 
-## The AI Checker: Automation Under Approval
+## The AI checker: automation under approval
 
-The climax of the platform is the piece that attacks the original rot problem. A Payload jobs-queue task checks each unconfirmed festival: it scrapes the festival's website, asks a model one bounded question — is a new-season date published here? — and then diffs the answer against the published record.
+This is the piece that goes after the original problem, the data going stale. A Payload jobs-queue task checks each unconfirmed festival. It scrapes the festival's website, asks a model one bounded question (is a new-season date published here?) and then diffs the answer against the published record.
 
 <FlowDiagram
   title="Drafts as approval"
   items={[
-    { label: "Scrape", detail: "Fetch the festival's own website — the primary source, not a model's memory." },
+    { label: "Scrape", detail: "Fetch the festival's own website: the primary source, not a model's memory." },
     { label: "Extract", detail: "One bounded model call answers one question, and its JSON is validated in code before anything is trusted." },
     { label: "Diff", detail: "Compare against the published record. No difference means a metadata stamp, not a proposal." },
-    { label: "Draft", detail: "A change lands as a Payload draft — proposed status, proposed date, and the evidence quoted in the notes." },
+    { label: "Draft", detail: "A change lands as a Payload draft, with the proposed status, the proposed date, and the evidence quoted in the notes." },
     { label: "Editor publishes", detail: "The editor reviews the version diff in the admin they already know, and approval is one click." }
   ]}
-  caption="The AI never publishes. Every content proposal becomes a draft on the record itself, reviewed in Payload's native version UI — no bolt-on approval queue to learn."
+  caption="The AI never publishes. Every content proposal becomes a draft on the record itself, reviewed in Payload's own version UI, so there's no bolt-on approval queue to learn."
 />
 
-The design decision I care most about is where approval lives. Instead of building a separate review dashboard, the checker writes ordinary Payload drafts — so the approval surface is the one editors already trust, and an AI proposal looks exactly like a colleague's unpublished edit, evidence attached.
+The decision I care about most is where approval lives. I could have built a separate review dashboard. Instead, the checker writes ordinary Payload drafts. The approval screen is one the editors already trust, and an AI proposal looks exactly like a colleague's unpublished edit, with the evidence attached.
 
 <MediaFull
   src="/images/projects/cms/cms-draft-review.webm"
@@ -112,20 +114,22 @@ The design decision I care most about is where approval lives. Instead of buildi
   caption="A real checker run on production data: the dead-link evidence in Check Notes, the version history, and the diff an editor reviews before choosing to publish."
 />
 
-Dead links get their own path: flagged as a draft and handed to a follow-up job that re-probes the URL but never fabricates a replacement. And when nothing changed, the checker stamps bookkeeping fields on the published record without creating noise for anyone to review.
+Dead links get their own path. They're flagged as a draft and handed to a follow-up job that checks the URL again but never makes up a replacement. And when nothing changed, the checker stamps bookkeeping fields on the published record without creating anything for anyone to review.
 
-Before it touched production, the checker went through an adversarial review that surfaced eleven real defects — the sharpest being a case where a routine metadata stamp could silently bury an editor's pending draft. That bug is why the system reads the draft state before every write. The whole pipeline was then proven against production data: a dead-link festival produced its draft, the follow-up probe appended its evidence, and the published record stayed untouched until a human said otherwise.
+Before it touched production, the checker went through an adversarial review that turned up eleven real defects. The sharpest one: a routine metadata stamp could silently bury an editor's pending draft. That bug is why the system reads the draft state before every write.
 
-## Search Designed For Partial Memory
+Then I proved the whole pipeline against production data. A dead-link festival produced its draft, the follow-up probe added its evidence, and the published record stayed untouched until a person said otherwise.
 
-The discovery experience the platform serves stayed a product surface in its own right. People rarely search with clean database terms — they remember "a VegFest in March" or type "UK" and expect England to count.
+## Search designed for partial memory
+
+The discovery side stayed a product surface in its own right. People rarely search in clean database terms. They remember "a VegFest in March," or type "UK" and expect England to count.
 
 <MediaTwo items={[
   { src: "/images/projects/tool-switcher.webm", alt: "ResourceToggle animation showing mode switching", caption: "The toggle makes festival and sanctuary discovery feel like two modes of one system, not two sites." },
-  { src: "/images/projects/vegfests.webm", alt: "VegFest search filtering festivals by city", caption: "Search handles month names, date formats, regions, and location synonyms — designed for partial knowledge." }
+  { src: "/images/projects/vegfests.webm", alt: "VegFest search filtering festivals by city", caption: "Search handles month names, date formats, regions, and location synonyms, so it works when you only half remember." }
 ]} />
 
-Results are grouped into upcoming, TBD, and past, so uncertainty is shown rather than hidden — and the AI checker now works to shrink the TBD group at the source. Search queries Payload live, with the pre-CMS dataset retained as a fallback.
+Results are grouped into upcoming, TBD and past, so uncertainty shows instead of hiding. Now the AI checker also works on shrinking the TBD group at the source. Search queries Payload live and keeps the pre-CMS dataset as a fallback.
 
 <MediaFull
   src="/images/projects/sanctuary.webm"
@@ -133,8 +137,10 @@ Results are grouped into upcoming, TBD, and past, so uncertainty is shown rather
   caption="Sanctuary discovery supports flexible region matching for people browsing by place rather than exact name."
 />
 
-## Outcome And Learning
+## Outcome and learning
 
-VegAvengers went from a site I maintained to a platform its owners operate. The editors publish independently; the data has an owner, a provenance trail, and an automated assistant that proposes but never decides.
+VegAvengers went from a site I maintained to a platform its owners run. The editors publish on their own. The data has an owner, a trail showing where it came from, and an automated assistant that proposes but never decides.
 
-It also sharpened a thesis I keep returning to: the same one Ghosted taught me from the other direction. Give deterministic code everything it can do, give the model the smallest job it can be trusted with, and put a human approval step exactly where the consequences are. In a CMS, that place is publish — so that's where this system puts it.
+It also sharpened an idea I keep coming back to, the same one Ghosted taught me from the other direction. Give deterministic code everything it can do. Give the model the smallest job it can be trusted with. And put a person's approval exactly where the consequences are.
+
+In a CMS, that place is publish, so that's where this system puts it.

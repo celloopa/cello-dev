@@ -23,9 +23,9 @@ summary:
   - label: Problem
     value: "Three brands, one designer. Asheville Dispensary, Plantbar and Nightshade each need to look like themselves across web, print and packaging, and most of my hours were going into turning approved work into the small assets a retail business needs every week."
   - label: Role
-    value: "Design lead for all three brands. I own the shared Figma system, design the work, then design and build the tools that make what's derived from it."
+    value: "Design lead for all three brands. I own the shared Figma system and design the work. Then I design and build the tools that make everything derived from it."
   - label: Key decision
-    value: "Share the structure, swap the identity. The brands share components, spacing and layouts, and each brings its own look. Then code does the repeatable work, and a person approves anything the public sees."
+    value: "Share the structure, swap the identity. The brands share components, spacing and layouts, and each one brings its own look. Then code does the repeatable work, and a person approves anything the public sees."
   - label: Shipped
     value: "A multi-brand asset directory on one component system, and a video pipeline in production since July 2026: 37 drops delivered end to end, no failed runs, and 3–5 hours of manual work a week handed back."
   - label: Tools
@@ -41,9 +41,11 @@ import MediaTwo from '@/components/media/MediaTwo.astro';
 import MediaThree from '@/components/media/MediaThree.astro';
 
 
-## One System, Three Brands
+## One system, three brands
 
-I lead design for three cannabis brands: Asheville Dispensary, Plantbar and Nightshade. Each one has to look like itself. They're all designed from one shared Figma system, and the rule is simple: the structure is shared, and each brand brings its own identity.
+I lead design for three cannabis brands: Asheville Dispensary, Plantbar and Nightshade. Each one has to look like itself, but I didn't want to design three of everything.
+
+So they all come out of one shared Figma system, with one simple rule. The structure is shared, and each brand brings its own identity.
 
 <MediaThree items={[
   { src: "/images/projects/ad-assets/ad-portal.webm", alt: "The Asheville Dispensary portal of the asset directory, with asset categories and search", caption: "Asheville Dispensary" },
@@ -51,24 +53,26 @@ I lead design for three cannabis brands: Asheville Dispensary, Plantbar and Nigh
   { src: "/images/projects/ad-assets/nightshade.webm", alt: "The same portal layout themed for Nightshade", caption: "Nightshade" }
 ]} />
 
-The same portal in all three brands: one layout, one set of components, one search. Each brand's color comes from its own tokens.
+Here's the same portal in all three brands: one layout, one set of components, one search. The color comes from each brand's own tokens.
 
-**Stays shared across the brands:**
+**What stays shared:**
 - Spacing and layout patterns.
 - Components: cards, category tiles, search and forms.
 - How things are organized: brands, categories, tags.
 
-**Changes with each brand:** its color, set by the brand's own tokens (CSS custom properties in code).
+**What changes with each brand:** its color, set by the brand's own tokens (CSS custom properties in code).
 
 ### From Figma to production
 
-- **The drop card.** The social story card is a component in the Figma system. The pipeline below fills its slots (strain, tier, sale wording, photo) and never touches the layout, so every card that goes out is the approved design.
-- **The web store.** I design UI components and ship them into WordPress as custom PHP and JavaScript plugins, so the mockup and what's live stay the same thing.
-- **The asset directory.** One searchable home for the brands' approved assets, which used to live across Drive folders, bookmarks and memory. Its portals share one component system and change identity through CSS custom properties, not duplicated code. Admins who aren't developers manage brands, categories and links themselves, and the data lives in Supabase with a JSON fallback so the directory works even when the database doesn't.
+- **The drop card.** The social story card is a component in the Figma system. The pipeline below fills in its slots (strain, tier, sale wording, photo) and never touches the layout, so every card that goes out is the design I approved.
+- **The web store.** I design UI components and ship them into WordPress as custom PHP and JavaScript plugins, so the mockup and the live store stay the same thing.
+- **The asset directory.** The brands' approved assets used to live across Drive folders, bookmarks and memory. Now they have one searchable home. Its portals share one component system and switch identity through CSS custom properties instead of duplicated code. Admins who aren't developers manage brands, categories and links themselves. The data lives in Supabase with a JSON fallback, so the directory still works when the database doesn't.
 
-## The Flower Drop Pipeline
+## The flower drop pipeline
 
-The system's biggest payoff so far is a tool built on it. Two or three times a week the ecommerce team announces a flower drop, and each strain needs a branded story card and a short vertical video. By hand that took seven tools and 3–5 hours a week. The approach is the same in everything I build here: code does everything it can do exactly, a model gets the narrow piece that needs judgment, and a person approves anything that reaches other people.
+The biggest payoff so far is a tool built on top of the system. Two or three times a week, the ecommerce team announces a flower drop, and every strain needs a branded story card and a short vertical video. By hand, that took seven tools and 3–5 hours a week.
+
+I approach everything I build here the same way. Code does everything it can do exactly. A model gets the narrow piece that needs judgment. And a person approves anything that reaches other people.
 
 <MediaFull
   src="/images/projects/asheville/product-page.webp"
@@ -81,12 +85,12 @@ The system's biggest payoff so far is a tool built on it. Two or three times a w
   { src: "/images/projects/asheville/drop-story.webm", alt: "Story video with the same card and the product video playing inside a circular mask", caption: "The story: the product video composed behind the card by ffmpeg. Both came from the scheduled 5:30 a.m. run on October 8, which delivered all five strains in that drop." }
 ]} />
 
-Now a scheduled routine does the whole loop:
+Now a scheduled routine runs the whole loop:
 
 <FlowDiagram
   title="From announcement to approval"
   items={[
-    { label: "Check", detail: "A shell script reads Slack directly and decides — without any model — whether there's a new drop or an unsent delivery." },
+    { label: "Check", detail: "A shell script reads Slack directly and decides, without any model, whether there's a new drop or an unsent delivery." },
     { label: "Plan", detail: "If there's work, an agent reads the announcement: date, strains, tier, and any sale wording." },
     { label: "Build", detail: "It finds each product page, pulls the media, and fills the approved Figma card component with the strain, tier, and photo." },
     { label: "Compose", detail: "ffmpeg places the product video behind the card in a 1080×1920 story. A probe verifies size, length, and that there's no audio." },
@@ -98,42 +102,50 @@ Now a scheduled routine does the whole loop:
 
 ### Code first
 
-The first live run picked the wrong strain. Search returned a lookalike, and a stale sitemap pointed at an old product page. The fix was more code, not a better prompt. The scraper now probes the likely product URLs directly, rejects any page whose title doesn't match the strain, ranks candidates by tier and publish date, and logs why it chose each one. The judgment I used to make silently ("I just know which page is right") became a rule anyone can read.
+The first live run picked the wrong strain. Search returned a lookalike, and a stale sitemap pointed at an old product page.
 
-Premiere went the same way. When I opened the template, it was a card image with a product video masked into a circle: 4.73 seconds, no animation. That's a recipe, not an edit. I recovered the geometry from a frame of an old export and the encoding settings from its metadata, and one ffmpeg command now renders each story in seconds. It also fixed a quiet bug in the old exports, which were set to "no audio" but still carried a stray audio track.
+I didn't fix that with a better prompt. I fixed it with more code. The scraper now tries the likely product URLs directly, rejects any page whose title doesn't match the strain, ranks what's left by tier and publish date, and logs why it picked each one. The call I used to make in my head ("I just know which page is right") became a rule anyone can read.
+
+Premiere went the same way. When I actually opened the template, it was a card image with a product video masked into a circle: 4.73 seconds, no animation. That's a recipe, not an edit. I pulled the circle's geometry from a frame of an old export and the encoding settings from its metadata. Now one ffmpeg command renders each story in seconds. It also fixed a quiet bug: the old exports were set to "no audio" but still carried a stray audio track.
 
 ### The day it sent too early
 
-In late July the routine posted a card with the wrong tier. The announcement said one tier. The product page sat under another, because a new page used a URL pattern the scraper didn't know yet. The agent noticed the conflict, logged it politely, trusted the website, and posted anyway.
+In late July, the routine posted a card with the wrong tier. The announcement said one tier, but the product page sat under another, because a new page used a URL pattern the scraper didn't know yet. The agent noticed the conflict, logged it politely, trusted the website and posted anyway.
 
-Undoing it took a deleted attachment, a hand-deleted Slack file, and a correction thread. Everything before the post would have been free to fix. Three rules came out of that day:
+Undoing it meant deleting an attachment, deleting a Slack file by hand and threading a correction. Everything before the post would have been free to fix. I came out of that day with three rules:
 
-- **The announcement is the source of truth for tier.** The site supplies media, never categories. A mismatch is logged loudly and never adopted.
+- **The announcement decides the tier.** The site supplies media, never categories. A mismatch gets logged loudly and never adopted.
 - **The scraper knows both URL patterns.** That alone would have caught it.
-- **Completeness gate.** If any strain in a drop is unfinished, held, or unresolved, nothing is sent. Finished files attach quietly and the post waits until the drop is whole.
+- **Completeness gate.** If any strain in a drop is unfinished, held or unresolved, nothing gets sent. Finished files attach quietly, and the post waits until the whole drop is ready.
 
-A go-live guard covers the opposite case. If a drop is announced for tomorrow, the task gets created now and the media waits for the pages to actually go live.
+A go-live guard covers the opposite case. If a drop is announced for tomorrow, the task gets created now and the media waits until the pages actually go live.
 
 ### Paying for the model only when there's work
 
-Most scheduled checks find nothing. Drops land between about 3 and 8 a.m. Pacific, and most days have none. Each check was still booting a full agent session just to look at Slack, and at its worst, with the task drifted onto a top-tier model, an idle day cost about $12.10.
+Most scheduled checks find nothing. Drops land between about 3 and 8 a.m. Pacific, and most days don't have one. Every check was still opening a full agent session just to look at Slack. At its worst, with the task drifted onto a top-tier model, an idle day cost about $12.10.
 
-I timed every announcement from the first two weeks and redesigned around the data rather than my guess. The schedule went from seven checks a day to three, placed where drops actually land. A zsh script decides whether there's work before any model is involved, and its exit codes are the interface: work, idle, done for today, or error (which fails open, so a broken token can't silently skip a drop). A small model only dispatches. On a drop morning it hands the run book to a stronger model, which does the real work. An idle day now costs about $0.30. A drop day adds one $6–8 pass that takes 10–14 minutes, which is where the money should go.
+So I timed every announcement from the first two weeks and redesigned around that data instead of my guess. The schedule went from seven checks a day to three, placed where drops actually land.
 
-Cost reporting reads the agents' own transcripts after the fact, so nothing in the pipeline has to report on itself. That report is also how I caught the drift: the scheduled model isn't set in the run book, so it has to be checked, not assumed.
+A zsh script now decides whether there's work before any model gets involved. Its exit codes are the interface: work, idle, done for today, or error. An error fails open, so a broken token can't silently skip a drop. A small model only dispatches. On a drop morning, it hands the run book to a stronger model that does the real work.
+
+An idle day now costs about $0.30. A drop day adds one $6–8 pass that takes 10–14 minutes, and that's where I want the money to go.
+
+Cost reporting reads the agents' own transcripts after the fact, so nothing in the pipeline has to report on itself. That's also how I caught the drift. The run book doesn't set the scheduled model, so I have to check it instead of assuming.
 
 ### Record
 
-From July 9 to October 8, 2026: 69 archived runs, 37 drops delivered end to end, and no failed runs. The partial runs are the go-live guard holding media for pages that weren't live yet, which is the guard doing its job.
+From July 9 to October 8, 2026: 69 archived runs, 37 drops delivered end to end, and no failed runs. The partial runs are the go-live guard holding media for pages that weren't live yet. That's the guard doing its job.
 
-## What's Next, At Its Real Stage
+## What's next, at its real stage
 
-The same split carries into the rest of the design workload. These are at different stages, and I describe them that way:
+The same split carries into the rest of my design work. These are at different stages, so I'll describe them that way:
 
-- **Print coordination — prototype.** A local intake and status tool for getting approved artwork to a print vendor and picked up. It keeps artwork, cost, and vendor-release approvals separate. A revision invalidates the approvals it touches. "Ready" is never treated as "picked up." It runs on simulated vendor events and isn't connected to anything live yet.
-- **Presentations from approved templates — planned.** An agent fills the content slots of decks I've designed and approved. It never invents a layout, and I review every deck.
-- **Packaging checks against compliance checklists — planned.** Compare new packaging artwork against the team's existing checklists and produce a gap report for the people who own compliance. Read-only.
+- **Print coordination: prototype.** A local intake and status tool for getting approved artwork to a print vendor and picked up. It keeps artwork, cost and vendor-release approvals separate. A revision cancels the approvals it touches. "Ready" never counts as "picked up." It runs on simulated vendor events and isn't connected to anything live yet.
+- **Presentations from approved templates: planned.** An agent fills the content slots of decks I've designed and approved. It never invents a layout, and I review every deck.
+- **Packaging checks against compliance checklists: planned.** Compare new packaging artwork against the team's existing checklists and write a gap report for the people who own compliance. It only reads; it doesn't change anything.
 
-## What I Learned
+## What I learned
 
-The automation itself was rarely the hard part. The hard part was deciding what the system is allowed to believe (the announcement, not the website), what it's allowed to do alone (anything that can be quietly redone), and when it needs to stop and wait (anything other people will see). Write those down as rules, and the model's job gets small enough to trust.
+Honestly, the automation itself was rarely the hard part. The hard part was deciding what the system is allowed to believe (the announcement, not the website), what it can do on its own (anything that can be quietly redone) and when it has to stop and wait (anything other people will see).
+
+Once I wrote those down as rules, the model's job got small enough to trust.
