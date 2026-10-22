@@ -59,7 +59,7 @@ Festival data does not arrive as clean timestamps. It arrives as "6/5-6/7/26", "
 **Provenance and confidence as first-class fields.** Every record knows whether it came from a CSV import, a human, or AI discovery — and the fields the AI checker maintains are read-only in the admin, so the boundary between machine bookkeeping and editorial judgment is visible in the interface itself.
 
 <MediaFull
-  src="/images/projects/cms/cms-festivals.webm"
+  src="/images/projects/cms/cms-festivals-list.png"
   alt="Festival Database list in the Payload admin showing Somerset Vegan Festival's 2025 and 2026 editions"
   caption="One festival, two edition records: 2025 confirmed and published, 2026 still TBD — carrying a pending draft the AI checker proposed."
 />
@@ -73,10 +73,15 @@ Payload gives you a capable admin for free; the design work was deciding what th
 - The admin is branded, welcoming, and grouped by mental model — "Festival Database" is a different place than the blog, because it is a different job.
 
 <MediaFull
-  src="/images/projects/cms/cms-editorial.webm"
-  alt="Editing a blog post in the admin, then browsing the media library with per-image credits"
-  caption="The editorial surfaces: a photo-essay post with its gallery, and the media library where every image carries alt text and a credit."
+  src="/images/projects/cms/cms-dashboard.png"
+  alt="The branded Veg Avengers dashboard with sections grouped as Settings, Library, Your Pages, Blog, and Festival Database"
+  caption="The dashboard greets editors in plain language and groups collections by mental model, not by schema."
 />
+
+<MediaTwo items={[
+  { src: "/images/projects/cms/cms-post-gallery.png", alt: "A blog post's photo gallery in the admin with per-photo captions", caption: "The photo-essay gallery: each photo carries its own optional caption, with credits managed once on the media itself." },
+  { src: "/images/projects/cms/cms-media-library.png", alt: "The media library with alt text and credit columns", caption: "The library enforces alt text and carries per-image credits — attribution as a schema requirement, not a habit." }
+]} />
 
 ## Publishing Without Fear
 
@@ -105,9 +110,15 @@ The climax of the platform is the piece that attacks the original rot problem. A
 The design decision I care most about is where approval lives. Instead of building a separate review dashboard, the checker writes ordinary Payload drafts — so the approval surface is the one editors already trust, and an AI proposal looks exactly like a colleague's unpublished edit, evidence attached.
 
 <MediaFull
-  src="/images/projects/cms/cms-draft-review.webm"
-  alt="Reviewing the AI checker's pending draft on Somerset Vegan Festival: check notes, version history, and the compare-versions diff"
-  caption="A real checker run on production data: the dead-link evidence in Check Notes, the version history, and the diff an editor reviews before choosing to publish."
+  src="/images/projects/cms/cms-checker-fields.png"
+  alt="The AI checker's fields on a festival record: status, source, confidence, last checked at, and check notes"
+  caption="The checker's bookkeeping on a real record: provenance, confidence, and dated evidence notes — read-only to editors, so the machine's lane is visible."
+/>
+
+<MediaFull
+  src="/images/projects/cms/cms-version-diff.png"
+  alt="Payload's compare-versions view showing the checker's proposed draft against the published record"
+  caption="A real checker run on production data: the dead-link evidence in the draft's Check Notes, diffed against the published record, with restore and publish one click away."
 />
 
 Dead links get their own path: flagged as a draft and handed to a follow-up job that re-probes the URL but never fabricates a replacement. And when nothing changed, the checker stamps bookkeeping fields on the published record without creating noise for anyone to review.
