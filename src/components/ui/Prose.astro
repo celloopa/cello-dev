@@ -11,10 +11,18 @@
  *
  * Body links get an underline (§7: case-study links looked like text). Tables and code sit on
  * plates, so their small text never sits on scene art. Text color comes from the page.
+ *
+ * `wide` (case studies): the article's own text spans the full frame on the media's left edge
+ * instead of the centered reading measure. Posts keep the measure.
  */
+interface Props {
+  wide?: boolean;
+}
+
+const { wide = false } = Astro.props;
 ---
 
-<div class="prose">
+<div class:list={["prose", { "prose-wide": wide }]}>
   <slot />
 </div>
 
@@ -210,5 +218,16 @@
   .prose > :global(h2),
   .prose > :global(h3) {
     margin-inline: 0;
+  }
+
+  /* Wide: the text takes the whole frame, sharing the media's left edge. */
+  .prose-wide > :global(p),
+  .prose-wide > :global(ul),
+  .prose-wide > :global(ol),
+  .prose-wide > :global(blockquote),
+  .prose-wide > :global(h2),
+  .prose-wide > :global(h3) {
+    grid-column: 1 / -1;
+    max-width: none;
   }
 </style>
