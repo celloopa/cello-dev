@@ -2,6 +2,16 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-10-27 — Practice, ownership and availability copy
+
+- Every case study now says whose work it is: a new optional `engagement` frontmatter field ("Client · Since January 2022", "My product · Since July 2026") leads the role eyebrow on home, /projects, the case-study header, the next-story link and /card (`src/lib/project-label.ts`).
+- About tells the practice chronology: Cello.Design since 2021, Mantera as the first client, the later client engagements, production code from 2024, and Ghosted and Daybreak as my own products. The visual-journalism origin and How I Build are unchanged.
+- Hero's last message and home description: "product designer and design engineer". Home and About contact: open to full-time product design and design engineering roles alongside a team.
+- Ghosted: "used by 30+ users" replaces the private-beta and "days old" framing; dated October 8 testing notes stay dated. Agent credit now reads "implemented substantial code from my specifications", with direction, architecture, review and releases mine; development since January 2026.
+- Asheville: client engagement since January 2022, code from 2024; print coordination is "in testing"; the 37-drop count is dated to October 8 and dropped from the home preview. VegAvengers: client engagement since February 2025; editors own publication.
+- Not changed: `cv.json` and the résumé still list Cello.Design from 2022-10, Asheville and Mantera as positions, and Ghosted as private beta. Layout, tokens, media and the landscape are untouched.
+- Validation: clean `pnpm build` (16 pages, 0 check errors/warnings/hints); home, About and Ghosted checked rendered at 1440 and 375 px.
+
 ## 2026-10-22 — Case studies in the conversational voice
 
 - Rewrote the Asheville Dispensary, Ghosted, VegAvengers and Daybreak case studies in the first-person, conversational voice the blog moved to on 2026-10-14 (reference: "When will the future of design arrive?"): plain verbs, shorter connected paragraphs, fewer em dashes and less product-strategy jargon. Headings are now sentence case, so the case-study section links read the same way.

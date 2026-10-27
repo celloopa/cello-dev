@@ -1,6 +1,6 @@
 ---
 title: Ghosted
-description: An AI resume editor that keeps people in control. I designed the product, its proposal-and-review workflow, and the system behind it, then kept improving it through early testing.
+description: An AI resume editor that keeps people in control. I designed the product, its proposal-and-review workflow, and the system behind it, and keep improving it with feedback from 30+ users.
 image: /images/projects/ghosted/v3/swipe-keep.webm
 ogImage: /images/projects/ghosted/v3/og.png
 url: https://ghosted.cello.design
@@ -14,6 +14,7 @@ techStack:
   - SQLite
   - Firecrawl
 role: Product Designer / AI Tools
+engagement: My product · Since January 2026
 highlights:
   - "A live React + Typst resume canvas where every AI edit is a versioned, highlighted proposal the person keeps, rejects or edits themselves"
   - "Designed Fit and Research as prep you can tick off: the proof first, then what to lead with and the gaps, plus reading picked by the AI with links that only come from a real search"
@@ -28,11 +29,11 @@ summary:
   - label: Problem
     value: "Job applications are repetitive and high-stakes. An AI can make tailoring a resume much faster, but only if you can see exactly what it changed and undo any of it."
   - label: Role
-    value: "Product designer and owner. I set the flows, the product model, the brand, the design system, and every call about where the AI stops. Coding agents built most of it from my specs and decisions."
+    value: "Product designer and owner. I set the direction, the flows, the product model, the brand, the design system and the architecture, review the code and ship the releases, and make every call about where the AI stops. AI coding agents implemented substantial code from my specs and decisions."
   - label: Key decision
     value: "Every AI change is a proposal, highlighted in yellow on the real page for the person to keep or reject. Yellow means only that, and the design system is built around protecting that one rule."
   - label: Shipped
-    value: "Live at ghosted.cello.design in private beta since October 8, 2026, with 70 production releases in its first four days. A design system of 59 primitive and 43 semantic color tokens, eight components in code, and checks that keep coding agents inside it."
+    value: "Live at ghosted.cello.design and used by 30+ users, whose feedback informs each release. Early testing opened on October 8, 2026, with 70 production releases in its first four days. A design system of 59 primitive and 43 semantic color tokens, eight components in code, and checks that keep coding agents inside it."
   - label: Tools
     value: "React, Vite, TypeScript, typst.ts, Node, Hono, SQLite, Codex (GPT on my ChatGPT subscription), Firecrawl, Figma."
 featured: true
@@ -176,7 +177,7 @@ A few decisions that show how I think about it:
 
 Ghosted went out for early testing on October 8. The first tester used it that day, and her job notes were open in an interview the next morning. From then on, testers set the order of work. Here's what they said and what changed.
 
-To be clear, this is early testing: me watching and listening to a handful of testers, not formal research. One example, start to finish:
+To be clear, this was early testing: me watching and listening to a handful of testers in those first days, not formal research. One example, start to finish:
 
 - **What I saw.** On a call, Kim dismissed the new "your base resume changed" bar, then couldn't find her way back to it.
 - **What I decided.** Closing a bar shouldn't lose anything, and bringing changes in should be a choice, not all or nothing.
@@ -329,17 +330,17 @@ The same day, testers got an Effort picker next to Send (Low by default, then Me
 - **~12** search credits per tailored job for Research, against a plan of 5,000 a month.
 - **26** cards to a one-page first resume for a made-up student, with nothing invented.
 - **288 → 81 kB** of landing-page JavaScript, gzipped; Lighthouse mobile performance **93 → 98**.
-- **0** usage claims. Ghosted is days old with a handful of testers, and measuring how they actually use it is the next piece of work.
+- **30+** users today. That says who uses it, not how: I don't have active-use, retention or hiring numbers, and measuring how people actually use it is the next piece of work.
 
 ### How it was built
 
-I want to be direct about this part, because it's part of the design. The flow, the chat-plus-canvas model, the choice to render with Typst, the brand, and every product decision above are mine, written down before any code. A coding agent, Claude, built the first working cut in a day from that spec, and most of the releases since, while I tested, decided and reviewed.
+I want to be direct about this part, because it's part of the design. The flow, the chat-plus-canvas model, the choice to render with Typst, the brand, and every product decision above are mine, written down before any code. A coding agent, Claude, built the first working cut in a day from that spec. Since then, AI coding agents have implemented substantial code from my specifications, while I set the direction, tested, reviewed the code and shipped each release.
 
 The product's own AI is OpenAI's GPT, running on my ChatGPT subscription, and Research searches go through Firecrawl. That's useful evidence of how I work with AI tools. It isn't a claim that I hand-wrote every line. The foundations I'm now taking over by hand are the resume data model, the template, the prompts and version history.
 
 ### Before this
 
-Ghosted is my third pass at the same problem. The first was a Go terminal app with an eight-stage pipeline, where agents drafted documents but nothing touched the tracker without my approval. The second was a Next.js web app where code did everything it could and one bounded model call wrote the prose, checked by 744 tests. The first proved the workflow but only I could use it. The second worked but testers found it too complicated, and its output lived apart from the resume. This version puts the AI on the resume itself, which is why every edit has to be a proposal.
+Ghosted is my third pass at the same problem, in development since January 2026. The first was a Go terminal app with an eight-stage pipeline, where agents drafted documents but nothing touched the tracker without my approval. The second was a Next.js web app where code did everything it could and one bounded model call wrote the prose, checked by 744 tests. The first proved the workflow but only I could use it. The second worked but testers found it too complicated, and its output lived apart from the resume. This version puts the AI on the resume itself, which is why every edit has to be a proposal.
 
 ### What's next
 

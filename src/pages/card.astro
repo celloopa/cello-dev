@@ -30,6 +30,7 @@ import Eyebrow from "@/components/ui/Eyebrow.astro";
 import Section from "@/components/ui/Section.astro";
 import { homeScene, sceneForProject } from "@/lib/scene/pairing";
 import { sceneArt } from "@/lib/scene/catalog";
+import { projectEyebrow } from "@/lib/project-label";
 import Mail from "@/icons/Mail.astro";
 import Phone from "@/icons/Phone.astro";
 import LinkedIn from "@/icons/LinkedIn.astro";
@@ -73,7 +74,7 @@ const projects = (await getCollection("projects"))
     return {
       slug: p.id,
       title: p.data.title,
-      role: p.data.role,
+      role: projectEyebrow(p.data),
       line: oneLine(p.data.description),
       art,
       style: `${inks} --art-x: ${art.anchor[0] * 100}%; --art-y: ${art.anchor[1] * 100}%;`,

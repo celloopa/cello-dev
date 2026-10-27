@@ -20,6 +20,7 @@ import MediaThree from "@/components/media/MediaThree.astro";
 import ReadHead from "@/components/scene/ReadHead.astro";
 import StoryEnd from "@/components/scene/StoryEnd.astro";
 import { sceneForProject } from "@/lib/scene/pairing";
+import { projectEyebrow } from "@/lib/project-label";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -34,7 +35,7 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content, headings } = await render(project);
 const sectionLinks = headings.filter((h) => h.depth === 2);
-const { title, description, image, ogImage, url, github, role, summary, media } = project.data;
+const { title, description, image, ogImage, url, github, summary, media } = project.data;
 
 const allProjects = (await getCollection("projects"))
   .filter((item) => item.data.complete)
@@ -43,7 +44,7 @@ const i = allProjects.findIndex((item) => item.id === project.id);
 const story = (p: (typeof allProjects)[number]) => ({
   href: `/projects/${p.id}`,
   title: p.data.title,
-  eyebrow: p.data.role,
+  eyebrow: projectEyebrow(p.data),
   description: p.data.description,
 });
 const next = story(allProjects[(i + 1) % allProjects.length]);
@@ -61,7 +62,7 @@ const all = { href: "/projects", label: "All work" };
 >
   <article class="read">
     <ReadHead
-      eyebrow={role}
+      eyebrow={projectEyebrow(project.data)}
       title={title}
       lede={description}
       cover={image ? { src: image, alt: title } : undefined}

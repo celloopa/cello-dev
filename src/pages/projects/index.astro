@@ -11,6 +11,7 @@ import SceneLayout from "@/layouts/SceneLayout.astro";
 import SceneSelector from "@/components/scene/SceneSelector.astro";
 import { sceneArt } from "@/lib/scene/catalog";
 import { homeScene, sceneForProject } from "@/lib/scene/pairing";
+import { projectEyebrow } from "@/lib/project-label";
 
 const projects = await getCollection("projects");
 const items = projects
@@ -19,7 +20,7 @@ const items = projects
   .map((project) => ({
     href: `/projects/${project.id}`,
     title: project.data.title,
-    eyebrow: project.data.role,
+    eyebrow: projectEyebrow(project.data),
     description: project.data.description,
     tags: project.data.techStack,
     live: project.data.url,

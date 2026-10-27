@@ -11,6 +11,7 @@ import Section from "@/components/ui/Section.astro";
 import { homeScene, homeSection, sceneForProject } from "@/lib/scene/pairing";
 import { basics } from "@cv";
 import { sceneOptions } from "@/lib/scene/slots";
+import { projectEyebrow } from "@/lib/project-label";
 
 const PLACE = homeScene(); // no-JS fallback from the shared hero slot
 const { email } = basics;
@@ -26,7 +27,7 @@ const backdrops = [...featuredProjects.map((p) => sceneForProject(p.id)), ...Obj
 
 const homeTitle = "Cello — Designer, Products & Prototypes";
 const homeDescription =
-  "I design and prototype helpful experiences, from products and systems to the code that brings them to life.";
+  "Product designer and design engineer. I turn ideas into useful products, from the interface to the system behind it.";
 ---
 
 <SceneLayout
@@ -47,7 +48,7 @@ const homeDescription =
           <h1 class="hero-name message-row" id="hero-name" data-intro-message><span class="message-copy">Hi, I’m Cello.</span><span class="message-visual" aria-hidden="true"></span></h1>
           <div class="message-deck">
           <p class="hero-bubble message-row" data-intro-message><span class="message-copy">Welcome to Mt. Hood. I come here a lot, so I thought I’d bring you along this time.</span><span class="message-visual" aria-hidden="true"></span></p>
-          <p class="hero-bubble message-row" data-intro-message><span class="message-copy">I love to design and prototype helpful experiences, taking an idea all the way to something you can use.</span><span class="message-visual" aria-hidden="true"></span></p>
+          <p class="hero-bubble message-row" data-intro-message><span class="message-copy">I’m a product designer and design engineer. I turn ideas into useful products, connecting the interface, the system behind it, and the details that make it work.</span><span class="message-visual" aria-hidden="true"></span></p>
           </div>
         </div>
       </div>
@@ -96,7 +97,7 @@ const homeDescription =
     title="Selected Case Studies"
     titleId="work-title"
     stop="Selected Case Studies"
-    intro="From shared brand systems to AI tools and everyday planning. Here’s the problem, the decision, and what shipped."
+    intro="Client work and products of my own, from shared brand systems to AI tools and everyday planning. Here’s the problem, the decision, and what shipped."
     data-scene-focus
   >
       <ol class="work-list">
@@ -108,7 +109,7 @@ const homeDescription =
               image={project.data.image}
               url={project.data.url}
               techStack={project.data.techStack}
-              role={project.data.role}
+              role={projectEyebrow(project.data)}
               slug={project.id}
               index={i}
               place={sceneForProject(project.id)}
@@ -124,7 +125,7 @@ const homeDescription =
     id="contact"
     title="Let’s Talk"
     titleId="contact-heading"
-    intro="Open to design systems, brand and product design roles, remote in the US or in Portland. The fastest way to reach me is email."
+    intro="I’m open to full-time product design and design engineering roles where I can focus deeply on a product alongside a team, remote in the US or in Portland. The fastest way to reach me is email."
     data-scene-stop="Let’s Talk"
     data-scene-backdrop={sections.contact}
   >

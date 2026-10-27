@@ -7,10 +7,13 @@ import { homeSection } from "@/lib/scene/pairing";
 import { basics } from "@cv";
 const sections = { about: homeSection("about"), how: homeSection("how"), contact: homeSection("contact") };
 ---
-<SceneLayout title="About Cello" description="My path through visual journalism, brand systems, and product design, and how I carry design into production." canonicalPath="/about" place={sections.about} reading={{ title: "About", all: { href: "/#work", label: "All work" } }} backdrops={[sections.how, sections.contact]}>
+<SceneLayout title="About Cello" description="My path from visual journalism and brand systems to my own practice and products, and how I carry design into production." canonicalPath="/about" place={sections.about} reading={{ title: "About", all: { href: "/#work", label: "All work" } }} backdrops={[sections.how, sections.contact]}>
   <section class="about-intro container" id="about" aria-labelledby="about-title" data-scene-focus data-scene-stop="About" data-scene-backdrop={sections.about}>
     <h1 id="about-title">About</h1>
-    <p>I came to product design through visual journalism, brand systems, and front-end engineering. That range lets me translate creative intent into product rules, prototype behavior, make constraints legible, and speak the language of the team shipping it.</p>
+    <p>I’m Marcelo. Most people call me Cello. I’m a product designer and design engineer in Portland, and I like carrying an idea through the details: what people need to do, how the interface helps them do it, and what has to work behind the scenes.</p>
+    <p>I came to product design through visual journalism and brand systems. In 2021 I started my own practice, Cello.Design, with brand and web design. Mantera was my first client. Asheville Dispensary followed, then The Green Phial, VegAvengers and River Phoenix Center for Peacebuilding. Legal Impact for Chickens is also part of my client work.</p>
+    <p>The practice grew with the work. Brand systems led into reusable interfaces, content platforms and internal tools, and in 2024 I began shipping production code collaboratively. Today I work across design and implementation, with attention to accessibility and to the people who will maintain what ships. At Asheville that means connecting three brands across websites, packaging, sales materials and production workflows. At VegAvengers it means giving two editors control of their own publishing platform.</p>
+    <p>I also make products of my own. Ghosted helps people manage their job search and tailor resumes with AI changes they can review. Daybreak is where I explore planning across Mac and iPhone. They give me room to follow a design decision through implementation, feedback and the next release.</p>
     <ArrowLink href="/resume">View Resume</ArrowLink>
   </section>
   <Section
@@ -50,14 +53,16 @@ const sections = { about: homeSection("about"), how: homeSection("how"), contact
       </div>
   </Section>
 
-  <Section class="contact" title="Let’s Talk" titleId="contact-heading" intro="Open to design systems, brand and product design roles, remote in the US or in Portland. The fastest way to reach me is email." data-scene-stop="Let’s Talk" data-scene-backdrop={sections.contact}>
+  <Section class="contact" title="Let’s Talk" titleId="contact-heading" intro="I’m open to full-time product design and design engineering roles where I can focus deeply on a product alongside a team, remote in the US or in Portland. The fastest way to reach me is email." data-scene-stop="Let’s Talk" data-scene-backdrop={sections.contact}>
     <div class="contact-actions"><Button href={`mailto:${basics.email}`}>Email Me</Button><ArrowLink href="/#work">Explore the work</ArrowLink></div>
   </Section>
 </SceneLayout>
 <style>
   .about-intro { padding-block: var(--space-96) var(--space-64); }
   h1 { margin: 0; font: var(--weight-bold) var(--type-display-scene)/var(--leading-tight) var(--font-title); }
-  .about-intro p { max-width: var(--layout-measure); margin-block: var(--space-32); }
+  .about-intro p { max-width: var(--layout-measure); margin-block: var(--space-16); }
+  .about-intro p:first-of-type { margin-top: var(--space-32); }
+  .about-intro p:last-of-type { margin-bottom: var(--space-32); }
   .how, .contact { padding-block: var(--space-64); }
   .contact-actions { display: flex; flex-wrap: wrap; gap: var(--space-24); margin-top: var(--space-24); align-items: center; }
   .proof-strip {

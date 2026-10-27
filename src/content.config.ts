@@ -28,6 +28,8 @@ const projects = defineCollection({
 		github: z.url().optional(),
 		techStack: z.array(z.string()),
 		role: z.string(),
+		// Whose work it is and since when, e.g. "Client · Since January 2022" or "My product · Since July 2026"
+		engagement: z.string().optional(),
 		highlights: z.array(z.string()),
 		// The case study's opening: problem, role, key decision, shipped result (rendered above the section links)
 		summary: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
