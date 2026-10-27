@@ -19,9 +19,9 @@ export const projectStories: Record<string, { problem: string; decision: string;
     mark: "/images/project-marks/vegavengers.svg",
   },
   daybreak: {
-    problem: "A generated daily plan is only useful when it respects real commitments and stays editable.",
-    decision: "Give people and AI the same typed operations, with a receipt for every change.",
-    outcome: "Signed Mac and iPhone builds I dogfood every day. I haven’t validated it with other users yet.",
+    problem: "My planner made me commit the day, and let unfinished work pile up as guilt.",
+    decision: "Nothing is late, it just needs a place. The planner and the AI only propose.",
+    outcome: "Rebuilt from the ground up and in daily use on Mac and iPhone since October 15. I haven’t tested it with other people yet.",
     mark: "/images/project-marks/daybreak.webp",
   },
 };

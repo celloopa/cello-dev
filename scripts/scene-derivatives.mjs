@@ -37,12 +37,11 @@ const paired = new Set(Object.values(pairings.projects));
 const kb = (f) => `${(fs.statSync(f).size / 1024).toFixed(1)} KB`;
 
 // The /card artifacts: [source, crop of the source before the 16:10 cover crop (or null)].
-// Daybreak's screenshot is a window on a transparent margin: crop to the window first.
 const ARTIFACTS = {
   "asheville-dispensary": ["/images/projects/ad-assets/ad-assets-thumbnail.png", null],
   ghosted: ["/images/projects/ghosted/v3/board.webp", null],
   vegavengers: ["/images/projects/veg-avengers-thumbnail.png", null],
-  daybreak: ["/images/projects/daybreak/today.png", { left: 70, top: 50, width: 1680, height: 1050 }],
+  daybreak: ["/images/projects/daybreak/hero.webp", null],
 };
 
 async function flatten(id) {

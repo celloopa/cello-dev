@@ -2,6 +2,13 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-10-27 — Daybreak case study for the rebuilt app
+
+- Rewrote the Daybreak case study around the ground-up rebuild Cello switched to on October 15: why it was rebuilt, the paper-by-day / ink-by-night look (round one rejected for dashed lines), Catch up and check-ins, AI that only proposes (a four-step flow replaces the six-step operation model), Focus, errand runs with Maps, and outcome and limits. Kept in the conversational voice and short; `engagement` stays "My product · Since July 2026".
+- Six new 2400×1500 screen composites (`hero`, `look`, `catch-up`, `talk-through`, `focus`, `maps` .webp) built from the Daybreak build journal's sample-data captures, plus a new `og.png`. All are shown `uncropped`. Removed the four old screenshots, which nothing else used.
+- The /card artifact now comes from `hero.webp` (`scripts/scene-derivatives.mjs`), regenerated at 960×600. Updated the Daybreak home-preview lines in `src/data/project-stories.ts`.
+- Validation: clean `pnpm build` (16 pages, 0 check errors/warnings/hints); the case study checked rendered at 1280 and 375 px with no horizontal scroll.
+
 ## 2026-10-27 — Practice, ownership and availability copy
 
 - Every case study now says whose work it is: a new optional `engagement` frontmatter field ("Client · Since January 2022", "My product · Since July 2026") leads the role eyebrow on home, /projects, the case-study header, the next-story link and /card (`src/lib/project-label.ts`).
