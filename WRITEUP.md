@@ -35,7 +35,7 @@ production renderer ---- existing routine (current production)
 quiet attachment ------ completeness + notification-hours gates
         |
 Asana review ---------- Slack combined preview / approval
-                           
+
 design exploration: Storybook study -> saved recipe -> offline study export
                          (same frame function; distinct from Familiar renderer)
 ```
