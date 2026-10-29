@@ -1,0 +1,39 @@
+{
+  "persona": "Morgan, hiring manager reading the design work, English, site default appearance",
+  "scope": "Local private illustrated draft; changed writing only; no real user data or external writes",
+  "rows": [
+    {
+      "flow": "blog",
+      "width": 1440,
+      "result": "PASS",
+      "images": 5,
+      "overflow": false,
+      "shot": "docs/writing/shots/2026-10-29-flower/blog-1440.webp"
+    },
+    {
+      "flow": "case",
+      "width": 1440,
+      "result": "PASS",
+      "images": 1,
+      "overflow": false,
+      "shot": "docs/writing/shots/2026-10-29-flower/case-1440.webp"
+    },
+    {
+      "flow": "blog",
+      "width": 390,
+      "result": "PASS",
+      "images": 5,
+      "overflow": false,
+      "shot": "docs/writing/shots/2026-10-29-flower/blog-390.webp"
+    },
+    {
+      "flow": "case",
+      "width": 390,
+      "result": "PASS",
+      "images": 1,
+      "overflow": false,
+      "shot": "docs/writing/shots/2026-10-29-flower/case-390.webp"
+    }
+  ],
+  "brokenResources": []
+}

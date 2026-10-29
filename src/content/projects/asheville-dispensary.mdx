@@ -1,152 +1,119 @@
 ---
 title: Asheville Dispensary
-description: One shared design system for three distinct brands. I lead the design and build the tools that turn approved work into everyday assets, replacing 3–5 hours of manual production a week.
+description: Bringing Asheville Dispensary, Plantbar and Nightshade into a shared design system while keeping each brand distinct across social, web, print and packaging.
 image: /images/projects/ad-assets/hero.webm
 ogImage: /images/projects/ad-assets/ad-assets-thumbnail.png
 techStack:
   - Figma
-  - Claude agents
-  - TypeScript
-  - ffmpeg
-  - Slack and Asana APIs
+  - Brand architecture
+  - Design tokens
   - React
+  - CSS custom properties
   - Supabase
 role: Product Design Lead / Design Engineer
 engagement: Client · Since January 2022
 highlights:
-  - Lead product and brand design for Asheville Dispensary, Plantbar, and Nightshade across web, print, and packaging, on a shared Figma design system
-  - Built a pipeline that turns a product-drop announcement into branded cards and vertical story videos, filed for review and queued for social approval
-  - Replaced 3–5 hours a week of manual asset gathering, card design, video editing, and handoff
-  - Put the only step that reaches other people behind quiet hours and a completeness gate, after the one day it sent too early
-  - Cut an idle day's running cost from about $12 to about $0.30 by letting a script decide whether a model needs to run at all
-  - Built the internal asset directory the automations draw from — one searchable, multi-brand home for approved assets
+  - Lead design across Asheville Dispensary, Plantbar and Nightshade, preserving each brand’s identity across print and digital
+  - Establish shared foundations and material structures with brand-specific colors, typography, imagery and composition
+  - Reconcile existing guides, websites and working templates through source-backed audits
+  - Build a searchable multi-brand asset directory with a shared interface and independently styled brand portals
+  - Extend the system through editable guides and template studies, with production adoption tracked separately
 summary:
   - label: Problem
-    value: "Three brands, one designer. Asheville Dispensary, Plantbar and Nightshade each need to look like themselves across web, print and packaging, and most of my hours were going into turning approved work into the small assets a retail business needs every week."
+    value: "A family of brands needs a recognizable identity in every medium. Existing guides, websites and working files contain both purposeful differences and accumulated drift."
   - label: Role
-    value: "Design lead for all three brands, a client engagement through my practice since January 2022. I own the shared Figma system and design the work. It began as brand and web design; since 2024 I also build the tools that make everything derived from it."
+    value: "Design lead since January 2022. I design the work, reconcile the sources and decide what the brands share, what stays distinct and how people can reuse it."
   - label: Key decision
-    value: "Share the structure, swap the identity. The brands share components, spacing and layouts, and each one brings its own look. Then code does the repeatable work, and a person approves anything the public sees."
-  - label: Shipped
-    value: "A multi-brand asset directory on one component system, and a video pipeline in production since July 2026: 37 drops delivered end to end by October 8, no failed runs, and 3–5 hours of manual work a week handed back."
-  - label: Tools
-    value: "Figma, Claude agents, TypeScript, zsh, ffmpeg, Slack and Asana APIs, React, Tailwind CSS, Supabase."
+    value: "Share the underlying roles and reusable structures. Let each brand bring its own visual identity, and adapt each material to the medium where people will use it."
+  - label: Current state
+    value: "The shared asset directory is implemented. The current audits are turning existing brand work into separate editable guides and template proposals; broader publication and production rollout are still ahead."
+  - label: Scope
+    value: "Social, web and email banners, printables, signage, brand guides, presentations, packaging and sales materials."
 featured: true
 complete: true
 order: 1
 ---
 
-import FlowDiagram from '@/components/FlowDiagram.astro';
 import MediaFull from '@/components/media/MediaFull.astro';
-import MediaTwo from '@/components/media/MediaTwo.astro';
 import MediaThree from '@/components/media/MediaThree.astro';
 
+## A family of brands, each with its own identity
 
-## One system, three brands
+I lead design for Asheville Dispensary, Plantbar and Nightshade. They need different personalities, but they also need a practical way to produce the materials a retail business uses every day.
 
-I lead design for three cannabis brands: Asheville Dispensary, Plantbar and Nightshade. Each one has to look like itself, but I didn't want to design three of everything.
+That work moves between social posts, websites, event announcements, packaging, signage and presentations. A brand guide alone doesn’t connect all those places. The decisions need to survive in the files, templates and tools people actually use.
 
-So they all come out of one shared Figma system, with one simple rule. The structure is shared, and each brand brings its own identity.
+My approach is to share the foundations and reusable structures, then let each brand supply its own styling. The work is deciding which differences belong to the brand and which ones make the system harder to use.
 
-<MediaThree items={[
-  { src: "/images/projects/ad-assets/ad-portal.webm", alt: "The Asheville Dispensary portal of the asset directory, with asset categories and search", caption: "Asheville Dispensary" },
-  { src: "/images/projects/ad-assets/plantbar.webm", alt: "The same portal layout themed for Plantbar", caption: "Plantbar" },
-  { src: "/images/projects/ad-assets/nightshade.webm", alt: "The same portal layout themed for Nightshade", caption: "Nightshade" }
-]} />
+## Start with the work that already exists
 
-Here's the same portal in all three brands: one layout, one set of components, one search. The color comes from each brand's own tokens.
+The current audit brings together existing Figma sources, guides, websites, local artwork and Canva templates. These sources carry real decisions, but they don’t always agree.
 
-**What stays shared:**
-- Spacing and layout patterns.
-- Components: cards, category tiles, search and forms.
-- How things are organized: brands, categories, tags.
+A color in a guide may differ from a live page. A typeface in an older template may belong to an earlier direction. A supplier’s product identity may need to remain intact inside distributor material.
 
-**What changes with each brand:** its color, set by the brand's own tokens (CSS custom properties in code).
+I’m treating those as decisions to resolve. The audit records the source, the mismatch, whether the difference is deliberate, and what needs approval before it becomes a rule.
 
-### From Figma to production
+Asheville Dispensary’s forest-green identity is the baseline for its current guide. Plantbar’s work keeps its own palette and typographic direction; Nightshade keeps the blue and pink language found in its sources. The new guides remain separate editable files, so their identities and approval histories stay legible.
 
-- **The drop card.** The social story card is a component in the Figma system. The pipeline below fills in its slots (strain, tier, sale wording, photo) and never touches the layout, so every card that goes out is the design I approved.
-- **The web store.** I design UI components and ship them into WordPress as custom PHP and JavaScript plugins, so the mockup and the live store stay the same thing.
-- **The asset directory.** The brands' approved assets used to live across Drive folders, bookmarks and memory. Now they have one searchable home. Its portals share one component system and switch identity through CSS custom properties instead of duplicated code. Admins who aren't developers manage brands, categories and links themselves. The data lives in Supabase with a JSON fallback, so the directory still works when the database doesn't.
+AltBevSolutions adds a fourth relationship to document: a separate B2B beverage division with its own material needs. It shouldn’t become a generic theme for everything sold wholesale. The division and the owner of the material determine that relationship.
 
-## The flower drop pipeline
+## Shared roles, distinct expression
 
-The biggest payoff so far is a tool built on top of the system. Two or three times a week, the ecommerce team announces a flower drop, and every strain needs a branded story card and a short vertical video. By hand, that took seven tools and 3–5 hours a week.
+A shared system starts with the jobs a design needs to do: establish hierarchy, separate content, identify an action and make the brand recognizable.
 
-I approach everything I build here the same way. Code does everything it can do exactly. A model gets the narrow piece that needs judgment. And a person approves anything that reaches other people.
+Those roles can stay consistent while their values change. A heading can carry the same responsibility across the family without using the same typeface. An action can have the same place in the hierarchy while taking its color from the brand.
+
+The same distinction applies to composition. An event announcement needs a title, date, venue, details and a call to action. Those content relationships can be reused. Their expression can change with the brand, format and amount of information.
+
+The current template proposals make those boundaries explicit: what someone can edit, what needs to stay controlled and which difficult cases the layout must handle.
 
 <MediaFull
-  src="/images/projects/asheville/product-page.webp"
-  alt="White Runtz product page on the Asheville Dispensary store, with a gallery of three images, a Greenhouse breadcrumb, sale pricing, and stock count"
-  caption="The input: the live product page. The pipeline takes the macro gallery shot (second thumbnail) and the product video (third). The tier comes from the announcement, never from this breadcrumb."
+  src="/images/projects/ad-system/template-contracts.webp"
+  alt="Proposed Asheville Dispensary template specifications listing editable content, controlled brand structure and test cases for retail promotions, product education, carousels and events"
+  caption="An audit-stage template contract: content fields, protected structure and difficult cases. This records intended behavior; it is not evidence of a completed production rollout."
+  uncropped
 />
 
-<MediaTwo items={[
-  { src: "/images/projects/asheville/drop-card.webp", alt: "Vertical story card reading 'New online flower drops — White Runtz, Greenhouse ounce sale' over a macro photo of the flower", caption: "The card: the approved Figma component, filled with the strain, tier, sale wording, and product photo." },
-  { src: "/images/projects/asheville/drop-story.webm", alt: "Story video with the same card and the product video playing inside a circular mask", caption: "The story: the product video composed behind the card by ffmpeg. Both came from the scheduled 5:30 a.m. run on October 8, which delivered all five strains in that drop." }
+## Carry the decisions across media
+
+The goal is to make the relationship between materials understandable across social, banners, printables, signage, guides and decks.
+
+A recurring event can share its content structure across a story, a web banner, a printed sign and a presentation slide. Each format still needs its own layout, type scale, density and production rules. A phone screen has safe areas and crops; print needs physical dimensions and the correct export specification.
+
+That makes the shared system useful at two levels. It preserves the decisions that should travel, and it names the adjustments that belong to the medium.
+
+The current guides and editable template studies are a way to test those relationships before wider adoption. Long headlines, dense event lineups, missing images and changes such as cancellation or expiry need to be part of that review. A template that works only for the example copy leaves too much design work for the next person.
+
+## Give the team a usable home for the assets
+
+The multi-brand asset directory is an implemented example of the same approach.
+
+The three portals share their layout, search, categories and interface components. Each portal takes its identity from brand tokens in CSS custom properties. The structure can improve once, while the brands remain recognizable.
+
+<MediaThree items={[
+  { src: "/images/projects/ad-assets/ad-portal.webm", alt: "Asheville Dispensary asset portal showing its branded interface, search and categories", caption: "Asheville Dispensary" },
+  { src: "/images/projects/ad-assets/plantbar.webm", alt: "Plantbar asset portal using the same interface structure with Plantbar styling", caption: "Plantbar" },
+  { src: "/images/projects/ad-assets/nightshade.webm", alt: "Nightshade asset portal using the shared interface with Nightshade styling", caption: "Nightshade" }
 ]} />
 
-Now a scheduled routine runs the whole loop:
+Approved assets used to depend on knowing the right folder or remembering an old link. The directory gives them a searchable home. Administrators can manage brands, categories and links without editing the interface code.
 
-<FlowDiagram
-  title="From announcement to approval"
-  items={[
-    { label: "Check", detail: "A shell script reads Slack directly and decides, without any model, whether there's a new drop or an unsent delivery." },
-    { label: "Plan", detail: "If there's work, an agent reads the announcement: date, strains, tier, and any sale wording." },
-    { label: "Build", detail: "It finds each product page, pulls the media, and fills the approved Figma card component with the strain, tier, and photo." },
-    { label: "Compose", detail: "ffmpeg places the product video behind the card in a 1080×1920 story. A probe verifies size, length, and that there's no audio." },
-    { label: "File", detail: "Videos attach to the drop's Asana task. Attachments notify no one." },
-    { label: "Send", detail: "Only inside waking hours, and only when every strain in the drop is finished: the review comment and the approval post go out." }
-  ]}
-  caption="Everything up to 'File' is cheap to redo. 'Send' is the only step other people see, so it's the only step with gates in front of it."
-/>
+This is one implemented surface. The broader cross-medium system is still being reconciled through the audits; the portal’s shared components don’t mean every print or social template has already been migrated.
 
-### Code first
+## Keep approval and adoption visible
 
-The first live run picked the wrong strain. Search returned a lookalike, and a stale sitemap pointed at an old product page.
+The current work includes native editable guides and template proposals for each brand. These are tangible review artifacts, but an editable file and a published team standard are different stages.
 
-I didn't fix that with a better prompt. I fixed it with more code. The scraper now tries the likely product URLs directly, rejects any page whose title doesn't match the strain, ranks what's left by tier and publish date, and logs why it picked each one. The call I used to make in my head ("I just know which page is right") became a rule anyone can read.
+I’m keeping the sources, proposed decisions, approved masters and downstream copies distinguishable. A copied template doesn’t automatically inherit later changes. The documentation and tooling need to make its version and approval state visible.
 
-Premiere went the same way. When I actually opened the template, it was a card image with a product video masked into a circle: 4.73 seconds, no animation. That's a recipe, not an edit. I pulled the circle's geometry from a frame of an old export and the encoding settings from its metadata. Now one ffmpeg command renders each story in seconds. It also fixed a quiet bug: the old exports were set to "no audio" but still carried a stray audio track.
+The planned documentation service, Storybook reviews and AD Hub have related jobs: explain the rules, inspect reusable behavior and put approved material into a workflow. Their connection needs to be implemented and tested. It shouldn’t be implied by a diagram or by the fact that all the files exist.
 
-### The day it sent too early
+My role is to connect the design decisions to their use: which brand owns the material, which rules apply, what someone may change and where a new decision needs review.
 
-In late July, the routine posted a card with the wrong tier. The announcement said one tier, but the product page sat under another, because a new page used a URL pattern the scraper didn't know yet. The agent noticed the conflict, logged it politely, trusted the website and posted anyway.
+## What the system makes possible
 
-Undoing it meant deleting an attachment, deleting a Slack file by hand and threading a correction. Everything before the post would have been free to fix. I came out of that day with three rules:
+The existing portals show how shared structure can support distinct brands. The audits and new guides are extending that approach into the materials used across the business.
 
-- **The announcement decides the tier.** The site supplies media, never categories. A mismatch gets logged loudly and never adopted.
-- **The scraper knows both URL patterns.** That alone would have caught it.
-- **Completeness gate.** If any strain in a drop is unfinished, held or unresolved, nothing gets sent. Finished files attach quietly, and the post waits until the whole drop is ready.
+The flower-story workflow is one concrete application. I’ve separated its production history, motion exploration and latest review into [Automating product drops gave me time to redesign them](/blog/scheduled-agent-flower-drop-routine/). It shows how a reusable design can become a repeatable output.
 
-A go-live guard covers the opposite case. If a drop is announced for tomorrow, the task gets created now and the media waits until the pages actually go live.
-
-### Paying for the model only when there's work
-
-Most scheduled checks find nothing. Drops land between about 3 and 8 a.m. Pacific, and most days don't have one. Every check was still opening a full agent session just to look at Slack. At its worst, with the task drifted onto a top-tier model, an idle day cost about $12.10.
-
-So I timed every announcement from the first two weeks and redesigned around that data instead of my guess. The schedule went from seven checks a day to three, placed where drops actually land.
-
-A zsh script now decides whether there's work before any model gets involved. Its exit codes are the interface: work, idle, done for today, or error. An error fails open, so a broken token can't silently skip a drop. A small model only dispatches. On a drop morning, it hands the run book to a stronger model that does the real work.
-
-An idle day now costs about $0.30. A drop day adds one $6–8 pass that takes 10–14 minutes, and that's where I want the money to go.
-
-Cost reporting reads the agents' own transcripts after the fact, so nothing in the pipeline has to report on itself. That's also how I caught the drift. The run book doesn't set the scheduled model, so I have to check it instead of assuming.
-
-### Record
-
-From July 9 to October 8, 2026: 69 archived runs, 37 drops delivered end to end, and no failed runs. The partial runs are the go-live guard holding media for pages that weren't live yet. That's the guard doing its job.
-
-## What's next, at its real stage
-
-The same split carries into the rest of my design work. These are at different stages, so I'll describe them that way:
-
-- **Print coordination: in testing.** A local intake and status tool for getting approved artwork to a print vendor and picked up. It keeps artwork, cost and vendor-release approvals separate. A revision cancels the approvals it touches. "Ready" never counts as "picked up." It's being tested and isn't part of everyday production yet.
-- **Presentations from approved templates: planned.** An agent fills the content slots of decks I've designed and approved. It never invents a layout, and I review every deck.
-- **Packaging checks against compliance checklists: planned.** Compare new packaging artwork against the team's existing checklists and write a gap report for the people who own compliance. It only reads; it doesn't change anything.
-
-## What I learned
-
-Honestly, the automation itself was rarely the hard part. The hard part was deciding what the system is allowed to believe (the announcement, not the website), what it can do on its own (anything that can be quietly redone) and when it has to stop and wait (anything other people will see).
-
-Once I wrote those down as rules, the model's job got small enough to trust.
+The work here is the wider brand relationship: keeping the identities distinct, bringing their foundations into a coherent system and making that system useful wherever the brand appears.

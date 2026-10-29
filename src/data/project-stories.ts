@@ -1,9 +1,9 @@
 /** Short reading paths, grounded in the corresponding MDX case studies. */
 export const projectStories: Record<string, { problem: string; decision: string; outcome: string; mark: string }> = {
   "asheville-dispensary": {
-    problem: "Three distinct brands needed consistent design, and I didn’t want to spend every week rebuilding the same assets.",
-    decision: "Share the system, keep each brand’s identity, and let code handle production while a person approves what goes out.",
-    outcome: "A product-to-social workflow replaced 3–5 hours of manual design and editing a week, with a person approving each post.",
+    problem: "Three distinct brands needed a coherent system across social, web, print and packaging.",
+    decision: "Share the foundations and reusable structures, with each brand supplying its own visual identity.",
+    outcome: "A shared asset directory is in use; audits and editable guides are extending the system across media.",
     mark: "/images/project-marks/asheville-dispensary.svg",
   },
   ghosted: {

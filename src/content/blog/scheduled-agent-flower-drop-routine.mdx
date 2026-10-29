@@ -1,117 +1,133 @@
 ---
-title: "I deleted Premiere from my pipeline, then taught it when not to post"
-description: "I automated a 3–5 hour weekly routine for making social videos. The wrong product page, an early approval post and a $12 idle day taught me where it needed limits."
-publishDate: 2026-10-08
-updatedDate: 2026-10-14
+title: Automating product drops gave me time to redesign them
+description: I replaced a weekly video-production routine, then used the time it freed up to build more varied motion templates without adding another editing step to each drop.
+publishDate: 2026-10-29
+updatedDate: 2026-10-29
+image: /images/blog/product-drops/review-sheet.webp
 tags:
+  - Design systems
+  - Motion
   - Automation
-  - AI Agents
-  - Design Systems
-  - Figma
-  - ffmpeg
+  - Storybook
 draft: true
 ---
 
-{/*
-  ARTIFACTS TO ADD (Cello): a finished drop card + story video, the run dashboard,
-  and the cost report (lib/usage.py output) — idle slot vs drop day. Blur any
-  coworker names/avatars in Slack or Asana screenshots.
-*/}
+import MediaFull from '@/components/media/MediaFull.astro';
+import MediaTwo from '@/components/media/MediaTwo.astro';
 
-For a couple of days in July, my automation's most expensive job was finding nothing to do.
+The CEO liked the new flower stories. My reply was simple: I’d use this style for the next drop.
 
-It checked for a new product drop every hour from 3 to 9 a.m. Each check opened a full agent session, ran one shell script and stopped if there was no work. One idle day cost $12.10. It hadn't made a single video.
+That was a good place to end a design review. It was also a useful test of the automation I’d already built. I could make the stories more animated, give them more variation and spend time on their composition without signing myself up to edit every future video by hand.
 
-I still find that funny. But looking at the bill made me ask a useful question: how much of this routine actually needed a model?
+The review sequence contains three product stories and a separate logo/website end card, seven seconds each. The products and offer text are historical examples used to review the templates.
 
-## The mornings I was trying to get back
+The new renderer still needs to be connected to the live workflow. The direction has a positive response and a next use; the cutover is ahead. But the important design constraint is already there: improving the template should change what the next run produces, without adding another manual production step to that run.
 
-I lead design for three cannabis brands. Two or three times a week, the ecommerce team announces a flower drop: a few strains going live that morning, each needing a branded story card and a short vertical video.
+## The routine before the routine
 
-I'd read the announcement, make an Asana task, find the product pages and download their photos and videos. In Figma, I'd duplicate the last card, swap the photo and retype the strain and tier. Then I'd convert the video in a terminal, replace the card and masked video in Premiere, and queue exports in Media Encoder.
+I lead design for Asheville Dispensary and its related brands. Flower drops were one of those small, recurring jobs that filled more of the week than their size suggested.
 
-After that came attaching files, handing off the posting work and sharing everything for approval in Slack. Seven tools, 3–5 hours a week. The steps were straightforward, but they kept landing on already busy mornings. The drop I used for the test run had gone out late because a client deadline hit that morning too.
+An announcement arrived with the strains, tiers and sale wording. I found the product pages and gathered their photos and videos. In Figma, I duplicated the story card and replaced its content. Then I moved through conversion commands, Premiere and Media Encoder to put footage behind the card, mask it into a circle and export the finished story.
 
-## Work out the rules first
+After that came the handoff: attach the files to Asana, post them for approval in Slack, and make sure the complete batch was there.
 
-The handoff document had ten questions to answer before building: who owned the broadcast, which product page to use when there were duplicates, whether Premiere had to stay, and when people could be notified.
+It took seven tools and roughly three to five hours a week. That was my working estimate for the manual routine, rather than a controlled time study. The annoying part was how much of it repeated a decision I’d already made. The layout was approved. The crop was known. The output dimensions were known. I was carrying those decisions between applications.
 
-I worked through them with the agent. If it could look something up, like a channel ID or where a key lived, it fetched the answer for me to confirm. Each decision went into a Markdown run book.
+<MediaTwo items={[
+  { src: "/images/projects/asheville/drop-card.webp", alt: "Original White Runtz story card with a Greenhouse ounce-sale label and product photograph", caption: "The original card: a repeatable composition with a small set of changing content fields." },
+  { src: "/images/projects/asheville/drop-story.webm", alt: "Original automated White Runtz story with product footage playing through a circular mask", caption: "The first automated output, from October 8: the familiar card and circular footage, without the new layer animation." }
+]} />
 
-The scheduled prompt only needed to say: check for work, and follow the run book if there is any. I wanted the rules somewhere I could read and change later.
+## First, reproduce the approved result
 
-## The wrong page looked good enough
+My first goal was to get the existing work out reliably.
 
-Within the first hour, I asked for High Octane and got Gelato Fuel. A search fallback had found an unrelated strain, and nothing checked whether it matched.
+When I looked closely at an old export, it was a 4.73-second composition with no animated artwork. A card sat over product footage. There was no reason to open a video editor to reproduce that arrangement.
 
-Tropical Cookies went wrong another way. The scraper chose an older product page because the sitemap was four months stale and didn't include the new one.
+I measured the mask and output settings, then used FFmpeg to compose the video. That also caught something easy to miss in the old files: exports intended to be silent could still contain an audio track. The generated version could enforce silence explicitly.
 
-I made the page selection more explicit. The scraper now tries likely product URLs directly, checks the title against the strain, ranks matches by tier and publication date, and records why it chose a page. That gave me something I could inspect when a choice looked wrong.
+The wider routine read the announcement, found product media, filled the approved design, rendered the files and prepared the review handoff. Over time, more of the intermediate work moved into code too.
 
-During that run, three review agents checked the scaffold against the interview notes. They found 26 issues, including two blockers. One was the wrong-page problem. The other was a state file that could mark a partially failed drop as handled and then skip it forever.
+It needed more than a rendering command. Search once returned a lookalike strain, and a stale sitemap pointed at an old page. I added direct URL checks, title matching and a record of why a page had been selected. Later, a disagreement between the announced tier and a website category led to the wrong tier being used. That became a clearer boundary: the announcement owns the offer and tier; the website supplies the media.
 
-The routine now saves state after each side effect. It only marks a drop handled after delivery finishes.
+I also separated preparing files from notifying people. Files could attach quietly while a batch was being completed. The review message waited for the whole batch and the right hours.
 
-## Figma got strange for a while
+Those corrections mattered to the design work that followed. I needed a dependable production loop before I could spend the recovered time exploring what it should produce next.
 
-The cards use ITC Kabel, installed on my machine. Figma's cloud API could replace images and export frames, but it couldn't change text without access to the font.
+## The time went back into the design
 
-I tried desktop automation. An invisible overlay left by a dictation app was eating clicks over the canvas. When the automation missed a text layer, the letters it typed became Figma shortcuts. “Illuminati” contains an `a`, so the frame tool came on and the following clicks drew giant frames over the artboards.
+Once I wasn’t assembling every story manually, I could work on the template itself.
 
-The script kept going as if it had changed the strain name.
+The original automation had reproduced the old result. Now I wanted more variation: a clearer entrance, a little more space for the product, and a sequence that felt composed from beginning to end.
 
-Once I uploaded the font files to Figma, the API could edit the text. That took about two minutes. I deleted the desktop detour.
+I started with motion studies in Storybook. Gentle rise, staggered slide and stamp pop let me compare how the name and sale treatment arrived. A Study Lab exposed the timing and travel values, so I could change one thing, replay it and inspect an exact frame.
 
-## Did this need Premiere?
+<MediaFull
+  src="/images/blog/product-drops/storybook-compare-all.webp"
+  alt="Actual Storybook interface comparing Gentle rise, Staggered slide and Stamp pop motion studies for the Pink Runtz Window card"
+  caption="Early Storybook studies used the Window layout to compare motion treatments. The footage is preserved product media; the offer and tier are sample review data."
+  uncropped
+/>
 
-When I looked closely at the template, it was a card with a product video masked into a circle. It ran for 4.73 seconds, with no animation or audio.
+There was a practical reason to make those controls explicit. A description like “a little slower” is useful in conversation, but it doesn’t preserve a revision. A saved study records when the name starts, how long it moves, when the sale stamp appears and how far things travel.
 
-I took the circle's size and position from an old export and read the encoding settings from its metadata. One ffmpeg command could make the same story in seconds. It also removed a stray audio track that had survived the manual “no audio” exports.
+The Storybook studies use the same frame-drawing function for the browser preview and their offline export. Their export reports include sampled frames, so the actual video can be checked against the preview.
 
-A few weeks later, I removed the separate video conversion too. ffmpeg could read the source directly. The intermediate files had quietly taken up more than 5 GB in a synced folder.
+<MediaFull
+  src="/images/blog/product-drops/storybook-study-lab.webp"
+  alt="Storybook Study Lab with editable motion timing, version identifier and travel controls beside the rendered flower story"
+  caption="The Study Lab makes a motion decision reproducible. Saving the study stores settings; exporting creates the video."
+  uncropped
+/>
 
-## Making the files was only part of it
+That was the exploration environment. The later Familiar sequence was a separate composition and renderer, so I checked its encoded files and transitions directly too. I wasn’t treating a good-looking Storybook canvas as proof that every deliverable worked.
 
-Products go live at 6 a.m. Eastern, or 3 a.m. for me. I wanted the routine to work before dawn without waking everyone else up.
+## Keep the familiar build, give it room
 
-Files can attach to Asana quietly, so that happens first. Comments and the Slack approval post wait until waking hours. The Slack connector couldn't attach files, so I used a small Slack app to upload the videos natively. They post as me and preview inline.
+Of the layouts I reviewed, Familiar was my favorite. I wanted to keep the recognizable card, circular footage and product identity, then give them more room to move.
 
-During the supervised trial, I checked the videos before any notifications went out.
+The background flower cutouts got larger and entered and exited with each slide. Their positions and rotations varied across the batch. I zoomed the footage a little more for the two Private Reserve strains while leaving the Smalls treatment wider, where the group of smaller buds was part of the image.
 
-## Then it posted the wrong tier
+Then I carried the motion through every element: the heading, name panel, pills, video window, seal and background cutout. Giving each element an exit mattered as much as its entrance. The next story needed a clean place to begin.
 
-Two weeks in, a card reached the approval channel with the wrong tier.
+<MediaFull
+  src="/images/blog/product-drops/familiar-before-after.webp"
+  alt="Before and after comparison of the Familiar composition showing larger background flower imagery and a closer crop of the product footage"
+  caption="One of the intermediate comparisons: more room for the background flower and a closer view inside the video window. Later revisions raised and enlarged the video again."
+  uncropped
+/>
 
-The announcement said one thing and the product page said another. The new page used a URL pattern the scraper didn't know. The agent noticed the mismatch, checked the page's structured data, logged a “tier anomaly” and decided the website was right.
+The last layout adjustment was to raise the heading and pills, move the video up and make it slightly larger. That exposed more of the background flower at the bottom. It was a small change to the composition, but the product felt less boxed in.
 
-I had to delete an attachment, remove a Slack file by hand and post a correction. Before the approval post, remaking the card would have been easy. After it, other people were involved.
+## The end card needed to belong
 
-I made three changes. The announcement now decides the tier; the website only supplies media. A disagreement gets logged and never silently changes the category. The scraper also knows both URL patterns.
+I wanted the logo and website to have their own story at the end.
 
-And if any strain is unfinished or uncertain, the whole drop waits. Finished files can attach quietly, but the approval post doesn't go out until everything is ready.
+The first direction became a black card with light type. For the detail behind it, I went back to the brand audit and existing assets. The leaf artwork gave it a connection to the rest of the brand without adding a new decorative language just for this video.
 
-## Check at the right times, for less money
+That took a few revisions. A visible square in the leaf treatment interrupted the background, so I changed the crop and mask. Then the leaves became too subtle in the encoded version. I brought them back until they were visible in the actual file.
 
-By late July, I wanted fewer scheduled runs. Before changing the schedule, I checked when announcements had actually arrived.
+The final product story fades to black before the end card arrives. I checked the joins in the exported sequence, along with playback at desktop and phone sizes. A transition only counts if it survives the export people will watch.
 
-They ranged from 3:17 to 8:07 a.m. Pacific, mostly between 5:00 and 7:05. My planned cut would have missed three of eight drops. I was already catching half of them by running the routine myself around 8 a.m., after the schedule ended.
+<MediaFull
+  src="/images/blog/product-drops/familiar-sequence.mp4"
+  poster="/images/blog/product-drops/familiar-sequence-poster.webp"
+  alt="Twenty-eight-second Familiar sequence with three animated flower stories and a black leaf-textured Asheville Dispensary logo and website end card"
+  caption="The 28-second review export. Each of the three product stories and the separate end card can also be sent individually."
+/>
 
-That brought me back to the $12.10 idle day. Every check opened a full agent session just to run a script. The task had also drifted onto a top-tier model, paying for tool definitions it rarely used.
+## A production decision I can reuse
 
-I moved the first decision into a zsh script. It reads Slack and returns whether there's work, nothing to do, a completed day or an error. An error still sends the run onward so a broken token can't silently hide a drop.
+I sent one combined preview to the team, with the individual files in an Asana task. That made it possible to watch the pacing and review the pieces that would actually be delivered.
 
-A small model handles the dispatch. With no work, it prints a line and stops. With work, it passes the run book to a stronger model and relays the result. It doesn't retry a failure; I can pick that up myself instead of risking a half-finished post.
+Jimmy, the CEO, replied that he liked them a lot. I confirmed I’d use the style for the next flower drop.
 
-I kept three weekday checks at 3:30, 5:30 and 7:30 a.m. Pacific. After that, I'm awake. The split brought an idle day down to $0.71; three checks brought it to about $0.30. A drop day added a $6–8 pass taking 10–14 minutes.
+The first automation had already replaced the manual assembly routine. This redesign is an investment on top of that: time spent improving a reusable result. Once the new renderer is connected, the same website media should feed the animated templates, and the same review process should receive the outputs.
 
-Those numbers come from the agents' transcripts, read afterward. That's also how I found the model drift. The pipeline didn't need to report on itself, and the run book alone couldn't keep the model choice from changing.
+There will still be review, exceptions and occasional template changes. Rendering also takes compute time. I haven’t timed a live batch with this version yet. The aim is to avoid an additional editing pass for each drop, rather than claim the work has no ongoing cost.
 
-## Where the July write-up left it
+The earlier routine’s cost history made that distinction useful. An idle day once cost $12.10 because scheduled checks opened full agent sessions. Moving the initial check into a script reduced the historical estimate to about $0.30 a day under the revised schedule. Those are measurements from that version, not a price promise for the new workflow.
 
-The run archive I reported from had 69 runs since July 9 and 37 drops delivered end to end, with no failed runs. Partial runs were the go-live guard waiting: a drop announced for tomorrow could get its task today, while the media waited for the product pages to go live. Those are the original report's figures, not a new October count.
+The wider [Asheville Dispensary case study](/projects/asheville-dispensary/) is about the brand system behind the work: shared foundations, distinct identities and materials that need to hold together across print and digital.
 
-I had gone from touching seven tools to checking the results. Each strain rendered in seconds rather than minutes. The routine used Claude agents, the zsh check, a zero-dependency TypeScript scraper, Figma components per tier, ffmpeg, Slack and Asana APIs, file-based state and a local HTML dashboard.
-
-What I'd keep is the way the responsibilities shook out. Code can check a page title and render a circle. The model can handle the work that still needs interpretation. And before a result reaches other people, I want a clear reason to believe it's ready.
-
-At the time of the write-up, I wanted to turn this into a video: the wrong scrape, the accidental frames, and the $12 “nothing to do.” Those moments explain the project better than a clean demo would.
+This is one application of that system. Automating the old routine gave me room to redesign the stories. Keeping the redesign in a reusable renderer gives that work a way to reach the next batch.

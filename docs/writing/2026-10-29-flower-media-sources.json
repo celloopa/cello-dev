@@ -1,0 +1,74 @@
+[
+  {
+    "source": "/mnt/c/Users/rondo/OneDrive/Documents/work-windows-2026-10-20/work/Asheville-Dispensary/output/2026-10-29-flower-motion-review/jimmy-preview-v7/Review-sheet.jpg",
+    "copy": "public/images/blog/product-drops/review-sheet.webp",
+    "sha256": "64d632d80698ac39566064aa15e3af52f8f8d319709b241886eae2af438f1ba5",
+    "change": "WebP web derivative; no change to composition"
+  },
+  {
+    "source": "/mnt/c/Users/rondo/OneDrive/Documents/work-windows-2026-10-20/work/Asheville-Dispensary/output/2026-10-29-flower-motion-review/familiar-v2/evidence/before-after.png",
+    "copy": "public/images/blog/product-drops/familiar-before-after.webp",
+    "sha256": "9aa5c2767ae0b9bda8a6d25d04cd1d7b1a5ff18ddd916a3572e060544381e263",
+    "change": "WebP web derivative; no change to composition"
+  },
+  {
+    "source": "/mnt/c/Users/rondo/OneDrive/Documents/work-windows-2026-10-20/work/Asheville-Dispensary/output/2026-10-29-cello-dev-story-evidence/media/audit/ad-social-contracts.png",
+    "copy": "public/images/projects/ad-system/template-contracts.webp",
+    "sha256": "3c388fa922c34f29a746da18bcbd3f896543125f02f8f7e72e50a2ee3c1a46c7",
+    "change": "WebP web derivative; no change to composition"
+  },
+  {
+    "source": "/mnt/c/Users/rondo/OneDrive/Documents/work-windows-2026-10-20/work/Asheville-Dispensary/output/2026-10-29-flower-motion-review/jimmy-preview-v7/sequence/All-Four-Stories.mp4",
+    "derivative": "public/images/blog/product-drops/familiar-sequence.mp4",
+    "source_sha256": "2ae0d43857f249fe59c141831a62e3f7257838677d29537c7d41405bd19fef52",
+    "change": "720x1280 H264 CRF25 silent faststart web derivative; original sequence/pacing unchanged"
+  },
+  {
+    "source": "Storybook commit 1c48516; Flower/Motion studies Study Lab + Compare All; prepared local Window layers/Pink Runtz footage",
+    "capture": "Actual static Storybook UI, 1600x1350, all canvas frames fixed at 60, media present",
+    "assets": [
+      "storybook-compare-all.webp",
+      "storybook-study-lab.webp"
+    ],
+    "privacy": "User-owned product/template review; sample tier/offer; no private workspace messages or contact data"
+  },
+  {
+    "web_assets": [
+      {
+        "file": "public/images/blog/product-drops/familiar-before-after.webp",
+        "bytes": 308576,
+        "sha256": "33a6995ffc6aeb0cbbaf5ab3d1bce52b5d82085cab6147dfe2700f8109346c47"
+      },
+      {
+        "file": "public/images/blog/product-drops/familiar-sequence-poster.webp",
+        "bytes": 164754,
+        "sha256": "57ba56705b21f1ca3cb89fabd51c7e1a5ca00a327f73e71188436ba5189e16de"
+      },
+      {
+        "file": "public/images/blog/product-drops/review-sheet.webp",
+        "bytes": 206788,
+        "sha256": "ca90d7127cd768b8d9de7161f03af8241f0ba61f5039d9c4b88f4f68511ab14f"
+      },
+      {
+        "file": "public/images/blog/product-drops/familiar-sequence.mp4",
+        "bytes": 4239515,
+        "sha256": "bb1205dc64fb6fe53ad230f88e12e6c26a8c175987da34dcee21b50fd76f942e"
+      },
+      {
+        "file": "public/images/blog/product-drops/storybook-study-lab.webp",
+        "bytes": 123268,
+        "sha256": "745c0870f9294ecf09840923d2b38e3b472a20acccd82ea65c7d5a94998b7319"
+      },
+      {
+        "file": "public/images/blog/product-drops/storybook-compare-all.webp",
+        "bytes": 206612,
+        "sha256": "91c7364f5eadb9d016a3456f446d51e25b13f0c70394ec214124861db64072aa"
+      },
+      {
+        "file": "public/images/projects/ad-system/template-contracts.webp",
+        "bytes": 111720,
+        "sha256": "a9979b445d1f842afe02b5a89978402ade9f79afa2f6978be1666116d14c1f70"
+      }
+    ]
+  }
+]
