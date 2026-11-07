@@ -1,0 +1,51 @@
+---
+/*
+ * Plain reading page for the privacy note and terms: the site's Layout, one Section and Prose,
+ * so the text is set like a post body (Geist Sans at the reading measure) without scene art.
+ */
+import "@fontsource-variable/geist";
+import Layout from "@/layouts/Layout.astro";
+import Section from "@/components/Section.astro";
+import Prose from "@/components/ui/Prose.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalPath: string;
+  updated: string; // e.g. "November 7, 2026"
+}
+
+const { title, description, canonicalPath, updated } = Astro.props;
+---
+
+<Layout title={`${title} - Cello Rondon`} description={description} canonicalPath={canonicalPath}>
+  <main class="legal">
+    <Section>
+      <Prose>
+        <h1>{title}</h1>
+        <p class="legal-updated">Last updated {updated}</p>
+        <slot />
+      </Prose>
+    </Section>
+  </main>
+</Layout>
+
+<style>
+  .legal {
+    padding-block: var(--space-48) var(--space-96);
+  }
+
+  .legal :global(h1) {
+    margin: 0 0 var(--space-8);
+    font-family: var(--font-title);
+    font-size: var(--type-display);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-display);
+    letter-spacing: var(--track-tight);
+  }
+
+  .legal-updated {
+    margin: 0 0 var(--space-32);
+    opacity: 0.7;
+  }
+</style>

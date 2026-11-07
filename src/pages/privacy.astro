@@ -1,0 +1,64 @@
+---
+import LegalPage from "@/components/legal/LegalPage.astro";
+---
+
+<LegalPage
+  title="Privacy"
+  description="What cello.design and Cello's personal tools collect, and what they don't."
+  canonicalPath="/privacy/"
+  updated="November 7, 2026"
+>
+  <p>
+    This page covers this website, cello.design, and channel-hub, a private tool I built to read analytics from my
+    own YouTube, Instagram, TikTok and Twitch accounts. It's written in plain language because there isn't much to say.
+  </p>
+
+  <h2>This website</h2>
+  <ul>
+    <li>No ads and no tracking cookies.</li>
+    <li>
+      Right now there are no analytics. I plan to add PostHog soon to count page views and clicks on links and buttons. It
+      will run cookieless, with no session recording and without capturing anything you type. I'll update this page
+      when it goes live.
+    </li>
+    <li>
+      Your light or dark theme choice is saved in your own browser's local storage so the site remembers it. It never
+      leaves your device.
+    </li>
+    <li>
+      Some posts embed YouTube videos. They use YouTube's privacy-enhanced player (youtube-nocookie.com), and YouTube's
+      own privacy policy applies once you press play.
+    </li>
+    <li>
+      The site is hosted on Netlify, which keeps standard server logs (such as IP address and pages requested) to run
+      and protect the service. I don't use those logs to identify visitors.
+    </li>
+  </ul>
+
+  <h2>channel-hub</h2>
+  <p>
+    channel-hub signs in only to accounts I own, with read-only permissions I approve on each platform's own sign-in
+    screen. It isn't offered to anyone else.
+  </p>
+  <ul>
+    <li>
+      <strong>What it reads:</strong> my accounts' public profile details and statistics, such as follower counts,
+      and per-post views, likes, comments, shares, saves, watch time and audience retention.
+    </li>
+    <li>
+      <strong>What it doesn't read:</strong> other people's accounts, private messages, or the text of comments and who wrote them.
+      It can't post, edit or delete anything.
+    </li>
+    <li>
+      <strong>Where it lives:</strong> on my own computer and private server. Sign-in tokens are stored in a file only
+      I can read. Nothing is sold, shared or used for advertising.
+    </li>
+    <li>
+      <strong>Removing access:</strong> I can revoke it at any time from each platform's connected-apps settings, which
+      stops all collection, and I can delete the stored data.
+    </li>
+  </ul>
+
+  <h2>Contact</h2>
+  <p>Questions: <a href="mailto:cello@cello.design">cello@cello.design</a>.</p>
+</LegalPage>
