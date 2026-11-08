@@ -19,8 +19,8 @@ import LegalPage from "@/components/legal/LegalPage.astro";
     <li>
       I use PostHog (its US cloud) to count page views, how far down a page people scroll, and clicks on a few named
       links and buttons. It runs cookieless, so there are no cookies and no stored ID. There's no session recording and
-      no heatmaps, and nothing you type or the text of what you click is captured. The counts aren't shared with anyone
-      else.
+      no heatmaps, and nothing you type or the text of what you click is captured. Like any server, PostHog sees your IP
+      address when the count arrives; it isn't stored with your visits. The counts aren't shared with anyone else.
     </li>
     <li>
       Your light or dark theme choice is saved in your own browser's local storage so the site remembers it. It never
@@ -29,6 +29,10 @@ import LegalPage from "@/components/legal/LegalPage.astro";
     <li>
       Some posts embed YouTube videos. They use YouTube's privacy-enhanced player (youtube-nocookie.com), and YouTube's
       own privacy policy applies once you press play.
+    </li>
+    <li>
+      One post embeds a Threads post, which loads Threads' own script from threads.com on that page. Meta's privacy
+      policy applies to it.
     </li>
     <li>
       The site is hosted on Netlify, which keeps standard server logs (such as IP address and pages requested) to run
