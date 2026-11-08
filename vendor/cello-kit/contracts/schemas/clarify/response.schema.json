@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/clarify/response.schema.json",
+  "title": "ClarifyResponse",
+  "description": "What a person answered to a clarify/request. Every question has one answer, and skipping is always allowed, so an agent must be able to go on without one.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": ["schemaVersion", "requestId", "answers"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "requestId": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "answers": { "type": "array", "minItems": 1, "maxItems": 8, "items": { "$ref": "#/$defs/answer" } }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "answer": {
+      "title": "ClarifyAnswer",
+      "type": "object",
+      "required": ["questionId", "kind"],
+      "properties": {
+        "questionId": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "kind": { "enum": ["answered", "skipped"] },
+        "optionIds": { "type": "array", "minItems": 1, "maxItems": 9, "items": { "type": "string", "minLength": 1, "maxLength": 64 } },
+        "text": { "type": "string", "minLength": 1, "maxLength": 2000, "description": "The free-text answer." }
+      },
+      "additionalProperties": false,
+      "if": { "properties": { "kind": { "const": "skipped" } } },
+      "then": { "properties": { "optionIds": false, "text": false } },
+      "else": { "anyOf": [{ "required": ["optionIds"] }, { "required": ["text"] }] }
+    }
+  }
+}

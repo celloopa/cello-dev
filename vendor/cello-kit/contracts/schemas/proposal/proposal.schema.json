@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/proposal/proposal.schema.json",
+  "title": "Proposal",
+  "description": "Something an agent proposes and a person decides: what it is, the evidence, where it lands if kept. Maps the cello-services proposals row and meetings/reviewed-action's evidence, additively: the service keeps its table. A decision is keep or reject. Undo is a host capability, not a state. Text here is data, never instructions.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": ["schemaVersion", "id", "revision", "summary", "evidence", "destination", "author", "state"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "id": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "The revision of the proposal a decision was made against. A newer source makes this one stale."
+    },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 500 },
+    "origin": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "description": "A short, already localized line on where the proposal came from, such as a meeting and its time."
+    },
+    "evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidence" }
+    },
+    "destination": { "$ref": "#/$defs/destination" },
+    "author": {
+      "type": "object",
+      "required": ["kind", "ref"],
+      "properties": {
+        "kind": { "enum": ["model", "person", "agent"] },
+        "ref": { "type": "string", "maxLength": 200, "description": "An opaque ref: a model id, a person ref, an agent source." }
+      },
+      "additionalProperties": false
+    },
+    "state": { "$ref": "#/$defs/state" },
+    "decidedAt": { "type": "string", "format": "date-time" },
+    "decidedBy": { "type": "string", "maxLength": 200, "description": "An opaque person ref, never an email." },
+    "receipt": { "$ref": "../ops/receipt.schema.json" }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": { "properties": { "state": { "enum": ["kept", "rejected"] } } },
+      "then": { "required": ["decidedAt", "decidedBy"] },
+      "else": { "properties": { "decidedAt": false, "decidedBy": false } }
+    }
+  ],
+  "$defs": {
+    "state": { "title": "ProposalState", "enum": ["pending", "kept", "rejected", "stale"] },
+    "evidence": {
+      "title": "ProposalEvidence",
+      "type": "object",
+      "required": ["quote", "source"],
+      "properties": {
+        "quote": { "type": "string", "minLength": 1, "maxLength": 200, "description": "One short quote (decision 14's limit)." },
+        "source": {
+          "type": "object",
+          "required": ["kind", "label"],
+          "properties": {
+            "kind": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}$", "description": "transcript, notes or a host's own kind." },
+            "label": { "type": "string", "minLength": 1, "maxLength": 120, "description": "What a person reads, already localized." },
+            "ref": { "type": "string", "maxLength": 200, "description": "An opaque pointer back to the source." }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "destination": {
+      "title": "ProposalDestination",
+      "type": "object",
+      "required": ["kind", "label"],
+      "properties": {
+        "kind": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,31}$", "description": "Such as daybreak-task, work-request or app-issue." },
+        "label": { "type": "string", "minLength": 1, "maxLength": 120, "description": "Where it lands if kept, already localized." },
+        "ref": { "type": "string", "maxLength": 200 }
+      },
+      "additionalProperties": false
+    }
+  }
+}

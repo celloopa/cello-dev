@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/meetings/publication.schema.json",
+  "title": "Publication",
+  "description": "Cello publishing a meeting's notes to a project (decision 10): AD Hub reads only what a publication shares. It names exact revisions, so a later private revision is never republished silently. A work meeting's publication never includes a transcript, to any destination (decision 16).",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "publicationID",
+    "meetingID",
+    "eventKey",
+    "isWork",
+    "destination",
+    "summaryRevisionID",
+    "projection",
+    "by",
+    "at",
+    "state"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "publicationID": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "meetingID": {
+      "$ref": "common.schema.json#/$defs/meetingID"
+    },
+    "eventKey": {
+      "$ref": "common.schema.json#/$defs/eventKey"
+    },
+    "isWork": {
+      "$ref": "common.schema.json#/$defs/isWork"
+    },
+    "destination": {
+      "type": "object",
+      "required": [
+        "workspace",
+        "project"
+      ],
+      "properties": {
+        "workspace": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,31}$",
+          "description": "ad-hub, for example."
+        },
+        "project": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "An opaque project ref in that workspace."
+        }
+      },
+      "additionalProperties": false
+    },
+    "summaryRevisionID": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "projection": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "summary",
+          "items",
+          "transcript"
+        ]
+      },
+      "description": "What the project sees. A work meeting's projection is summary and items only, even though its transcript is on the store (decision 16); transcript only for a non-work meeting, and only with the exact source revisions."
+    },
+    "transcriptRevisionIDs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "common.schema.json#/$defs/id"
+      }
+    },
+    "by": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "An opaque person ref, never an email."
+    },
+    "at": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "expiresAt": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "state": {
+      "enum": [
+        "active",
+        "revoked",
+        "deleted"
+      ]
+    },
+    "revokedAt": {
+      "$ref": "common.schema.json#/$defs/instant"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "isWork": {
+            "const": true
+          }
+        },
+        "required": [
+          "isWork"
+        ]
+      },
+      "then": {
+        "properties": {
+          "projection": {
+            "not": {
+              "contains": {
+                "const": "transcript"
+              }
+            }
+          }
+        },
+        "not": {
+          "required": [
+            "transcriptRevisionIDs"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "projection": {
+            "contains": {
+              "const": "transcript"
+            }
+          }
+        },
+        "required": [
+          "projection"
+        ]
+      },
+      "then": {
+        "required": [
+          "transcriptRevisionIDs"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "enum": [
+              "revoked",
+              "deleting",
+              "deleted"
+            ]
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
+      "then": {
+        "required": [
+          "revokedAt"
+        ]
+      }
+    }
+  ]
+}

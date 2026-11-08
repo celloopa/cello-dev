@@ -22,7 +22,7 @@ const github = profiles.find(({ network }) => network === "GitHub")?.url;
   <Hero />
   <Section>
     <div class="download-row">
-      <a href="/files/marcelo_rondon-resume.pdf" download class="download-btn">
+      <a href="/files/marcelo_rondon-resume.pdf" download class="download-btn" data-cta="resume-pdf">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
@@ -44,6 +44,7 @@ const github = profiles.find(({ network }) => network === "GitHub")?.url;
         href="/cv.json"
         download="cv.json"
         class="download-btn"
+        data-cta="resume-json"
         title="JSON Resume format — imports into Ghosted"
       >
         <svg

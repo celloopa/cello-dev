@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/meetings/capture-session.schema.json",
+  "title": "CaptureSession",
+  "description": "One capture of a meeting and its live state. Capture state, processing state and summary state are independent; nothing collapses them into one ready flag (Codex contracts.md).",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "captureID",
+    "meetingID",
+    "source",
+    "epoch",
+    "state",
+    "stateSeq",
+    "tracks",
+    "processing"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "captureID": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "meetingID": {
+      "$ref": "common.schema.json#/$defs/meetingID"
+    },
+    "eventKey": {
+      "$ref": "common.schema.json#/$defs/eventKey"
+    },
+    "source": {
+      "$ref": "common.schema.json#/$defs/hostedSourceKind"
+    },
+    "epoch": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "The recorder lease epoch: one exclusive recorder at a time."
+    },
+    "state": {
+      "enum": [
+        "unavailable",
+        "idle",
+        "awaiting-confirmation",
+        "starting",
+        "recording",
+        "stopping",
+        "stopped",
+        "failed",
+        "interrupted"
+      ],
+      "description": "starting moves to recording only on the first real sample. stopped may still hold recoverable partial audio."
+    },
+    "stateSeq": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Increases with every state event, so an old event never overwrites a newer state."
+    },
+    "requestedStartAt": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "startedAt": {
+      "$ref": "common.schema.json#/$defs/instant",
+      "description": "Confirmed by the first sample."
+    },
+    "endedAt": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "lastHeartbeatAt": {
+      "$ref": "common.schema.json#/$defs/instant",
+      "description": "Stale after three missed pulses means unknown, not safely stopped."
+    },
+    "tracks": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/track"
+      }
+    },
+    "consent": {
+      "type": "object",
+      "required": [
+        "path",
+        "at"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "common.schema.json#/$defs/consentPath"
+        },
+        "at": {
+          "$ref": "common.schema.json#/$defs/instant"
+        }
+      },
+      "additionalProperties": false
+    },
+    "processing": {
+      "type": "object",
+      "required": [
+        "state"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "not-requested",
+            "queued",
+            "downloading-model",
+            "transcribing",
+            "ready",
+            "failed",
+            "canceled",
+            "interrupted"
+          ]
+        },
+        "progress": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "model": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "additionalProperties": false
+    },
+    "audioExpiresAt": {
+      "$ref": "common.schema.json#/$defs/instant",
+      "description": "Daybreak deletes audio 7 days after the capture ends."
+    },
+    "audioDeletedAt": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "error": {
+      "$ref": "../ops/receipt.schema.json#/$defs/safeError"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "enum": [
+              "recording",
+              "stopping",
+              "stopped"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "startedAt"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "track": {
+      "title": "CaptureTrack",
+      "type": "object",
+      "required": [
+        "speaker",
+        "health"
+      ],
+      "properties": {
+        "speaker": {
+          "$ref": "common.schema.json#/$defs/speaker"
+        },
+        "file": {
+          "$ref": "common.schema.json#/$defs/fileName"
+        },
+        "health": {
+          "enum": [
+            "healthy",
+            "silent",
+            "missing",
+            "permission-denied",
+            "device-lost"
+          ],
+          "description": "silent doesn't by itself mean a permission failure."
+        },
+        "lastHeardAt": {
+          "$ref": "common.schema.json#/$defs/instant"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

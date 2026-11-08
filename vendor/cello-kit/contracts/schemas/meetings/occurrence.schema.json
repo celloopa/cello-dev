@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/meetings/occurrence.schema.json",
+  "title": "MeetingOccurrence",
+  "description": "A meeting occurrence on the hosted store (decision 10), keyed by Daybreak's event key: the calendar UID plus the original occurrence start. meetingID is safe in a URL path (a hash of the key is fine); the raw eventKey is always in the body. Other calendar identifiers are aliases, never the only key: event ids change on calendar moves and local ids can be lost on a full sync (Codex contracts.md).",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "meetingID",
+    "eventKey",
+    "isWork",
+    "revision",
+    "title",
+    "start",
+    "end",
+    "timeZone",
+    "aliases"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "meetingID": {
+      "$ref": "common.schema.json#/$defs/meetingID"
+    },
+    "owner": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "The owner namespace, an opaque ref."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Bumped on every edit; writes carry expectedRevision and a stale one is a conflict."
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "start": {
+      "$ref": "common.schema.json#/$defs/instant",
+      "description": "Scheduled start. Actual capture times live on the capture session."
+    },
+    "end": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "timeZone": {
+      "type": "string",
+      "pattern": "^[A-Za-z_]+(/[A-Za-z0-9_+-]+)*$",
+      "description": "IANA zone: America/New_York."
+    },
+    "eventKey": {
+      "$ref": "common.schema.json#/$defs/eventKey"
+    },
+    "isWork": {
+      "$ref": "common.schema.json#/$defs/isWork"
+    },
+    "aliases": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/alias"
+      }
+    },
+    "sourceOpen": {
+      "type": "object",
+      "required": [
+        "available"
+      ],
+      "properties": {
+        "available": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "Why not, when unavailable."
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "alias": {
+      "title": "MeetingAlias",
+      "description": "One identifier another system uses for this occurrence. Unrelated accounts are never merged by title or URL.",
+      "type": "object",
+      "required": [
+        "system",
+        "kind",
+        "value",
+        "local"
+      ],
+      "properties": {
+        "system": {
+          "enum": [
+            "eventkit",
+            "google",
+            "ics",
+            "daybreak"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "uid",
+            "event",
+            "series",
+            "row",
+            "note-folder"
+          ],
+          "description": "uid: the iCalendar UID; event: the provider's event id; series: the recurring series id; row: a device's calendar row; note-folder: Daybreak's StableID note folder."
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "account": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "An opaque account ref, never an email."
+        },
+        "calendar": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "An opaque calendar ref."
+        },
+        "originalStart": {
+          "$ref": "common.schema.json#/$defs/instant",
+          "description": "For a recurring instance: the occurrence's original start, which stays when it's moved."
+        },
+        "local": {
+          "type": "boolean",
+          "description": "Only meaningful on one device; never use it to match across devices."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

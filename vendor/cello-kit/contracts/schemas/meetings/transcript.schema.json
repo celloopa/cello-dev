@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/meetings/transcript.schema.json",
+  "title": "Transcript",
+  "description": "Daybreak's transcript.json: the two tracks merged into one conversation in time order (Transcript, TranscriptSegment). Field names are Daybreak's; id and basis are kit additions and optional here.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": ["segments"],
+  "properties": {
+    "segments": { "type": "array", "items": { "$ref": "#/$defs/segment" } },
+    "language": { "type": "string", "maxLength": 20, "description": "BCP 47: en, es." }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "segment": {
+      "title": "TranscriptSegment",
+      "type": "object",
+      "required": ["start", "end", "speaker", "text"],
+      "properties": {
+        "id": { "type": "string", "maxLength": 100, "description": "Stable within one transcript revision; never reused for changed text or times." },
+        "start": { "$ref": "common.schema.json#/$defs/seconds" },
+        "end": { "$ref": "common.schema.json#/$defs/seconds" },
+        "speaker": { "$ref": "common.schema.json#/$defs/speaker" },
+        "basis": {
+          "enum": ["track", "diarization", "platform", "manual", "unknown"],
+          "default": "track",
+          "description": "How the speaker was attributed. track: from which audio track it came (Daybreak's two-track capture). diarization: a model guessed it. platform: the meeting platform said who was speaking (a meeting bot). manual: a person set it."
+        },
+        "speakerName": { "type": "string", "minLength": 1, "maxLength": 200, "description": "The display name the meeting platform showed for whoever spoke, when a bot captured it. speaker still says only you or them; a name never goes there." },
+        "text": { "type": "string", "minLength": 1, "maxLength": 20000 }
+      },
+      "additionalProperties": false
+    }
+  }
+}

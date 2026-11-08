@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/meetings/receipt.schema.json",
+  "title": "MeetingReceipt",
+  "description": "What happened when a reviewed action was sent to its destination (or a publication applied, or a transcript deleted or restored). The same key and the same request return the original receipt; the same key with a changed request is a conflict. An unknown outcome is reconciled before any retry. Outcomes are the ops receipt's.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "operationID",
+    "idempotencyKey",
+    "requestDigest",
+    "operation",
+    "outcome",
+    "at"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "operationID": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "idempotencyKey": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "For an action send: actionID plus destination, so a reconnect or re-summary never makes a second copy."
+    },
+    "requestDigest": {
+      "$ref": "../ops/receipt.schema.json#/$defs/digest"
+    },
+    "operation": {
+      "enum": [
+        "meeting.upload",
+        "action.send",
+        "action.link",
+        "publication.apply",
+        "publication.revoke",
+        "transcript.delete",
+        "transcript.restore"
+      ],
+      "description": "transcript.delete strips the transcript from every source revision of a meeting and keeps it deleted: later uploads' segments are ignored (note says so) until an owner's transcript.restore."
+    },
+    "outcome": {
+      "$ref": "../ops/receipt.schema.json#/$defs/outcome"
+    },
+    "actionID": {
+      "$ref": "common.schema.json#/$defs/id"
+    },
+    "actionRevision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "destination": {
+      "$ref": "reviewed-action.schema.json#/$defs/destination"
+    },
+    "resultIds": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 200
+      },
+      "description": "What it made: a Daybreak proposal id, a ticket key."
+    },
+    "remoteId": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "at": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "note": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "A code-written note of what the store did beyond the outcome: \"transcript_deleted: segments ignored\" when an upload's transcript was dropped because the meeting's transcript is deleted."
+    },
+    "error": {
+      "$ref": "../ops/receipt.schema.json#/$defs/safeError"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "For meeting.upload: the store's revision for the meeting after it (Daybreak's remote.lastUploadedRevision)."
+    },
+    "meetingID": {
+      "$ref": "common.schema.json#/$defs/meetingID"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "enum": [
+              "refused",
+              "failed",
+              "unknown"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "error"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "operation": {
+            "enum": [
+              "action.send",
+              "action.link"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "actionID",
+          "destination"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "operation": {
+            "const": "meeting.upload"
+          },
+          "outcome": {
+            "enum": [
+              "applied",
+              "already-applied"
+            ]
+          }
+        },
+        "required": [
+          "operation",
+          "outcome"
+        ]
+      },
+      "then": {
+        "required": [
+          "meetingID",
+          "revision"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "operation": {
+            "enum": [
+              "transcript.delete",
+              "transcript.restore"
+            ]
+          }
+        },
+        "required": [
+          "operation"
+        ]
+      },
+      "then": {
+        "required": [
+          "meetingID"
+        ]
+      }
+    }
+  ]
+}

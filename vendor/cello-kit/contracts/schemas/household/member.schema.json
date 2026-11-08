@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/household/member.schema.json",
+  "title": "HouseholdMember",
+  "description": "Payload of kind household.member: the name a person gave themselves. The item's id is their member id.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": ["name"],
+  "properties": {
+    "name": { "type": "string", "minLength": 1, "maxLength": 100 }
+  },
+  "additionalProperties": false
+}

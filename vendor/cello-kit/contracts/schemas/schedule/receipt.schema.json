@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/schedule/receipt.schema.json",
+  "title": "ScheduleReceipt",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "requestId",
+    "requestDigest",
+    "source",
+    "sourceId",
+    "revision",
+    "seq",
+    "outcome",
+    "state",
+    "at"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "requestId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 260
+    },
+    "source": {
+      "type": "string",
+      "const": "exercise"
+    },
+    "sourceId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9/._-]*$"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "requestDigest": {
+      "$ref": "../ops/receipt.schema.json#/$defs/digest"
+    },
+    "seq": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "outcome": {
+      "enum": [
+        "applied",
+        "already-applied",
+        "refused",
+        "queued",
+        "pending",
+        "failed"
+      ]
+    },
+    "state": {
+      "enum": [
+        "received",
+        "awaiting-review",
+        "scheduled",
+        "unplaced",
+        "declined",
+        "superseded",
+        "canceled",
+        "removed-in-planner"
+      ]
+    },
+    "block": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ref",
+        "start",
+        "durationMinutes",
+        "plannerState"
+      ],
+      "properties": {
+        "ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "durationMinutes": {
+          "type": "integer",
+          "minimum": 5,
+          "maximum": 600
+        },
+        "plannerState": {
+          "enum": [
+            "planned",
+            "checked-off",
+            "skipped",
+            "let-go",
+            "did-not-happen",
+            "removed"
+          ]
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "by",
+        "at"
+      ],
+      "properties": {
+        "by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reasonCode": {
+          "enum": [
+            "other",
+            "expired",
+            "undone"
+          ]
+        },
+        "words": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      }
+    },
+    "error": {
+      "$ref": "../ops/receipt.schema.json#/$defs/safeError"
+    },
+    "at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "scheduled"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "block"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "unplaced"
+          }
+        }
+      },
+      "then": {
+        "not": {
+          "required": [
+            "block"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": {
+            "enum": [
+              "refused",
+              "failed"
+            ]
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "error"
+        ]
+      }
+    }
+  ]
+}

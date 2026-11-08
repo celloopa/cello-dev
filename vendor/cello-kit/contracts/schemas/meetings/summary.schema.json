@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/meetings/summary.schema.json",
+  "title": "MeetingSummary",
+  "description": "Daybreak's summary.json (MeetingSummary): overview, decisions, the owner's own items with evidence, and what others took on. Field names are Daybreak's. Only items whose quote is on one of the owner's own lines are in yours; an item given to him with no such line is in others with owner Unclear.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": [
+    "overview",
+    "decisions",
+    "yours",
+    "others",
+    "model",
+    "createdAt",
+    "hadYourTrack"
+  ],
+  "properties": {
+    "overview": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "One to three plain sentences."
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 500
+      }
+    },
+    "yours": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/item"
+      }
+    },
+    "others": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/othersItem"
+      }
+    },
+    "projectID": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uuid",
+      "description": "Daybreak only: where kept tasks go; null is no project."
+    },
+    "model": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "createdAt": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "hadYourTrack": {
+      "type": "boolean",
+      "description": "Whether You lines existed. Without them (mic off) nothing is proposed as his, so yours is empty."
+    }
+  },
+  "additionalProperties": false,
+  "if": {
+    "properties": {
+      "hadYourTrack": {
+        "const": false
+      }
+    }
+  },
+  "then": {
+    "properties": {
+      "yours": {
+        "maxItems": 0
+      }
+    }
+  },
+  "$defs": {
+    "item": {
+      "title": "MeetingItem",
+      "description": "Something the owner said he'd do, with the line that shows it.",
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "evidence",
+        "at"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^i[1-9][0-9]*$",
+          "description": "i1, i2: stable within the summary."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120,
+          "description": "A short task title starting with a verb."
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "His words, from a You line: one line, at most 200 characters (decision 14; work items keep it on the store). Daybreak trims a longer line to the quote's words."
+        },
+        "at": {
+          "$ref": "common.schema.json#/$defs/seconds",
+          "description": "When the evidence line starts."
+        }
+      },
+      "additionalProperties": false
+    },
+    "othersItem": {
+      "title": "OthersItem",
+      "type": "object",
+      "required": [
+        "owner",
+        "title"
+      ],
+      "properties": {
+        "owner": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "A name if one was said, Them, or Unclear when the model said it was his but no line of his shows it."
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

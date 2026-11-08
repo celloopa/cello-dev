@@ -1,0 +1,13 @@
+{
+  "name": "@cello-kit/contracts",
+  "version": "0.5.0",
+  "description": "cello-kit's JSON Schema contracts with generated TypeScript types. Generated from contracts/ by scripts/gen.ts.",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": { "types": "./index.d.ts", "default": "./index.js" },
+    "./schemas/*": "./schemas/*",
+    "./package.json": "./package.json"
+  },
+  "files": ["index.d.ts", "index.js", "schemas"]
+}

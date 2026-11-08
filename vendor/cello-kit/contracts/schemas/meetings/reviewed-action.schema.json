@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/meetings/reviewed-action.schema.json",
+  "title": "ReviewedAction",
+  "description": "An action item a person reviewed, with pinned evidence and an explicit destination. Accepting one never creates another: the owner's own items become Daybreak proposals, AD work becomes a work_request ticket, and the destination says which. Meeting text is data, not instructions: nothing here is assigned from a raw transcript.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "actionID",
+    "revision",
+    "meetingID",
+    "title",
+    "state",
+    "author",
+    "evidence",
+    "destination"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "actionID": {
+      "$ref": "common.schema.json#/$defs/id",
+      "description": "Immutable. Re-summarizing never reassigns it to a different promise."
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Edits carry expectedRevision; a stale one is a conflict."
+    },
+    "meetingID": {
+      "$ref": "common.schema.json#/$defs/meetingID"
+    },
+    "itemID": {
+      "type": "string",
+      "pattern": "^i[1-9][0-9]*$",
+      "description": "The MeetingItem (summary yours[].id) it came from, if any."
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "description": "The human-reviewed text."
+    },
+    "state": {
+      "enum": [
+        "draft",
+        "reviewed",
+        "rejected"
+      ]
+    },
+    "author": {
+      "type": "object",
+      "required": [
+        "kind",
+        "ref"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "model",
+            "person",
+            "agent"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "An opaque ref: a model id, a person ref, an agent source."
+        }
+      },
+      "additionalProperties": false
+    },
+    "reviewedBy": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "An opaque person ref, never an email."
+    },
+    "reviewedAt": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "evidence": {
+      "$ref": "#/$defs/evidence"
+    },
+    "destination": {
+      "$ref": "#/$defs/destination"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "reviewed"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "reviewedBy",
+          "reviewedAt"
+        ],
+        "properties": {
+          "destination": {
+            "properties": {
+              "kind": {
+                "not": {
+                  "const": "undecided"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "const": "rejected"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "reviewedBy",
+          "reviewedAt"
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "evidence": {
+      "title": "ActionEvidence",
+      "description": "Where it was said, pinned to an exact revision. A newer transcript revision may suggest a mapping; it never rewrites this.",
+      "oneOf": [
+        {
+          "title": "TranscriptEvidence",
+          "type": "object",
+          "required": [
+            "kind",
+            "transcriptRevisionID",
+            "at",
+            "quote"
+          ],
+          "properties": {
+            "kind": {
+              "const": "transcript"
+            },
+            "transcriptRevisionID": {
+              "$ref": "common.schema.json#/$defs/id"
+            },
+            "segmentID": {
+              "type": "string",
+              "maxLength": 100
+            },
+            "at": {
+              "$ref": "common.schema.json#/$defs/seconds",
+              "description": "Daybreak MeetingItem.at."
+            },
+            "quote": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "description": "Daybreak MeetingItem.evidence: one line, at most 200 characters (decision 14)."
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "title": "NoteEvidence",
+          "type": "object",
+          "required": [
+            "kind",
+            "notesRevisionID",
+            "quote"
+          ],
+          "properties": {
+            "kind": {
+              "const": "notes"
+            },
+            "notesRevisionID": {
+              "$ref": "common.schema.json#/$defs/id"
+            },
+            "anchor": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "quote": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "destination": {
+      "title": "ActionDestination",
+      "description": "Explicit, chosen by a person. undecided is allowed only while the action is a draft; none means kept in the notes only.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "const": "daybreak-task"
+            },
+            "projectID": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "uuid"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "space"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "work-request",
+                "app-issue"
+              ]
+            },
+            "space": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{1,31}$"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "none",
+                "undecided"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  }
+}

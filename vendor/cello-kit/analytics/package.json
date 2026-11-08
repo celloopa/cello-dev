@@ -1,0 +1,28 @@
+{
+  "name": "@cello-kit/analytics",
+  "version": "0.1.0",
+  "description": "Page, click and onboarding analytics on the shared event names in contracts/analytics, with a browser tracker over an injected client (PostHog today), PostHog init options that mask all text and inputs, and a server sender. Built from src/ into dist/ by scripts/build-ai.ts --pkg analytics.",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./server": {
+      "types": "./dist/server.d.ts",
+      "default": "./dist/server.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "@cello-kit/contracts": ">=0.5.0"
+  },
+  "devDependencies": {
+    "@cello-kit/contracts": "workspace:*"
+  }
+}

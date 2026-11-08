@@ -1,0 +1,592 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/analytics/event.schema.json",
+  "title": "AnalyticsEvent",
+  "description": "One analytics event, the same name in the browser, on the server and in the app's own store. Properties never hold names, emails, codes, typed text or document content.",
+  "x-schemaVersion": 1,
+  "oneOf": [
+    {
+      "$ref": "#/$defs/page_view"
+    },
+    {
+      "$ref": "#/$defs/scroll_depth"
+    },
+    {
+      "$ref": "#/$defs/cta_click"
+    },
+    {
+      "$ref": "#/$defs/invite_request_started"
+    },
+    {
+      "$ref": "#/$defs/invite_request_sent"
+    },
+    {
+      "$ref": "#/$defs/invite_sent"
+    },
+    {
+      "$ref": "#/$defs/invite_opened"
+    },
+    {
+      "$ref": "#/$defs/sign_in_attempted"
+    },
+    {
+      "$ref": "#/$defs/app_opened"
+    },
+    {
+      "$ref": "#/$defs/resume_started"
+    },
+    {
+      "$ref": "#/$defs/resume_completed"
+    },
+    {
+      "$ref": "#/$defs/job_new_opened"
+    },
+    {
+      "$ref": "#/$defs/job_added"
+    },
+    {
+      "$ref": "#/$defs/tailoring_requested"
+    },
+    {
+      "$ref": "#/$defs/document_downloaded"
+    },
+    {
+      "$ref": "#/$defs/job_marked_applied"
+    },
+    {
+      "$ref": "#/$defs/onboarding_exit_reason"
+    },
+    {
+      "$ref": "#/$defs/reminder_email_sent"
+    },
+    {
+      "$ref": "#/$defs/app_returned"
+    },
+    {
+      "$ref": "#/$defs/feature_used"
+    }
+  ],
+  "$defs": {
+    "page_view": {
+      "title": "PageView",
+      "description": "A public or in-app page was shown. Path only, never a query string with personal data.",
+      "type": "object",
+      "required": [
+        "event",
+        "properties"
+      ],
+      "properties": {
+        "event": {
+          "const": "page_view"
+        },
+        "properties": {
+          "type": "object",
+          "required": [
+            "path"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "pattern": "^/",
+              "maxLength": 200
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "scroll_depth": {
+      "title": "ScrollDepth",
+      "description": "The visitor scrolled this far down the page, sent once per step.",
+      "type": "object",
+      "required": [
+        "event",
+        "properties"
+      ],
+      "properties": {
+        "event": {
+          "const": "scroll_depth"
+        },
+        "properties": {
+          "type": "object",
+          "required": [
+            "percent"
+          ],
+          "properties": {
+            "percent": {
+              "type": "integer",
+              "enum": [
+                25,
+                50,
+                75,
+                100
+              ]
+            },
+            "path": {
+              "type": "string",
+              "pattern": "^/",
+              "maxLength": 200
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "cta_click": {
+      "title": "CtaClick",
+      "description": "A call-to-action button was pressed. `cta` is a stable button id the page chooses, never its label text.",
+      "type": "object",
+      "required": [
+        "event",
+        "properties"
+      ],
+      "properties": {
+        "event": {
+          "const": "cta_click"
+        },
+        "properties": {
+          "type": "object",
+          "required": [
+            "cta"
+          ],
+          "properties": {
+            "cta": {
+              "$ref": "#/$defs/slug"
+            },
+            "path": {
+              "type": "string",
+              "pattern": "^/",
+              "maxLength": 200
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "invite_request_started": {
+      "title": "InviteRequestStarted",
+      "description": "The visitor opened the request-an-invite form.",
+      "type": "object",
+      "required": [
+        "event"
+      ],
+      "properties": {
+        "event": {
+          "const": "invite_request_started"
+        }
+      },
+      "additionalProperties": false
+    },
+    "invite_request_sent": {
+      "title": "InviteRequestSent",
+      "description": "The request-an-invite form was sent. The address itself is never part of the event.",
+      "type": "object",
+      "required": [
+        "event"
+      ],
+      "properties": {
+        "event": {
+          "const": "invite_request_sent"
+        }
+      },
+      "additionalProperties": false
+    },
+    "invite_sent": {
+      "title": "InviteSent",
+      "description": "Server side: an invite code was sent to someone.",
+      "type": "object",
+      "required": [
+        "event"
+      ],
+      "properties": {
+        "event": {
+          "const": "invite_sent"
+        },
+        "properties": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "source": {
+              "$ref": "#/$defs/source"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "invite_opened": {
+      "title": "InviteOpened",
+      "description": "The invite link was opened.",
+      "type": "object",
+      "required": [
+        "event"
+      ],
+      "properties": {
+        "event": {
+          "const": "invite_opened"
+        },
+        "properties": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "source": {
+              "$ref": "#/$defs/source"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "sign_in_attempted": {
+      "title": "SignInAttempted",
+      "description": "A sign-in was tried. A failure carries a reason code, never what was typed.",
+      "type": "object",
+      "required": [
+        "event",
+        "properties"
+      ],
+      "properties": {
+        "event": {
+          "const": "sign_in_attempted"
+        },
+        "properties": {
+          "type": "object",
+          "required": [
+            "ok"
+          ],
+          "properties": {
+            "ok": {
+              "type": "boolean"
+            },
+            "reason": {
+              "type": "string",
+              "enum": [
+                "bad_code",
+                "expired",
+                "rate_limited",
+                "network",
+                "other"
+              ]
+            },
+            "method": {
+              "type": "string",
+              "enum": [
+                "code",
+                "email_link"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "app_opened": {
+      "title": "AppOpened",
+      "description": "The signed-in app was opened.",
+      "type": "object",
+      "required": [
+        "event"
+      ],
+      "properties": {
+        "event": {
+          "const": "app_opened"
+        },
+        "properties": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "source": {
+              "$ref": "#/$defs/source"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "resume_started": {
+      "title": "ResumeStarted",
+      "description": "The first (or a new) resume was started.",
+      "type": "object",
+      "required": [
+        "event",
+        "properties"
+      ],
+      "properties": {
+        "event": {
+          "const": "resume_started"
+        },
+        "properties": {
+          "type": "object",
+          "required": [
+            "method"
+          ],
+          "properties": {
+            "method": {
+              "type": "string",
+              "enum": [
+                "pdf",
+                "paste",
+                "interview",
+                "json",
+                "several",
+                "blank"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "resume_completed": {
+      "title": "ResumeCompleted",
+      "description": "A resume was finished.",
+      "type": "object",
+      "required": [
+        "event"
+      ],
+      "properties": {
+        "event": {
+          "const": "resume_completed"
+        }
+      },
+      "additionalProperties": false
+    },
+    "job_new_opened": {
+      "title": "JobNewOpened",
+      "description": "The New job form was opened.",
+      "type": "object",
+      "required": [
+        "event"
+      ],
+      "properties": {
+        "event": {
+          "const": "job_new_opened"
+        }
+      },
+      "additionalProperties": false
+    },
+    "job_added": {
+      "title": "JobAdded",
+      "description": "A job was added.",
+      "type": "object",
+      "required": [
+        "event"
+      ],
+      "properties": {
+        "event": {
+          "const": "job_added"
+        }
+      },
+      "additionalProperties": false
+    },
+    "tailoring_requested": {
+      "title": "TailoringRequested",
+      "description": "Tailoring was asked for on a job.",
+      "type": "object",
+      "required": [
+        "event"
+      ],
+      "properties": {
+        "event": {
+          "const": "tailoring_requested"
+        }
+      },
+      "additionalProperties": false
+    },
+    "document_downloaded": {
+      "title": "DocumentDownloaded",
+      "description": "A document was downloaded.",
+      "type": "object",
+      "required": [
+        "event"
+      ],
+      "properties": {
+        "event": {
+          "const": "document_downloaded"
+        },
+        "properties": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "resume",
+                "letter",
+                "other"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "job_marked_applied": {
+      "title": "JobMarkedApplied",
+      "description": "A job was marked Applied.",
+      "type": "object",
+      "required": [
+        "event"
+      ],
+      "properties": {
+        "event": {
+          "const": "job_marked_applied"
+        }
+      },
+      "additionalProperties": false
+    },
+    "onboarding_exit_reason": {
+      "title": "OnboardingExitReason",
+      "description": "The one-tap \"What stopped you?\" answer, from the first-resume screen or the New job form. No free text.",
+      "type": "object",
+      "required": [
+        "event",
+        "properties"
+      ],
+      "properties": {
+        "event": {
+          "const": "onboarding_exit_reason"
+        },
+        "properties": {
+          "type": "object",
+          "required": [
+            "reason",
+            "place"
+          ],
+          "properties": {
+            "reason": {
+              "type": "string",
+              "enum": [
+                "no_time",
+                "unsure_how",
+                "no_resume_file",
+                "not_looking",
+                "just_looking",
+                "posting",
+                "next_step",
+                "too_long",
+                "other"
+              ]
+            },
+            "place": {
+              "type": "string",
+              "enum": [
+                "first_resume",
+                "new_job"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "reminder_email_sent": {
+      "title": "ReminderEmailSent",
+      "description": "Server side: a reminder or welcome email was sent.",
+      "type": "object",
+      "required": [
+        "event",
+        "properties"
+      ],
+      "properties": {
+        "event": {
+          "const": "reminder_email_sent"
+        },
+        "properties": {
+          "type": "object",
+          "required": [
+            "source"
+          ],
+          "properties": {
+            "source": {
+              "$ref": "#/$defs/source"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "app_returned": {
+      "title": "AppReturned",
+      "description": "A signed-in person came back on a new day. `source` is the tag of the email that brought them, if any.",
+      "type": "object",
+      "required": [
+        "event"
+      ],
+      "properties": {
+        "event": {
+          "const": "app_returned"
+        },
+        "properties": {
+          "type": "object",
+          "required": [],
+          "properties": {
+            "source": {
+              "$ref": "#/$defs/source"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "feature_used": {
+      "title": "FeatureUsed",
+      "description": "A feature was used. Apps list their features in their own enum; Ghosted's are below.",
+      "type": "object",
+      "required": [
+        "event",
+        "properties"
+      ],
+      "properties": {
+        "event": {
+          "const": "feature_used"
+        },
+        "properties": {
+          "type": "object",
+          "required": [
+            "feature"
+          ],
+          "properties": {
+            "feature": {
+              "type": "string",
+              "enum": [
+                "fit",
+                "research",
+                "interview",
+                "letters",
+                "chat",
+                "for_you",
+                "find_jobs",
+                "thank_you_notes"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+      "description": "A stable id chosen by the app."
+    },
+    "source": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$",
+      "description": "Where a visit came from, such as an email tag. Ghosted: welcome, finish_asked, nudge, signin_link, job_reminder, update_note."
+    }
+  }
+}

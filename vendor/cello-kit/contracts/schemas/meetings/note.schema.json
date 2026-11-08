@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/meetings/note.schema.json",
+  "title": "MeetingNote",
+  "description": "Daybreak's note.json, one per calendar event occurrence (MeetingNote, version 1). Field names are Daybreak's.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": [
+    "version",
+    "eventKey",
+    "eventID",
+    "title",
+    "start",
+    "end",
+    "sources",
+    "state"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1,
+      "description": "Optional; Daybreak's version field already versions note.json."
+    },
+    "version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Daybreak's MeetingNote.version."
+    },
+    "eventKey": {
+      "$ref": "common.schema.json#/$defs/eventKey"
+    },
+    "eventID": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "The calendar row on the capturing device. Local: never a cross-device key."
+    },
+    "title": {
+      "type": "string",
+      "maxLength": 500
+    },
+    "start": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "end": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/noteSource"
+      }
+    },
+    "state": {
+      "$ref": "common.schema.json#/$defs/noteState"
+    },
+    "model": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "The speech model that made the transcript."
+    },
+    "audioDeletedAt": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "summary": {
+      "$ref": "common.schema.json#/$defs/summaryState",
+      "description": "Absent until a transcript exists."
+    },
+    "remote": {
+      "$ref": "common.schema.json#/$defs/remote"
+    }
+  },
+  "additionalProperties": false
+}

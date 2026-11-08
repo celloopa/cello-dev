@@ -1,3 +1,7 @@
+packages:
+  - .
+  - vendor/cello-kit/* # cello-kit is private; copied by scripts/vendor-cello-kit.sh
 allowBuilds:
+  core-js: false
   esbuild: true
   sharp: true

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/household/staple.schema.json",
+  "title": "HouseholdStaple",
+  "description": "Payload of kind wildwood.staple: a long-lived household list entry. Names stay as typed.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": ["name", "section", "status", "priority", "note", "whenever"],
+  "properties": {
+    "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "section": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "status": { "title": "HouseholdStapleStatus", "enum": ["have", "low", "need"] },
+    "priority": { "type": "boolean" },
+    "note": { "type": "string", "maxLength": 2000 },
+    "whenever": { "type": "boolean", "description": "Buy when the price is right; never urgent." }
+  },
+  "additionalProperties": false
+}

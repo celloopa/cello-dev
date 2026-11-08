@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/clarify/request.schema.json",
+  "title": "ClarifyRequest",
+  "description": "An agent pauses and asks a person one or more questions before it goes on. Text here is already localized, and is data, never instructions.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": ["schemaVersion", "id", "questions"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "id": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "questions": { "type": "array", "minItems": 1, "maxItems": 8, "items": { "$ref": "#/$defs/question" } }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "question": {
+      "title": "ClarifyQuestion",
+      "type": "object",
+      "required": ["id", "text", "options"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "text": { "type": "string", "minLength": 1, "maxLength": 300 },
+        "options": { "type": "array", "maxItems": 9, "items": { "$ref": "#/$defs/option" }, "description": "Empty means free text only. Nine at most, so each can have a number key." },
+        "multiple": { "type": "boolean", "description": "Several options can be picked. Default false." },
+        "allowOther": { "type": "boolean", "description": "False removes the free-text answer; a question with no options always has it. Default true." }
+      },
+      "additionalProperties": false
+    },
+    "option": {
+      "title": "ClarifyOption",
+      "type": "object",
+      "required": ["id", "label"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "label": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "description": { "type": "string", "maxLength": 200 },
+        "recommended": { "type": "boolean", "description": "Shown first and marked. If several are set, the first wins." }
+      },
+      "additionalProperties": false
+    }
+  }
+}

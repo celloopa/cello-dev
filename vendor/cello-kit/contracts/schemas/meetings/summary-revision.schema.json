@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/meetings/summary-revision.schema.json",
+  "title": "SummaryRevision",
+  "description": "One immutable revision of a meeting's summary and items on the hosted store. Re-summarizing or a person's edit makes a new revision; a publication names the exact revision it shares. The summary is Daybreak's MeetingSummary unchanged.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": ["schemaVersion", "revisionID", "revision", "meetingID", "eventKey", "author", "createdAt", "summary"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "revisionID": { "$ref": "common.schema.json#/$defs/id" },
+    "revision": { "type": "integer", "minimum": 1, "description": "1, 2, 3 within the meeting. Writes carry expectedRevision; a stale one is a conflict." },
+    "parentRevisionID": { "$ref": "common.schema.json#/$defs/id" },
+    "meetingID": { "$ref": "common.schema.json#/$defs/meetingID" },
+    "eventKey": { "$ref": "common.schema.json#/$defs/eventKey" },
+    "transcriptRevisionIDs": { "type": "array", "items": { "$ref": "common.schema.json#/$defs/id" }, "description": "The source revisions it was made from." },
+    "notesRevisionID": { "$ref": "common.schema.json#/$defs/id", "description": "When it was made from manual notes." },
+    "author": {
+      "type": "object",
+      "required": ["kind", "ref"],
+      "properties": { "kind": { "enum": ["model", "person", "agent"] }, "ref": { "type": "string", "maxLength": 200 } },
+      "additionalProperties": false
+    },
+    "createdAt": { "$ref": "common.schema.json#/$defs/instant" },
+    "summary": { "$ref": "summary.schema.json" }
+  },
+  "additionalProperties": false
+}

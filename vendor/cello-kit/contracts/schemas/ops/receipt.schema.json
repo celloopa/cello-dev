@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/ops/receipt.schema.json",
+  "title": "Receipt",
+  "description": "What happened to an envelope, one entry per op. Merges Daybreak's bridge receipts (applied, skipped, refused, queued, whole-file failed) with AD Hub's outbox outcomes (duplicate, failed, unknown with reconciliation).",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "envelopeId",
+    "at",
+    "status",
+    "ops"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "envelopeId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "The envelope's idempotency key."
+    },
+    "requestDigest": {
+      "$ref": "#/$defs/digest"
+    },
+    "version": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "The id of the version (change set) the applied ops became, when they made one."
+    },
+    "mode": {
+      "enum": [
+        "apply",
+        "propose"
+      ]
+    },
+    "at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "note": {
+      "type": "string",
+      "maxLength": 2000,
+      "description": "A code-written note of what changed: \"From pi: added Sketch the poster · moved Deep work\"."
+    },
+    "status": {
+      "enum": [
+        "done",
+        "pending",
+        "failed"
+      ],
+      "description": "done: every op has an outcome below. pending: accepted, not processed yet (the switch is off, or paused); ops is empty. failed: the whole envelope was rejected (unreadable, too big, wrong version, a reused id with different ops); ops is empty and error says why. A reused envelope id with a different requestDigest is failed with error code idempotency_conflict (HTTP 409); the same id with the same request returns the original receipt."
+    },
+    "error": {
+      "$ref": "#/$defs/safeError"
+    },
+    "ops": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/opReceipt"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "failed"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "ops": {
+            "maxItems": 0
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "const": "pending"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "ops": {
+            "maxItems": 0
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "outcome": {
+      "title": "Outcome",
+      "description": "applied: done now. already-applied: this key was applied before; the earlier result is returned (Daybreak's replayed envelope, Hub's duplicate). skipped: already so, nothing to do. refused: not allowed or not understood; resend only after changing it. queued: waits for a person to keep or reject it. pending: accepted, not processed yet. failed: a clear failure, nothing changed; a retry may make a new attempt. unknown: an external call may or may not have happened; a person must reconcile it before any retry.",
+      "enum": [
+        "applied",
+        "already-applied",
+        "skipped",
+        "refused",
+        "queued",
+        "pending",
+        "failed",
+        "unknown"
+      ]
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "description": "SHA-256 of the canonical request, to tell a replay from a reused key."
+    },
+    "safeError": {
+      "title": "SafeError",
+      "description": "An error safe to show and store: no secrets, tokens, stack traces, raw payloads or personal text.",
+      "type": "object",
+      "required": [
+        "code",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9_.-]{0,63}$",
+          "description": "Stable machine code: not_found, ambiguous_title, too_many_ops, stale_version (HTTP 409 on a stale version), idempotency_conflict (HTTP 409: the envelope id was used before with a different request), timeout."
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "retryable": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "opReceipt": {
+      "title": "OpReceipt",
+      "type": "object",
+      "required": [
+        "index",
+        "op",
+        "outcome"
+      ],
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": -1,
+          "description": "The op's place in the envelope (0-based); -1 for the envelope itself (Daybreak's retired top-level request)."
+        },
+        "op": {
+          "type": "string",
+          "maxLength": 80
+        },
+        "outcome": {
+          "$ref": "#/$defs/outcome"
+        },
+        "words": {
+          "type": "string",
+          "maxLength": 2000,
+          "description": "What happened, in words for the sender."
+        },
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "description": "What the op made or acted on. Stable: derived from the envelope key and the op's index."
+        },
+        "remoteId": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "The id an external system returned (an Asana task, a Slack message)."
+        },
+        "prior": {
+          "$ref": "#/$defs/outcome",
+          "description": "For already-applied: the outcome the earlier attempt had."
+        },
+        "attempt": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Which attempt under this key this was (Hub's <key>#2)."
+        },
+        "error": {
+          "$ref": "#/$defs/safeError"
+        },
+        "decision": {
+          "description": "For a queued op once a person decided it.",
+          "type": "object",
+          "required": [
+            "kept",
+            "by",
+            "at"
+          ],
+          "properties": {
+            "kept": {
+              "type": "boolean"
+            },
+            "by": {
+              "type": "string",
+              "maxLength": 200,
+              "description": "An opaque person ref, never an email."
+            },
+            "at": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "outcome": {
+                "enum": [
+                  "refused",
+                  "failed",
+                  "unknown"
+                ]
+              }
+            }
+          },
+          "then": {
+            "anyOf": [
+              {
+                "required": [
+                  "error"
+                ]
+              },
+              {
+                "required": [
+                  "words"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

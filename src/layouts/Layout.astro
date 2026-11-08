@@ -147,6 +147,7 @@ const SOCIAL_ICONS: SocialIcon = {
                   <li>
                     <a
                       href={`mailto:${email}`}
+                      data-cta="email"
                       title="Email"
                       aria-label="Email Marcelo Rondon"
                     >
@@ -164,6 +165,7 @@ const SOCIAL_ICONS: SocialIcon = {
                     <li>
                       <a
                         href={url}
+                        data-cta={`social-${network === "Bsky" ? "bluesky" : network.toLowerCase()}`}
                         title={network}
                         aria-label={network === "Bsky" ? "Bluesky" : network}
                         target="_blank"
@@ -184,6 +186,9 @@ const SOCIAL_ICONS: SocialIcon = {
       </footer>
       <KeyboardManager />
     </div>
+    <script>
+      import "@/lib/analytics/client";
+    </script>
     <script is:inline>
       (() => {
         const reducedMotion = window.matchMedia(

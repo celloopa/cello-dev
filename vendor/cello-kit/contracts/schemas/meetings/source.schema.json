@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/meetings/source.schema.json",
+  "title": "MeetingSource",
+  "description": "One source of a meeting on the hosted store (decision 10): a capture, an import or an upload, with its transcript segments. Each upload of changed text is a new immutable revision; reviewed actions keep pointing at the revision their evidence came from. Text only: there is no audio field, and audio never goes to the server. A work meeting's source may carry its transcript too (decision 16); it is never published to AD Hub.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "sourceID",
+    "revisionID",
+    "meetingID",
+    "eventKey",
+    "isWork",
+    "kind",
+    "createdAt"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "sourceID": {
+      "$ref": "common.schema.json#/$defs/id",
+      "description": "Stable across revisions of the same capture or import."
+    },
+    "revisionID": {
+      "$ref": "common.schema.json#/$defs/id",
+      "description": "This revision. Evidence and analysis name it as transcriptRevisionID."
+    },
+    "parentRevisionID": {
+      "$ref": "common.schema.json#/$defs/id",
+      "description": "The revision this one replaces, if any."
+    },
+    "meetingID": {
+      "$ref": "common.schema.json#/$defs/meetingID"
+    },
+    "eventKey": {
+      "$ref": "common.schema.json#/$defs/eventKey"
+    },
+    "isWork": {
+      "$ref": "common.schema.json#/$defs/isWork"
+    },
+    "kind": {
+      "$ref": "common.schema.json#/$defs/hostedSourceKind"
+    },
+    "captureIDs": {
+      "type": "array",
+      "items": {
+        "$ref": "common.schema.json#/$defs/id"
+      }
+    },
+    "startedAt": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "endedAt": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "engine": {
+      "type": "string",
+      "maxLength": 100,
+      "description": "What made the transcript: whisperkit, recall, an importing tool's name."
+    },
+    "model": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "The speech model (Daybreak MeetingNote.model)."
+    },
+    "locale": {
+      "type": "string",
+      "maxLength": 35,
+      "description": "BCP 47 locale of the speech: en-US."
+    },
+    "durationSeconds": {
+      "type": "number",
+      "minimum": 0,
+      "description": "How long the captured or imported recording ran."
+    },
+    "createdAt": {
+      "$ref": "common.schema.json#/$defs/instant"
+    },
+    "transcript": {
+      "description": "Daybreak's Transcript, with every segment's id. Work meetings may carry one too (decision 16).",
+      "allOf": [
+        {
+          "$ref": "transcript.schema.json"
+        },
+        {
+          "properties": {
+            "segments": {
+              "items": {
+                "required": [
+                  "id"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

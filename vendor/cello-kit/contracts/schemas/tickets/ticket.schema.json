@@ -1,0 +1,395 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/tickets/ticket.schema.json",
+  "title": "Ticket",
+  "description": "One ticket shape, two types: app_issue (about an app itself; one shared tickets service, decision 9) and work_request (work to be done; AD Hub runs the same module in its own database, decision 3). Each type has its own statuses, mapped onto five common categories in x-statusCategories. App-issue statuses and their requester labels (x-requesterLabels) are the kit's (decision 13). Creating a ticket whose sources[] ref already exists in the space is not a conflict: the receipt says already-applied with the existing ticket's id and key. Only an idempotency key reused with a different payload is a conflict (HTTP 409, error code idempotency_conflict).",
+  "x-schemaVersion": 1,
+  "x-statusCategories": {
+    "app_issue": {
+      "new": "triage",
+      "triage": "triage",
+      "planned": "open",
+      "in_progress": "active",
+      "in_review": "review",
+      "shipped": "closed",
+      "wont_do": "closed",
+      "duplicate": "closed"
+    },
+    "work_request": {
+      "draft": "triage",
+      "submitted": "triage",
+      "needs_triage": "triage",
+      "needs_info": "triage",
+      "routed": "open",
+      "in_progress": "active",
+      "in_review": "review",
+      "changes_requested": "active",
+      "approved": "active",
+      "delivering": "active",
+      "complete": "closed",
+      "canceled": "closed"
+    }
+  },
+  "x-requesterLabels": {
+    "$comment": "What a requester sees for each app-issue status (decision 13). A duplicate with duplicateOf shows the original ticket's label (Fixed once the original ships); without a link it shows Looking into it. requesterLabel(ticket, resolve) in @cello-kit/contracts applies this.",
+    "app_issue": {
+      "new": "New",
+      "triage": "Looking into it",
+      "planned": "Planned",
+      "in_progress": "Planned",
+      "in_review": "Planned",
+      "shipped": "Fixed",
+      "wont_do": "Won't do",
+      "duplicate": "Looking into it"
+    }
+  },
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "id",
+    "key",
+    "space",
+    "type",
+    "title",
+    "status",
+    "requester",
+    "sources",
+    "links",
+    "version",
+    "createdAt",
+    "updatedAt"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$",
+      "description": "A ULID."
+    },
+    "key": {
+      "type": "string",
+      "pattern": "^[A-Z]{2,6}-[1-9][0-9]*$",
+      "description": "The human key per space: GHO-12, DAY-4, ADW-31."
+    },
+    "space": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,31}$",
+      "description": "ghosted, daybreak, ad-hub, cello-dev, kit, ad-work."
+    },
+    "type": {
+      "$ref": "#/$defs/ticketType"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Sanitized."
+    },
+    "body": {
+      "type": "string",
+      "maxLength": 20000,
+      "description": "Sanitized. Never a raw tester report, screenshot or résumé text."
+    },
+    "status": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/appIssueStatus"
+        },
+        {
+          "$ref": "#/$defs/workRequestStatus"
+        }
+      ],
+      "description": "One of the type's own statuses (enforced per type below)."
+    },
+    "duplicateOf": {
+      "type": "string",
+      "pattern": "^([0-9A-HJKMNP-TV-Z]{26}|[A-Z]{2,6}-[1-9][0-9]*)$",
+      "description": "app_issue only, and only with status duplicate: the original ticket's id or key. The requester sees the original's label."
+    },
+    "statusCategory": {
+      "$ref": "#/$defs/statusCategory",
+      "description": "Derived from type and status; services may include it for readers."
+    },
+    "area": {
+      "type": "string",
+      "maxLength": 64
+    },
+    "labels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9][a-z0-9_-]{0,31}$"
+      },
+      "uniqueItems": true
+    },
+    "priority": {
+      "enum": [
+        "low",
+        "normal",
+        "high",
+        "urgent"
+      ]
+    },
+    "requester": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9/_.-]+$",
+      "description": "An opaque ref (ghosted:user/abc), never an email."
+    },
+    "assignee": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*:[A-Za-z0-9/_.-]+$"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/source"
+      },
+      "description": "Where it came from. A ref is unique per space: ticket.create with a ref already in the space returns the existing ticket (outcome already-applied, ids [id, key]) instead of making a second one."
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/link"
+      }
+    },
+    "requesterNote": {
+      "type": "string",
+      "maxLength": 300,
+      "description": "The one line the requester may see beside the status label (Ghosted's did line). Agents write it in propose mode."
+    },
+    "requestedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the requester would like it. Not a commitment."
+    },
+    "due": {
+      "type": "string",
+      "format": "date",
+      "description": "The accepted due date, set by whoever accepts the work. Kept apart from requestedAt."
+    },
+    "routes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/route"
+      },
+      "description": "work_request only: capabilities attached to one request, never copies of it."
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Optimistic concurrency: a write with a stale version gets a 409."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "app_issue"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "$ref": "#/$defs/appIssueStatus"
+          }
+        },
+        "not": {
+          "required": [
+            "routes"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "type": {
+            "const": "work_request"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "status": {
+            "$ref": "#/$defs/workRequestStatus"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "required": [
+          "duplicateOf"
+        ]
+      },
+      "then": {
+        "properties": {
+          "type": {
+            "const": "app_issue"
+          },
+          "status": {
+            "const": "duplicate"
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "ticketType": {
+      "title": "TicketType",
+      "enum": [
+        "app_issue",
+        "work_request"
+      ]
+    },
+    "statusCategory": {
+      "title": "StatusCategory",
+      "enum": [
+        "triage",
+        "open",
+        "active",
+        "review",
+        "closed"
+      ]
+    },
+    "appIssueStatus": {
+      "title": "AppIssueStatus",
+      "enum": [
+        "new",
+        "triage",
+        "planned",
+        "in_progress",
+        "in_review",
+        "shipped",
+        "wont_do",
+        "duplicate"
+      ]
+    },
+    "workRequestStatus": {
+      "title": "WorkRequestStatus",
+      "description": "AD Hub ticket-flow.md. Intake: draft → submitted → needs_triage | needs_info → routed. Work: in_progress → in_review → changes_requested | approved → delivering → complete. Not every request passes every stage. canceled: the requester withdrew it.",
+      "enum": [
+        "draft",
+        "submitted",
+        "needs_triage",
+        "needs_info",
+        "routed",
+        "in_progress",
+        "in_review",
+        "changes_requested",
+        "approved",
+        "delivering",
+        "complete",
+        "canceled"
+      ]
+    },
+    "source": {
+      "title": "TicketSource",
+      "type": "object",
+      "required": [
+        "system",
+        "ref"
+      ],
+      "properties": {
+        "system": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{1,31}$",
+          "description": "ghosted, daybreak, slack, hub-form, meeting."
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "description": "feedback/<id>, meeting-action/<actionID>."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 2000
+        }
+      },
+      "additionalProperties": false
+    },
+    "link": {
+      "title": "TicketLink",
+      "type": "object",
+      "required": [
+        "kind",
+        "ref"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "asana",
+            "commit",
+            "pr",
+            "release",
+            "meeting",
+            "ticket",
+            "daybreak-task",
+            "automation-run",
+            "url"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "maxLength": 2000
+        },
+        "receipt": {
+          "type": "string",
+          "maxLength": 200,
+          "description": "The outbox receipt id, when the link was made by an external write."
+        }
+      },
+      "additionalProperties": false
+    },
+    "route": {
+      "title": "WorkRoute",
+      "type": "object",
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "designer",
+            "automation",
+            "template",
+            "clarification",
+            "meeting"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "maxLength": 300,
+          "description": "The designer, automation, template or meeting it points at, as an opaque ref."
+        },
+        "note": {
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

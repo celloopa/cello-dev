@@ -45,6 +45,7 @@ const printInfo = [email, phone, linkedUrl].filter(Boolean).join(" • ");
 					email && (
 						<IconButton
 							href={`mailto:${email}`}
+							data-cta="email"
 							label={`Send an email to ${name} at ${email}`}
 							title={`Send an email to ${name} at ${email}`}
 							target="_blank"

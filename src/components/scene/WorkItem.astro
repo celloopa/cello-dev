@@ -40,12 +40,12 @@ const href = `/projects/${slug}`;
   </div>
   <div class="work-copy">
     <p class="work-role">{role}</p>
-    <h3><a href={href}><ProjectMark slug={slug} />{title}</a></h3>
+    <h3><a href={href} data-cta={`case-study-${slug}`}><ProjectMark slug={slug} />{title}</a></h3>
     <p>{story?.problem || description}</p>
     {story && <p class="work-outcome">{story.outcome}</p>}
     <div class="work-actions">
-      <ArrowLink href={href}>Read case study</ArrowLink>
-      {url && <a href={url} target="_blank" rel="noopener noreferrer">View live ↗</a>}
+      <ArrowLink href={href} data-cta={`case-study-${slug}`}>Read case study</ArrowLink>
+      {url && <a href={url} target="_blank" rel="noopener noreferrer" data-cta={`live-${slug}`}>View live ↗</a>}
     </div>
   </div>
 </li>

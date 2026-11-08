@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/meetings/analysis-draft.schema.json",
+  "title": "MeetingNotesDraft",
+  "description": "The model's raw answer before attribution: the arguments of Daybreak's record_meeting_notes tool (MeetingSummarize.toolParametersJSON). meetings.analyze turns it into a MeetingSummary with attribute().",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": ["overview", "decisions", "items"],
+  "properties": {
+    "overview": { "type": "string" },
+    "decisions": { "type": "array", "items": { "type": "string" } },
+    "items": {
+      "type": "array",
+      "items": {
+        "title": "MeetingNotesDraftItem",
+        "type": "object",
+        "required": ["title", "owner", "quote"],
+        "properties": {
+          "title": { "type": "string" },
+          "owner": { "type": "string", "description": "you only when the owner said it on a You line; otherwise a name, or them." },
+          "quote": { "type": "string", "description": "The exact words from the line that shows it." }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,318 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/meetings/common.schema.json",
+  "title": "MeetingsCommon",
+  "description": "Pieces the meetings contracts share. Not a document on its own.",
+  "x-schemaVersion": 1,
+  "$defs": {
+    "instant": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 with a zone, as Daybreak's .iso8601 date strategy writes it."
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "eventKey": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 500,
+      "description": "Daybreak's MeetingEventKey: the calendar's UID for the event plus the occurrence (the calendar row's sourceID without its calendar: prefix), or row:<id> for a meeting with no UID. Encoded as a plain string (see MAPPING.md)."
+    },
+    "speaker": {
+      "title": "Speaker",
+      "enum": [
+        "you",
+        "them"
+      ],
+      "description": "you is the owner's own track (the mic); them is everyone else (the meeting app's audio)."
+    },
+    "seconds": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Seconds from the recording's start."
+    },
+    "fileName": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._-]{1,100}$",
+      "description": "A file name inside the note's own folder. Never a path."
+    },
+    "sourceKind": {
+      "title": "NoteSourceKind",
+      "enum": [
+        "macTap",
+        "iphoneMic",
+        "bot",
+        "import",
+        "upload"
+      ],
+      "description": "Daybreak's NoteSource.kind, as note.json writes it: the Mac's audio tap, the iPhone's mic, a meeting bot, an import of another tool's notes or transcript, or text uploaded directly (Daybreak M3). The hosted store spells these as hostedSourceKind."
+    },
+    "noteState": {
+      "title": "NoteState",
+      "description": "Daybreak's note state, flattened (MAPPING.md).",
+      "type": "object",
+      "required": [
+        "state"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "recording",
+            "gettingModel",
+            "transcribing",
+            "ready",
+            "failed"
+          ],
+          "title": "NoteStateKind"
+        },
+        "progress": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "For gettingModel and transcribing."
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "For failed: safe words."
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "failed"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "reason"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "gettingModel",
+                  "transcribing"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "progress"
+            ]
+          }
+        }
+      ]
+    },
+    "summaryState": {
+      "title": "SummaryState",
+      "description": "Where a summary stands (Daybreak SummaryState, flattened). Never runs without a transcript or notes.",
+      "type": "object",
+      "required": [
+        "state"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "summarizing",
+            "ready",
+            "tooShort",
+            "signedOut",
+            "limitReached",
+            "aiOff",
+            "failed"
+          ],
+          "title": "SummaryStateKind"
+        },
+        "reason": {
+          "type": "string",
+          "maxLength": 500
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "failed"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "reason"
+            ]
+          }
+        }
+      ]
+    },
+    "consentPath": {
+      "title": "ConsentPath",
+      "description": "How a recording was allowed to start (Daybreak consent.json). The private Already-agreed list itself is never exported.",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": [
+            "kind",
+            "entryIDs"
+          ],
+          "properties": {
+            "kind": {
+              "const": "preAgreed"
+            },
+            "entryIDs": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "const": "everyoneKnows"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "noteSource": {
+      "title": "NoteSource",
+      "description": "A capture that filled a note.",
+      "type": "object",
+      "required": [
+        "kind",
+        "startedAt",
+        "tracks"
+      ],
+      "properties": {
+        "kind": {
+          "$ref": "#/$defs/sourceKind"
+        },
+        "startedAt": {
+          "$ref": "#/$defs/instant"
+        },
+        "endedAt": {
+          "$ref": "#/$defs/instant"
+        },
+        "tracks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fileName"
+          },
+          "description": "File names in the note's folder: them.m4a, you.m4a."
+        }
+      },
+      "additionalProperties": false
+    },
+    "hostedSourceKind": {
+      "title": "MeetingSourceKind",
+      "enum": [
+        "mac-tap",
+        "iphone-mic",
+        "bot",
+        "import",
+        "upload"
+      ],
+      "description": "Where a source on the hosted store came from: mac-tap, iphone-mic and bot are captures (Daybreak's macTap, iphoneMic, bot); import is another tool's notes or transcript brought in by Daybreak; upload is text sent straight to the store."
+    },
+    "meetingID": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,200}$",
+      "description": "The store's id for a meeting, safe in a URL path. When the meeting comes from Daybreak it may be a hash of the event key (for example lowercase hex SHA-256); the raw eventKey always travels in the body."
+    },
+    "isWork": {
+      "type": "boolean",
+      "description": "A work (AD) meeting. Its transcript is kept on the store (decision 16) but never published: a work publication is summary and items only."
+    },
+    "remote": {
+      "title": "NoteRemote",
+      "description": "Daybreak M3: where note.json stands on the hosted meeting store.",
+      "type": "object",
+      "required": [
+        "serviceID",
+        "uploadState"
+      ],
+      "properties": {
+        "serviceID": {
+          "$ref": "#/$defs/meetingID",
+          "description": "The store's meetingID for this note."
+        },
+        "lastUploadedRevision": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "The store's revision after the last upload that went through; absent before the first."
+        },
+        "lastUploadedAt": {
+          "$ref": "#/$defs/instant"
+        },
+        "uploadState": {
+          "enum": [
+            "idle",
+            "pending",
+            "uploaded",
+            "failed"
+          ],
+          "description": "idle: nothing to send (never uploaded, or unchanged since). pending: changed on the Mac and waiting to upload. uploaded: the store has lastUploadedRevision. failed: the last upload didn't go through; lastError says why."
+        },
+        "lastError": {
+          "type": "string",
+          "maxLength": 500,
+          "description": "For failed: safe words."
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "uploadState": {
+                "const": "failed"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "lastError"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "uploadState": {
+                "const": "uploaded"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "lastUploadedRevision"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/ai/stream-event.schema.json",
+  "title": "AiStreamEvent",
+  "description": "One line of an application/x-ndjson answer (Ghosted server/src/index.ts answer()). The stream starts with {\"t\":\"\"} so proxies don't buffer, then {\"t\": new text}, {\"s\": status} while a tool works, {\"reset\": true} when a retry starts over, and ends with exactly one {\"done\": result} or {\"error\": message}. The result is identical to the non-streamed JSON body.",
+  "x-schemaVersion": 1,
+  "oneOf": [
+    { "$ref": "#/$defs/text" },
+    { "$ref": "#/$defs/reset" },
+    { "$ref": "#/$defs/status" },
+    { "$ref": "#/$defs/done" },
+    { "$ref": "#/$defs/error" }
+  ],
+  "$defs": {
+    "text": { "title": "StreamText", "type": "object", "required": ["t"], "properties": { "t": { "type": "string", "description": "Text added since the last t line of this attempt." } }, "additionalProperties": false },
+    "reset": { "title": "StreamReset", "type": "object", "required": ["reset"], "properties": { "reset": { "const": true, "description": "A retry started over: drop the text so far." } }, "additionalProperties": false },
+    "status": { "title": "StreamStatus", "type": "object", "required": ["s"], "properties": { "s": { "type": "string", "maxLength": 200, "description": "What a tool is doing right now (\"Reading the posting\")." } }, "additionalProperties": false },
+    "done": { "title": "StreamDone", "type": "object", "required": ["done"], "properties": { "done": { "description": "The result, the same as the JSON body would be." } }, "additionalProperties": false },
+    "error": {
+      "title": "StreamError",
+      "type": "object",
+      "required": ["error"],
+      "properties": {
+        "error": { "type": "string", "minLength": 1, "maxLength": 500, "description": "A safe message." },
+        "kind": { "$ref": "failure.schema.json#/$defs/failureKind", "description": "Added by the kit; Ghosted's current server sends only error." }
+      },
+      "additionalProperties": false
+    }
+  }
+}

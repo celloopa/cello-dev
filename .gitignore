@@ -1,5 +1,7 @@
 # build output
 dist/
+# the vendored cello-kit packages ship their built dist (Netlify cannot fetch the private repo)
+!vendor/cello-kit/*/dist/
 
 # generated types
 .astro/

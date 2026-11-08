@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/ai/failure.schema.json",
+  "title": "AiFailure",
+  "description": "Why a model call didn't give an answer, classified so every app shows the same words and offers the same next step. Merges Ghosted's codex.ts classifier with AD Hub's AI-off and cap gate.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": ["kind", "message"],
+  "properties": {
+    "kind": { "$ref": "#/$defs/failureKind" },
+    "message": { "type": "string", "minLength": 1, "maxLength": 500, "description": "Safe to show: no tokens, no prompt or answer text." },
+    "retryAfterMs": { "type": "integer", "minimum": 0, "description": "When known (busy, limitReached, overCap): how long before trying again is worth it." },
+    "feature": { "type": "string", "maxLength": 64 }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "failureKind": {
+      "title": "AiFailureKind",
+      "description": "notSignedIn: no login for the provider. signInExpired: the login's refresh failed; sign in again. limitReached: the plan's usage window is used up. busy: the provider is overloaded (a fallback model may have been tried). offline: the network or provider couldn't be reached. timeout: the call took longer than allowed. badShape: the answer didn't match the schema, after the one retry. aiOff: AI is switched off for this app, feature or person. overCap: this app's own spending or call cap is reached. failed: the provider refused the request or failed in a way none of the others covers (a 400, an unknown model); retrying the same request won't help.",
+      "enum": ["notSignedIn", "signInExpired", "limitReached", "busy", "offline", "timeout", "badShape", "aiOff", "overCap", "failed"]
+    }
+  }
+}

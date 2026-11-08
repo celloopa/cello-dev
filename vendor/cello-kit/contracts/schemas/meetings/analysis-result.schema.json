@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/meetings/analysis-result.schema.json",
+  "title": "AnalysisResult",
+  "description": "What meetings.analyze returns: the summary state and, when ready, Daybreak's MeetingSummary, tied to the exact transcript or notes revision it read. Text in, JSON out; no audio.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "meetingID",
+    "state"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "meetingID": {
+      "$ref": "common.schema.json#/$defs/meetingID"
+    },
+    "transcriptRevisionID": {
+      "$ref": "common.schema.json#/$defs/id",
+      "description": "The source revision (source.revisionID) whose transcript was read."
+    },
+    "notesRevisionID": {
+      "$ref": "common.schema.json#/$defs/id",
+      "description": "When manual notes were analyzed instead of a transcript."
+    },
+    "state": {
+      "$ref": "common.schema.json#/$defs/summaryState"
+    },
+    "summary": {
+      "$ref": "summary.schema.json"
+    },
+    "usage": {
+      "type": "array",
+      "items": {
+        "$ref": "../ai/usage-record.schema.json"
+      },
+      "description": "One record per model call (chunks and the combine step). Counts only."
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "anyOf": [
+        {
+          "required": [
+            "transcriptRevisionID"
+          ]
+        },
+        {
+          "required": [
+            "notesRevisionID"
+          ]
+        }
+      ]
+    },
+    {
+      "if": {
+        "properties": {
+          "state": {
+            "properties": {
+              "state": {
+                "const": "ready"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "summary"
+        ]
+      },
+      "else": {
+        "not": {
+          "required": [
+            "summary"
+          ]
+        }
+      }
+    }
+  ]
+}

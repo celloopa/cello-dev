@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/ops/envelope.schema.json",
+  "title": "Envelope",
+  "description": "An agent's write: one envelope is one version. Ops run in order against a running snapshot, so a later op can name what an earlier one added. A refused op is dropped with its reason and the rest apply. Semantics from Daybreak docs/BRIDGE.md (envelope version 2).",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": ["id", "source", "ops"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1, "description": "This contract's version. Optional: Daybreak's file bridge doesn't send it." },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "The idempotency key. The same id with the same ops returns the original receipt; the same id with different ops is a conflict. Required by kit services (Daybreak's file bridge falls back to a SHA-256 of the file name and bytes)."
+    },
+    "source": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._:-]{0,39}$",
+      "description": "Who sent it, as receipts and notes name it: pi, claude, codex, ghosted-server."
+    },
+    "version": { "type": "integer", "const": 2, "default": 2, "description": "The envelope protocol generation (Daybreak bridge version 2). Not the schema version." },
+    "mode": {
+      "enum": ["apply", "propose"],
+      "default": "apply",
+      "description": "apply: ops apply now, except ones whose policy waits for a person. propose: the whole envelope waits for a person to keep or reject it."
+    },
+    "summary": { "type": "string", "maxLength": 2000, "description": "Optional words from the sender, shown with the change." },
+    "ops": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 50,
+      "items": { "$ref": "#/$defs/op" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "op": {
+      "title": "Op",
+      "description": "One operation. Its fields beyond `op` are defined by the service's ops registry, which also generates howToWrite, REST, MCP and CLI surfaces.",
+      "type": "object",
+      "required": ["op"],
+      "properties": {
+        "op": { "type": "string", "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)*$", "description": "The registered op name: add_task, ticket.create." },
+        "id": { "type": "string", "maxLength": 200, "description": "Finds an existing thing by id. An id that's gone never falls back to a title." }
+      },
+      "additionalProperties": true
+    }
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/household/item.schema.json",
+  "title": "HouseholdItem",
+  "description": "One row of shared household data: exactly the fields of a HouseholdItem CloudKit record. Everything in the Household zone reaches every member, so only data a person chose to share belongs here. The record type never changes, so a new kind needs no CloudKit schema deployment.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": ["schemaVersion", "id", "kind", "payload", "updatedAt", "updatedBy", "app"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{1,100}$",
+      "description": "Stable within its kind, usually the app's own UUID, so two devices write one row."
+    },
+    "kind": {
+      "type": "string",
+      "pattern": "^[a-z]+\\.[a-z-]+$",
+      "maxLength": 60,
+      "description": "<app>.<noun>, such as wildwood.staple. The named app defines the payload; any app in the household may read or write it."
+    },
+    "payload": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 65536,
+      "contentMediaType": "application/json",
+      "description": "The kind's JSON object as text. Conflicts merge per top-level key."
+    },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "updatedBy": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "A member id: the opaque CloudKit user record name in the household container, the same across apps and devices. Never an email or a phone number."
+    },
+    "app": {
+      "type": "string",
+      "pattern": "^[a-z]+$",
+      "maxLength": 30,
+      "description": "The app that wrote this revision."
+    }
+  },
+  "additionalProperties": false
+}

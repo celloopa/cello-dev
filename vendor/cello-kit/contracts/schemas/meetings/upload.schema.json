@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contracts.cello-kit.invalid/meetings/upload.schema.json",
+  "title": "MeetingUpload",
+  "description": "What Daybreak sends the hosted store for one meeting (decision 10): the occurrence, its sources and its summary revisions, keyed by the event key. The receipt's revision becomes the note's remote.lastUploadedRevision. A work meeting's sources may carry transcripts (decision 16), kept on the store and never published to AD Hub. Never audio.",
+  "x-schemaVersion": 1,
+  "type": "object",
+  "required": ["schemaVersion", "eventKey", "isWork", "occurrence", "sources", "summaries"],
+  "properties": {
+    "schemaVersion": { "type": "integer", "const": 1 },
+    "eventKey": { "$ref": "common.schema.json#/$defs/eventKey" },
+    "isWork": { "$ref": "common.schema.json#/$defs/isWork" },
+    "expectedRevision": { "type": "integer", "minimum": 0, "description": "The store revision this upload builds on (remote.lastUploadedRevision, 0 for the first). A stale one is a conflict." },
+    "occurrence": { "$ref": "occurrence.schema.json" },
+    "sources": { "type": "array", "items": { "$ref": "source.schema.json" } },
+    "summaries": { "type": "array", "items": { "$ref": "summary-revision.schema.json" } }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": { "properties": { "isWork": { "const": true } }, "required": ["isWork"] },
+      "then": {
+        "properties": {
+          "occurrence": { "properties": { "isWork": { "const": true } } },
+          "sources": { "items": { "properties": { "isWork": { "const": true } } } }
+        }
+      },
+      "else": {
+        "properties": {
+          "occurrence": { "properties": { "isWork": { "const": false } } },
+          "sources": { "items": { "properties": { "isWork": { "const": false } } } }
+        }
+      }
+    }
+  ]
+}
