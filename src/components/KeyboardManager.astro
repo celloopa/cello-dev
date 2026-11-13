@@ -2,14 +2,8 @@
 import KeyboardShortcutsMenu from "./svelte/KeyboardShortcutsMenu.svelte";
 import { basics } from "@cv";
 
-interface Props {
-  /** Leave the email address out of the page (Layout hideEmail). */
-  hideEmail?: boolean;
-}
-
-const { hideEmail = false } = Astro.props;
 const socialProfiles = basics.profiles;
-const email = hideEmail ? "" : basics.email;
+const email = basics.email;
 ---
 
 <KeyboardShortcutsMenu

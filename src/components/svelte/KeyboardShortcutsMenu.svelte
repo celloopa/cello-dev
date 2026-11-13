@@ -49,21 +49,16 @@
         ...(document.documentElement.classList.contains("scene-page") ? [] : [{ key: "t", label: "Switch Day / Dusk", action: toggleTheme }]),
       ],
     },
-    // a page can leave the address out of its HTML (Layout hideEmail); then there's no Email shortcut
-    ...(email
-      ? [
-          {
-            title: "CONTACT",
-            shortcuts: [
-              {
-                key: "e",
-                label: "Email",
-                action: () => (window.location.href = `mailto:${email}`),
-              },
-            ],
-          },
-        ]
-      : []),
+    {
+      title: "CONTACT",
+      shortcuts: [
+        {
+          key: "e",
+          label: "Email",
+          action: () => (window.location.href = `mailto:${email}`),
+        },
+      ],
+    },
     {
       title: "SOCIAL MEDIA",
       shortcuts: socialShortcuts,
