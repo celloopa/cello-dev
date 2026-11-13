@@ -45,11 +45,12 @@ const menuLabel = activeNav?.label ?? "Menu";
       <button
         id="header-menu-btn"
         class="menu-btn"
-        aria-label="Menu"
+        aria-label={activeNav ? `${menuLabel} menu` : "Menu"}
+        aria-keyshortcuts="Control+K"
         aria-haspopup="dialog"
         aria-controls="keyboard-shortcuts-menu"
       >
-        <span class="menu-key"></span>
+        <span class="menu-key" aria-hidden="true"></span>
         <span class="menu-label">{menuLabel}</span>
       </button>
     </div>
@@ -84,10 +85,14 @@ const menuLabel = activeNav?.label ?? "Menu";
 
     if (menuBtn && menuKey && menuLabel) {
       if (isTouch) {
-        menuKey.textContent = "";
+        delete menuKey.dataset.key;
         menuKey.classList.add("menu-key--dot");
+        menuBtn.removeAttribute("aria-keyshortcuts");
       } else {
-        menuKey.textContent = isMac ? "⌘K" : "Ctrl+K";
+        // drawn by CSS (::before) so the shortcut isn't part of the button's visible text,
+        // which its accessible name has to match; aria-keyshortcuts carries it instead
+        menuKey.dataset.key = isMac ? "⌘K" : "Ctrl+K";
+        menuBtn.setAttribute("aria-keyshortcuts", isMac ? "Meta+K" : "Control+K");
       }
 
       menuBtn.addEventListener("click", () => {
@@ -310,6 +315,11 @@ const menuLabel = activeNav?.label ?? "Menu";
     transition:
       background-color var(--motion-ui) var(--ease-out),
       color var(--motion-ui) var(--ease-out);
+  }
+
+  .menu-key[data-key]::before {
+    content: attr(data-key);
+    content: attr(data-key) / "";
   }
 
   .menu-key--dot {
