@@ -3,16 +3,20 @@
  * 03 · The studio: one ticket's story across the four stations (lead → worker → evaluator →
  * shipper), drawn as a static end-state still. With "Plant a bug" on (the default) the evaluator
  * stamps PANTRY-4 SENT BACK and the route returns it to the worker; off, it passes and ships.
- * The switch works without script (:has). Run ticket and Pause wait for AK-4, which enhances the
- * [data-studio-moment] container into the scroll-story run.
+ * The switch works without script (:has), and without script that still is the whole chapter.
+ * AK-4 (story.ts) enhances [data-studio-moment] into the run: it enables Run ticket and Pause
+ * motion and drives the board through data-step / data-eval / data-returned on the container and
+ * data-at (here | past) on each lane. The board rules for those live under "the run" below; the
+ * still's rules apply only while the container has no data-step.
  */
 import Button from "@/components/ui/Button.astro";
 import ChapterHead from "./ChapterHead.astro";
+import { eyebrowOf } from "./stops";
 import CelloWords from "./CelloWords.astro";
 ---
 
 <section class="ak-chapter ak-wrap" id="studio" data-chapter="studio" aria-labelledby="studio-title">
-  <ChapterHead eyebrow="03 · The studio" title="Every ticket gets stamped" titleId="studio-title">
+  <ChapterHead eyebrow={eyebrowOf("studio")} title="Every ticket gets stamped" titleId="studio-title">
     One agent plans with you, workers build in parallel, a separate one tests their work, and one
     ships it. Nothing reaches the last hook without a pass.
   </ChapterHead>
@@ -26,8 +30,8 @@ import CelloWords from "./CelloWords.astro";
         Plant a bug
       </label>
       <div class="ak-run">
-        <Button disabled aria-describedby="studio-still">Run ticket</Button>
-        <Button variant="secondary" disabled aria-describedby="studio-still">Pause</Button>
+        <Button disabled aria-describedby="studio-still" data-run-ticket>Run ticket</Button>
+        <Button variant="secondary" disabled aria-describedby="studio-still" data-motion-toggle>Pause</Button>
       </div>
       <p class="ak-controls-note">
         <span id="studio-still">Showing the end of the run.</span>
@@ -36,6 +40,7 @@ import CelloWords from "./CelloWords.astro";
           <span data-when="clean">No bug: PANTRY-4 passes and ships.</span>
         </span>
       </p>
+      <p class="ak-sr" aria-live="polite" data-studio-log></p>
       <p class="ak-controls-take">
         Plant one deliberate bug. If the evaluator doesn't catch it, it isn't evaluating.
         <CelloWords />
@@ -51,7 +56,7 @@ import CelloWords from "./CelloWords.astro";
       </div>
       <div class="ak-rail" aria-hidden="true"></div>
       <ol class="ak-lanes">
-        <li class="ak-lane ak-hooked">
+        <li class="ak-lane ak-hooked" data-lane="lead">
           <h3 class="ak-lane-name">Lead <i>· plans</i></h3>
           <div class="ak-stub ak-stub--hole ak-stub--trace ak-ticket">
             <span class="ak-ticket-id"><span>PANTRY-4</span><span>Planned</span></span>
@@ -59,18 +64,18 @@ import CelloWords from "./CelloWords.astro";
             <span class="ak-ticket-meta">3 testable criteria</span>
           </div>
         </li>
-        <li class="ak-lane ak-hooked">
+        <li class="ak-lane ak-hooked" data-lane="worker">
           <h3 class="ak-lane-name">Worker <i>· builds</i></h3>
           <div class="ak-stub ak-stub--hole ak-stub--trace ak-ticket">
-            <span class="ak-ticket-id"><span>PANTRY-4</span><span>Built</span></span>
+            <span class="ak-ticket-id"><span>PANTRY-4</span><span data-alt="Fixed">Built</span></span>
             <h4 class="ak-ticket-title">Shopping list by aisle</h4>
-            <span class="ak-ticket-meta">Branch pantry-4 · test added</span>
+            <span class="ak-ticket-meta" data-alt="Fix pushed · round 2">Branch pantry-4 · test added</span>
           </div>
         </li>
-        <li class="ak-lane ak-lane--eval ak-hooked">
+        <li class="ak-lane ak-lane--eval ak-hooked" data-lane="eval">
           <h3 class="ak-lane-name">Evaluator <i>· checks</i></h3>
           <div class="ak-stub ak-stub--hole ak-ticket ak-ticket--stamped">
-            <span class="ak-ticket-id"><span>PANTRY-4</span><span>Round 1 / 3</span></span>
+            <span class="ak-ticket-id"><span>PANTRY-4</span><span data-alt="Round 2 / 3">Round 1 / 3</span></span>
             <h4 class="ak-ticket-title">Shopping list by aisle</h4>
             <ul class="ak-criteria" aria-label="Acceptance criteria">
               <li><span aria-hidden="true">✓</span><span><span class="ak-sr">Pass: </span>Groups by aisle</span></li>
@@ -85,7 +90,7 @@ import CelloWords from "./CelloWords.astro";
             <span class="ak-stamp ak-stamp--pass" data-when="clean">Pass</span>
           </div>
         </li>
-        <li class="ak-lane ak-hooked">
+        <li class="ak-lane ak-hooked" data-lane="ship">
           <h3 class="ak-lane-name">Shipper <i>· ships</i></h3>
           <div class="ak-waiting" data-when="bug">Waiting for a pass</div>
           <div class="ak-stub ak-stub--hole ak-ticket" data-when="clean">
@@ -111,9 +116,12 @@ import CelloWords from "./CelloWords.astro";
     margin-top: var(--space-48);
   }
 
-  /* the bug switch picks which end state shows */
-  .ak-studio:has(.ak-bug-input:checked) [data-when="clean"],
-  .ak-studio:has(.ak-bug-input:not(:checked)) [data-when="bug"] {
+  /* the bug switch picks which end state shows: always in the controls, on the board only for the
+     still (the run sets the board itself) */
+  .ak-studio:has(.ak-bug-input:checked) .ak-controls [data-when="clean"],
+  .ak-studio:has(.ak-bug-input:not(:checked)) .ak-controls [data-when="bug"],
+  .ak-studio:not([data-step]):has(.ak-bug-input:checked) .ak-board [data-when="clean"],
+  .ak-studio:not([data-step]):has(.ak-bug-input:not(:checked)) .ak-board [data-when="bug"] {
     display: none;
   }
 
@@ -368,6 +376,97 @@ import CelloWords from "./CelloWords.astro";
     text-transform: uppercase;
   }
 
+  /* ---------- the run (AK-4): only while story.ts has set data-step ---------- */
+  .ak-studio[data-step] .ak-board {
+    /* where a ticket arrives from: the lane to its left, sliding right along the rail */
+    --ak-from-x: calc(-100% - var(--space-24));
+    --ak-from-y: 0px;
+    --ak-swing: -3deg;
+  }
+
+  .ak-studio[data-dir="back"] .ak-board {
+    --ak-from-x: calc(100% + var(--space-24));
+    --ak-swing: 3deg;
+  }
+
+  .ak-studio[data-dir="drop"] .ak-board {
+    --ak-from-x: 0px;
+    --ak-from-y: calc(-1 * var(--space-48));
+    --ak-swing: 0deg;
+  }
+
+  /* a lane with no data-at: the hook is empty */
+  .ak-studio[data-step] .ak-lane:not([data-at]) .ak-ticket {
+    visibility: hidden;
+  }
+
+  .ak-studio[data-step] .ak-lane[data-at="here"] .ak-ticket {
+    border-style: solid;
+  }
+
+  .ak-studio[data-step] .ak-lane[data-at="past"] .ak-ticket {
+    border-style: dashed;
+  }
+
+  /* the evaluator shows the verdict of the round it's on */
+  .ak-studio[data-eval="fail"] .ak-lane--eval [data-when="clean"],
+  .ak-studio[data-eval="pass"] .ak-lane--eval [data-when="bug"] {
+    display: none;
+  }
+
+  /* the shipper waits until the ticket is on its hook */
+  .ak-studio[data-step] .ak-lane[data-lane="ship"]:not([data-at]) .ak-ticket,
+  .ak-studio[data-step] .ak-lane[data-lane="ship"][data-at] .ak-waiting {
+    display: none;
+  }
+
+  .ak-studio[data-run="clean"] .ak-return {
+    display: none;
+  }
+
+  .ak-studio[data-run="bug"]:not([data-returned]) .ak-return {
+    visibility: hidden;
+  }
+
+  /* motion: the ticket slides in from the last lane and swings from its hook as it lands; the
+     stamp locks in once it has arrived; the route back draws from the evaluator to the worker */
+  .ak-studio[data-step] .ak-ticket {
+    transform-origin: 50% 0;
+  }
+
+  .ak-studio[data-step]:not([data-instant]) .ak-lane[data-at="here"] .ak-ticket {
+    animation: ak-ticket-travel var(--motion-showcase-travel) var(--ease-out) both;
+  }
+
+  .ak-studio[data-step]:not([data-instant]) .ak-lane[data-at="here"] .ak-stamp {
+    animation: ak-stamp-lock var(--motion-showcase-stamp) var(--ease-out) var(--motion-showcase-travel) both;
+  }
+
+  .ak-studio[data-dir="back"]:not([data-instant]) .ak-return-line {
+    transform-origin: 100% 0;
+    animation: ak-route-draw var(--motion-showcase-travel) var(--ease-out) both;
+  }
+
+  .ak-studio[data-dir="back"]:not([data-instant]) .ak-return-label {
+    animation: ak-fade-in var(--motion-showcase-travel) var(--ease-out) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ak-studio *,
+    .ak-studio *::before,
+    .ak-studio *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* Pause motion and reduced motion: the button is for motion, so it goes when there is none */
+  @media (prefers-reduced-motion: reduce) {
+    .ak-studio[data-enhanced] [data-motion-toggle] {
+      display: none;
+    }
+  }
+
   @media (max-width: 768px) {
     .ak-controls {
       grid-template-columns: minmax(0, 1fr);
@@ -421,6 +520,17 @@ import CelloWords from "./CelloWords.astro";
     .ak-return-label span {
       display: inline-block;
       transform: rotate(90deg);
+    }
+
+    /* phones: lanes stack, so a ticket arrives from the lane above (or below, going back) */
+    .ak-studio[data-step] .ak-board {
+      --ak-from-x: 0px;
+      --ak-from-y: calc(-1 * var(--space-48));
+    }
+
+    .ak-studio[data-dir="back"] .ak-board {
+      --ak-from-x: 0px;
+      --ak-from-y: var(--space-48);
     }
   }
 </style>

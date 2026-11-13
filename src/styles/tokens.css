@@ -205,9 +205,9 @@
   --text-on-stub-action: var(--paper-100); /* Text on --action-on-stub (a primary button on a stub): 4.70:1. */
   --status-returned: var(--ember-400); /* Returned work on the canvas: the SENT BACK route and its label. Status only, never action or decoration, and never the only cue (pair it with text). 7.08:1 on Dusk canvas, 5.21:1 on Day canvas. */
   --status-returned-on-stub: var(--ember-700); /* The SENT BACK stamp and failed-criterion marks on --bg-stub, both themes (5.21:1 Dusk, 5.75:1 Day). Always with the word, never color alone. */
-  --motion-showcase-stamp: 300ms; /* Showcase tier (/agent-kit landing only, pausable, never autoplays or loops): the evaluator's stamp locking in. */
+  --motion-showcase-stamp: 300ms; /* Showcase tier (/agent-kit landing only; plays once, never loops; Pause motion and reduced motion land it at its end): the evaluator's stamp locking in. */
   --motion-showcase-stamp-from: 1.15; /* Showcase tier: the stamp's starting scale; it settles to 1. */
-  --motion-showcase-travel: 700ms; /* Showcase tier: a ticket sliding from one station's hook to the next (or back to the worker), with a slight swing as it lands. Starts only when the visitor presses Run ticket; Pause stops it. */
+  --motion-showcase-travel: 700ms; /* Showcase tier: a ticket sliding from one station's hook to the next (or back to the worker), with a slight swing as it lands. Starts when the visitor presses Run ticket, or once by itself when the board is half in view; Pause motion lands it at the end. */
   --motion-showcase-reveal: 600ms; /* Showcase tier: a chapter's art assembling as it scrolls in (60ms stagger, --ease-out). Text never waits for it. With reduced motion every chapter shows its end state as a still. */
 
   /* Legacy aliases (old names kept so open branches build; removed once nothing uses them) */

@@ -475,3 +475,32 @@
   from { opacity: 0; transform: translateY(30px); }
   to { opacity: 1; transform: none; }
 }
+
+/* /agent-kit (AK-4). The ticket run reads its offsets from custom properties set where it's used
+   (Studio.astro); durations are the showcase tokens. */
+@keyframes ak-ticket-travel {
+	from { opacity: 0; transform: translate(var(--ak-from-x, 0px), var(--ak-from-y, 0px)) rotate(var(--ak-swing, 0deg)); }
+	60% { opacity: 1; transform: translate(0, 0) rotate(calc(var(--ak-swing, 0deg) * -0.5)); }
+	to { opacity: 1; transform: none; }
+}
+
+@keyframes ak-stamp-lock {
+	from { opacity: 0; transform: rotate(var(--ak-stamp-rot, 0deg)) scale(var(--motion-showcase-stamp-from)); }
+	to { opacity: 1; transform: rotate(var(--ak-stamp-rot, 0deg)) scale(1); }
+}
+
+@keyframes ak-route-draw {
+	from { transform: scaleX(0); }
+	to { transform: scaleX(1); }
+}
+
+@keyframes ak-fade-in {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+/* a chapter's stub dropping onto its hook */
+@keyframes ak-assemble {
+	from { opacity: 0; transform: translateY(calc(-1 * var(--space-24))); }
+	to { opacity: 1; transform: none; }
+}

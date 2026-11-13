@@ -84,6 +84,8 @@ const SOCIAL_ICONS: SocialIcon = {
       media="(prefers-color-scheme: dark)"
     />
     <ThemeInit />
+    <!-- a page's own before-first-paint scripts (e.g. /agent-kit's saved Pause motion) -->
+    <slot name="head" />
     <noscript>
       <style>
         [data-reveal] {

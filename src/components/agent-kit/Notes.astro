@@ -4,6 +4,7 @@
  * rail: a hook logs every session, a recap writes it up, a nightly digest only proposes.
  */
 import ChapterHead from "./ChapterHead.astro";
+import { eyebrowOf } from "./stops";
 
 const steps = [
   {
@@ -29,7 +30,7 @@ const steps = [
 ---
 
 <section class="ak-chapter ak-wrap" id="notes" data-chapter="notes" aria-labelledby="notes-title">
-  <ChapterHead eyebrow="02 · Session notes" title="Every session leaves a note" titleId="notes-title">
+  <ChapterHead eyebrow={eyebrowOf("notes")} title="Every session leaves a note" titleId="notes-title">
     Every session gets logged and summarized overnight. You approve what becomes permanent each
     morning.
   </ChapterHead>

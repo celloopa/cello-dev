@@ -1,0 +1,102 @@
+---
+/*
+ * StoryRail: the sticky mini rail. Five small stubs on a vertical earth rail in the left margin,
+ * from the same list of stops as the hero's rail; the current chapter takes the green sill
+ * (aria-current="step"). It ships `hidden` and only the scroll story shows it, so without script
+ * the page is unchanged. Wide screens only (the margin beside the 1100px column); below that the
+ * hero's rail carries the current step.
+ */
+import { stops } from "./stops";
+---
+
+<nav class="ak-minirail" aria-label="Chapter progress" data-story-rail hidden>
+  <ol class="ak-minirail-list">
+    {
+      stops.map((s) => (
+        <li>
+          <a class="ak-minirail-link" href={`#${s.id}`} data-stop-link={s.id}>
+            <span class="ak-minirail-no">{s.no}</span>
+            <span class="ak-minirail-name">{s.name}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ol>
+</nav>
+
+<style>
+  .ak-minirail {
+    display: none;
+  }
+
+  @media (min-width: 1320px) {
+    .ak-minirail:not([hidden]) {
+      position: fixed;
+      top: 50%;
+      left: var(--space-24);
+      z-index: 50;
+      display: block;
+      transform: translateY(-50%);
+      transition:
+        opacity var(--motion-ui) var(--ease-out),
+        visibility var(--motion-ui);
+    }
+  }
+
+  /* still in the hero: the hero's own rail is on screen */
+  :global(.ak[data-ch="0"]) .ak-minirail {
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .ak-minirail-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    margin: 0;
+    padding: 0 0 0 var(--space-16);
+    border-left: var(--space-8) solid var(--accent-ground);
+    list-style: none;
+  }
+
+  .ak-minirail-link {
+    display: flex;
+    gap: var(--space-8);
+    align-items: baseline;
+    min-height: var(--touch-target);
+    padding: var(--space-8) var(--space-12);
+    border: var(--stroke-control) dashed var(--border-strong);
+    background: var(--bg-canvas);
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    line-height: var(--leading-ui);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: box-shadow var(--motion-ui) var(--ease-out);
+  }
+
+  .ak-minirail-no {
+    font-family: var(--font-mono);
+  }
+
+  .ak-minirail-link:hover,
+  .ak-minirail-link[aria-current="step"] {
+    border-style: solid;
+    border-color: var(--text-on-stub);
+    background: var(--bg-stub);
+    color: var(--text-on-stub);
+  }
+
+  .ak-minirail-link[aria-current="step"] {
+    box-shadow: var(--space-4) var(--space-4) 0 var(--action-primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ak-minirail,
+    .ak-minirail-link {
+      transition: none !important;
+    }
+  }
+</style>

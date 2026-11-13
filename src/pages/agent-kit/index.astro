@@ -1,8 +1,10 @@
 ---
 /*
- * /agent-kit: the Agent Studio Kit, direction C "Job tickets" (docs/agent-kit/concepts). A static
- * build: chapters are <section>s with an id and data-chapter, in reading order. The scroll story
- * and the ticket run (AK-4) enhance it later; the studio's still is marked data-studio-moment.
+ * /agent-kit: the Agent Studio Kit, direction C "Job tickets" (docs/agent-kit/concepts). The page
+ * is complete without script (AK-3): chapters are <section>s with an id and data-chapter, in the
+ * order of stops.ts, and the studio shows its end-state still. The scroll story (AK-4, story.ts)
+ * enhances it: data-ch / data-seen on .ak, chapter reveals, the rails' aria-current, and the
+ * studio's ticket run in [data-studio-moment].
  */
 import Layout from "@/layouts/Layout.astro";
 import "@/components/agent-kit/agent-kit.css";
@@ -14,7 +16,9 @@ import Proof from "@/components/agent-kit/Proof.astro";
 import Setup from "@/components/agent-kit/Setup.astro";
 import RateCard from "@/components/agent-kit/RateCard.astro";
 import Lessons from "@/components/agent-kit/Lessons.astro";
+import StoryRail from "@/components/agent-kit/StoryRail.astro";
 import AgentKitScript from "@/components/agent-kit/AgentKitScript.astro";
+import AgentKitStory from "@/components/agent-kit/AgentKitStory.astro";
 ---
 
 <Layout
@@ -22,8 +26,19 @@ import AgentKitScript from "@/components/agent-kit/AgentKitScript.astro";
   description="How I run AI agents like a small software studio: a shared second brain, automatic notes on every session, and a lead, worker, evaluator and shipper pipeline. Three prompts set it up on your machine."
   canonicalPath="/agent-kit/"
 >
+  <Fragment slot="head">
+    <!-- the saved Pause motion choice, before first paint (story.ts writes it; key "ak-motion") -->
+    <script is:inline>
+      (() => {
+        try {
+          if (localStorage.getItem("ak-motion") === "paused") document.documentElement.dataset.motion = "paused";
+        } catch {}
+      })();
+    </script>
+  </Fragment>
   <div class="ak">
     <Hero />
+    <StoryRail />
     <Brain />
     <Notes />
     <Studio />
@@ -33,4 +48,5 @@ import AgentKitScript from "@/components/agent-kit/AgentKitScript.astro";
     <Lessons />
   </div>
   <AgentKitScript />
+  <AgentKitStory />
 </Layout>

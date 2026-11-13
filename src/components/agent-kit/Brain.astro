@@ -4,6 +4,7 @@
  * wiki), then the wiki rule on its own plate. Content from the kit's source page and prompt 01.
  */
 import ChapterHead from "./ChapterHead.astro";
+import { eyebrowOf } from "./stops";
 
 const stages = [
   { folder: "inbox/", role: "Capture", body: "Capture anything. No organizing." },
@@ -14,7 +15,7 @@ const stages = [
 ---
 
 <section class="ak-chapter ak-wrap" id="brain" data-chapter="brain" aria-labelledby="brain-title">
-  <ChapterHead eyebrow="01 · The brain" title="Knowledge moves forward only when work earns it" titleId="brain-title">
+  <ChapterHead eyebrow={eyebrowOf("brain")} title="Knowledge moves forward only when work earns it" titleId="brain-title">
     A folder of plain Markdown your agents read before working. They know your projects, decisions
     and preferences without you explaining again.
   </ChapterHead>

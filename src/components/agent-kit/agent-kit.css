@@ -134,6 +134,7 @@
 
 /* the stamp: a judgement that always carries its word */
 .ak-stamp {
+  --ak-stamp-rot: -8deg;
   position: absolute;
   right: var(--space-12);
   bottom: var(--space-12);
@@ -146,7 +147,7 @@
   letter-spacing: var(--track-wide);
   text-transform: uppercase;
   white-space: nowrap;
-  transform: rotate(-8deg);
+  transform: rotate(var(--ak-stamp-rot));
 }
 
 .ak-stamp--back {
@@ -154,8 +155,8 @@
 }
 
 .ak-stamp--pass {
+  --ak-stamp-rot: 6deg;
   color: var(--text-on-stub);
-  transform: rotate(6deg);
 }
 
 /* ---------- chapters ---------- */
@@ -203,4 +204,55 @@
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-16);
   }
+}
+
+/* ---------- the scroll story (AK-4, story.ts) ----------
+  story.ts sets data-story on .ak, data-ch (the current stop, 1-based; 0 in the hero), data-seen
+  (the furthest stop reached) and data-in on each chapter once it has scrolled in. None of these
+  exist without script, so nothing here hides anything on the AK-3 page. */
+
+/* a chapter's art drops onto its hooks as the chapter scrolls in (--motion-showcase-reveal,
+   --motion-stagger); the text
+   never waits. Not the studio (its run is its own moment) and not the work orders (they are text). */
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion="paused"]) .ak[data-story] .ak-chapter:not(#studio, #setup) :is(.ak-hooked > .ak-stub, .ak-sheet, .ak-annotation) {
+    opacity: 0;
+  }
+
+  html:not([data-motion="paused"]) .ak[data-story] .ak-chapter[data-in]:not(#studio, #setup) :is(.ak-hooked > .ak-stub, .ak-sheet, .ak-annotation) {
+    animation: ak-assemble var(--motion-showcase-reveal) var(--ease-out) calc(var(--ak-i, 0) * var(--motion-stagger)) both;
+  }
+}
+
+.ak :is(li, .ak-sheet):nth-child(2) {
+  --ak-i: 1;
+}
+
+.ak :is(li, .ak-sheet):nth-child(3) {
+  --ak-i: 2;
+}
+
+.ak :is(li, .ak-sheet):nth-child(4) {
+  --ak-i: 3;
+}
+
+.ak :is(li, .ak-sheet):nth-child(n + 5) {
+  --ak-i: 4;
+}
+
+/* Pause motion: like the reduced-motion contract (animations.css), every animation finishes at
+   once and nothing repeats, so entrances land and loops stop. Loops whose last frame is "gone" (the
+   logo's assemble-and-break, the paper grain's drift) are switched off instead, showing their
+   resting state. The ticket run and the chapter reveals check data-motion themselves. */
+html[data-motion="paused"] *,
+html[data-motion="paused"] *::before,
+html[data-motion="paused"] *::after {
+  animation-duration: var(--motion-none) !important;
+  animation-delay: var(--motion-none) !important;
+  animation-iteration-count: 1 !important;
+}
+
+html[data-motion="paused"] :is(.texture-layer, .has-texture, .has-texture-hover, .logo-svg *, .mark-animated *),
+html[data-motion="paused"] :is(.has-texture, .has-texture-hover)::after {
+  animation: none !important;
 }
