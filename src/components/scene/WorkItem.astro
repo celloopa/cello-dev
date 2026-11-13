@@ -83,7 +83,8 @@ const href = `/projects/${slug}`;
   .work-copy > p { line-height: var(--leading-read); }
   .work-outcome { font-size: var(--type-small); }
   .work-actions { display: flex; flex-wrap: wrap; gap: var(--space-16); margin-top: var(--space-24); align-items: center; }
-  .work-actions > a { color: inherit; font-size: var(--type-small); }
+  .work-actions > a { position: relative; color: inherit; font-size: var(--type-small); }
+  .work-actions > a::before { content: ""; position: absolute; inset: min(0px, calc(50% - var(--touch-target) / 2)); } /* a 44px tap area, same look */
 
   .work-media :global(img),
   .work-media :global(video) {

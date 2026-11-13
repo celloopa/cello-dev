@@ -122,4 +122,27 @@ These aren't bugs. They're places where the screens could look more deliberate. 
 
 Chromium only, so no Safari or WebKit (see 6). Default state only: menu closed, no hover, no open dialogs. Reduced motion is on, so the greeting's typing and entry animations are seen in their final state. Colour contrast isn't checked here (see `audit.md`). Physical phones weren't used.
 
+## Round 2: after the fixes (branch `screen-audit/fixes`)
+
+Cello said "fix them" and picked two things: move the copy clear of the rail, and hand SA-E to the agent-kit PR (done there, [celloopa/cello-dev#27](https://github.com/celloopa/cello-dev/pull/27)). The re-run used `--baseline` against the round-1 `findings.json`:
+
+| Pass | Before | After | Fixed | New |
+|---|---:|---:|---:|---:|
+| 6 widths × 2 themes (228 screens) | 33 groups, 6 P1 | 6 groups, 0 P1 | 27 | 0 |
+| short and turned screens (152 screens) | 19 groups, 6 P1 | 2 groups, 0 P1 | 17 | 0 |
+
+What changed:
+- **SA-A:** from 900 px up, the home work rows and Let's Talk start at `max(gutter, 2 × space-16 + touch-target × 1.15)` (≈ 83 px), as a page-local `--rail-clearance` in `index.astro`. It isn't a new token yet, because a new token needs a Figma sync first (`pnpm build` checks this). The hero routes' shade now starts in the gap below the greeting (`inset` top −45% → −4%), so it no longer dims the second bubble. The greeting's own shade still sits behind the first route.
+- **SA-B:** `text-wrap: balance` on h1–h6 in both layouts' global styles.
+- **SA-C:** the footer links, scene-bar links, contents chips and the standard footer's social squares are now at least 44 px. ArrowLink, "View live", the hero routes and `/card`'s contact-file link keep their look and get an invisible, centred 44 px tap area (`::before`). The audit now measures the area that actually takes the tap (it probes `elementFromPoint` out from the centre), so these count.
+- **SA-D:** "Last updated" uses `--text-muted` instead of opacity.
+
+Left as they are:
+- `a.nav-link` (34 px tall at 1024) is in `Header.astro`, which belongs to the agent-kit PR.
+- The phone rail stops are 40 px wide so six fit in the top row. They pass the 24 px WCAG minimum.
+- The hero routes on phones (40 px; neighbouring tap areas meet) and one ArrowLink at 1024 (43 px) are near-misses.
+- "LAYOUT AND / STROKE" at 1024 is already as balanced as three words get.
+
+Checked by eye with real scrolling at 1024 (the rail is clear and Email me is whole) and at 1280 (the bubble is at full strength), plus phone views of a post title and a case study.
+
 **Open question for Cello:** the cut-offs found here are on the home page at laptop widths. If the titles you've seen cut off were somewhere else (a page, or your phone), tell me which page and device and I'll add that case to the script.

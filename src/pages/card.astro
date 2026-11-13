@@ -616,10 +616,13 @@ const PLACE = homeScene(); // Mirror Lake, as home
   }
 
   .card-qr-link {
+    position: relative;
     align-self: flex-start;
     padding-bottom: var(--space-4);
     border-bottom: var(--stroke-control) solid var(--action-primary);
   }
+
+  .card-qr-link::before { content: ""; position: absolute; inset: min(0px, calc(50% - var(--touch-target) / 2)); } /* a 44px tap area, same look */
 
   .card-qr-frame {
     display: block;

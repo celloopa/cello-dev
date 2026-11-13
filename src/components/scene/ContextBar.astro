@@ -157,7 +157,9 @@ const current = (href: string) => {
 
   .bar-link,
   .bar-allwork {
-    display: block;
+    display: flex;
+    align-items: center;
+    min-height: var(--touch-target);
     padding: var(--space-8) var(--space-12);
     background: var(--bg-canvas);
     border-bottom: var(--stroke-control) solid transparent;

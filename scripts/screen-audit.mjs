@@ -356,7 +356,20 @@ function inspect({ width }) {
   const sw = document.documentElement.scrollWidth;
   if (sw > vw + 1) out.push({ kind: "page-scroll", sig: "page", path: "html", text: "", detail: `page scrolls sideways by ${sw - vw}px`, rect: { x: 0, y: 0, w: sw, h: 1 }, style: {} });
 
-  // 9. tap targets under 44 px (phones and tablets only; links inside running text are exempt)
+  // 9. tap targets under 44 px (phones and tablets only; links inside running text are exempt).
+  // The size is what takes the tap: probed outward from the centre with elementFromPoint, so an
+  // invisible ::before hit area counts and a box covered by something else doesn't.
+  const hitArea = (el) => {
+    const r0 = el.getBoundingClientRect();
+    const top = r0.top + scrollY;
+    if (r0.top < 60 || r0.bottom > innerHeight - 60) window.scrollTo(0, Math.max(0, top - innerHeight / 2));
+    const r = el.getBoundingClientRect();
+    const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+    const mine = (x, y) => { const t = document.elementFromPoint(x, y); return !!t && (t === el || el.contains(t)); };
+    const reach = (dx, dy) => { let n = 0; while (n < 40 && mine(cx + dx * (n + 1), cy + dy * (n + 1))) n++; return n; };
+    if (!mine(cx, cy)) return { w: Math.round(r.width), h: Math.round(r.height) };
+    return { w: reach(-1, 0) + reach(1, 0) + 1, h: reach(0, -1) + reach(0, 1) + 1 };
+  };
   if (width <= 1024) {
     for (const el of document.querySelectorAll("a[href],button,input:not([type=hidden]),select,textarea,summary,[role=button],[tabindex]:not([tabindex='-1'])")) {
       if (isHidden(el)) continue;
@@ -364,7 +377,9 @@ function inspect({ width }) {
       if (!r.width || !r.height) continue;
       if (cs(el).display === "inline" && el.parentElement && [...el.parentElement.childNodes].some((c) => c !== el && c.nodeType === 3 && c.nodeValue.trim())) continue;
       if (el.closest("p,li,dd,blockquote,figcaption") && cs(el).display === "inline") continue;
-      if (r.width < 44 || r.height < 44) push("small-target", el, `tap target ${Math.round(r.width)}×${Math.round(r.height)}px`, { target: [Math.round(r.width), Math.round(r.height)] });
+      if (r.width >= 44 && r.height >= 44) continue;
+      const hit = hitArea(el);
+      if (hit.w < 44 || hit.h < 44) push("small-target", el, `tap target ${hit.w}×${hit.h}px`, { target: [hit.w, hit.h] });
     }
   }
   return out;
