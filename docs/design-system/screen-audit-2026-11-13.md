@@ -80,6 +80,17 @@ All of them pass WCAG 2.2's 24 px minimum (2.5.8). 44 px is the site's own `--to
 
 `/privacy` and `/terms` `p.legal-updated` uses `opacity: .7` ([14](screen-audit-2026-11-13/14-faded-legal-updated-360.png)). It's readable, but it's the only text on the site dimmed with opacity instead of a role. **Fix:** `color: var(--text-muted)`, no opacity.
 
+### P2 (accessibility) · The menu button's spoken name doesn't match what it shows
+
+Reported by the agent-kit session from axe (`label-content-name-mismatch`) and confirmed in the build. This check isn't in `screen:audit`. On pages with the standard header, `#header-menu-btn` visibly reads "Ctrl+K" plus the current page ("Ctrl+K Resume" on `/resume`; `menuLabel = activeNav?.label ?? "Menu"`, `Header.astro:20`). Its `aria-label` is a fixed "Menu" (`Header.astro:47`), so a voice-control user who says "click Resume" or "click Ctrl+K" reaches nothing (WCAG 2.5.3 Label in Name).
+
+- **Fix (component):** make the accessible name start with the visible words, for example `aria-label={`${menuLabel} menu`}`. Mark the key hint `.menu-key` `aria-hidden="true"` and expose the shortcut as `aria-keyshortcuts="Control+K"`. Alternatively, drop the `aria-label` and add visually hidden " menu" text. Re-check with axe.
+- **Coordinate:** `Header.astro` is also where the agent-kit work adds its "Agent Kit" nav item. Land this after that PR, or in it, so the two don't conflict.
+
+### Coming change to re-check: one more nav item
+
+When /agent-kit ships, the header and the landscape ContextBar gain an "Agent Kit" item after Writing. The new route is picked up automatically (routes come from `dist/`). Re-run `pnpm screen:audit --baseline .screen-audit/standard/findings.json` on that PR's preview, and watch the ContextBar at 360–390 and the right-hand page-nav stack at 1024–1440 (polish item 2).
+
 ---
 
 ## Fix batches (proposed, nothing changed)
@@ -90,6 +101,7 @@ All of them pass WCAG 2.2's 24 px minimum (2.5.8). 44 px is the site's own `--to
 | **B · Balanced headings** | P2 + 9 P3 orphan groups | `Layout.astro` global headings, `BlogCard`/`ProjectCard` title, résumé role | Line breaks change site-wide (a design call) | S |
 | **C · 44 px targets** | 15 tap-target groups | `ArrowLink.astro`, `Layout.astro` footer, `ContextBar.astro`, the case-study TOC, the home hero links | Footer and links grow a few px; check the footer row at 390 | M |
 | **D · Small cleanups** | legal "Last updated" opacity | `LegalPage.astro` | none | XS |
+| **E · Menu button name** | label-in-name mismatch on `#header-menu-btn` | `Header.astro` | Shares a file with the agent-kit PR: land it after that PR, or in it | XS |
 
 Each batch ships through `docs/ship/PROFILE.md`: PR preview, `pnpm screen:audit --base <preview> --baseline` showing its groups gone and none new, Cello's go, then fast-forward master.
 
