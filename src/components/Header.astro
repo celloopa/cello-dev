@@ -182,7 +182,9 @@ const menuLabel = activeNav?.label ?? "Menu";
   }
 
   .nav-link {
-    display: block;
+    display: flex;
+    align-items: center;
+    min-height: var(--touch-target);
     position: relative;
     padding: var(--space-8) var(--space-16);
     font-size: var(--type-small);
