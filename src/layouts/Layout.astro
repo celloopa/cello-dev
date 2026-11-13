@@ -31,6 +31,8 @@ interface Props {
   description?: string;
   image?: string;
   canonicalPath?: string;
+  /** Keep the email address out of this page's HTML (the footer link and the shortcuts menu), e.g. /agent-kit. */
+  hideEmail?: boolean;
 }
 
 const siteName = "Cello - Product Designer & Design Engineer";
@@ -43,6 +45,7 @@ const {
   description = siteDescription,
   image,
   canonicalPath,
+  hideEmail = false,
 } = Astro.props;
 const { url, email, profiles } = basics;
 const canonicalUrl = canonicalPath ? new URL(`${canonicalPath.replace(/\/$/, "")}/`, url).toString() : url;
@@ -143,7 +146,7 @@ const SOCIAL_ICONS: SocialIcon = {
           <div class="footer-row footer-row--bottom">
             <ul class="footer-socials" aria-label="Social links">
               {
-                email && (
+                email && !hideEmail && (
                   <li>
                     <a
                       href={`mailto:${email}`}
@@ -184,7 +187,7 @@ const SOCIAL_ICONS: SocialIcon = {
           </div>
         </div>
       </footer>
-      <KeyboardManager />
+      <KeyboardManager hideEmail={hideEmail} />
     </div>
     <script>
       import "@/lib/analytics/client";
