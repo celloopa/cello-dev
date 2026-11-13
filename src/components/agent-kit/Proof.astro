@@ -5,6 +5,7 @@
  * runs; the annotations are the kit's own rules, quoted from the source.
  */
 import ChapterHead from "./ChapterHead.astro";
+import { eyebrowOf } from "./stops";
 
 const stories = [
   { id: "story-ghosted", sheet: "Sheet 1 of 2", title: "Ghosted's feature pipeline" },
@@ -19,7 +20,7 @@ const notes = [
 ---
 
 <section class="ak-chapter ak-wrap" id="proof" data-chapter="proof" aria-labelledby="proof-title">
-  <ChapterHead eyebrow="04 · Proof" title="Two things it shipped" titleId="proof-title">
+  <ChapterHead eyebrow={eyebrowOf("proof")} title="Two things it shipped" titleId="proof-title">
     Two ship stories from real runs of the pipeline. The letters mark the rules to watch for in
     both.
   </ChapterHead>
