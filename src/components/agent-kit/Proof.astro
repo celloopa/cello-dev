@@ -1,15 +1,44 @@
 ---
 /*
  * 04 · Proof: two ship stories as drawing sheets, with direction A's blueprint annotations (A, B,
- * C) hanging from leader lines. The story bodies are slots until AK-5 writes them from the real
- * runs; the annotations are the kit's own rules, quoted from the source.
+ * C) hanging from leader lines. Each sheet reads trigger → what got done → outcome (the shape of
+ * Runner's "workflow snapshot", from the Mobbin pass), with the marks of the rules it shows. The
+ * facts are assembled from the real runs; the take under each is Cello's to write.
  */
 import ChapterHead from "./ChapterHead.astro";
+import CelloWords from "./CelloWords.astro";
 import { eyebrowOf } from "./stops";
 
-const stories = [
-  { id: "story-ghosted", sheet: "Sheet 1 of 2", title: "Ghosted's feature pipeline" },
-  { id: "story-page", sheet: "Sheet 2 of 2", title: "This page, built by the kit" },
+type Step = { text: string; mark?: "A" | "B" | "C" };
+const stories: { id: string; sheet: string; title: string; trigger: string; done: Step[]; outcome: string }[] = [
+  {
+    id: "story-ghosted",
+    sheet: "Sheet 1 of 2",
+    title: "Ghosted's feature pipeline",
+    trigger: "Ghosted, my AI resume editor, opened for early testing on October 8, 2026, and testers set the order of work from day one.",
+    done: [
+      { text: "Bigger features went through research, a grilling one question at a time, and a decision written down before any code." },
+      { text: "Tickets carried acceptance criteria, and anything visible passed a design-system gate first.", mark: "A" },
+      { text: "Layouts were picked from screens, not prose: the feedback flow had six prototypes, and I picked “B + 2”." },
+      { text: "Only one shipping session merged, after its review and my go.", mark: "C" },
+      { text: "On day four the process was written down as nine steps, each naming the feature it came from." },
+    ],
+    outcome: "70 production releases in the first four days of testing.",
+  },
+  {
+    id: "story-page",
+    sheet: "Sheet 2 of 2",
+    title: "This page, built by the kit",
+    trigger: "A draft page with three setup prompts, to become a section of this site.",
+    done: [
+      { text: "Five questions first, one at a time: name and address, navigation, which stories, downloads, the hands-on moment." },
+      { text: "A plan in the second brain with eight tickets, each with testable criteria.", mark: "A" },
+      { text: "Three looks to choose from, then a persona test of the pick before anything was built." },
+      { text: "Workers built on their own branches. A fresh evaluator checked each one in a real browser, at phone and desktop sizes." },
+      { text: "I planted one bug: the second Copy button copied the first prompt. The evaluator sent it back for exactly that.", mark: "B" },
+    ],
+    outcome: "Lighthouse accessibility 100 on phone and desktop, 3.4 kB of page script, shipped after review and my go.",
+  },
 ];
 
 const notes = [
@@ -32,7 +61,35 @@ const notes = [
           <article class="ak-sheet" aria-labelledby={s.id}>
             <span class="ak-sheet-no">{s.sheet}</span>
             <h3 class="ak-sheet-title" id={s.id}>{s.title}</h3>
-            <p class="ak-sheet-body"><span class="ak-slot">[Story: pending AK-5]</span></p>
+            <dl class="ak-sheet-rows">
+              <div class="ak-sheet-row">
+                <dt>Trigger</dt>
+                <dd>{s.trigger}</dd>
+              </div>
+              <div class="ak-sheet-row">
+                <dt>What got done</dt>
+                <dd>
+                  <ul class="ak-sheet-done">
+                    {s.done.map((d) => (
+                      <li>
+                        {d.text}
+                        {d.mark && (
+                          <span class="ak-sheet-mark">
+                            <span class="ak-sr">Rule </span>
+                            {d.mark}
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </dd>
+              </div>
+              <div class="ak-sheet-row ak-sheet-row--outcome">
+                <dt>Outcome</dt>
+                <dd>{s.outcome}</dd>
+              </div>
+            </dl>
+            <p class="ak-sheet-take"><CelloWords /></p>
           </article>
         ))
       }
@@ -89,7 +146,69 @@ const notes = [
     text-transform: uppercase;
   }
 
-  .ak-sheet-body {
+  .ak-sheet-rows {
+    display: flex;
+    flex-direction: column;
+    margin: var(--space-8) 0 0;
+  }
+
+  .ak-sheet-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-block: var(--space-12);
+    border-top: var(--stroke-rule) solid var(--border-subtle);
+  }
+
+  .ak-sheet-row dt {
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-wide);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .ak-sheet-row dd {
+    margin: 0;
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-sheet-row--outcome dd {
+    color: var(--text-primary);
+    font-weight: var(--weight-bold);
+  }
+
+  .ak-sheet-done {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    margin: 0;
+    padding-left: var(--space-16);
+  }
+
+  .ak-sheet-mark {
+    display: inline-grid;
+    place-items: center;
+    min-width: var(--space-20);
+    height: var(--space-20);
+    margin-left: var(--space-8);
+    border: var(--stroke-rule) solid var(--accent-construction);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    vertical-align: text-bottom;
+  }
+
+  .ak-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .ak-sheet-take {
     margin-top: auto;
   }
 
@@ -159,6 +278,11 @@ const notes = [
 
     .ak-annotations {
       margin-top: var(--space-40);
+    }
+
+    /* stacked: the leader stays inside the gap above its note, never over the note before */
+    .ak-annotation::before {
+      transform: translateY(-100%);
     }
   }
 </style>
