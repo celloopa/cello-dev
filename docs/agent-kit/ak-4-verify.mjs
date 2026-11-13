@@ -124,15 +124,17 @@ for (const [w, h] of [[390, 844], [1440, 900]]) {
       const flips = await page.evaluate(async () => {
         const top = document.getElementById("studio").getBoundingClientRect().top + scrollY;
         const base = top - innerHeight * 0.4;
-        const seen = new Set();
+        const seq = [];
         for (const d of [-60, -20, 20, -20, 20, -20]) {
           window.scrollTo({ top: base + d, behavior: "instant" });
           await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-          seen.add(document.querySelector(".ak").dataset.ch);
+          seq.push(document.querySelector(".ak").dataset.ch);
         }
-        return [...seen];
+        return seq;
       });
-      ok(`${tag} AC1 hysteresis: ±20px around a boundary doesn't flicker`, flips.length === 1, flips.join(","));
+      // forward switches at the boundary; going back needs the margin, so at most one switch
+      const switches = flips.filter((c, k) => k > 0 && c !== flips[k - 1]).length;
+      ok(`${tag} AC1 hysteresis: ±20px around a boundary switches at most once (no flicker)`, switches <= 1, flips.join(","));
       const reads = await page.evaluate(() => { window.__countReads = false; return window.__reads; });
       ok(`${tag} AC1 no layout reads by the story script while scrolling`, reads === 0, `${reads} reads`);
       if (w === 1440) {
