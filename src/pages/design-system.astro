@@ -17,12 +17,17 @@ const byName = (prefix: string, name: string) => group(prefix).find((t) => t.css
 // Color roles. Each theme specimen re-declares every role on its own element, so both themes
 // render side by side whatever the visitor's theme is. Role values only reference primitives
 // (global) and other roles (resolved on the same element).
-const roles = group("Roles: color");
+// The agent kit's group (AK-2, pending Cello) holds its own primitives, roles and showcase motion
+// until they're approved into the main groups; each list below takes its share of it.
+const agentKit = group("Agent kit");
+const isPrimitive = (t: Token) => /^--ember-/.test(t.css);
+const isMotion = (t: Token) => t.css.startsWith("--motion-");
+const roles = [...group("Roles: color"), ...agentKit.filter((t) => !isPrimitive(t) && !isMotion(t))];
 const themeValue = (t: Token, theme: "dusk" | "day") => (typeof t.$value === "string" ? t.$value : t.$value[theme]);
 const themeVars = (theme: "dusk" | "day") => roles.map((t) => `${t.css}: ${themeValue(t, theme)}`).join("; ");
 const chip = (value: string) => `background: ${value}`;
 const legacy = /^Legacy/;
-const primitives = group("Primitives: color").filter((t) => !legacy.test(describe(t)));
+const primitives = [...group("Primitives: color").filter((t) => !legacy.test(describe(t))), ...agentKit.filter(isPrimitive)];
 
 // Seasonal poster inks (A1/I3). Dusk is one rule, not a second palette.
 const seasons = [
@@ -70,7 +75,7 @@ const typeStyle = (r: (typeof typeRoles)[number]) =>
 const space = group("Space");
 const layout = group("Layout").filter((t) => t.css !== "--touch-target");
 const strokes = group("Shape and stroke").filter((t) => t.css.startsWith("--stroke"));
-const motion = group("Motion");
+const motion = [...group("Motion"), ...agentKit.filter(isMotion)];
 const barWidth = (t: Token) => `width: var(${t.css})`;
 const strokeStyle = (t: Token) => `border-top-width: var(${t.css})`;
 const ease = byName("Motion", "--ease-out");
