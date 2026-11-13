@@ -125,9 +125,10 @@ function init() {
     let i = -1;
     for (let k = 0; k < tops.length; k++) if (tops[k] <= line) i = k;
     if (i !== cur) {
-      // the boundary between the two: the top of the later chapter
-      const edge = tops[Math.max(i, cur)] ?? 0;
-      if (cur === -2 || Math.abs(line - edge) >= HYSTERESIS || Math.abs(i - cur) > 1) setCh(i);
+      // forward as soon as the reading line crosses the next top; back only once it is
+      // HYSTERESIS above the current chapter's top, so a boundary never flickers
+      const backEdge = (tops[cur] ?? 0) - HYSTERESIS;
+      if (cur === -2 || i > cur || line <= backEdge || cur - i > 1) setCh(i);
     }
     const reveal = y + vh * 0.85;
     while (seen + 1 < tops.length && tops[seen + 1] <= reveal) {
