@@ -1,0 +1,141 @@
+---
+/*
+ * 01 · The brain: the four stage folders as stubs along the rail (inbox → projects → output →
+ * wiki), then the wiki rule on its own plate. Content from the kit's source page and prompt 01.
+ */
+import ChapterHead from "./ChapterHead.astro";
+
+const stages = [
+  { folder: "inbox/", role: "Capture", body: "Capture anything. No organizing." },
+  { folder: "projects/", role: "Working", body: "One note per project: goal, decisions, links." },
+  { folder: "output/", role: "Shipped", body: "What actually shipped." },
+  { folder: "wiki/", role: "Lasting lessons", body: "Lessons, only from finished projects." },
+];
+---
+
+<section class="ak-chapter ak-wrap" id="brain" data-chapter="brain" aria-labelledby="brain-title">
+  <ChapterHead eyebrow="01 · The brain" title="Knowledge moves forward only when work earns it" titleId="brain-title">
+    A folder of plain Markdown your agents read before working. They know your projects, decisions
+    and preferences without you explaining again.
+  </ChapterHead>
+
+  <div class="ak-brain">
+    <div class="ak-rail" aria-hidden="true"></div>
+    <ol class="ak-stages">
+      {
+        stages.map((s, i) => (
+          <li class="ak-hooked">
+            <div class="ak-stub ak-stub--hole ak-stage">
+              <span class="ak-stage-role">Stage {i + 1} · {s.role}</span>
+              <h3 class="ak-stage-folder">{s.folder}</h3>
+              <p>{s.body}</p>
+            </div>
+            {i < stages.length - 1 && <span class="ak-stage-arrow" aria-hidden="true">→</span>}
+          </li>
+        ))
+      }
+    </ol>
+
+    <aside class="ak-rule" aria-labelledby="wiki-rule-title">
+      <h3 class="ak-rule-title" id="wiki-rule-title">The wiki rule</h3>
+      <p>
+        A wiki page is only ever harvested from a finished project and its outputs. Nothing goes in
+        from a raw note or a chat answer, so it grows slowly and everything in it has been tested
+        by real work.
+      </p>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .ak-brain {
+    margin-top: var(--space-48);
+  }
+
+  .ak-stages {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-24);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ak-stage {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    height: 100%;
+    padding: var(--space-40) var(--space-16) var(--space-16);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-stage-role {
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-caps);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .ak-stage-folder {
+    font-family: var(--font-mono);
+    font-size: var(--type-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-title);
+  }
+
+  .ak-stage-arrow {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    color: var(--text-primary);
+    font-size: var(--type-ui);
+    font-weight: var(--weight-bold);
+    transform: translate(100%, -50%);
+    z-index: 1;
+  }
+
+  .ak-rule {
+    display: grid;
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+    gap: var(--space-24);
+    margin-top: var(--space-48);
+    padding: var(--space-24);
+    border: var(--stroke-frame) solid var(--border-strong);
+    border-left: var(--space-12) solid var(--accent-ground);
+    background: var(--bg-plate);
+  }
+
+  .ak-rule-title {
+    color: var(--text-accent);
+    font-family: var(--font-title);
+    font-size: var(--type-heading);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--leading-heading);
+    text-transform: uppercase;
+  }
+
+  .ak-rule p {
+    max-width: var(--layout-measure);
+    line-height: var(--leading-read);
+  }
+
+  @media (max-width: 768px) {
+    .ak-stages {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-16);
+    }
+
+    .ak-stage-arrow {
+      display: none;
+    }
+
+    .ak-rule {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-12);
+      padding: var(--space-16);
+    }
+  }
+</style>

@@ -1,0 +1,29 @@
+---
+/*
+ * 05 · Setup: the three prompts as stacked work orders, 01 marked "Start here". The text of each
+ * comes from its one source file (src/lib/agent-kit/prompts.ts).
+ */
+import ChapterHead from "./ChapterHead.astro";
+import WorkOrder from "./WorkOrder.astro";
+import { prompts, promptText } from "@/lib/agent-kit/prompts";
+---
+
+<section class="ak-chapter ak-wrap" id="setup" data-chapter="setup" aria-labelledby="setup-title">
+  <ChapterHead eyebrow="05 · Setup" title="Three work orders" titleId="setup-title">
+    Open Claude Code, paste them in order, and answer its questions. Each one stops for your OK
+    between phases. Plenty of people stop after the first two, and that's a useful setup on its
+    own.
+  </ChapterHead>
+  <div class="ak-orders">
+    {prompts.map((p, i) => <WorkOrder prompt={p} text={promptText(p.file)} start={i === 0} />)}
+  </div>
+</section>
+
+<style>
+  .ak-orders {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-40);
+    margin-top: var(--space-48);
+  }
+</style>

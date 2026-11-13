@@ -1,0 +1,37 @@
+---
+/*
+ * /agent-kit: the Agent Studio Kit, direction C "Job tickets" (docs/agent-kit/concepts). A static
+ * build: chapters are <section>s with an id and data-chapter, in reading order. The scroll story
+ * and the ticket run (AK-4) enhance it later; the studio's still is marked data-studio-moment.
+ */
+import Layout from "@/layouts/Layout.astro";
+import "@/components/agent-kit/agent-kit.css";
+import Hero from "@/components/agent-kit/Hero.astro";
+import Brain from "@/components/agent-kit/Brain.astro";
+import Notes from "@/components/agent-kit/Notes.astro";
+import Studio from "@/components/agent-kit/Studio.astro";
+import Proof from "@/components/agent-kit/Proof.astro";
+import Setup from "@/components/agent-kit/Setup.astro";
+import RateCard from "@/components/agent-kit/RateCard.astro";
+import Lessons from "@/components/agent-kit/Lessons.astro";
+import AgentKitScript from "@/components/agent-kit/AgentKitScript.astro";
+---
+
+<Layout
+  title="Agent Studio Kit — Cello"
+  description="How I run AI agents like a small software studio: a shared second brain, automatic notes on every session, and a lead, worker, evaluator and shipper pipeline. Three prompts set it up on your machine."
+  canonicalPath="/agent-kit/"
+  hideEmail
+>
+  <div class="ak">
+    <Hero />
+    <Brain />
+    <Notes />
+    <Studio />
+    <Proof />
+    <Setup />
+    <RateCard />
+    <Lessons />
+  </div>
+  <AgentKitScript />
+</Layout>

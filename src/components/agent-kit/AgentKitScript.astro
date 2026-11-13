@@ -1,0 +1,76 @@
+---
+/*
+ * The page's only script: Copy and Show all on the work orders. One delegated listener, so it
+ * keeps working across view-transition navigations without re-binding.
+ *
+ * Copy writes the prompt's exact text (the <pre>'s text, which is the source file) to the
+ * clipboard, says "Copied" in the order's polite live region and on the button, and resets after
+ * about 2 s. If the clipboard refuses, it opens and selects the text instead and says
+ * "Selected — press Ctrl+C".
+ */
+---
+
+<script>
+  const RESET_MS = 2000;
+  const timers = new WeakMap<HTMLElement, number>();
+
+  function expand(pre: HTMLElement, open: boolean) {
+    pre.toggleAttribute("data-collapsed", !open);
+    const toggle = document.querySelector<HTMLButtonElement>(`[data-toggle-prompt][aria-controls="${pre.id}"]`);
+    if (toggle) {
+      toggle.setAttribute("aria-expanded", String(open));
+      toggle.textContent = open ? "Show less" : "Show all";
+    }
+  }
+
+  function announce(btn: HTMLElement, message: string) {
+    const label = btn.querySelector<HTMLElement>("[data-copy-label]");
+    const status = document.getElementById(btn.dataset.status ?? "");
+    if (label) {
+      label.dataset.rest ??= label.textContent ?? "";
+      label.textContent = message === "Copied" ? "Copied" : "Selected";
+    }
+    if (status) status.textContent = message;
+    window.clearTimeout(timers.get(btn));
+    timers.set(
+      btn,
+      window.setTimeout(() => {
+        if (label) label.textContent = label.dataset.rest ?? "Copy prompt";
+        if (status) status.textContent = "";
+      }, RESET_MS),
+    );
+  }
+
+  async function copy(btn: HTMLElement) {
+    const pre = document.getElementById(btn.dataset.copyPrompt ?? "");
+    if (!pre) return;
+    const text = pre.textContent ?? "";
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error("no clipboard");
+      await navigator.clipboard.writeText(text);
+      announce(btn, "Copied");
+    } catch {
+      expand(pre, true);
+      const range = document.createRange();
+      range.selectNodeContents(pre);
+      const selection = window.getSelection();
+      selection?.removeAllRanges();
+      selection?.addRange(range);
+      announce(btn, "Selected — press Ctrl+C");
+    }
+  }
+
+  document.addEventListener("click", (event) => {
+    const target = event.target as Element | null;
+    const copyBtn = target?.closest<HTMLElement>("[data-copy-prompt]");
+    if (copyBtn) {
+      void copy(copyBtn);
+      return;
+    }
+    const toggle = target?.closest<HTMLElement>("[data-toggle-prompt]");
+    if (toggle) {
+      const pre = document.getElementById(toggle.getAttribute("aria-controls") ?? "");
+      if (pre) expand(pre, toggle.getAttribute("aria-expanded") !== "true");
+    }
+  });
+</script>

@@ -1,0 +1,125 @@
+---
+/*
+ * 02 · Notes: the three layers of automatic session notes from prompt 02, as three stubs on the
+ * rail: a hook logs every session, a recap writes it up, a nightly digest only proposes.
+ */
+import ChapterHead from "./ChapterHead.astro";
+
+const steps = [
+  {
+    no: "1",
+    name: "Hook",
+    kind: "No AI",
+    body: "A SessionEnd hook, plus PreCompact so long sessions get logged before compression, appends one line to a private queue. Instant, never fails a session.",
+  },
+  {
+    no: "2",
+    name: "Recap",
+    kind: "A skill",
+    body: "Reads a transcript and writes a short recap: what we did, decisions and why, verified vs not verified, open threads, memory candidates. No transcript dumps.",
+  },
+  {
+    no: "3",
+    name: "Nightly digest",
+    kind: "Local scheduler",
+    body: "Recaps anything still queued, then writes one digest grouped by project, with proposed updates to project notes and agent memory.",
+    stamp: "Proposes only",
+  },
+];
+---
+
+<section class="ak-chapter ak-wrap" id="notes" data-chapter="notes" aria-labelledby="notes-title">
+  <ChapterHead eyebrow="02 · Session notes" title="Every session leaves a note" titleId="notes-title">
+    Every session gets logged and summarized overnight. You approve what becomes permanent each
+    morning.
+  </ChapterHead>
+
+  <div class="ak-notes">
+    <div class="ak-rail" aria-hidden="true"></div>
+    <ol class="ak-steps">
+      {
+        steps.map((s) => (
+          <li class="ak-hooked">
+            <div class="ak-stub ak-stub--hole ak-step">
+              <span class="ak-step-id">
+                <span>Step {s.no}</span>
+                <span>{s.kind}</span>
+              </span>
+              <h3 class="ak-step-name">{s.name}</h3>
+              <p>{s.body}</p>
+              {s.stamp && <span class="ak-stamp ak-stamp--pass">{s.stamp}</span>}
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="ak-notes-foot">
+      It only proposes: you approve in the morning. Nothing goes into the wiki from a recap, and only
+      Claude Code sessions are saved on your computer, so regular claude.ai chats need a manual
+      capture.
+    </p>
+  </div>
+</section>
+
+<style>
+  .ak-notes {
+    margin-top: var(--space-48);
+  }
+
+  .ak-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-24);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ak-step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    height: 100%;
+    padding: var(--space-40) var(--space-16) var(--space-16);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-step:has(.ak-stamp) {
+    padding-bottom: var(--space-64);
+  }
+
+  .ak-step-id {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-8);
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-caps);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .ak-step-name {
+    font-family: var(--font-title);
+    font-size: var(--type-heading);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--leading-heading);
+    text-transform: uppercase;
+  }
+
+  .ak-notes-foot {
+    max-width: var(--layout-measure);
+    margin-top: var(--space-24);
+    color: var(--text-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-read);
+  }
+
+  @media (max-width: 768px) {
+    .ak-steps {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-16);
+    }
+  }
+</style>

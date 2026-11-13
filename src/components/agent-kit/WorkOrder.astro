@@ -1,0 +1,216 @@
+---
+/*
+ * WorkOrder: one kit prompt as a paper work order. The head says which order it is, what it
+ * needs and what it sets up; the tear-off holds the number, Copy and Download .md, and sits
+ * beside the text (above it on phones) so the actions stay in view. The text shows its first
+ * dozen lines until "Show all". Copy and Show all are wired by AgentKitScript.astro.
+ */
+import Button from "@/components/ui/Button.astro";
+import { promptMeta, type Prompt } from "@/lib/agent-kit/prompts";
+
+interface Props {
+  prompt: Prompt;
+  text: string;
+  start?: boolean;
+}
+
+const { prompt, text, start = false } = Astro.props;
+const base = `prompt-${prompt.no}`;
+const meta = promptMeta(prompt.file);
+---
+
+<article class="ak-stub ak-order" aria-labelledby={`${base}-title`} data-prompt={prompt.file}>
+  <div class="ak-order-head">
+    <div class="ak-order-meta">
+      <span>Order {prompt.no} / 03</span>
+      <span>{prompt.needs}</span>
+      {prompt.time && <span>{prompt.time}</span>}
+    </div>
+    {start && <span class="ak-start">Start here</span>}
+    <h3 class="ak-order-title" id={`${base}-title`}>{prompt.title}</h3>
+    <p class="ak-order-summary">{prompt.summary}</p>
+    <p class="ak-order-version" data-prompt-version>
+      v{meta.version} · Last checked against my setup <time datetime={meta.checked}>{meta.checked}</time>
+    </p>
+  </div>
+
+  <div class="ak-order-tear">
+    <span class="ak-order-big" aria-hidden="true">{prompt.no}</span>
+    <Button data-copy-prompt={`${base}-text`} data-status={`${base}-status`} aria-describedby={`${base}-title`}>
+      <span data-copy-label>Copy prompt</span>
+    </Button>
+    <Button variant="secondary" href={`/agent-kit/prompts/${prompt.file}`} download={prompt.file} aria-describedby={`${base}-title`}>
+      Download .md
+    </Button>
+    <p class="ak-sr" role="status" id={`${base}-status`}></p>
+  </div>
+
+  <div class="ak-order-body">
+    <pre class="ak-order-text" id={`${base}-text`} data-collapsed tabindex="-1">{text}</pre>
+    <button
+      class="ak-order-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls={`${base}-text`}
+      data-toggle-prompt
+    >
+      Show all
+    </button>
+  </div>
+</article>
+
+<style>
+  .ak-order {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 15rem;
+    grid-template-areas:
+      "head tear"
+      "body tear";
+  }
+
+  .ak-order-head {
+    grid-area: head;
+    padding: var(--space-24);
+    border-bottom: var(--stroke-control) solid var(--text-on-stub);
+  }
+
+  .ak-order-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-16);
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-wide);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .ak-start {
+    display: inline-block;
+    margin-top: var(--space-12);
+    padding: var(--space-4) var(--space-8);
+    border: var(--stroke-control) solid var(--action-primary);
+    color: var(--action-primary);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .ak-order-title {
+    margin-top: var(--space-8);
+    font-family: var(--font-title);
+    font-size: var(--type-heading);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--leading-heading);
+    text-transform: uppercase;
+  }
+
+  .ak-order-summary {
+    max-width: var(--layout-measure-narrow);
+    margin-top: var(--space-8);
+    color: var(--text-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-order-version {
+    margin-top: var(--space-8);
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-caps);
+    line-height: var(--leading-ui);
+  }
+
+  .ak-order-tear {
+    grid-area: tear;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    padding: var(--space-24) var(--space-16);
+    border-left: var(--stroke-control) dashed var(--text-on-stub);
+  }
+
+  .ak-order-tear :global(.button) {
+    justify-content: center;
+  }
+
+  .ak-order-big {
+    font-family: var(--font-title);
+    font-size: var(--type-display-card);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--leading-display);
+  }
+
+  .ak-order-body {
+    grid-area: body;
+    padding: var(--space-16) var(--space-24) var(--space-24);
+  }
+
+  .ak-order-text {
+    margin: 0;
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  /* collapsed: the first dozen lines, fading out */
+  .ak-order-text[data-collapsed] {
+    max-height: calc(12em * var(--leading-small));
+    mask-image: linear-gradient(to bottom, black 70%, transparent);
+  }
+
+  .ak-order-toggle {
+    min-height: var(--touch-target);
+    margin-top: var(--space-8);
+    padding: 0 var(--space-4);
+    border: 0;
+    border-bottom: var(--stroke-control) solid var(--action-primary);
+    background: transparent;
+    color: var(--text-primary);
+    font-size: var(--type-ui);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+
+  .ak-order-toggle:hover {
+    color: var(--action-primary);
+  }
+
+  @media (max-width: 768px) {
+    .ak-order {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        "head"
+        "tear"
+        "body";
+    }
+
+    .ak-order-head {
+      padding: var(--space-16);
+      border-bottom: 0;
+    }
+
+    .ak-order-tear {
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      padding: var(--space-16);
+      border-left: 0;
+      border-block: var(--stroke-control) dashed var(--text-on-stub);
+    }
+
+    .ak-order-big {
+      display: none;
+    }
+
+    .ak-order-body {
+      padding: var(--space-16);
+    }
+  }
+</style>

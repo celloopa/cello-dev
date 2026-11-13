@@ -1,0 +1,162 @@
+---
+/*
+ * 04 · Proof: two ship stories as drawing sheets, with direction A's blueprint annotations (A, B,
+ * C) hanging from leader lines. The story bodies are slots until AK-5 writes them from the real
+ * runs; the annotations are the kit's own rules, quoted from the source.
+ */
+import ChapterHead from "./ChapterHead.astro";
+
+const stories = [
+  { id: "story-ghosted", sheet: "Sheet 1 of 2", title: "Ghosted's feature pipeline" },
+  { id: "story-page", sheet: "Sheet 2 of 2", title: "This page, built by the kit" },
+];
+
+const notes = [
+  { mark: "A", text: "Every ticket gets 2–5 testable acceptance criteria before a worker starts." },
+  { mark: "B", text: "The evaluator never sees the worker's reasoning. An agent grading its own work usually passes itself." },
+  { mark: "C", text: "Nothing reaches main without a PASS on that exact commit." },
+];
+---
+
+<section class="ak-chapter ak-wrap" id="proof" data-chapter="proof" aria-labelledby="proof-title">
+  <ChapterHead eyebrow="04 · Proof" title="Two things it shipped" titleId="proof-title">
+    Two ship stories from real runs of the pipeline. The letters mark the rules to watch for in
+    both.
+  </ChapterHead>
+
+  <div class="ak-proof">
+    <div class="ak-sheets">
+      {
+        stories.map((s) => (
+          <article class="ak-sheet" aria-labelledby={s.id}>
+            <span class="ak-sheet-no">{s.sheet}</span>
+            <h3 class="ak-sheet-title" id={s.id}>{s.title}</h3>
+            <p class="ak-sheet-body"><span class="ak-slot">[Story: pending AK-5]</span></p>
+          </article>
+        ))
+      }
+    </div>
+    <ol class="ak-annotations" aria-label="Annotations: what to look for in both stories">
+      {
+        notes.map((n) => (
+          <li class="ak-annotation">
+            <p><b>{n.mark}</b> {n.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .ak-proof {
+    margin-top: var(--space-48);
+  }
+
+  .ak-sheets {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-32);
+  }
+
+  .ak-sheet {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    min-height: 16rem;
+    padding: var(--space-24);
+    border: var(--stroke-frame) solid var(--border-strong);
+    background: var(--bg-plate);
+    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--accent-ground);
+  }
+
+  .ak-sheet-no {
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-wide);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .ak-sheet-title {
+    color: var(--text-primary);
+    font-family: var(--font-title);
+    font-size: var(--type-heading);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--leading-heading);
+    text-transform: uppercase;
+  }
+
+  .ak-sheet-body {
+    margin-top: auto;
+  }
+
+  /* blueprint annotations: a leader line up to the sheets, the note on a plate */
+  .ak-annotations {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-32);
+    margin: var(--space-48) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ak-annotation {
+    position: relative;
+    padding-top: var(--space-24);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-annotation::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: var(--space-16);
+    width: var(--stroke-rule);
+    height: var(--space-24);
+    background: var(--accent-construction);
+    transform: translateY(-100%) scaleY(2);
+    transform-origin: bottom;
+  }
+
+  .ak-annotation::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: var(--space-12);
+    width: var(--space-8);
+    height: var(--space-8);
+    border: var(--stroke-rule) solid var(--accent-construction);
+    border-radius: var(--radius-circle);
+    transform: translate(0, -50%);
+  }
+
+  .ak-annotation p {
+    padding: var(--space-8) var(--space-12);
+    border-left: var(--stroke-control) solid var(--accent-construction);
+    background: var(--bg-plate);
+  }
+
+  .ak-annotation b {
+    display: inline-grid;
+    place-items: center;
+    width: var(--space-24);
+    height: var(--space-24);
+    margin-right: var(--space-8);
+    border: var(--stroke-control) solid var(--border-strong);
+    font-weight: var(--weight-bold);
+  }
+
+  @media (max-width: 768px) {
+    .ak-sheets,
+    .ak-annotations {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-24);
+    }
+
+    .ak-annotations {
+      margin-top: var(--space-40);
+    }
+  }
+</style>

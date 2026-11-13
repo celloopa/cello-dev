@@ -1,0 +1,426 @@
+---
+/*
+ * 03 · The studio: one ticket's story across the four stations (lead → worker → evaluator →
+ * shipper), drawn as a static end-state still. With "Plant a bug" on (the default) the evaluator
+ * stamps PANTRY-4 SENT BACK and the route returns it to the worker; off, it passes and ships.
+ * The switch works without script (:has). Run ticket and Pause wait for AK-4, which enhances the
+ * [data-studio-moment] container into the scroll-story run.
+ */
+import Button from "@/components/ui/Button.astro";
+import ChapterHead from "./ChapterHead.astro";
+import CelloWords from "./CelloWords.astro";
+---
+
+<section class="ak-chapter ak-wrap" id="studio" data-chapter="studio" aria-labelledby="studio-title">
+  <ChapterHead eyebrow="03 · The studio" title="Every ticket gets stamped" titleId="studio-title">
+    One agent plans with you, workers build in parallel, a separate one tests their work, and one
+    ships it. Nothing reaches the last hook without a pass.
+  </ChapterHead>
+
+  <div class="ak-studio" data-studio-moment>
+    <div class="ak-controls">
+      <p class="ak-ticket-label">Your ticket: <b>PANTRY-4 · Shopping list by aisle</b></p>
+      <label class="ak-switch">
+        <input class="ak-bug-input" type="checkbox" checked aria-describedby="studio-outcome" />
+        <span class="ak-switch-track" aria-hidden="true"></span>
+        Plant a bug
+      </label>
+      <div class="ak-run">
+        <Button disabled aria-describedby="studio-still">Run ticket</Button>
+        <Button variant="secondary" disabled aria-describedby="studio-still">Pause</Button>
+      </div>
+      <p class="ak-controls-note">
+        <span id="studio-still">Showing the end of the run.</span>
+        <span id="studio-outcome" aria-live="polite">
+          <span data-when="bug">Bug planted: the evaluator sends PANTRY-4 back to the worker.</span>
+          <span data-when="clean">No bug: PANTRY-4 passes and ships.</span>
+        </span>
+      </p>
+      <p class="ak-controls-take">
+        Plant one deliberate bug. If the evaluator doesn't catch it, it isn't evaluating.
+        <CelloWords />
+      </p>
+    </div>
+
+    <div class="ak-board">
+      <div class="ak-cols" aria-hidden="true">
+        <span>Lead <i>· plans</i></span>
+        <span>Worker <i>· builds</i></span>
+        <span>Evaluator <i>· checks</i></span>
+        <span>Shipper <i>· ships</i></span>
+      </div>
+      <div class="ak-rail" aria-hidden="true"></div>
+      <ol class="ak-lanes">
+        <li class="ak-lane ak-hooked">
+          <h3 class="ak-lane-name">Lead <i>· plans</i></h3>
+          <div class="ak-stub ak-stub--hole ak-stub--trace ak-ticket">
+            <span class="ak-ticket-id"><span>PANTRY-4</span><span>Planned</span></span>
+            <h4 class="ak-ticket-title">Shopping list by aisle</h4>
+            <span class="ak-ticket-meta">3 testable criteria</span>
+          </div>
+        </li>
+        <li class="ak-lane ak-hooked">
+          <h3 class="ak-lane-name">Worker <i>· builds</i></h3>
+          <div class="ak-stub ak-stub--hole ak-stub--trace ak-ticket">
+            <span class="ak-ticket-id"><span>PANTRY-4</span><span>Built</span></span>
+            <h4 class="ak-ticket-title">Shopping list by aisle</h4>
+            <span class="ak-ticket-meta">Branch pantry-4 · test added</span>
+          </div>
+        </li>
+        <li class="ak-lane ak-lane--eval ak-hooked">
+          <h3 class="ak-lane-name">Evaluator <i>· checks</i></h3>
+          <div class="ak-stub ak-stub--hole ak-ticket ak-ticket--stamped">
+            <span class="ak-ticket-id"><span>PANTRY-4</span><span>Round 1 / 3</span></span>
+            <h4 class="ak-ticket-title">Shopping list by aisle</h4>
+            <ul class="ak-criteria" aria-label="Acceptance criteria">
+              <li><span aria-hidden="true">✓</span><span><span class="ak-sr">Pass: </span>Groups by aisle</span></li>
+              <li><span aria-hidden="true">✓</span><span><span class="ak-sr">Pass: </span>Checks survive reload</span></li>
+              <li data-when="bug"><span class="ak-x" aria-hidden="true">✕</span><span><span class="ak-sr">Fail: </span>No console errors</span></li>
+              <li data-when="clean"><span aria-hidden="true">✓</span><span><span class="ak-sr">Pass: </span>No console errors</span></li>
+            </ul>
+            <hr class="ak-perf" />
+            <span class="ak-ticket-meta" data-when="bug">TypeError on /list · planted</span>
+            <span class="ak-ticket-meta" data-when="clean">Phone and desktop checked</span>
+            <span class="ak-stamp ak-stamp--back" data-when="bug">Sent back</span>
+            <span class="ak-stamp ak-stamp--pass" data-when="clean">Pass</span>
+          </div>
+        </li>
+        <li class="ak-lane ak-hooked">
+          <h3 class="ak-lane-name">Shipper <i>· ships</i></h3>
+          <div class="ak-waiting" data-when="bug">Waiting for a pass</div>
+          <div class="ak-stub ak-stub--hole ak-ticket" data-when="clean">
+            <span class="ak-ticket-id"><span>PANTRY-4</span><span>Live</span></span>
+            <h4 class="ak-ticket-title">Shopping list by aisle</h4>
+            <span class="ak-ticket-meta">Checked live · note written</span>
+          </div>
+        </li>
+      </ol>
+      <div class="ak-return" data-when="bug">
+        <span class="ak-return-line" aria-hidden="true"></span>
+        <p class="ak-return-label"><span aria-hidden="true">←</span> PANTRY-4 back to the worker · round 1 of 3</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ak-studio {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-40);
+    margin-top: var(--space-48);
+  }
+
+  /* the bug switch picks which end state shows */
+  .ak-studio:has(.ak-bug-input:checked) [data-when="clean"],
+  .ak-studio:has(.ak-bug-input:not(:checked)) [data-when="bug"] {
+    display: none;
+  }
+
+  /* ---------- controls: above the board at every width ---------- */
+  .ak-controls {
+    display: grid;
+    grid-template-columns: auto auto minmax(0, 1fr);
+    gap: var(--space-16) var(--space-32);
+    align-items: center;
+    padding-block: var(--space-16);
+    border-block: var(--stroke-control) solid var(--border-strong);
+  }
+
+  .ak-ticket-label {
+    grid-column: 1 / -1;
+    font-size: var(--type-small);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+
+  .ak-ticket-label b {
+    font-weight: var(--weight-bold);
+  }
+
+  .ak-run {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+  }
+
+  .ak-controls-note,
+  .ak-controls-take {
+    color: var(--text-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-controls-note {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .ak-controls-note [data-when] {
+    color: var(--text-primary);
+  }
+
+  .ak-controls-take {
+    grid-column: 1 / -1;
+  }
+
+  /* the switch: square track, action green when on */
+  .ak-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-12);
+    min-height: var(--touch-target);
+    font-size: var(--type-ui);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .ak-bug-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .ak-switch-track {
+    position: relative;
+    flex: none;
+    width: 3.25rem;
+    height: 1.75rem;
+    border: var(--stroke-control) solid var(--border-strong);
+    background: var(--bg-plate);
+  }
+
+  .ak-switch-track::after {
+    content: "";
+    position: absolute;
+    top: var(--space-4);
+    left: var(--space-4);
+    width: var(--space-16);
+    height: var(--space-16);
+    background: var(--text-primary);
+    transition: transform var(--motion-ui) var(--ease-out);
+  }
+
+  .ak-bug-input:checked + .ak-switch-track {
+    border-color: var(--action-primary);
+    background: var(--action-primary);
+  }
+
+  .ak-bug-input:checked + .ak-switch-track::after {
+    background: var(--text-inverse);
+    transform: translateX(1.5rem);
+  }
+
+  .ak-bug-input:focus-visible + .ak-switch-track {
+    outline: var(--stroke-frame) solid var(--focus-ring);
+    outline-offset: var(--stroke-frame);
+  }
+
+  /* ---------- the board ---------- */
+  .ak-cols,
+  .ak-lanes {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-24);
+  }
+
+  .ak-cols {
+    padding-bottom: var(--space-12);
+  }
+
+  .ak-cols span,
+  .ak-lane-name {
+    font-family: var(--font-mono);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .ak-cols i,
+  .ak-lane-name i {
+    color: var(--text-muted);
+    font-style: normal;
+    font-weight: var(--weight-regular);
+  }
+
+  /* desktop: the column heads name the lanes; the lane's own h3 stays for screen readers */
+  .ak-lane-name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .ak-lanes {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ak-lane--eval {
+    transform: translateY(var(--space-24));
+  }
+
+  .ak-ticket {
+    padding: var(--space-40) var(--space-16) var(--space-16);
+  }
+
+  .ak-ticket--stamped,
+  .ak-ticket:has(.ak-stamp) {
+    padding-bottom: var(--space-64);
+  }
+
+  .ak-ticket-id {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-8);
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-caps);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .ak-ticket-title {
+    margin-top: var(--space-8);
+    font-family: var(--font-title);
+    font-size: var(--type-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-title);
+  }
+
+  .ak-ticket-meta {
+    display: block;
+    padding-top: var(--space-8);
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-caps);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .ak-criteria {
+    margin: var(--space-12) 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-criteria li {
+    display: grid;
+    grid-template-columns: var(--space-20) minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .ak-x {
+    color: var(--status-returned-on-stub);
+    font-weight: var(--weight-bold);
+  }
+
+  .ak-waiting {
+    display: grid;
+    place-items: center;
+    min-height: 10rem;
+    padding: var(--space-16);
+    border: var(--stroke-control) dashed var(--border-muted);
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+
+  /* the route back: evaluator to worker */
+  .ak-return {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-24);
+    margin-top: var(--space-40);
+  }
+
+  .ak-return-line {
+    grid-column: 2 / 4;
+    grid-row: 1;
+    height: var(--space-32);
+    margin-inline: var(--space-64);
+    border: var(--stroke-control) dashed var(--status-returned);
+    border-top: 0;
+  }
+
+  .ak-return-label {
+    grid-column: 2 / 4;
+    grid-row: 2;
+    justify-self: center;
+    padding-top: var(--space-8);
+    color: var(--status-returned);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 768px) {
+    .ak-controls {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ak-cols {
+      display: none;
+    }
+
+    .ak-lane-name {
+      position: static;
+      width: auto;
+      height: auto;
+      overflow: visible;
+      clip-path: none;
+      margin-bottom: var(--space-8);
+    }
+
+    .ak-lanes {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-16);
+    }
+
+    .ak-lane {
+      padding-top: 0;
+    }
+
+    .ak-lane::before {
+      display: none;
+    }
+
+    .ak-lane--eval {
+      transform: none;
+    }
+
+    .ak-return {
+      grid-template-columns: minmax(0, 1fr);
+      margin-top: var(--space-16);
+    }
+
+    .ak-return-line {
+      display: none;
+    }
+
+    .ak-return-label {
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: start;
+    }
+
+    .ak-return-label span {
+      display: inline-block;
+      transform: rotate(90deg);
+    }
+  }
+</style>
