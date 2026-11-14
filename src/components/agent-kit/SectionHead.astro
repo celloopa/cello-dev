@@ -1,12 +1,12 @@
 ---
 /*
- * SectionHead: a section's accent eyebrow, its h2 and an optional intro, centered. The intro is
+ * SectionHead: a section's h2, an optional accent eyebrow above it and an optional intro, centered. The intro is
  * the default slot, so it can hold a link.
  */
 import Eyebrow from "@/components/ui/Eyebrow.astro";
 
 interface Props {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   titleId: string;
 }
@@ -15,7 +15,7 @@ const { eyebrow, title, titleId } = Astro.props;
 ---
 
 <div class="ak-head">
-  <Eyebrow tone="accent">{eyebrow}</Eyebrow>
+  {eyebrow && <Eyebrow tone="accent">{eyebrow}</Eyebrow>}
   <h2 class="ak-title" id={titleId}>{title}</h2>
   {Astro.slots.has("default") && <p class="ak-intro"><slot /></p>}
 </div>

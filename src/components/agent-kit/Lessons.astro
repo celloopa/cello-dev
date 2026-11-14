@@ -1,24 +1,43 @@
 ---
 /*
- * Lessons from running the kit (from the source page), and its caveat.
+ * Lessons from running the kit: each card says what happens, from the runs behind this page.
  */
 import SectionHead from "./SectionHead.astro";
 
 const lessons = [
-  { title: "Get grilled before anything is built", body: "The most useful step is the agent asking you hard questions about the idea first. It saves rebuilding later." },
-  { title: "Hooks for reliability, AI for writing", body: "If logging depends on an agent remembering, sessions get missed. A hook runs every time." },
-  { title: "Approve before it's permanent", body: "Automated notes go somewhere private first. Otherwise the brain fills up with confident, half-right summaries." },
-  { title: "One role ships, after review", body: "One role ships and everyone else builds. That stops agents from overwriting each other's work." },
-  { title: "Prove the checker works", body: "Plant one deliberate bug. Trust the evaluator's passes once it has caught it." },
-  { title: "Start small", body: "Prompt 01 plus a week of capturing gets you most of the benefit. Add the studio when you have an app to build." },
+  {
+    title: "Let the agent grill you first",
+    body: "Before this page had a layout, the agent asked me five questions, one at a time: the name and web address, the navigation, which stories, the downloads and the hands-on moment. Each answer went into the plan before a single ticket existed.",
+  },
+  {
+    title: "A hook never forgets to log",
+    body: "If logging depends on the agent remembering, sessions get missed. A hook fires every time a session ends, and the AI does only the part a script can't: writing the recap.",
+  },
+  {
+    title: "You decide each morning what the brain keeps",
+    body: "Recaps and the nightly digest land in a private folder that Git ignores. Nothing joins the brain until you approve it the next morning, so half-right summaries stay out.",
+  },
+  {
+    title: "Only the shipper touches main",
+    body: "Workers build on their own branches, and the lead merges them into a plan branch. The shipper moves main to the exact commit that was previewed, after a pass and my go.",
+  },
+  {
+    title: "Trust the evaluator after it catches a bug you planted",
+    body: "Break one thing on purpose, on a throwaway branch, and wait for the evaluator to send it back. The second story above is mine.",
+  },
+  {
+    title: "Prompt 01 and a week of notes is most of it",
+    body: "Run prompt 01 and use it for a week before adding anything. Prompts 02 and 03 build on that folder, and the studio is for when you have an app to build.",
+  },
+  {
+    title: "The agent reads the README, not its memory",
+    body: "Tool names and install steps change, so the prompts tell your agent to read each tool's README instead of trusting what it remembers.",
+  },
 ];
 ---
 
 <section class="ak-section ak-wrap" id="lessons" aria-labelledby="lessons-title">
-  <SectionHead eyebrow="Lessons" title="What I learned running it" titleId="lessons-title">
-    Tool names and install steps change, so the prompts tell your agent to read each tool's README
-    instead of trusting its memory.
-  </SectionHead>
+  <SectionHead eyebrow="Lessons" title="Where agents slip, and the check for each" titleId="lessons-title" />
 
   <ol class="ak-body ak-lessons">
     {

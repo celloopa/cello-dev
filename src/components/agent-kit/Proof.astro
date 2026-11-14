@@ -1,52 +1,42 @@
 ---
 /*
- * Proof: the stat line (Ghosted's first four days of testing) and two ship stories as cards, each
- * trigger → what got done → outcome. The facts are assembled from the real runs.
+ * Proof: the result row (this page's own numbers) and two ship stories in the card styling, each
+ * in the shape its material has: Ghosted as a dated timeline, this page as a short story. The
+ * facts come from the real runs (Brain projects/agent-kit.md).
  */
 import SectionHead from "./SectionHead.astro";
 
-const stories: { id: string; label: string; title: string; trigger: string; done: string[]; outcome: string }[] = [
+const timeline = [
   {
-    id: "story-ghosted",
-    label: "Story 1 of 2",
-    title: "Ghosted's feature pipeline",
-    trigger: "Ghosted, my AI resume editor, opened for early testing on October 8, 2026, and testers set the order of work from day one.",
-    done: [
-      "Bigger features went through research, a grilling one question at a time, and a decision written down before any code.",
-      "Tickets carried acceptance criteria, and anything visible passed a design-system gate first.",
-      "Layouts were picked from screens: the feedback flow had six prototypes, and I picked “B + 2”.",
-      "Only one shipping session merged, after its review and my go.",
-      "On day four the process was written down as nine steps, each naming the feature it came from.",
-    ],
-    outcome: "70 production releases in the first four days of testing.",
+    when: "October 8, 2026",
+    text: "Ghosted, my AI resume editor, opens for early testing. From day one, testers set the order of work.",
   },
   {
-    id: "story-page",
-    label: "Story 2 of 2",
-    title: "This page, built by the kit",
-    trigger: "A draft page with three setup prompts, to become a section of this site.",
-    done: [
-      "Five questions first, one at a time: name and web address, navigation, which stories, downloads, the hands-on moment.",
-      "A plan in the second brain with eight tickets, each with testable criteria.",
-      "Three looks to choose from, then a persona test of the pick before anything was built.",
-      "The lead started a worker per ticket, each on its own branch. A separate evaluator, which never saw their reasoning, checked each one in a real browser at phone and desktop sizes.",
-      "I planted one bug: the second Copy button copied the first prompt. The evaluator sent it back for exactly that.",
-    ],
-    outcome: "Lighthouse accessibility 100 on phone and desktop, 3.4 kB of page script, shipped after review and my go.",
+    when: "Days one to three",
+    text: "Every bigger feature goes through research, then a grilling one question at a time, then a decision written down before any code. Each ticket carries acceptance criteria, and anything visible passes a design-system gate first. The feedback flow gets six prototypes, and I pick “B + 2”. One shipping session does all the merging, after review and my go.",
+  },
+  {
+    when: "Day four",
+    text: "I ask for the process to be written down so the next feature can follow it. It comes out as nine steps, each naming the feature it came from.",
   },
 ];
 
+const page = [
+  "The second Copy button on this page once copied the first prompt. I had the lead put that bug there, on a throwaway branch, before trusting the evaluator with anything real. The evaluator sees only a ticket's acceptance criteria and a running preview, never the worker's reasoning. It sent the ticket back for exactly that button and passed everything else.",
+  "The second send-back was real. On the redesign, the evaluator returned the copy: two understatements, a stat that contradicted the hero, and a privacy answer in the FAQ that promised more than the prompts do. Round two passed.",
+  "The page shipped after that and my go.",
+];
+
 const stats = [
-  { value: "3", label: "prompts to set it up" },
-  { value: "3", label: "roles on every project, plus a worker per ticket" },
-  { value: "2–5", label: "testable criteria per ticket" },
+  { value: "100", label: "Lighthouse accessibility (this page, phone and desktop)" },
+  { value: "3.4 kB", label: "of page script (this page)" },
+  { value: "2", label: "send-backs before ship, 1 of them planted (this page)" },
 ];
 ---
 
 <section class="ak-section ak-wrap" id="proof" aria-labelledby="proof-title">
-  <SectionHead eyebrow="Proof" title="70 production releases in four days" titleId="proof-title">
-    That was Ghosted's first four days of early testing, run through this pipeline. Here are two
-    ship stories from real runs: Ghosted's feature pipeline and this page.
+  <SectionHead eyebrow="Ghosted, October 2026" title="70 production releases in four days" titleId="proof-title">
+    That was Ghosted's first four days of early testing, run through this pipeline.
   </SectionHead>
 
   <dl class="ak-body ak-stats">
@@ -61,36 +51,27 @@ const stats = [
   </dl>
 
   <div class="ak-stories">
-    {
-      stories.map((s) => (
-        <article class="ak-panel ak-story" aria-labelledby={s.id}>
-          <span class="ak-meta">{s.label}</span>
-          <h3 class="ak-story-title" id={s.id}>
-            {s.title}
-          </h3>
-          <dl class="ak-story-rows">
-            <div class="ak-story-row">
-              <dt>Trigger</dt>
-              <dd>{s.trigger}</dd>
-            </div>
-            <div class="ak-story-row">
-              <dt>What got done</dt>
-              <dd>
-                <ul class="ak-story-done">
-                  {s.done.map((d) => (
-                    <li>{d}</li>
-                  ))}
-                </ul>
-              </dd>
-            </div>
-            <div class="ak-story-row ak-story-row--outcome">
-              <dt>Outcome</dt>
-              <dd>{s.outcome}</dd>
-            </div>
-          </dl>
-        </article>
-      ))
-    }
+    <article class="ak-panel ak-story" aria-labelledby="story-ghosted">
+      <span class="ak-meta">Story 1 of 2</span>
+      <h3 class="ak-story-title" id="story-ghosted">Ghosted's process got written down on day four, after it worked</h3>
+      <ol class="ak-timeline">
+        {
+          timeline.map((t) => (
+            <li>
+              <span class="ak-timeline-when">{t.when}</span>
+              <p>{t.text}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </article>
+    <article class="ak-panel ak-story" aria-labelledby="story-page">
+      <span class="ak-meta">Story 2 of 2</span>
+      <h3 class="ak-story-title" id="story-page">The evaluator sent this page back twice. I'd planted one of them.</h3>
+      <div class="ak-story-text">
+        {page.map((para) => <p>{para}</p>)}
+      </div>
+    </article>
   </div>
 </section>
 
@@ -151,21 +132,26 @@ const stats = [
     text-wrap: balance;
   }
 
-  .ak-story-rows {
+  /* story 1: a dated timeline, each date on a rule with the step under it */
+  .ak-timeline {
     display: flex;
     flex-direction: column;
     margin: var(--space-8) 0 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .ak-story-row {
+  .ak-timeline li {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
     padding-block: var(--space-12);
     border-top: var(--stroke-rule) solid var(--border-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
   }
 
-  .ak-story-row dt {
+  .ak-timeline-when {
     color: var(--text-accent);
     font-size: var(--type-label);
     font-weight: var(--weight-bold);
@@ -174,22 +160,16 @@ const stats = [
     text-transform: uppercase;
   }
 
-  .ak-story-row dd {
-    margin: 0;
-    font-size: var(--type-small);
-    line-height: var(--leading-small);
-  }
-
-  .ak-story-row--outcome dd {
-    font-weight: var(--weight-bold);
-  }
-
-  .ak-story-done {
+  /* story 2: plain paragraphs, read as one short story */
+  .ak-story-text {
     display: flex;
     flex-direction: column;
-    gap: var(--space-8);
-    margin: 0;
-    padding-left: var(--space-16);
+    gap: var(--space-12);
+    margin-top: var(--space-8);
+    padding-top: var(--space-12);
+    border-top: var(--stroke-rule) solid var(--border-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-read);
   }
 
   @media (max-width: 768px) {

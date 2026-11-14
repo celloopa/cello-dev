@@ -1,5 +1,5 @@
 /*
-  /agent-kit (AK-9): a plain tool page in the site's system. Centered hero, eyebrowed sections,
+  /agent-kit (AK-9): a plain tool page in the site's system. Centered hero, centered section heads,
   square panels on --bg-raised with muted rules. Roles only; the section's own tokens (tokens.json
   "Agent kit") are --status-returned for the SENT BACK badge and the showcase motion for the
   studio run. Every class is prefixed ak- because this file is global (imported by

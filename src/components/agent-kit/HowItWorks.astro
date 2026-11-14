@@ -1,7 +1,7 @@
 ---
 /*
  * How it works: the three prompts as three steps, each a number, a title, one line, what it sets
- * up (the stages, the note layers, the roles) and what it needs. Titles, needs and time come from
+ * up (the stages, the note layers, the roles) and what it needs. Titles and needs come from
  * src/lib/agent-kit/prompts.ts, the same list Setup uses.
  */
 import SectionHead from "./SectionHead.astro";
@@ -27,9 +27,9 @@ const detail: Record<string, { body: string; flow: string[]; flowLabel: string }
 ---
 
 <section class="ak-section ak-wrap" id="how" aria-labelledby="how-title">
-  <SectionHead eyebrow="How it works" title="Three prompts, run in order" titleId="how-title">
-    Open Claude Code, paste a prompt and answer its questions. Each one shows you what it built
-    before you move on.
+  <SectionHead title="Each prompt interviews you before it builds" titleId="how-title">
+    Prompt 01 needs nothing else. Each one after it builds on the ones before, and stops to show you
+    what it made before you paste the next.
   </SectionHead>
 
   <ol class="ak-body ak-steps">
@@ -49,10 +49,7 @@ const detail: Record<string, { body: string; flow: string[]; flowLabel: string }
                 <li>{f}</li>
               ))}
             </ol>
-            <p class="ak-meta ak-step-meta">
-              {p.needs}
-              {p.time && <> · {p.time}</>}
-            </p>
+            <p class="ak-meta ak-step-meta">{p.needs}</p>
           </li>
         );
       })
