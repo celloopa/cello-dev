@@ -10,8 +10,9 @@ import { prompts, promptText } from "@/lib/agent-kit/prompts";
 
 <section class="ak-section ak-wrap" id="setup" aria-labelledby="setup-title">
   <SectionHead title="Read the whole prompt before you paste it" titleId="setup-title">
-    Each prompt stops for your OK between phases, and each one tells your agent to read a tool's
-    README before installing it.
+    Each prompt checks with you before it changes your computer: prompt 01 asks its questions
+    first, and 02 and 03 show you each file before installing it. Prompt 03 also stops for your OK
+    after every phase and reads each tool's README first.
   </SectionHead>
   <div class="ak-body ak-prompts">
     {prompts.map((p, i) => <PromptPanel prompt={p} text={promptText(p.file)} start={i === 0} />)}
