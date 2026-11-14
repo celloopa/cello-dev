@@ -120,6 +120,8 @@ These aren't bugs. They're places where the screens could look more deliberate. 
 
 ## Not covered
 
+**Scroll performance (reported by the agent-kit evaluator, 2026-11-13; not measured here):** with the CPU throttled 4×, scrolling shows intermittent long tasks of 50–110 ms. They come from site-wide scripts: Astro's ClientRouter `scrollend` handler, the scroll-manager chunk, and the header's `updateProgress`. That's worth its own pass: throttle or merge the scroll listeners, and check them against a performance trace at 4× before and after.
+
 Chromium only, so no Safari or WebKit (see 6). Default state only: menu closed, no hover, no open dialogs. Reduced motion is on, so the greeting's typing and entry animations are seen in their final state. Colour contrast isn't checked here (see `audit.md`). Physical phones weren't used.
 
 ## Round 2: after the fixes (branch `screen-audit/fixes`)
