@@ -29,9 +29,19 @@ for (const [w, h] of [[390, 844], [1440, 900]]) {
     ok(`${tag} theme`, (await page.getAttribute("html", "data-theme")) === scheme);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     ok(`${tag} no horizontal page scroll`, overflow <= 0, `${overflow}px`);
-    // every rail stub visible without sideways scroll
-    const stubs = await page.$$eval(".ak-index-link", (els) => els.map((e) => { const r = e.getBoundingClientRect(); return { href: e.getAttribute("href"), inView: r.left >= 0 && r.right <= innerWidth }; }));
-    ok(`${tag} 5 rail stubs are links in view`, stubs.length === 5 && stubs.every((s) => s.inView), JSON.stringify(stubs.map((s) => s.href)));
+    // AK-9: a centered hero with one primary action (to Setup) and a quiet link to the studio
+    const hero = await page.evaluate(() => {
+      const h = document.querySelector(".ak-hero");
+      const prim = [...h.querySelectorAll(".button--primary")].map((b) => b.getAttribute("href"));
+      return { prim, link: h.querySelector(".arrow-link")?.getAttribute("href"), align: getComputedStyle(h.querySelector("h1")).textAlign };
+    });
+    ok(`${tag} hero: one primary action to #setup, a link to #studio, centered`, hero.prim.length === 1 && hero.prim[0] === "#setup" && hero.link === "#studio" && hero.align === "center", JSON.stringify(hero));
+    // AK-9: the page's sections in order, each with an accent eyebrow
+    const secs = await page.$$eval(".ak > section", (els) => els.map((e) => ({ id: e.id, eyebrow: !!e.querySelector(".eyebrow--accent") })));
+    ok(`${tag} sections in order, each eyebrowed`, JSON.stringify(secs.map((s) => s.id)) === JSON.stringify(["top", "how", "studio", "proof", "setup", "costs", "lessons", "faq", "start"]) && secs.every((s) => s.eyebrow), JSON.stringify(secs));
+    // AK-9: no placeholder text
+    const text = await page.evaluate(() => document.body.innerText + document.documentElement.outerHTML);
+    ok(`${tag} no placeholder text`, !/\[Cello|\[Story|\[verify\]|CelloWords|ak-slot/.test(text));
     if (w === 390) {
       const order = await page.evaluate(() => {
         const c = document.querySelector(".ak-controls").getBoundingClientRect().top;
@@ -39,8 +49,8 @@ for (const [w, h] of [[390, 844], [1440, 900]]) {
         return c < b;
       });
       ok(`${tag} studio controls above board`, order);
-      const sc = await page.$eval(".ak-rate-scroll", (e) => ({ sw: e.scrollWidth, cw: e.clientWidth, tab: e.getAttribute("tabindex"), label: e.getAttribute("aria-label") }));
-      ok(`${tag} rate card scrolls in its own labelled container`, sc.sw > sc.cw && sc.tab === "0" && !!sc.label, JSON.stringify(sc));
+      const sc = await page.$eval(".ak-costs-table", (t) => { const r = t.getBoundingClientRect(); const p = t.parentElement.getBoundingClientRect(); return { right: Math.round(r.right), parent: Math.round(p.right), caption: !!t.querySelector("caption"), cols: t.querySelectorAll("thead th").length }; });
+      ok(`${tag} costs table fits the phone with no sideways scroll, captioned, 4 columns`, sc.right <= sc.parent && sc.caption && sc.cols === 4, JSON.stringify(sc));
     }
     await page.screenshot({ path: path.join(SHOTS, `agent-kit-${tag}.png`), fullPage: true });
 
@@ -74,17 +84,17 @@ for (const [w, h] of [[390, 844], [1440, 900]]) {
       }
       // studio bug switch
       await page.locator(".ak-switch").click();
-      ok("bug off shows PASS", await page.locator(".ak-lane--eval .ak-stamp--pass").isVisible() && !(await page.locator(".ak-stamp--back").isVisible()));
+      ok("bug off shows PASS", await page.locator(".ak-lane--eval .ak-badge--pass").isVisible() && !(await page.locator(".ak-badge--back").isVisible()));
       await page.screenshot({ path: path.join(SHOTS, "agent-kit-1440-dusk-studio-clean.png"), clip: await page.locator("#studio").boundingBox() });
       await page.locator(".ak-switch").click();
       // with JS the run ends shipped after the fix round (AK-4), so check the outcome sentence; the
       // static SENT BACK still is covered by ak-4-verify under reduced motion and without JS
       ok("bug on announces the planted bug", (await page.locator("#studio-outcome").innerText()).startsWith("Bug planted"));
       // focus-visible on every focusable control
-      const focusables = await page.$$eval("main a[href], main button:not([disabled]), main input, main [tabindex='0']", (els) => els.length);
+      const focusables = await page.$$eval("main a[href], main button:not([disabled]), main input, main summary, main [tabindex='0']", (els) => els.length);
       await page.focus("body");
       let missing = [];
-      for (let i = 0; i < 80; i++) {
+      for (let i = 0; i < 140; i++) {
         await page.keyboard.press("Tab");
         const info = await page.evaluate(() => {
           const el = document.activeElement;
@@ -96,6 +106,19 @@ for (const [w, h] of [[390, 844], [1440, 900]]) {
         if (info && !info.outline) missing.push(info.id);
       }
       ok(`focus-visible outline on main controls (${focusables} focusable)`, missing.length === 0, missing.join(" | "));
+      // FAQ: keyboard opens and closes each question
+      const sums = page.locator(".ak-faq-item summary");
+      const nFaq = await sums.count();
+      let faqOk = nFaq >= 5 && nFaq <= 7;
+      for (let i = 0; i < nFaq; i++) {
+        await sums.nth(i).focus();
+        await page.keyboard.press(i % 2 ? "Space" : "Enter");
+        const open = await page.locator(".ak-faq-item").nth(i).getAttribute("open");
+        await page.keyboard.press("Enter");
+        const closed = await page.locator(".ak-faq-item").nth(i).getAttribute("open");
+        faqOk &&= open !== null && closed === null;
+      }
+      ok(`FAQ: ${nFaq} questions, each opens and closes from the keyboard`, faqOk);
       // headings
       const hs = await page.$$eval("main h1, main h2, main h3, main h4", (els) => els.map((e) => +e.tagName[1]));
       const jumps = hs.filter((l, i) => i > 0 && l > hs[i - 1] + 1);

@@ -19,5 +19,5 @@ Light static Astro site; no runtime database or user-data migration.
 - Smoke: `/agent-kit/` returns 200 with "Agent Studio Kit"; each `/agent-kit/prompts/{1-second-brain,2-session-notes,3-studio-pipeline}.md` returns 200 and its bytes match `src/content/agent-kit/prompts/` in the shipped commit; header and landscape bar show "Agent Kit".
 - Checks at 390 and 1440, Dusk and Day: each Copy button copies its own prompt; 0 console errors; no horizontal scroll; Lighthouse accessibility ≥ 90 (mobile and desktop presets).
 - Readers: Morgan (hiring manager, desktop) and a builder on a phone arriving from a shared link.
-- Risk: an opinion slot (`[Cello's words]`, `[Story: pending`) reaching production (grep `dist/agent-kit/index.html`, must be 0); private strings in any pushed commit (keep the patterns in a local file outside the repo and grep every commit, not just the tip); the studio moment under reduced motion and Pause motion.
+- Risk: no placeholder text in the built page (`dist/agent-kit/index.html` has no bracketed placeholder or `[verify]` mark); private strings in any pushed commit (keep the patterns in a local file outside the repo and grep every commit, not just the tip); the studio moment under reduced motion and Pause motion.
 - Upkeep: prompt versions and the "last checked" date live in `src/content/agent-kit/prompts/meta.json`.

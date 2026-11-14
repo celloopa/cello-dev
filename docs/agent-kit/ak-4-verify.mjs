@@ -1,4 +1,5 @@
-// AK-4 verification: the scroll story and the studio moment. Run from the WSL worktree root after
+// AK-4 verification (updated for AK-9's tool page): the studio moment, Pause motion, reduced
+// motion and no-JS. Run from the WSL worktree root after
 // `pnpm build`, with `pnpm preview --port 4420` serving dist:
 //   node docs/agent-kit/ak-4-verify.mjs [base]
 // Covers 390×844 and 1440×900, Day and Dusk, with and without reduced motion, once without JS,
@@ -19,7 +20,7 @@ const exe = path.join(process.env.HOME, ".cache/ms-playwright/chromium-1248/chro
 const browser = await chromium.launch(fs.existsSync(exe) ? { executablePath: exe } : {});
 const results = [];
 const ok = (name, pass, detail = "") => results.push({ name, pass: !!pass, detail });
-const STOPS = ["brain", "notes", "studio", "proof", "setup"];
+const STOPS = ["how", "studio", "proof", "setup", "costs", "lessons", "faq", "start"];
 const BUG_RUN = [
   "Lead: PANTRY-4 planned, 3 testable criteria",
   "Worker: built on branch pantry-4, test added",
@@ -106,58 +107,26 @@ for (const [w, h] of [[390, 844], [1440, 900]]) {
         ok(`${tag} AC6 studio controls above the board`, above);
       }
 
-      // AC1: data-ch and aria-current="step" follow the stops; no layout reads while scrolling
-      ok(`${tag} AC1 data-ch=0 in the hero`, (await page.getAttribute(".ak", "data-ch")) === "0");
+      // AC1 (AK-9): the chapter driver is gone; scrolling the page makes no layout reads from the
+      // story script, and every section is fully visible as it arrives (no scroll reveals)
       await page.evaluate(() => { window.__reads = 0; window.__countReads = true; });
-      const chs = [];
-      for (const [i, id] of STOPS.entries()) {
-        await scrollToStop(page, id);
-        const r = await page.evaluate((id) => ({
-          ch: document.querySelector(".ak").dataset.ch,
-          current: [...document.querySelectorAll('[data-stop-link][aria-current="step"]')].map((a) => a.dataset.stopLink),
-          hero: document.querySelector(`.ak-index-link[data-stop-link="${id}"]`).getAttribute("aria-current"),
-        }), id);
-        chs.push(r.ch);
-        ok(`${tag} AC1 ${id}: data-ch=${i + 1}, hero stub aria-current=step, only that stop current`, r.ch === String(i + 1) && r.hero === "step" && r.current.every((c) => c === id) && r.current.length >= 1, JSON.stringify(r));
-      }
-      // hysteresis: a few px either side of the studio boundary must not flip the chapter
-      const flips = await page.evaluate(async () => {
-        const top = document.getElementById("studio").getBoundingClientRect().top + scrollY;
-        const base = top - innerHeight * 0.4;
-        const seq = [];
-        for (const d of [-60, -20, 20, -20, 20, -20]) {
-          window.scrollTo({ top: base + d, behavior: "instant" });
-          await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
-          seq.push(document.querySelector(".ak").dataset.ch);
-        }
-        return seq;
-      });
-      // forward switches at the boundary; going back needs the margin, so at most one switch
-      const switches = flips.filter((c, k) => k > 0 && c !== flips[k - 1]).length;
-      ok(`${tag} AC1 hysteresis: ±20px around a boundary switches at most once (no flicker)`, switches <= 1, flips.join(","));
+      for (const id of STOPS) await scrollToStop(page, id);
       const reads = await page.evaluate(() => { window.__countReads = false; return window.__reads; });
       ok(`${tag} AC1 no layout reads by the story script while scrolling`, reads === 0, `${reads} reads`);
-      if (w === 1440) {
-        const rail = await page.evaluate(() => { const r = document.querySelector("[data-story-rail]"); const s = getComputedStyle(r); return { hidden: r.hidden, vis: s.visibility, disp: s.display, cur: r.querySelector('[aria-current="step"]')?.dataset.stopLink, ch: document.querySelector(".ak").dataset.ch }; });
-        ok(`${tag} AC1 mini rail shows the current stop`, !rail.hidden && rail.disp !== "none" && rail.vis === "visible" && rail.cur === STOPS[rail.ch - 1], JSON.stringify(rail));
-      }
-
-      // reveals: chapters scrolled in end fully visible
-      await page.waitForTimeout(motion === "reduce" ? 0 : 1200);
-      const art = await page.evaluate(() => [...document.querySelectorAll("#brain .ak-hooked > .ak-stub, #notes .ak-hooked > .ak-stub, #proof .ak-sheet")].map((e) => ({ o: getComputedStyle(e).opacity, a: e.getAnimations().length })));
-      ok(`${tag} chapter art fully visible after scrolling in`, art.length > 0 && art.every((a) => a.o === "1"), `${art.length} items`);
+      const hidden = await page.evaluate(() => [...document.querySelectorAll(".ak > section, .ak > section *")].filter((e) => !e.closest(".ak-studio") && getComputedStyle(e).opacity !== "1").length);
+      ok(`${tag} every section fully visible, no reveal waits`, hidden === 0, `${hidden} hidden`);
 
       const pauseVisible = await page.locator("[data-motion-toggle]").isVisible();
       if (motion === "reduce") {
         // AC4: everything visible at once with no animation; the studio is the AK-3 still
         await page.goto(URL_, { waitUntil: "networkidle" });
         await scrollToStop(page, "proof");
-        const anims = await page.evaluate(() => [...document.querySelectorAll(".ak-chapter .ak-hooked > .ak-stub, .ak-sheet, .ak-annotation, .ak-studio *")].reduce((n, e) => n + e.getAnimations().length, 0));
-        const allVisible = await page.evaluate(() => [...document.querySelectorAll(".ak-chapter .ak-hooked > .ak-stub, .ak-sheet, .ak-annotation")].every((e) => getComputedStyle(e).opacity === "1"));
-        ok(`${tag} AC4 chapters fully visible at once, 0 running animations`, allVisible && anims === 0, `animations=${anims}`);
+        const anims = await page.evaluate(() => [...document.querySelectorAll(".ak *")].reduce((n, e) => n + e.getAnimations().length, 0));
+        const allVisible = await page.evaluate(() => [...document.querySelectorAll(".ak > section")].every((e) => getComputedStyle(e).opacity === "1"));
+        ok(`${tag} AC4 sections fully visible at once, 0 running animations`, allVisible && anims === 0, `animations=${anims}`);
         const st = await state(page);
-        const still = await page.evaluate(() => ({ back: !!document.querySelector(".ak-stamp--back")?.checkVisibility(), ret: !!document.querySelector(".ak-return")?.checkVisibility() }));
-        ok(`${tag} AC4 studio is the AK-3 still (no data-step, SENT BACK and route shown)`, st.step === null && still.back && still.ret, JSON.stringify({ ...st, ...still }));
+        const still = await page.evaluate(() => ({ back: !!document.querySelector(".ak-badge--back")?.checkVisibility(), ret: !!document.querySelector(".ak-return")?.checkVisibility() }));
+        ok(`${tag} AC4 studio is the static still (no data-step, SENT BACK and route shown)`, st.step === null && still.back && still.ret, JSON.stringify({ ...st, ...still }));
         ok(`${tag} AC3 Pause motion hidden under reduced motion`, !pauseVisible);
         await scrollToStop(page, "studio");
         await page.locator("[data-run-ticket]").focus();
@@ -198,7 +167,7 @@ for (const [w, h] of [[1440, 900], [390, 844]]) {
   ok(`${tag} AC2 untouched and below the fold: empty rail, waiting`, before.step === "...." && /Run ticket/.test(before.note), JSON.stringify(before));
   ok(`${tag} AC2 Run ticket enabled`, await page.locator("[data-run-ticket]").isEnabled());
   // durations come from the showcase tokens
-  const tok = await page.evaluate(() => { const s = getComputedStyle(document.documentElement); return { travel: s.getPropertyValue("--motion-showcase-travel").trim(), stamp: s.getPropertyValue("--motion-showcase-stamp").trim() }; });
+  const tok = await page.evaluate(() => { const s = getComputedStyle(document.documentElement); return { travel: s.getPropertyValue("--motion-showcase-travel").trim(), stamp: s.getPropertyValue("--motion-showcase-verdict").trim() }; });
 
   // plays itself once ≥50% of the board is in view; record 6 frames on the wide run
   let stampTiming = null;
@@ -206,7 +175,7 @@ for (const [w, h] of [[1440, 900], [390, 844]]) {
   const shot = async (i) => { if (w === 1440) await page.locator(".ak-studio").screenshot({ path: path.join(SHOTS, `run-frame-${i}.png`), animations: "allow" }); };
   for (let i = 1; i <= 6; i++) {
     await waitLog(page, i);
-    if (i === 3) stampTiming = await page.evaluate(() => { const s = getComputedStyle(document.querySelector('[data-lane="eval"] .ak-stamp--back')); return { duration: s.animationDuration, delay: s.animationDelay }; });
+    if (i === 3) stampTiming = await page.evaluate(() => { const s = getComputedStyle(document.querySelector('[data-lane="eval"] .ak-badge--back')); return { duration: s.animationDuration, delay: s.animationDelay }; });
     // mid-travel on the step it just started
     await page.waitForTimeout(i === 3 || i === 5 ? 1100 : 350);
     await shot(i);
@@ -217,13 +186,13 @@ for (const [w, h] of [[1440, 900], [390, 844]]) {
     const m = document.querySelector("[data-studio-moment]");
     return { ticket: getComputedStyle(m.querySelector('[data-lane="ship"] .ak-ticket')).animationDuration, gaps: window.__log.slice(1).map((l, i) => Math.round(l.t - window.__log[i].t)) };
   });
-  // travel 700 → ticket animation 0.7s; stamp 300ms after a 700ms delay; steps every travel+stamp (1000ms), verdicts +stamp (1300ms)
+  // travel 700 → ticket animation 0.7s; verdict badge 300ms after a 700ms delay; steps every travel+stamp (1000ms), verdicts +stamp (1300ms)
   const gapsOk = durs.gaps.every((g, i) => Math.abs(g - ([2, 4].includes(i) ? 1300 : 1000)) < 120);
   ok(`${tag} AC2 durations from the showcase tokens (travel ${tok.travel}, stamp ${tok.stamp})`, toMs(tok.travel) === 700 && toMs(tok.stamp) === 300 && durs.ticket === "0.7s" && stampTiming?.duration === "0.3s" && stampTiming?.delay === "0.7s" && gapsOk, JSON.stringify({ ...durs, stamp: stampTiming }));
   await page.waitForTimeout(1200);
   const end = await state(page);
-  const stamps = await page.evaluate(() => ({ pass: document.querySelector(".ak-stamp--pass").checkVisibility(), back: document.querySelector(".ak-stamp--back").checkVisibility(), round: document.querySelector('[data-lane="eval"] [data-alt]').textContent, live: document.querySelector('[data-lane="ship"] .ak-ticket').checkVisibility() }));
-  ok(`${tag} AC2 ends shipped: round 2 PASS stamp, shipper live`, end.step === "ppph" && stamps.pass && !stamps.back && stamps.round === "Round 2 / 3" && stamps.live && end.note === "Showing the end of the run.", JSON.stringify({ ...end, ...stamps }));
+  const stamps = await page.evaluate(() => ({ pass: document.querySelector(".ak-badge--pass").checkVisibility(), back: document.querySelector(".ak-badge--back").checkVisibility(), round: document.querySelector('[data-lane="eval"] [data-alt]').textContent, live: document.querySelector('[data-lane="ship"] .ak-ticket').checkVisibility() }));
+  ok(`${tag} AC2 ends shipped: round 2 PASS badge, shipper live`, end.step === "ppph" && stamps.pass && !stamps.back && stamps.round === "Round 2 / 3" && stamps.live && end.note === "Showing the end of the run.", JSON.stringify({ ...end, ...stamps }));
   // once only: scrolling away and back doesn't replay
   const n = auto.length;
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
@@ -244,7 +213,7 @@ for (const [w, h] of [[1440, 900], [390, 844]]) {
   await page.waitForTimeout(1200);
   const clean = (await logs(page)).slice(n);
   const cend = await state(page);
-  const cstamp = await page.evaluate(() => ({ pass: document.querySelector(".ak-stamp--pass").checkVisibility(), back: document.querySelector(".ak-stamp--back").checkVisibility(), ret: document.querySelector(".ak-return").checkVisibility(), round: document.querySelector('[data-lane="eval"] [data-alt]').textContent }));
+  const cstamp = await page.evaluate(() => ({ pass: document.querySelector(".ak-badge--pass").checkVisibility(), back: document.querySelector(".ak-badge--back").checkVisibility(), ret: document.querySelector(".ak-return").checkVisibility(), round: document.querySelector('[data-lane="eval"] [data-alt]').textContent }));
   ok(`${tag} AC2 bug off: Run ticket (Enter) passes first time and ships, replayable`, JSON.stringify(clean) === JSON.stringify(CLEAN_RUN) && cend.step === "ppph" && cstamp.pass && !cstamp.back && !cstamp.ret && cstamp.round === "Round 1 / 3", `${clean.join(" | ")} ${JSON.stringify(cstamp)}`);
   if (w === 1440) await page.locator(".ak-studio").screenshot({ path: path.join(SHOTS, "studio-1440-dusk-clean-end.png") });
 
@@ -256,7 +225,7 @@ for (const [w, h] of [[1440, 900], [390, 844]]) {
   await page.keyboard.press("Space");
   await waitLog(page, m0 + 3);
   const st3 = await state(page);
-  ok(`${tag} AC2 replay (Space) with the bug: evaluator stamps SENT BACK`, (await logs(page))[m0 + 2] === BUG_RUN[2] && st3.step === "pph." && (await page.locator(".ak-stamp--back").isVisible()), JSON.stringify(st3));
+  ok(`${tag} AC2 replay (Space) with the bug: evaluator marks SENT BACK`, (await logs(page))[m0 + 2] === BUG_RUN[2] && st3.step === "pph." && (await page.locator(".ak-badge--back").isVisible()), JSON.stringify(st3));
   const live = await page.getAttribute("[data-studio-log]", "aria-live");
   ok(`${tag} AC2 steps announced in a polite live region`, live === "polite");
 
@@ -282,35 +251,35 @@ for (const [w, h] of [[1440, 900], [390, 844]]) {
   await ctx.close();
 }
 
-// AC2: a moment jumped over (rail link straight to Setup) settles finished, no burst
+// AC2: a moment jumped over (the hero's Get prompt 01, straight to Setup) settles finished, no burst
 {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 }, colorScheme: "dark" });
   const page = await ctx.newPage();
   await page.goto(URL_, { waitUntil: "networkidle" });
-  await page.locator('.ak-index-link[data-stop-link="setup"]').click();
+  await page.locator('.ak-hero a.button--primary[href="#setup"]').click();
   await page.waitForTimeout(1500);
   const st = await state(page);
-  ok("AC2 jumping past the studio via the rail settles it finished (instant end state)", st.step === "ppph" && st.instant, JSON.stringify(st));
+  ok("AC2 jumping past the studio from the hero settles it finished (instant end state)", st.step === "ppph" && st.instant, JSON.stringify(st));
   await ctx.close();
 }
 
-// AC6: without JS the page is the AK-3 page
+// AC6: without JS the page is complete: the studio still, every section visible
 {
   const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, colorScheme: "dark", javaScriptEnabled: false });
   const page = await ctx.newPage();
   await page.goto(URL_, { waitUntil: "networkidle" });
   const r = await page.evaluate(() => ({
-    story: document.querySelector(".ak").hasAttribute("data-story"),
+    enhanced: document.querySelector("[data-studio-moment]").hasAttribute("data-enhanced"),
     step: document.querySelector("[data-studio-moment]").hasAttribute("data-step"),
-    back: document.querySelector(".ak-stamp--back").checkVisibility(),
+    back: document.querySelector(".ak-badge--back").checkVisibility(),
     lanes: [...document.querySelectorAll(".ak-lane .ak-ticket")].filter((e) => e.checkVisibility()).length,
     disabled: [...document.querySelectorAll("[data-run-ticket], [data-motion-toggle]")].every((b) => b.disabled),
-    rail: document.querySelector("[data-story-rail]").checkVisibility(),
+    faq: document.querySelectorAll(".ak-faq-item summary").length,
     fallback: [...document.querySelectorAll("#studio-outcome [data-when]")].filter((e) => e.checkVisibility()).map((e) => e.textContent).join(),
-    hidden: [...document.querySelectorAll(".ak-chapter .ak-hooked > .ak-stub, .ak-sheet")].filter((e) => getComputedStyle(e).opacity !== "1").length,
+    hidden: [...document.querySelectorAll(".ak > section, .ak-story, .ak-step, .ak-prompt")].filter((e) => getComputedStyle(e).opacity !== "1").length,
     overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
   }));
-  ok("no-JS AC6/AC7 the AK-3 still: no story attrs, SENT BACK still, buttons disabled, mini rail hidden, all art visible, static outcome sentence", !r.story && !r.step && r.back && r.lanes === 3 && r.disabled && !r.rail && r.hidden === 0 && r.overflow <= 0 && r.fallback === "Bug planted: the evaluator sends PANTRY-4 back to the worker.", JSON.stringify(r));
+  ok("no-JS AC6/AC7 the still: not enhanced, SENT BACK still, buttons disabled, FAQ present, everything visible, static outcome sentence", !r.enhanced && !r.step && r.back && r.lanes === 3 && r.disabled && r.faq >= 5 && r.hidden === 0 && r.overflow <= 0 && r.fallback === "Bug planted: the evaluator sends PANTRY-4 back to the worker.", JSON.stringify(r));
   await page.screenshot({ path: path.join(SHOTS, "agent-kit-390-dusk-nojs.png"), fullPage: true });
   await ctx.close();
 }
