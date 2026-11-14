@@ -19,7 +19,7 @@
     const toggle = document.querySelector<HTMLButtonElement>(`[data-toggle-prompt][aria-controls="${pre.id}"]`);
     if (toggle) {
       toggle.setAttribute("aria-expanded", String(open));
-      toggle.textContent = open ? "Show less" : "Show all";
+      toggle.textContent = open ? "Show less" : "Show full prompt";
     }
   }
 

@@ -77,7 +77,9 @@ for (const [w, h] of [[390, 844], [1440, 900]]) {
       ok("bug off shows PASS", await page.locator(".ak-lane--eval .ak-stamp--pass").isVisible() && !(await page.locator(".ak-stamp--back").isVisible()));
       await page.screenshot({ path: path.join(SHOTS, "agent-kit-1440-dusk-studio-clean.png"), clip: await page.locator("#studio").boundingBox() });
       await page.locator(".ak-switch").click();
-      ok("bug on shows SENT BACK", await page.locator(".ak-stamp--back").isVisible());
+      // with JS the run ends shipped after the fix round (AK-4), so check the outcome sentence; the
+      // static SENT BACK still is covered by ak-4-verify under reduced motion and without JS
+      ok("bug on announces the planted bug", (await page.locator("#studio-outcome").innerText()).startsWith("Bug planted"));
       // focus-visible on every focusable control
       const focusables = await page.$$eval("main a[href], main button:not([disabled]), main input, main [tabindex='0']", (els) => els.length);
       await page.focus("body");

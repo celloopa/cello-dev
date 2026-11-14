@@ -57,7 +57,7 @@ const RUNS: Record<"bug" | "clean", Step[]> = {
 };
 const SUMMARY = {
   bug: "Run complete. Evaluator sent PANTRY-4 back for a TypeError on /list, round 2 passed, and the shipper put it live.",
-  clean: "Run complete. Evaluator passed PANTRY-4 first time and the shipper put it live.",
+  clean: "Run complete. Evaluator passed PANTRY-4 the first time and the shipper put it live.",
 };
 const NOTE = {
   init: "Press Run ticket, or keep scrolling and it plays once.",
