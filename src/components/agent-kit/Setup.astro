@@ -10,8 +10,8 @@ import { prompts, promptText } from "@/lib/agent-kit/prompts";
 
 <section class="ak-section ak-wrap" id="setup" aria-labelledby="setup-title">
   <SectionHead title="Read the whole prompt before you paste it" titleId="setup-title">
-    Each panel shows its version, the date I last checked it against my setup and what changed.
-    Show full prompt opens the rest.
+    Each prompt stops for your OK between phases, and each one tells your agent to read a tool's
+    README before installing it.
   </SectionHead>
   <div class="ak-body ak-prompts">
     {prompts.map((p, i) => <PromptPanel prompt={p} text={promptText(p.file)} start={i === 0} />)}

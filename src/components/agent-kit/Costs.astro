@@ -8,7 +8,7 @@ import SectionHead from "./SectionHead.astro";
 
 type Mark = "Yes" | "Optional" | "Later" | null;
 const rows: { item: string; note: string; pay: Mark; local: Mark; skip: Mark }[] = [
-  { item: "Claude plan", note: "The one worth paying for. Parallel workers use a lot of it, so a higher tier keeps the pipeline from stalling.", pay: "Yes", local: null, skip: null },
+  { item: "Claude plan", note: "Parallel workers use a lot of it, so a higher tier keeps the pipeline from stalling.", pay: "Yes", local: null, skip: null },
   { item: "Local models", note: "Good for private chores: summaries, transcription and AI features inside your apps. Claude stays the coder.", pay: null, local: "Yes", skip: null },
   { item: "Images", note: "ComfyUI runs free on a decent GPU. A ChatGPT plan helps with text in images and adds Codex as a second coder.", pay: "Optional", local: "Yes", skip: null },
   { item: "Firecrawl, Mobbin", note: "Skip them at first. Built-in web search and screenshots of apps you like are enough for personal projects.", pay: null, local: null, skip: "Yes" },
