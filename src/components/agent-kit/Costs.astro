@@ -1,0 +1,151 @@
+---
+/*
+ * Costs: what to pay for, run locally or skip, from the kit's source table. Each mark is a word
+ * (Yes, Optional, Later), so nothing rests on a shape or color. The three answer columns stay
+ * narrow, so the table fits a phone without scrolling sideways.
+ */
+import SectionHead from "./SectionHead.astro";
+
+type Mark = "Yes" | "Optional" | "Later" | null;
+const rows: { item: string; note: string; pay: Mark; local: Mark; skip: Mark }[] = [
+  { item: "Claude plan", note: "The one worth paying for. Parallel workers use a lot of it, so a higher tier keeps the pipeline from stalling.", pay: "Yes", local: null, skip: null },
+  { item: "Local models", note: "Good for private chores: summaries, transcription and AI features inside your apps. Claude stays the coder.", pay: null, local: "Yes", skip: null },
+  { item: "Images", note: "ComfyUI runs free on a decent GPU. A ChatGPT plan helps with text in images and adds Codex as a second coder.", pay: "Optional", local: "Yes", skip: null },
+  { item: "Firecrawl, Mobbin", note: "Skip them at first. Built-in web search and screenshots of apps you like are enough for personal projects.", pay: null, local: null, skip: "Yes" },
+  { item: "Hosting", note: "Your own computer or home server costs nothing. Rent a small server only when apps must run while yours is off.", pay: "Later", local: "Yes", skip: null },
+  { item: "App stores", note: "Skip them. Web apps install to phone home screens.", pay: null, local: null, skip: "Yes" },
+];
+const cols = [
+  { key: "pay", label: "Pay for" },
+  { key: "local", label: "Run locally" },
+  { key: "skip", label: "Skip" },
+] as const;
+---
+
+<section class="ak-section ak-wrap" id="costs" aria-labelledby="costs-title">
+  <SectionHead eyebrow="Costs" title="What to pay for" titleId="costs-title">
+    A Claude plan is the one cost worth paying. Most of the rest runs on your computer or can be skipped.
+  </SectionHead>
+
+  <div class="ak-body ak-panel ak-costs">
+    <table class="ak-costs-table">
+      <caption class="ak-sr">What to pay for, run locally or skip</caption>
+      <thead>
+        <tr>
+          <th scope="col">Item</th>
+          {cols.map((c) => <th scope="col" class="ak-c">{c.label}</th>)}
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((r) => (
+            <tr>
+              <th scope="row">
+                {r.item}
+                <span class="ak-costs-note">{r.note}</span>
+              </th>
+              {cols.map((c) => {
+                const m = r[c.key];
+                return (
+                  <td class:list={["ak-c", m === "Yes" && "ak-yes"]}>
+                    {m ?? (
+                      <>
+                        <span aria-hidden="true">–</span>
+                        <span class="ak-sr">No</span>
+                      </>
+                    )}
+                  </td>
+                );
+              })}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<style>
+  .ak-costs-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-costs-table th,
+  .ak-costs-table td {
+    padding: var(--space-16);
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .ak-costs-table thead th {
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+    vertical-align: bottom;
+  }
+
+  .ak-costs-table .ak-c {
+    width: 8rem;
+    text-align: center;
+  }
+
+  .ak-costs-table td.ak-c {
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+
+  .ak-costs-table td.ak-yes {
+    color: var(--text-accent);
+  }
+
+  .ak-costs-table tbody th {
+    font-weight: var(--weight-bold);
+  }
+
+  .ak-costs-note {
+    display: block;
+    max-width: 60ch;
+    margin-top: var(--space-4);
+    color: var(--text-muted);
+    font-weight: var(--weight-regular);
+  }
+
+  .ak-costs-table tr:last-child th,
+  .ak-costs-table tr:last-child td {
+    border-bottom: 0;
+  }
+
+  @media (max-width: 768px) {
+    .ak-costs-table th,
+    .ak-costs-table td {
+      padding: var(--space-12) var(--space-4);
+    }
+
+    .ak-costs-table tr > :first-child {
+      padding-left: var(--space-12);
+    }
+
+    .ak-costs-table .ak-c {
+      width: 4.25rem;
+      overflow-wrap: anywhere;
+    }
+
+    .ak-costs-table thead th {
+      letter-spacing: 0;
+    }
+
+    .ak-costs-table td.ak-c {
+      letter-spacing: 0;
+    }
+  }
+</style>

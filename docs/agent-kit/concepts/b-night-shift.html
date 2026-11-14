@@ -1,0 +1,640 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Studio Kit · Concept B · Night shift</title>
+<link rel="preload" href="fonts/geist-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/national-park-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../src/styles/tokens.css">
+<link rel="stylesheet" href="concepts.css">
+<style>
+  /* PROPOSED roles (not in tokens.json; see README) */
+  :root {
+    --status-returned: #ff7a59; /* proposed primitive ember-400. 7.08:1 on ink-950 */
+    --art-lamp: #e8cf8a; /* proposed primitive lamp-300: a lit window. Art only. 11.87:1 vs ink as a shape */
+    --art-sky: color-mix(in oklab, var(--art-september-far) 40%, var(--ink-950)); /* the dusk rule (I3) applied to September far */
+    --art-pane-dark: color-mix(in oklab, var(--paper-200) 7%, var(--ink-950)); /* an unlit pane */
+  }
+  :root[data-theme="light"] {
+    --status-returned: #b3361c; /* proposed ember-700. 5.21:1 on paper-100 */
+    --art-lamp: var(--paper-50); /* by day a "lit" window is a bright pane */
+    --art-sky: var(--art-august-sky);
+    --art-pane-dark: color-mix(in oklab, var(--art-september-far) 55%, var(--paper-100));
+  }
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-16);
+    padding-block: var(--space-16);
+  }
+  .crumb {
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+  }
+  .crumb b { color: var(--text-accent); }
+
+  /* ---------- hero: the window after dark ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--space-48);
+    align-items: end;
+    padding-block: var(--space-48) var(--space-64);
+  }
+  .hero-copy { padding-bottom: var(--space-24); }
+  .hero .time {
+    display: inline-flex;
+    gap: var(--space-12);
+    align-items: center;
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+    color: var(--text-accent);
+  }
+  .hero .time::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-circle);
+    background: var(--action-primary);
+  }
+  .hero h1 {
+    margin-top: var(--space-24);
+    font-size: clamp(3.5rem, 7.6vw, 7rem);
+    text-transform: uppercase;
+    font-weight: var(--weight-extrabold);
+    letter-spacing: -0.02em;
+  }
+  .hero .lede {
+    margin-top: var(--space-24);
+    max-width: var(--layout-measure-narrow);
+    font-size: var(--type-body-lg);
+  }
+  .hero .opinion { margin-top: var(--space-16); font-size: var(--type-small); }
+
+  .window {
+    position: relative;
+    margin-bottom: var(--shadow-offset);
+  }
+  .window::after {
+    /* the sill: earth plate offset under the frame (I5) */
+    content: "";
+    position: absolute;
+    left: calc(-1 * var(--space-16));
+    right: calc(-1 * var(--space-16));
+    bottom: calc(-1 * var(--shadow-offset) - 14px);
+    height: 14px;
+    background: var(--accent-ground);
+  }
+  .window svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 6px solid var(--text-primary);
+  }
+  .sky { fill: var(--art-sky); }
+  .mullion { fill: var(--text-primary); }
+  .sun { fill: var(--action-primary); }
+  .ground { fill: var(--accent-ground); }
+  .block { fill: var(--bg-canvas); }
+  .lit { fill: var(--art-lamp); }
+  .dark { fill: var(--art-pane-dark); }
+  .ret { fill: var(--status-returned); }
+  .star { fill: var(--paper-200); opacity: 0.7; }
+  :root[data-theme="light"] .star { opacity: 0; }
+
+  .chapters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    margin-top: var(--space-32);
+    padding: 0;
+    list-style: none;
+  }
+  .chapters li {
+    padding: var(--space-4) var(--space-12);
+    border: var(--stroke-control) solid var(--border-muted);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .chapters li[aria-current] {
+    border-color: var(--action-primary);
+    color: var(--text-primary);
+  }
+
+  /* ---------- chapter head ---------- */
+  .chapter {
+    padding-block: var(--space-96) var(--space-64);
+  }
+  .chapter-head {
+    max-width: 44rem;
+  }
+  .chapter-head h2 {
+    margin-top: var(--space-12);
+    font-size: var(--type-section-title);
+    text-transform: uppercase;
+    font-weight: var(--weight-extrabold);
+    letter-spacing: -0.01em;
+  }
+  .chapter-head p { margin-top: var(--space-16); color: var(--text-muted); max-width: var(--layout-measure-narrow); }
+
+  /* ---------- the studio: four lit windows ---------- */
+  .facade {
+    position: relative;
+    margin-top: var(--space-48);
+  }
+  .row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-24);
+    padding: 0;
+    list-style: none;
+  }
+  .room { display: flex; flex-direction: column; min-width: 0; }
+  .pane {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    border: 6px solid var(--text-primary);
+    background:
+      linear-gradient(var(--text-primary), var(--text-primary)) 50% 0 / 4px 100% no-repeat,
+      linear-gradient(var(--text-primary), var(--text-primary)) 0 42% / 100% 4px no-repeat,
+      var(--art-pane-dark);
+    overflow: hidden;
+  }
+  .room--lit .pane {
+    background:
+      linear-gradient(var(--text-primary), var(--text-primary)) 50% 0 / 4px 100% no-repeat,
+      linear-gradient(var(--text-primary), var(--text-primary)) 0 42% / 100% 4px no-repeat,
+      var(--art-lamp);
+  }
+  .pane svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .fig { fill: var(--ink-950); }
+  .room--back .pane { border-color: var(--status-returned); }
+  .sill {
+    margin-top: 0;
+    padding: var(--space-12) var(--space-16) var(--space-16);
+    background: var(--bg-plate);
+    border: var(--stroke-control) solid var(--border-strong);
+    border-top: 14px solid var(--accent-ground);
+    flex: 1;
+  }
+  .sill .floor {
+    font-size: var(--type-label);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .sill h3 {
+    margin-top: var(--space-4);
+    font-family: var(--font-title);
+    font-size: var(--type-heading);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    text-transform: uppercase;
+  }
+  .sill p { margin-top: var(--space-8); font-size: var(--type-small); color: var(--text-muted); }
+  .sill .state {
+    display: block;
+    margin-top: var(--space-12);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+  .room--back .state { color: var(--status-returned); }
+
+  /* the street: the ticket travelling under the windows */
+  .street {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-24);
+    margin-top: var(--space-24);
+    padding-block: var(--space-16);
+    border-top: var(--stroke-bar) solid var(--text-primary);
+  }
+  .route {
+    grid-column: 2 / 4;
+    position: relative;
+    height: var(--stroke-control);
+    margin: var(--space-16) 12% 0;
+    background: repeating-linear-gradient(90deg, var(--status-returned) 0 8px, transparent 8px 14px);
+  }
+  .route::before {
+    content: "";
+    position: absolute;
+    left: -2px;
+    top: -7px;
+    border: 8px solid transparent;
+    border-right: 12px solid var(--status-returned);
+    border-left: 0;
+  }
+  .ticket {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -50%);
+    padding: var(--space-4) var(--space-12);
+    background: var(--bg-plate);
+    border: var(--stroke-control) solid var(--status-returned);
+    color: var(--status-returned);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .shift {
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: var(--space-32);
+    margin-top: var(--space-32);
+    align-items: start;
+  }
+  .log {
+    border: var(--stroke-control) solid var(--border-strong);
+    background: var(--bg-plate);
+  }
+  .log-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-16);
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-12) var(--space-16);
+    border-bottom: var(--stroke-control) solid var(--border-strong);
+  }
+  .log ol { padding: var(--space-8) var(--space-16) var(--space-16); list-style: none; font-size: var(--type-small); }
+  .log li { display: grid; grid-template-columns: 3.5rem 6.5rem minmax(0, 1fr); gap: var(--space-12); padding-block: var(--space-8); border-bottom: var(--stroke-rule) solid var(--border-muted); }
+  .log li:last-child { border-bottom: 0; }
+  .log time { color: var(--text-muted); }
+  .log .who { font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: var(--track-caps); font-size: var(--type-label); padding-top: 2px; }
+  .log .bad { color: var(--status-returned); }
+  .log .wait { color: var(--text-muted); }
+  .controls { display: flex; flex-direction: column; gap: var(--space-16); align-items: flex-start; }
+  .controls .group { display: flex; flex-wrap: wrap; gap: var(--space-12); }
+  .controls blockquote { margin: var(--space-16) 0 0; padding-left: var(--space-16); border-left: var(--stroke-bar) solid var(--accent-ground); }
+  .controls blockquote p { font-family: var(--font-title); font-size: var(--type-title); line-height: var(--leading-title); }
+  .controls blockquote .opinion { margin-top: var(--space-8); font-family: var(--font-mono); font-size: var(--type-small); }
+
+  /* ---------- prompt: a lit window you can take home ---------- */
+  .panel {
+    position: relative;
+    margin-top: var(--space-48);
+    margin-bottom: calc(var(--shadow-offset) + 14px);
+    border: 6px solid var(--text-primary);
+    background: var(--bg-plate);
+  }
+  .panel::after {
+    content: "";
+    position: absolute;
+    left: calc(-1 * var(--space-16));
+    right: calc(-1 * var(--space-16));
+    bottom: calc(-1 * var(--shadow-offset) - 14px - 6px);
+    height: 14px;
+    background: var(--accent-ground);
+  }
+  .panel-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-24);
+    align-items: end;
+    padding: var(--space-24);
+    border-bottom: 4px solid var(--text-primary);
+  }
+  .panel-head .num {
+    font-family: var(--font-title);
+    font-size: var(--type-section-title);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--leading-display);
+    color: var(--text-accent);
+  }
+  .panel-head h3 { margin-top: var(--space-8); font-family: var(--font-title); font-size: var(--type-heading); text-transform: uppercase; line-height: var(--leading-heading); }
+  .panel-head p { margin-top: var(--space-8); font-size: var(--type-small); color: var(--text-muted); max-width: var(--layout-measure-narrow); }
+  .panel-actions { display: flex; flex-wrap: wrap; gap: var(--space-12); justify-content: flex-end; }
+  .others {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-16);
+    margin-top: var(--space-48);
+    font-size: var(--type-small);
+    color: var(--text-muted);
+  }
+  .others a { color: var(--action-primary); font-weight: var(--weight-bold); }
+
+  /* ---------- costs: three panes ---------- */
+  .ledger {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: var(--space-48);
+    border: 6px solid var(--text-primary);
+    background: var(--text-primary);
+    gap: 4px;
+  }
+  .ledger section { background: var(--bg-plate); padding: var(--space-24); min-width: 0; }
+  .ledger h3 {
+    display: flex;
+    align-items: center;
+    gap: var(--space-12);
+    font-family: var(--font-title);
+    font-size: var(--type-heading);
+    text-transform: uppercase;
+    line-height: var(--leading-tight);
+  }
+  .ledger h3 i {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    border: var(--stroke-control) solid var(--text-primary);
+  }
+  .ledger .on i { background: var(--accent-ground); border-color: var(--accent-ground); }
+  .ledger .off i { border-style: dashed; }
+  .ledger dl { margin: var(--space-16) 0 0; }
+  .ledger dt { margin-top: var(--space-16); font-weight: var(--weight-bold); }
+  .ledger dd { margin: var(--space-4) 0 0; font-size: var(--type-small); color: var(--text-muted); }
+
+  footer {
+    margin-top: var(--space-64);
+    padding-block: var(--space-32) var(--space-64);
+    border-top: var(--stroke-bar) solid var(--text-primary);
+    font-size: var(--type-small);
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: minmax(0, 1fr); gap: var(--space-32); padding-block: var(--space-24) var(--space-48); }
+    .hero-copy { padding-bottom: 0; }
+    .chapter { padding-block: var(--space-64) var(--space-32); }
+    .row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-16); }
+    .pane { aspect-ratio: 1 / 1; }
+    .sill { padding: var(--space-8) var(--space-12) var(--space-12); }
+    .sill p { display: none; }
+    .street { grid-template-columns: minmax(0, 1fr); }
+    .route { grid-column: 1; margin: var(--space-16) 10% 0; }
+    .shift { grid-template-columns: minmax(0, 1fr); }
+    .log li { grid-template-columns: 3rem minmax(0, 1fr); }
+    .log li .what { grid-column: 2; }
+    .panel-head { grid-template-columns: minmax(0, 1fr); }
+    .panel-actions { justify-content: flex-start; }
+    .ledger { grid-template-columns: minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body data-bug="on">
+<div class="wrap">
+  <header class="topbar">
+    <span class="crumb"><b>cello.design</b> / agent-kit</span>
+    <div class="theme-switch" role="group" aria-label="Theme">
+      <button type="button" data-set-theme="dusk">Dusk</button>
+      <button type="button" data-set-theme="light">Day</button>
+    </div>
+  </header>
+
+  <section class="hero" aria-labelledby="h1">
+    <div class="hero-copy">
+      <span class="time">After hours · a starter kit for Claude Code</span>
+      <h1 id="h1" class="title">Agent Studio Kit</h1>
+      <p class="lede">How I run AI agents like a small software studio: a shared second brain they all read, automatic notes on every session, and a lead → worker → evaluator → shipper pipeline that builds real apps while the house sleeps.</p>
+      <p class="opinion">[Cello's words]</p>
+      <ol class="chapters" aria-label="Chapters">
+        <li>Brain</li><li>Notes</li><li aria-current="step">Studio</li><li>Proof</li><li>Setup</li>
+      </ol>
+    </div>
+    <figure class="window" aria-label="Poster: the studio after dark, seen through the desk window. Three of four windows are lit; the green sun waits below the ridge.">
+      <svg viewBox="0 0 600 520" role="presentation">
+        <rect class="sky" width="600" height="520"/>
+        <circle class="star" cx="80" cy="70" r="3"/><circle class="star" cx="190" cy="40" r="2"/><circle class="star" cx="470" cy="60" r="3"/><circle class="star" cx="540" cy="140" r="2"/><circle class="star" cx="330" cy="30" r="2"/>
+        <!-- the sun, below the ridge until a ticket ships -->
+        <circle class="sun" cx="560" cy="318" r="74"/>
+        <path class="ground" d="M0 380 L170 230 L320 380 Z"/>
+        <path class="ground" d="M250 380 L430 300 L600 380 Z"/>
+        <!-- the studio block -->
+        <rect class="block" x="60" y="300" width="480" height="220"/>
+        <rect class="dark" x="92" y="336" width="80" height="104"/>
+        <rect class="lit" x="204" y="336" width="80" height="104"/>
+        <rect class="lit" x="316" y="336" width="80" height="104"/>
+        <rect class="ret" x="316" y="336" width="80" height="12"/>
+        <rect class="dark" x="428" y="336" width="80" height="104"/>
+        <!-- window mullions -->
+        <rect class="mullion" x="297" y="0" width="6" height="520"/>
+        <rect class="mullion" x="0" y="252" width="600" height="6"/>
+      </svg>
+    </figure>
+  </section>
+
+  <section class="chapter" aria-labelledby="studio-h">
+    <div class="chapter-head">
+      <span class="eyebrow eyebrow--accent">03 · The studio</span>
+      <h2 id="studio-h" class="title">Four windows on the night shift</h2>
+      <p>One agent plans with you, workers build in parallel, a separate one tests their work, and one ships it. Run a ticket through; plant a bug and watch the evaluator send it back down the street.</p>
+    </div>
+
+    <div class="facade">
+      <ol class="row">
+        <li class="room">
+          <div class="pane" aria-hidden="true"><svg viewBox="0 0 120 160"><circle class="fig" cx="60" cy="112" r="16" opacity=".0"/></svg></div>
+          <div class="sill"><span class="floor">Window 1</span><h3>Lead</h3><p>Grills you on the idea, plans, writes tickets with acceptance criteria.</p><span class="state">Lights out · planned</span></div>
+        </li>
+        <li class="room room--lit">
+          <div class="pane" aria-hidden="true"><svg viewBox="0 0 120 160"><rect class="fig" x="18" y="96" width="50" height="8"/><rect class="fig" x="18" y="112" width="74" height="8"/><rect class="fig" x="18" y="128" width="36" height="8"/></svg></div>
+          <div class="sill"><span class="floor">Window 2</span><h3>Worker</h3><p>Builds one ticket on its own branch, with a test.</p><span class="state">Lit · fixing round 1</span></div>
+        </li>
+        <li class="room room--lit room--back">
+          <div class="pane" aria-hidden="true"><svg viewBox="0 0 120 160"><path class="fig" d="M86 92 A28 28 0 1 0 86 132" fill="none" stroke="currentColor" stroke-width="10" style="stroke:var(--ink-950);fill:none"/><rect class="fig" x="74" y="128" width="30" height="8" transform="rotate(40 74 128)"/></svg></div>
+          <div class="sill"><span class="floor">Window 3</span><h3>Evaluator</h3><p>Fresh eyes. Tests the criteria in a real browser, never reads the worker's chat.</p><span class="state">Fail · sent back</span></div>
+        </li>
+        <li class="room">
+          <div class="pane" aria-hidden="true"><svg viewBox="0 0 120 160"></svg></div>
+          <div class="sill"><span class="floor">Window 4</span><h3>Shipper</h3><p>Ships only passing work, checks it live. The sun rises when it does.</p><span class="state">Dark · waiting</span></div>
+        </li>
+      </ol>
+      <div class="street" aria-label="The ticket's route">
+        <div class="route"><span class="ticket">← PANTRY-4 · back to worker · 1 of 3</span></div>
+      </div>
+    </div>
+
+    <div class="shift">
+      <div class="log">
+        <div class="log-head">
+          <span class="eyebrow">Shift log · PANTRY-4 · Shopping list</span>
+        </div>
+        <ol>
+          <li><time>01:12</time><span class="who">Lead</span><span class="what">Three criteria: groups by aisle, checks survive a reload, no console errors.</span></li>
+          <li><time>01:40</time><span class="who">Worker</span><span class="what">Built on branch pantry-4, Playwright test added. Bug planted.</span></li>
+          <li><time>01:58</time><span class="who bad">Evaluator</span><span class="what bad">Fail: TypeError on /list. Sent back with the fix to make.</span></li>
+          <li><time>02:03</time><span class="who">Worker</span><span class="what">Fixing, round 1 of 3.</span></li>
+          <li><time>--:--</time><span class="who wait">Shipper</span><span class="what wait">Waits for a pass on that exact commit.</span></li>
+        </ol>
+      </div>
+      <div class="controls">
+        <label class="switch">
+          <input type="checkbox" id="plant-bug" checked>
+          <span class="switch-track" aria-hidden="true"></span>
+          Plant a bug
+        </label>
+        <div class="group">
+          <button class="button button--primary" type="button">Run ticket</button>
+          <button class="button button--secondary" type="button">Pause</button>
+        </div>
+        <blockquote>
+          <p>If the evaluator doesn't catch the bug, it isn't evaluating.</p>
+          <p class="opinion">[Cello's words]</p>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section class="chapter" aria-labelledby="setup-h">
+    <div class="chapter-head">
+      <span class="eyebrow eyebrow--accent">05 · Setup</span>
+      <h2 id="setup-h" class="title">Take a window home</h2>
+      <p>Paste these into Claude Code, in order. Each one stops for your OK between phases. Plenty of people stop after the first two.</p>
+    </div>
+    <article class="panel">
+      <div class="panel-head">
+        <div>
+          <span class="num" aria-hidden="true">3/3</span>
+          <h3>The studio pipeline</h3>
+          <p>Toolbox, roles, self-testing, hosting and local AI, then a first app built end to end.</p>
+        </div>
+        <div class="panel-actions">
+          <button class="button button--primary" type="button" data-copy data-target="p3"><span data-label>Copy prompt</span></button>
+          <button class="button button--secondary" type="button" data-download="agent-studio-3-studio.md" data-target="p3"><span>Download .md</span></button>
+        </div>
+      </div>
+      <pre class="prompt-text" id="p3">Read AGENT.md first. My second brain and session recaps are set up. Now I want a small software studio (lead / worker / evaluator / shipper) for building apps for myself and the people around me: reminders, meal planning, small tools.
+
+## Ground rules
+- Work in the phases below. At the end of each phase, show me what you built and what you tested, then stop and wait for my OK.
+- Show me each file before installing it. Ask before anything that costs money, sends data off my machines, or changes global settings.
+- For any third-party tool: read its README/SKILL.md first (don't trust memory for install steps or flags), show me what it'll install, and record it in `registry/` with what it's for and when to use it.
+- Never change firewall, router, DNS, VPN, reverse-proxy or power settings yourself: give me the exact changes and I'll apply them.
+- Never store passwords, keys or tokens in the brain or in Git.
+
+## Phase 0: survey and questions
+Check and report: OS, CPU, RAM, GPU and VRAM, free disk, and what's installed (git, Node and its version, Python, Docker, Ollama; on Windows, whether WSL2 is set up).
+
+Then ask me, all at once:
+1. Who uses the apps (just me, or family/friends on their phones)? iPhone, Android or both? One first app idea to run the pipeline on.
+2. Where should apps run: only on this computer, a home server I have, or a small rented server? Should they work away from home?
+3. If I have a server or network setup: what it runs, my reverse proxy, domain, how I do certificates and remote access.
+4. Budget appetite: free/local only, or a few paid tools if they clearly save time?
+5. Board: a plain `docs/board.md` in each repo, or GitHub issues?
+
+Then propose a folder layout (on Windows: app repos and dev servers inside WSL2, the brain on the Windows side) and write it into AGENT.md.
+
+## Phase 1: toolbox
+
+**Matt Pocock's skills** (github.com/mattpocock/skills). Install with the `skills` CLI as the README says, user-level. Browse the whole repo and recommend any I'm missing, but at least:
+
+| Skill | Where it fits |
+|---|---|
+| `grill-me` / `grilling` | The lead grills me on every new app idea *before* writing the plan: who it's for, edge cases, what "done" means. |
+| `grill-with-docs` / `domain-modeling` | When an app has real data: pin down the terms and record decisions as ADRs in the repo. |
+| `research` | The lead's research step: primary sources into a repo .md, not from memory. |
+| `prototype` | A throwaway prototype to test an idea on my phone before the real build. |
+| `improve-codebase-architecture` | Monthly scheduled pass per app, producing a report of what to simplify. I choose what becomes tickets. |
+| `triage` | Only if I chose GitHub issues as the board. |
+| `writing-great-skills` | Read before writing any of my own skills. |
+| `teach` | For me, when I want to learn part of my stack, not just have it built. Only I start it. |
+
+**REA, Reverse Engineer Anything** (rea.tools, github.com/morluto/rea). Investigates how a *shipped* app works (JavaScript/Electron/web apps; native apps need an extra engine), so my apps can learn from ones I like. Check which Node versions it supports and use a pinned Node rather than changing my system Node. Don't approve optional install scripts without asking me. Only apps I use or own, for learning concepts; never copy proprietary code, assets or branding.
+
+**Playwright:** Playwright MCP (Microsoft) so you can drive a real browser at phone and desktop sizes, click through flows and take screenshots; and Playwright Test in every app repo, a small smoke test of the main flows that is part of the check command.
+
+**Chrome DevTools MCP** (github.com/ChromeDevTools/chrome-devtools-mcp): Playwright drives, DevTools inspects. Console errors, failed or slow network requests, a performance trace at a throttled mobile connection, and audits (performance, accessibility, best practices, PWA installability; use the Lighthouse CLI if the MCP lacks audits). If I have Android, also show me how to connect a real phone over USB debugging.
+
+**Also:** Context7 (or a similar docs MCP) so workers code against current library docs, and Anthropic's built-in skill-creator.
+
+**Test:** show each tool working once.
+
+## Phase 2: the pipeline
+
+**Roles**
+- **Lead** (one session per app, the one I talk to): `grill-me` me → `research` (optionally a `reference-study`: REA on one app + feature I like → observed behavior, evidence, 2–3 concepts, a recommendation; I pick) → optional `prototype` → plan in `projects/&lt;app&gt;.md` (goal, who it's for, screens, data, decisions) → small tickets, each with 2–5 testable acceptance criteria. Makes product calls with me. Never writes big code itself.
+- **Workers** (subagents or separate sessions, one ticket each): build in their own git branch/worktree, add or update a Playwright test, run the checks, and hand back: branch + commit, what changed, checks run, screenshots, anything unfinished. Never merge, deploy or write their own evals.
+- **Evaluator** (a separate subagent with fresh context): gets ONLY the acceptance criteria, the standing criteria and the running app, never the worker's chat. Walks each criterion with Playwright MCP at phone and desktop size, checks console, network, performance and audits with DevTools MCP, and writes `docs/evals/&lt;ticket&gt;.md`: pass/fail per criterion with evidence, measured results separate from its opinion. Verdict: PASS, or FAIL with specific fixes. On FAIL the worker fixes and it goes back, max 3 rounds, then it escalates to the lead and me. Never edits code.
+- **Shipper** (at first the lead runs this through a background subagent; its own session once 2+ workers run at once): accepts only a PASS eval on that exact commit, merges to main, deploys, re-runs a quick eval on the live URL, writes a one-paragraph release note to `output/` in the brain, and tells me what shipped.
+
+**Standing criteria** for every app (in its `docs/ship-profile.md`): no console errors, no failed requests, accessibility ≥ 90, installs as a PWA, works at phone width, usable within ~3s on a throttled mobile connection.
+
+Rules: nothing reaches main without a PASS; I give the go for anything other people will see; one heavy job at a time (builds, local models, image generation) so the computer stays usable.
+
+**Default stack:** PWAs (they install to phone home screens and send push notifications; on iPhone that needs iOS 16.4+ and adding to the home screen). A simple full-stack framework with SQLite, one repo per app, packaged as a Docker image, Playwright Test from the start. A shared tiny UI kit once there are 2+ apps.
+
+## Phase 3: hosting and local AI
+
+**Hosting.** Use my Phase 0 answers; don't pick for me. Write a deploy plan for my approval covering:
+- **Real HTTPS** (PWA install, offline mode and push need it): prefer a domain + Let's Encrypt (DNS challenge works for internal-only apps) over self-signed certs.
+- **Remote access** only the way I choose (my VPN, Tailscale, or public with login), nothing inbound opened unless I say so. Web push needs outbound access to the browser's push service.
+- **Least-privilege deploy access:** a dedicated deploy user/key, never my admin credentials, never committed.
+- **Per app:** container, data volume, backups with a tested restore, health check, rollback. Exact steps go in `docs/ship-profile.md`, so the shipper deploys the same way every time.
+
+**Local AI.** Pick what fits my hardware and tell me what you chose and why (say plainly if my GPU will be slow or unsupported):
+- **Ollama** with a current open model sized to my memory, for cheap private jobs: nightly recap summaries, tagging inbox notes, AI features inside my apps. Not the main coding agent; that stays with you.
+- **faster-whisper** (or whisper.cpp) for voice notes → brain inbox.
+- **ComfyUI** for app icons, illustrations and placeholder art, with a saved reusable workflow.
+
+## Phase 4: skills and schedules
+Read `writing-great-skills` first. Create user-level skills that call Matt's skills instead of duplicating them: `new-app` (scaffold repo + brain note + board + ship profile + Playwright), `lead` / `worker` / `evaluator` / `shipper` role briefs, `reference-study`, `walkthrough`, `evaluate`, `ship`, and `app-health` (weekly: every live app up, cert expiry, last backup + restore test, disk, standing criteria vs last week). Schedule `app-health` weekly and `improve-codebase-architecture` monthly. Add everything to `registry/automations.md`.
+
+## Phase 5: prove it end to end
+1. Run the pipeline on my first app idea: the lead grills me, researches and plans; two workers build two tickets in parallel; the evaluator checks each, including one deliberate FAIL (e.g. a planted console error) so I can see it caught and fixed; the shipper deploys; I open it on my phone over HTTPS.
+2. Confirm that session got recapped and appears in the next nightly digest.
+3. Tell me plainly anything you couldn't get working or couldn't test.</pre>
+    </article>
+    <p class="others">Also: <a href="#">1 · The second brain</a> <a href="#">2 · Session notes and habits</a></p>
+  </section>
+
+  <section class="chapter" aria-labelledby="costs-h">
+    <div class="chapter-head">
+      <span class="eyebrow eyebrow--accent">Costs</span>
+      <h2 id="costs-h" class="title">What stays on overnight</h2>
+      <p class="opinion">[Cello's words]</p>
+    </div>
+    <div class="ledger">
+      <section class="on" aria-labelledby="pay">
+        <h3 id="pay"><i aria-hidden="true"></i>Pay for</h3>
+        <dl>
+          <dt>Claude plan</dt><dd>The one worth paying for. Parallel workers use a lot, so a higher tier keeps the pipeline from stalling.</dd>
+          <dt>Images, optionally</dt><dd>A ChatGPT plan helps with text in images and adds Codex as a second coder.</dd>
+        </dl>
+      </section>
+      <section aria-labelledby="local">
+        <h3 id="local"><i aria-hidden="true"></i>Run locally</h3>
+        <dl>
+          <dt>Local models</dt><dd>Private chores: summaries, transcription, AI features inside your apps. Not a replacement for Claude as the coder.</dd>
+          <dt>ComfyUI</dt><dd>Free on a decent GPU.</dd>
+          <dt>Hosting</dt><dd>Your own computer or home server. Rent a small server only when apps must run while yours is off.</dd>
+        </dl>
+      </section>
+      <section class="off" aria-labelledby="skip">
+        <h3 id="skip"><i aria-hidden="true"></i>Skip for now</h3>
+        <dl>
+          <dt>Firecrawl, Mobbin</dt><dd>Built-in web search and screenshots of apps you like cover personal projects.</dd>
+          <dt>App stores</dt><dd>Web apps install to phone home screens.</dd>
+        </dl>
+      </section>
+    </div>
+  </section>
+
+  <footer>Concept B · Night shift · AK-1. Static still; motion is described in README.md.</footer>
+</div>
+<script src="concepts.js"></script>
+</body>
+</html>

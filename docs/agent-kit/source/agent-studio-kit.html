@@ -1,0 +1,342 @@
+<title>Agent Studio Starter Kit</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column; a stage strip and a role strip as the two diagrams; prompts as copyable panels */
+:root{
+  --bg:#f5f6f8; --surface:#ffffff; --fg:#1b2130; --muted:#5b6476; --line:#dde1e8;
+  --accent:#2f4fc4; --accent-soft:#e7ecfb; --code-bg:#eef1f6; --ok:#1f7a4d;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10131a; --surface:#171b24; --fg:#e4e8f0; --muted:#9aa3b5; --line:#2a3040;
+  --accent:#8ea6ff; --accent-soft:#1e2742; --code-bg:#1c212c; --ok:#5fcf98; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10131a; --surface:#171b24; --fg:#e4e8f0; --muted:#9aa3b5; --line:#2a3040;
+  --accent:#8ea6ff; --accent-soft:#1e2742; --code-bg:#1c212c; --ok:#5fcf98; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font:16px/1.6 var(--body)}
+.wrap{max-width:860px;margin:0 auto;padding-block:48px 72px;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));display:flex;flex-direction:column;gap:56px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:clamp(2rem,5vw,3rem);font-weight:700;letter-spacing:-0.01em}
+h2{font-size:1.6rem;font-weight:700}
+h3{font-size:1.15rem;font-weight:500}
+p{margin:0;max-width:65ch}
+section{display:flex;flex-direction:column;gap:16px}
+.eyebrow{font:500 .75rem/1 var(--mono);text-transform:uppercase;letter-spacing:.08em;color:var(--accent)}
+.lede{font-size:1.15rem;color:var(--muted)}
+header{display:flex;flex-direction:column;gap:16px}
+a{color:var(--accent)}
+code{font-family:var(--mono);font-size:.88em;background:var(--code-bg);padding:1px 5px;border-radius:4px}
+
+/* strips */
+.strip{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px}
+.step{flex:1 1 150px;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:4px}
+.step b{font-family:var(--mono);font-weight:500;font-size:.9rem;color:var(--accent)}
+.step span{font-size:.9rem;color:var(--muted);line-height:1.4}
+.arrow{align-self:center;color:var(--muted);font-family:var(--mono)}
+@media (max-width:640px){.arrow{display:none}}
+.note{font-size:.92rem;color:var(--muted)}
+
+.parts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px}
+.parts div{display:flex;flex-direction:column;gap:6px;min-width:0}
+.parts p{font-size:.95rem;color:var(--muted)}
+
+/* prompts */
+.prompt{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.prompt-head{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--line)}
+.prompt-head div{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1 1 260px}
+.prompt-head p{font-size:.92rem;color:var(--muted)}
+.num{font:500 .8rem/1 var(--mono);color:var(--accent)}
+button.copy{font:500 .9rem var(--body);color:#fff;background:var(--accent);border:0;border-radius:6px;padding:9px 16px;cursor:pointer;white-space:nowrap}
+:root[data-theme="dark"] button.copy{color:#10131a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) button.copy{color:#10131a}}
+button.copy:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+button.copy.done{background:var(--ok)}
+pre{margin:0;max-height:380px;overflow:auto;background:var(--code-bg);padding:16px 18px;font:13px/1.55 var(--mono);white-space:pre-wrap;word-break:break-word;color:var(--fg)}
+
+/* table */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.95rem;min-width:520px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 .75rem var(--mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+td:first-child{font-weight:600;white-space:nowrap}
+
+ul.lessons{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px}
+ul.lessons li{padding-left:16px;border-left:2px solid var(--accent-soft);max-width:70ch}
+ul.lessons b{display:block}
+footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--line);padding-top:20px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+<header>
+  <span class="eyebrow">Starter kit · Claude Code</span>
+  <h1>Agent Studio Starter Kit</h1>
+  <p class="lede">How we run AI agents like a small software studio: a shared second brain they all read, automatic notes on every session, and a lead → worker → evaluator → shipper pipeline that builds real apps. Three prompts set it up on your machine.</p>
+</header>
+
+<section>
+  <span class="eyebrow">What it is</span>
+  <h2>Three layers, each built on the last</h2>
+  <div class="parts">
+    <div><h3>1. A second brain</h3><p>A folder of plain Markdown your agents read before working. They know your projects, decisions and preferences without you explaining again.</p></div>
+    <div><h3>2. Memory on autopilot</h3><p>Every session gets logged and summarized overnight. You approve what becomes permanent each morning.</p></div>
+    <div><h3>3. A studio pipeline</h3><p>One agent plans with you, others build in parallel, a separate one tests their work, and one ships it.</p></div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">The brain</span>
+  <h2>Knowledge moves forward only when work earns it</h2>
+  <div class="strip" aria-label="Brain stages">
+    <div class="step"><b>inbox/</b><span>Capture anything. No organizing.</span></div><span class="arrow">→</span>
+    <div class="step"><b>projects/</b><span>One note per project: goal, decisions, links.</span></div><span class="arrow">→</span>
+    <div class="step"><b>output/</b><span>What actually shipped.</span></div><span class="arrow">→</span>
+    <div class="step"><b>wiki/</b><span>Lessons, only from finished projects.</span></div>
+  </div>
+  <p class="note">The wiki rule is the important one. Nothing goes in from a raw note or a chat answer, so it grows slowly and everything in it has been tested by real work.</p>
+</section>
+
+<section>
+  <span class="eyebrow">The studio</span>
+  <h2>Who does what</h2>
+  <div class="strip" aria-label="Pipeline roles">
+    <div class="step"><b>Lead</b><span>Grills you on the idea, researches, plans, writes tickets with acceptance criteria.</span></div><span class="arrow">→</span>
+    <div class="step"><b>Workers</b><span>Build one ticket each, on their own branch, with tests.</span></div><span class="arrow">→</span>
+    <div class="step"><b>Evaluator</b><span>Fresh eyes. Tests against the criteria in a real browser. Pass or send back.</span></div><span class="arrow">→</span>
+    <div class="step"><b>Shipper</b><span>Ships only passing work, checks it live, writes the release note.</span></div>
+  </div>
+  <p class="note">The evaluator never sees the worker's reasoning. An agent grading its own work usually passes itself.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Setup</span>
+  <h2>Paste these into Claude Code, in order</h2>
+  <p>Open Claude Code in a terminal or the desktop app's Code tab, paste a prompt, and answer its questions. Each one stops for your OK between phases. Plenty of people stop after the first two, and that's a useful setup on its own.</p>
+
+  <article class="prompt">
+    <div class="prompt-head"><div><span class="num">Prompt 1 of 3</span><h3>Set up the second brain</h3><p>Folders, rules for your agents, and a few commands. About 30 minutes.</p></div><button class="copy" id="copy-1" data-target="p1">Copy prompt</button></div>
+    <pre id="p1">I want you to set up a "second brain" for me: a folder of plain Markdown notes that you and any other AI agent I use can read and write, so you remember my projects, decisions and preferences between sessions.
+
+Before you create anything, ask me these questions (all at once, short answers are fine):
+1. Where should the folder live? (Suggest a sensible default for my OS.)
+2. Do I use Obsidian, or another notes app? (The brain must work without one either way.)
+3. Should it be a Git repo? (Recommended: yes, local only to start.)
+4. Where do my tasks and to-dos live today (an app, a notes file, nowhere)?
+5. Which AI tools will use it (Claude Code, Claude desktop, Codex, others)?
+6. What are 3–5 projects I'm working on right now?
+7. Is anything off-limits (folders or topics never to import or store)?
+
+Then build it with this design.
+
+## Core idea: knowledge moves through stages, not topics
+Don't file by topic. A note moves forward only when real work earns it:
+
+inbox/  → projects/ → output/  → wiki/
+capture    working     shipped    lasting lessons
+
+- inbox/: zero-friction capture. Raw ideas, clips, research, transcripts, pasted context. No organizing at write time. Names like YYYY-MM-DD-short-description.md.
+- projects/: one file per active or planned project. Frontmatter: type: project, status: active|planned|on-hold|parked|completed|canceled, project: slug. Sections: Goal, Active work, Source pointers, Output links, Decisions.
+- output/: things that actually shipped: decisions, posts, handoffs, architecture notes, finished project records. Frontmatter: type: output, status: shipped|archived|superseded, output_type, source_project. Names like YYYY-MM-DD-artifact-name.md.
+- wiki/: evergreen lessons. HARD RULE: a wiki page is only ever "harvested" from a finished project and its outputs, never written straight from an inbox note, an article or a chat answer. Frontmatter: type: wiki, wiki_topic, harvested_from, source_outputs, created, updated. It's meant to grow slowly; that's the point.
+
+## Supporting pieces
+- registry/: a routing directory of my AI setup (skills, slash commands, MCP servers/connectors, scripts, memory locations) with what each is for and where its real source lives. It points to things; it doesn't copy them.
+- Each stage folder gets an _index.md map. Files use lowercase-hyphen-slugs.md. Use [[wiki-links]] between notes. Every output links back to its project; every wiki page links to the project and outputs it came from.
+- A top-level AGENT.md with the conventions above (stages, frontmatter, naming, the harvest rule, privacy rules, and a "how to query" protocol: read AGENT.md → the registry → the relevant indexes → search, and cite file paths in answers). Add a CLAUDE.md / AGENTS.md that just says "Read AGENT.md before working here," so every agent picks it up.
+- A short README.md explaining the brain to a human.
+
+## Boundaries
+- The brain holds durable knowledge. My live tasks, due dates and day plans stay in my task tool (answer 4). Project notes point to it rather than copying volatile status. Code stays in its repos; project notes link to them.
+- Privacy: never store passwords, API keys, tokens or anything I mark off-limits. Add a .gitignore for a private/ folder holding agent memory and session recaps, and never commit those.
+- Non-destructive: if you import from existing notes, copy and don't move them, and write a migration note in output/ listing what was imported and skipped.
+
+## Workflows (as slash commands in .claude/commands/ if I use Claude Code, otherwise documented in AGENT.md)
+- /capture &lt;text&gt;: append a raw note to inbox/.
+- /brain-query &lt;question&gt;: search the brain and answer, citing files.
+- /harvest projects/&lt;project&gt;.md: only for a completed project (otherwise ask me first): read its outputs, distill ONE reusable lesson into one wiki page, add backlinks, update wiki/_index.md, and log it in output/harvest-log.md.
+- /brain-lint: check frontmatter, naming, broken links, and that no wiki page lacks a harvested_from.
+
+## Finish by
+1. Creating project notes for the projects I listed.
+2. Filling registry/_index.md with the AI tools and skills you can see I have.
+3. Showing me the folder tree and walking me through using it in my first week: capture freely, keep project notes current, record shipped work in output/, harvest when something's done.
+
+Keep everything plain Markdown so it outlives any single app or AI.</pre>
+  </article>
+
+  <article class="prompt">
+    <div class="prompt-head"><div><span class="num">Prompt 2 of 3</span><h3>Automatic session notes and habits</h3><p>Logs every session, writes nightly digests, adds morning, weekly and monthly routines.</p></div><button class="copy" id="copy-2" data-target="p2">Copy prompt</button></div>
+    <pre id="p2">Read AGENT.md first. My second brain is set up. Now automate documenting what I do with you, and add skills that keep my agents consistent.
+
+## Ground rules
+- At the end, show me what you built and what you tested, then stop.
+- Show me each file before installing it. Ask before anything that costs money, sends data off my machine, or changes global settings.
+- Never store passwords, keys or tokens in the brain or in Git.
+
+## Step 0: survey
+Check my OS, where Claude Code keeps its session transcripts on this machine (and in WSL, if I use it), and which scheduler I have (Task Scheduler, cron, launchd, or the Claude desktop app's scheduled tasks). Ask me what times suit a nightly and a weekly job.
+
+Note: only Claude Code / desktop Code sessions are saved on this machine. Regular claude.ai chats aren't, so for those I'll use `capture` by hand.
+
+## Step 1: automatic chat documentation
+Three layers, each one simple:
+1. **Log every session (hook, no AI).** A Claude Code `SessionEnd` hook, plus a `PreCompact` hook so long sessions get logged before compression. It appends one line to `private/recap-queue.jsonl`: timestamp, working folder, session id, and `transcript_path` from the hook input. Instant, never fails a session.
+2. **`recap` skill.** Reads a transcript and writes `private/session-recaps/YYYY-MM-DD/&lt;project&gt;-&lt;time&gt;.md` with only these sections: What we did · Decisions (and why) · Verified vs not verified · Open threads · Memory candidates · Project it belongs to. Short and factual, no transcript dumps. I can run it by hand; the nightly job covers the rest.
+3. **Nightly digest (local scheduler).** Recaps anything still queued, then writes one `private/nightly/YYYY-MM-DD.md` grouped by project: decisions, open threads, memory candidates, and proposed updates to project notes and agent memory. It only proposes; I approve in the morning. Use `claude -p`. Run it locally, not as a cloud agent: the transcripts only exist on this machine.
+
+Rules: `private/` is Git-ignored; redact keys, tokens, passwords and emails before writing; never copy raw transcripts into the brain; nothing goes into `wiki/` from a recap (the harvest rule still applies); idempotent (mark queue entries done, never recap a session twice); if the computer was asleep, the next run catches up.
+
+## Step 2: consistency skills
+Create these as user-level Claude Code skills, each with a clear description of when it triggers. Each one reads AGENT.md before writing, writes only where AGENT.md allows, and ends by saying what it changed and what's waiting for my approval.
+
+| Skill | What it does | When |
+|---|---|---|
+| `brain-context` | Read AGENT.md, the matching project note and recent recaps before starting work, so every agent starts with the same context | Auto, start of work |
+| `capture` | Drop a raw thought, link or pasted chat into `inbox/` | On demand |
+| `recap` | Session recap (Step 1) | End of session + nightly |
+| `handoff` | Update the project note, then give me a paste-ready prompt to continue in a fresh session | On demand / long sessions |
+| `decision-log` | Record real decisions in the project note with the date and reason | Auto, when deciding |
+| `harvest` | Turn a finished project into one wiki lesson (rules in AGENT.md) | On demand |
+| `morning-brief` | Last night's digest, pending approvals, open threads, 1–3 suggestions for today | Daily |
+| `brain-lint` | Frontmatter, naming, broken links, stale statuses, inbox notes older than 30 days | Weekly |
+| `weekly-review` | Week per project, flag projects idle 2+ weeks (park or continue?), inbox notes to promote or delete, finished projects worth harvesting | Weekly |
+| `consolidate-memory` | Merge duplicate memories, fix stale facts, prune the index | Monthly |
+
+## Step 3: schedule and verify
+- Schedule the nightly, daily, weekly and monthly jobs at the times I chose.
+- Write `registry/automations.md` listing every hook, skill and scheduled job: what it does, when it runs, where it writes, and how to turn it off. Link it from `registry/_index.md`.
+- Test end to end: run a short dummy session, confirm the hook logged it, run `recap` and the nightly digest by hand, and show me the files. Tell me plainly anything you couldn't test.</pre>
+  </article>
+
+  <article class="prompt">
+    <div class="prompt-head"><div><span class="num">Prompt 3 of 3</span><h3>The studio pipeline</h3><p>Toolbox, roles, self-testing, hosting and local AI, then a first app built end to end.</p></div><button class="copy" id="copy-3" data-target="p3">Copy prompt</button></div>
+    <pre id="p3">Read AGENT.md first. My second brain and session recaps are set up. Now I want a small software studio (lead / worker / evaluator / shipper) for building apps for myself and the people around me: reminders, meal planning, small tools.
+
+## Ground rules
+- Work in the phases below. At the end of each phase, show me what you built and what you tested, then stop and wait for my OK.
+- Show me each file before installing it. Ask before anything that costs money, sends data off my machines, or changes global settings.
+- For any third-party tool: read its README/SKILL.md first (don't trust memory for install steps or flags), show me what it'll install, and record it in `registry/` with what it's for and when to use it.
+- Never change firewall, router, DNS, VPN, reverse-proxy or power settings yourself: give me the exact changes and I'll apply them.
+- Never store passwords, keys or tokens in the brain or in Git.
+
+## Phase 0: survey and questions
+Check and report: OS, CPU, RAM, GPU and VRAM, free disk, and what's installed (git, Node and its version, Python, Docker, Ollama; on Windows, whether WSL2 is set up).
+
+Then ask me, all at once:
+1. Who uses the apps (just me, or family/friends on their phones)? iPhone, Android or both? One first app idea to run the pipeline on.
+2. Where should apps run: only on this computer, a home server I have, or a small rented server? Should they work away from home?
+3. If I have a server or network setup: what it runs, my reverse proxy, domain, how I do certificates and remote access.
+4. Budget appetite: free/local only, or a few paid tools if they clearly save time?
+5. Board: a plain `docs/board.md` in each repo, or GitHub issues?
+
+Then propose a folder layout (on Windows: app repos and dev servers inside WSL2, the brain on the Windows side) and write it into AGENT.md.
+
+## Phase 1: toolbox
+
+**Matt Pocock's skills** (github.com/mattpocock/skills). Install with the `skills` CLI as the README says, user-level. Browse the whole repo and recommend any I'm missing, but at least:
+
+| Skill | Where it fits |
+|---|---|
+| `grill-me` / `grilling` | The lead grills me on every new app idea *before* writing the plan: who it's for, edge cases, what "done" means. |
+| `grill-with-docs` / `domain-modeling` | When an app has real data: pin down the terms and record decisions as ADRs in the repo. |
+| `research` | The lead's research step: primary sources into a repo .md, not from memory. |
+| `prototype` | A throwaway prototype to test an idea on my phone before the real build. |
+| `improve-codebase-architecture` | Monthly scheduled pass per app, producing a report of what to simplify. I choose what becomes tickets. |
+| `triage` | Only if I chose GitHub issues as the board. |
+| `writing-great-skills` | Read before writing any of my own skills. |
+| `teach` | For me, when I want to learn part of my stack, not just have it built. Only I start it. |
+
+**REA, Reverse Engineer Anything** (rea.tools, github.com/morluto/rea). Investigates how a *shipped* app works (JavaScript/Electron/web apps; native apps need an extra engine), so my apps can learn from ones I like. Check which Node versions it supports and use a pinned Node rather than changing my system Node. Don't approve optional install scripts without asking me. Only apps I use or own, for learning concepts; never copy proprietary code, assets or branding.
+
+**Playwright:** Playwright MCP (Microsoft) so you can drive a real browser at phone and desktop sizes, click through flows and take screenshots; and Playwright Test in every app repo, a small smoke test of the main flows that is part of the check command.
+
+**Chrome DevTools MCP** (github.com/ChromeDevTools/chrome-devtools-mcp): Playwright drives, DevTools inspects. Console errors, failed or slow network requests, a performance trace at a throttled mobile connection, and audits (performance, accessibility, best practices, PWA installability; use the Lighthouse CLI if the MCP lacks audits). If I have Android, also show me how to connect a real phone over USB debugging.
+
+**Also:** Context7 (or a similar docs MCP) so workers code against current library docs, and Anthropic's built-in skill-creator.
+
+**Test:** show each tool working once.
+
+## Phase 2: the pipeline
+
+**Roles**
+- **Lead** (one session per app, the one I talk to): `grill-me` me → `research` (optionally a `reference-study`: REA on one app + feature I like → observed behavior, evidence, 2–3 concepts, a recommendation; I pick) → optional `prototype` → plan in `projects/&lt;app&gt;.md` (goal, who it's for, screens, data, decisions) → small tickets, each with 2–5 testable acceptance criteria. Makes product calls with me. Never writes big code itself.
+- **Workers** (subagents or separate sessions, one ticket each): build in their own git branch/worktree, add or update a Playwright test, run the checks, and hand back: branch + commit, what changed, checks run, screenshots, anything unfinished. Never merge, deploy or write their own evals.
+- **Evaluator** (a separate subagent with fresh context): gets ONLY the acceptance criteria, the standing criteria and the running app, never the worker's chat. Walks each criterion with Playwright MCP at phone and desktop size, checks console, network, performance and audits with DevTools MCP, and writes `docs/evals/&lt;ticket&gt;.md`: pass/fail per criterion with evidence, measured results separate from its opinion. Verdict: PASS, or FAIL with specific fixes. On FAIL the worker fixes and it goes back, max 3 rounds, then it escalates to the lead and me. Never edits code.
+- **Shipper** (at first the lead runs this through a background subagent; its own session once 2+ workers run at once): accepts only a PASS eval on that exact commit, merges to main, deploys, re-runs a quick eval on the live URL, writes a one-paragraph release note to `output/` in the brain, and tells me what shipped.
+
+**Standing criteria** for every app (in its `docs/ship-profile.md`): no console errors, no failed requests, accessibility ≥ 90, installs as a PWA, works at phone width, usable within ~3s on a throttled mobile connection.
+
+Rules: nothing reaches main without a PASS; I give the go for anything other people will see; one heavy job at a time (builds, local models, image generation) so the computer stays usable.
+
+**Default stack:** PWAs (they install to phone home screens and send push notifications; on iPhone that needs iOS 16.4+ and adding to the home screen). A simple full-stack framework with SQLite, one repo per app, packaged as a Docker image, Playwright Test from the start. A shared tiny UI kit once there are 2+ apps.
+
+## Phase 3: hosting and local AI
+
+**Hosting.** Use my Phase 0 answers; don't pick for me. Write a deploy plan for my approval covering:
+- **Real HTTPS** (PWA install, offline mode and push need it): prefer a domain + Let's Encrypt (DNS challenge works for internal-only apps) over self-signed certs.
+- **Remote access** only the way I choose (my VPN, Tailscale, or public with login), nothing inbound opened unless I say so. Web push needs outbound access to the browser's push service.
+- **Least-privilege deploy access:** a dedicated deploy user/key, never my admin credentials, never committed.
+- **Per app:** container, data volume, backups with a tested restore, health check, rollback. Exact steps go in `docs/ship-profile.md`, so the shipper deploys the same way every time.
+
+**Local AI.** Pick what fits my hardware and tell me what you chose and why (say plainly if my GPU will be slow or unsupported):
+- **Ollama** with a current open model sized to my memory, for cheap private jobs: nightly recap summaries, tagging inbox notes, AI features inside my apps. Not the main coding agent; that stays with you.
+- **faster-whisper** (or whisper.cpp) for voice notes → brain inbox.
+- **ComfyUI** for app icons, illustrations and placeholder art, with a saved reusable workflow.
+
+## Phase 4: skills and schedules
+Read `writing-great-skills` first. Create user-level skills that call Matt's skills instead of duplicating them: `new-app` (scaffold repo + brain note + board + ship profile + Playwright), `lead` / `worker` / `evaluator` / `shipper` role briefs, `reference-study`, `walkthrough`, `evaluate`, `ship`, and `app-health` (weekly: every live app up, cert expiry, last backup + restore test, disk, standing criteria vs last week). Schedule `app-health` weekly and `improve-codebase-architecture` monthly. Add everything to `registry/automations.md`.
+
+## Phase 5: prove it end to end
+1. Run the pipeline on my first app idea: the lead grills me, researches and plans; two workers build two tickets in parallel; the evaluator checks each, including one deliberate FAIL (e.g. a planted console error) so I can see it caught and fixed; the shipper deploys; I open it on my phone over HTTPS.
+2. Confirm that session got recapped and appears in the next nightly digest.
+3. Tell me plainly anything you couldn't get working or couldn't test.</pre>
+  </article>
+</section>
+
+<section>
+  <span class="eyebrow">Costs</span>
+  <h2>What to pay for and what to run locally</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>Thing</th><th>Our take</th></tr></thead>
+    <tbody>
+      <tr><td>Claude plan</td><td>The one worth paying for. Parallel workers use a lot, so a higher tier keeps the pipeline from stalling.</td></tr>
+      <tr><td>Local models</td><td>Great for private chores: summaries, transcription, AI features inside your apps. Not a replacement for Claude as the coder.</td></tr>
+      <tr><td>Images</td><td>ComfyUI runs free on a decent GPU. A ChatGPT plan helps with text in images and adds Codex as a second coder.</td></tr>
+      <tr><td>Firecrawl, Mobbin</td><td>Skip at first. Built-in web search and screenshots of apps you like cover personal projects.</td></tr>
+      <tr><td>Hosting</td><td>Your own computer or home server is free. A small rented server is only needed when apps must run while yours is off.</td></tr>
+      <tr><td>App stores</td><td>Not needed. Web apps install to phone home screens.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <span class="eyebrow">Lessons</span>
+  <h2>What we learned running it</h2>
+  <ul class="lessons">
+    <li><b>Get grilled before anything is built.</b>The most useful step is the agent asking you hard questions about the idea first. It saves rebuilding later.</li>
+    <li><b>Hooks for reliability, AI for writing.</b>If logging depends on an agent remembering, sessions get missed. A hook never forgets.</li>
+    <li><b>Approve before it's permanent.</b>Automated notes go somewhere private first. Otherwise the brain fills up with confident, half-right summaries.</li>
+    <li><b>Nothing ships unreviewed.</b>One role ships and everyone else builds. That stops agents from overwriting each other's work.</li>
+    <li><b>Prove the checker works.</b>Plant one deliberate bug. If the evaluator doesn't catch it, it isn't evaluating.</li>
+    <li><b>Start small.</b>Prompt 1 plus a week of capturing gets you most of the benefit. Add the studio when you have an app to build.</li>
+  </ul>
+</section>
+
+<footer>Only Claude Code sessions are saved on your computer, so regular claude.ai chats need a manual capture. Tool names and install steps change; the prompts tell your agent to read each tool's README instead of trusting memory.</footer>
+</div>
+
+<script>
+document.querySelectorAll('button.copy').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var pre = document.getElementById(btn.dataset.target);
+    var text = pre.textContent;
+    function mark(label){ btn.textContent = label; btn.classList.add('done'); setTimeout(function(){ btn.textContent='Copy prompt'; btn.classList.remove('done'); }, 1800); }
+    function fallback(){ var r=document.createRange(); r.selectNodeContents(pre); var s=window.getSelection(); s.removeAllRanges(); s.addRange(r); btn.textContent='Selected, press Ctrl+C'; }
+    try { navigator.clipboard.writeText(text).then(function(){ mark('Copied'); }, fallback); } catch(e){ fallback(); }
+  });
+});
+</script>

@@ -1,0 +1,27 @@
+---
+/*
+ * Setup: the three prompts as panels, 01 marked "Start here". The text of each comes from its one
+ * source file (src/lib/agent-kit/prompts.ts).
+ */
+import SectionHead from "./SectionHead.astro";
+import PromptPanel from "./PromptPanel.astro";
+import { prompts, promptText } from "@/lib/agent-kit/prompts";
+---
+
+<section class="ak-section ak-wrap" id="setup" aria-labelledby="setup-title">
+  <SectionHead eyebrow="Setup" title="Copy the three prompts" titleId="setup-title">
+    Open Claude Code, paste them in order and answer its questions. The first two make a useful
+    setup on their own.
+  </SectionHead>
+  <div class="ak-body ak-prompts">
+    {prompts.map((p, i) => <PromptPanel prompt={p} text={promptText(p.file)} start={i === 0} />)}
+  </div>
+</section>
+
+<style>
+  .ak-prompts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-32);
+  }
+</style>

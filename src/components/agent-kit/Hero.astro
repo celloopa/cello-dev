@@ -1,0 +1,86 @@
+---
+/*
+ * Hero: centered. Who it's by, a two-line headline, one sentence of what you get, one primary
+ * action (prompt 01, in Setup) and a quiet link down to the studio demo.
+ */
+import Button from "@/components/ui/Button.astro";
+import ArrowLink from "@/components/ui/ArrowLink.astro";
+import Eyebrow from "@/components/ui/Eyebrow.astro";
+---
+
+<section class="ak-hero ak-wrap" id="top" aria-labelledby="ak-h1">
+  <Eyebrow tone="accent">Agent Studio Kit · by Cello</Eyebrow>
+  <h1 class="ak-h1" id="ak-h1">
+    <span>Run your AI agents</span>
+    <span>like a small software studio</span>
+  </h1>
+  <p class="ak-lede">
+    Three prompts give your agents one folder of notes to read, a note on every session, and a
+    lead, evaluator and shipper on each project, with a worker for each ticket.
+  </p>
+  <div class="ak-hero-actions">
+    <Button href="#setup">Get prompt 01</Button>
+    <ArrowLink href="#studio" variant="down">Watch a ticket run</ArrowLink>
+  </div>
+  <p class="ak-meta ak-hero-meta">For Claude Code · Plain Markdown · Prompt 01 takes about 30 minutes</p>
+</section>
+
+<style>
+  .ak-hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-block: var(--space-96) var(--space-32);
+    text-align: center;
+  }
+
+  .ak-h1 {
+    max-width: 24ch;
+    text-align: center;
+    margin-top: var(--space-24);
+    font-family: var(--font-title);
+    font-size: var(--type-page-title);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--track-tight);
+    text-wrap: balance;
+  }
+
+  .ak-h1 span {
+    display: block;
+  }
+
+  .ak-lede {
+    max-width: 40rem;
+    text-align: center;
+    margin-top: var(--space-24);
+    color: var(--text-muted);
+    font-size: var(--type-body-lg);
+    line-height: var(--leading-read);
+    text-wrap: pretty;
+  }
+
+  .ak-hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-16) var(--space-32);
+    align-items: center;
+    justify-content: center;
+    margin-top: var(--space-40);
+  }
+
+  .ak-hero-meta {
+    margin-top: var(--space-32);
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .ak-hero {
+      padding-block: var(--space-64) var(--space-16);
+    }
+
+    .ak-h1 span {
+      display: inline;
+    }
+  }
+</style>

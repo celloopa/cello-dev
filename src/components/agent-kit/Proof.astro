@@ -1,0 +1,228 @@
+---
+/*
+ * Proof: the stat line (Ghosted's first four days of testing) and two ship stories as cards, each
+ * trigger → what got done → outcome. The facts are assembled from the real runs.
+ */
+import SectionHead from "./SectionHead.astro";
+
+const stories: { id: string; label: string; title: string; trigger: string; done: string[]; outcome: string }[] = [
+  {
+    id: "story-ghosted",
+    label: "Story 1 of 2",
+    title: "Ghosted's feature pipeline",
+    trigger: "Ghosted, my AI resume editor, opened for early testing on October 8, 2026, and testers set the order of work from day one.",
+    done: [
+      "Bigger features went through research, a grilling one question at a time, and a decision written down before any code.",
+      "Tickets carried acceptance criteria, and anything visible passed a design-system gate first.",
+      "Layouts were picked from screens: the feedback flow had six prototypes, and I picked “B + 2”.",
+      "Only one shipping session merged, after its review and my go.",
+      "On day four the process was written down as nine steps, each naming the feature it came from.",
+    ],
+    outcome: "70 production releases in the first four days of testing.",
+  },
+  {
+    id: "story-page",
+    label: "Story 2 of 2",
+    title: "This page, built by the kit",
+    trigger: "A draft page with three setup prompts, to become a section of this site.",
+    done: [
+      "Five questions first, one at a time: name and web address, navigation, which stories, downloads, the hands-on moment.",
+      "A plan in the second brain with eight tickets, each with testable criteria.",
+      "Three looks to choose from, then a persona test of the pick before anything was built.",
+      "The lead started a worker per ticket, each on its own branch. A separate evaluator, which never saw their reasoning, checked each one in a real browser at phone and desktop sizes.",
+      "I planted one bug: the second Copy button copied the first prompt. The evaluator sent it back for exactly that.",
+    ],
+    outcome: "Lighthouse accessibility 100 on phone and desktop, 3.4 kB of page script, shipped after review and my go.",
+  },
+];
+
+const stats = [
+  { value: "3", label: "prompts to set it up" },
+  { value: "3", label: "roles on every project, plus a worker per ticket" },
+  { value: "2–5", label: "testable criteria per ticket" },
+];
+---
+
+<section class="ak-section ak-wrap" id="proof" aria-labelledby="proof-title">
+  <SectionHead eyebrow="Proof" title="70 production releases in four days" titleId="proof-title">
+    That was Ghosted's first four days of early testing, run through this pipeline. Here are two
+    ship stories from real runs: Ghosted's feature pipeline and this page.
+  </SectionHead>
+
+  <dl class="ak-body ak-stats">
+    {
+      stats.map((s) => (
+        <div class="ak-stat">
+          <dt>{s.label}</dt>
+          <dd>{s.value}</dd>
+        </div>
+      ))
+    }
+  </dl>
+
+  <div class="ak-stories">
+    {
+      stories.map((s) => (
+        <article class="ak-panel ak-story" aria-labelledby={s.id}>
+          <span class="ak-meta">{s.label}</span>
+          <h3 class="ak-story-title" id={s.id}>
+            {s.title}
+          </h3>
+          <dl class="ak-story-rows">
+            <div class="ak-story-row">
+              <dt>Trigger</dt>
+              <dd>{s.trigger}</dd>
+            </div>
+            <div class="ak-story-row">
+              <dt>What got done</dt>
+              <dd>
+                <ul class="ak-story-done">
+                  {s.done.map((d) => (
+                    <li>{d}</li>
+                  ))}
+                </ul>
+              </dd>
+            </div>
+            <div class="ak-story-row ak-story-row--outcome">
+              <dt>Outcome</dt>
+              <dd>{s.outcome}</dd>
+            </div>
+          </dl>
+        </article>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .ak-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-inline: 0;
+    border-block: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .ak-stat {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-24) var(--space-16);
+    text-align: center;
+  }
+
+  .ak-stat + .ak-stat {
+    border-left: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .ak-stat dt {
+    color: var(--text-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-stat dd {
+    margin: 0;
+    font-family: var(--font-title);
+    font-size: var(--type-section-title);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--leading-tight);
+  }
+
+  .ak-stories {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-24);
+    margin-top: var(--space-48);
+  }
+
+  .ak-story {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-24);
+  }
+
+  .ak-story-title {
+    font-family: var(--font-title);
+    font-size: var(--type-heading);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--leading-heading);
+    text-wrap: balance;
+  }
+
+  .ak-story-rows {
+    display: flex;
+    flex-direction: column;
+    margin: var(--space-8) 0 0;
+  }
+
+  .ak-story-row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-block: var(--space-12);
+    border-top: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .ak-story-row dt {
+    color: var(--text-accent);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .ak-story-row dd {
+    margin: 0;
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-story-row--outcome dd {
+    font-weight: var(--weight-bold);
+  }
+
+  .ak-story-done {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    margin: 0;
+    padding-left: var(--space-16);
+  }
+
+  @media (max-width: 768px) {
+    .ak-stats {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ak-stat {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+      gap: var(--space-16);
+      padding: var(--space-12) 0;
+      text-align: left;
+    }
+
+    .ak-stat + .ak-stat {
+      border-top: var(--stroke-rule) solid var(--border-muted);
+      border-left: 0;
+    }
+
+    .ak-stat dd {
+      min-width: 3ch;
+      font-size: var(--type-heading);
+    }
+
+    .ak-stories {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-16);
+      margin-top: var(--space-32);
+    }
+
+    .ak-story {
+      padding: var(--space-16);
+    }
+  }
+</style>

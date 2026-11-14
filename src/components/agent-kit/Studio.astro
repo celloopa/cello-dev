@@ -1,0 +1,542 @@
+---
+/*
+ * The studio: one ticket across four stations (lead → worker → evaluator → shipper) in a plain
+ * product panel, drawn as a static end-state still. With "Plant a bug" on (the default) the
+ * evaluator marks PANTRY-4 SENT BACK and the route returns it to the worker; off, it passes and
+ * ships. The switch works without script (:has), and without script that still is the whole demo.
+ * story.ts enhances [data-studio-moment] into the run: it enables Run ticket and Pause motion and
+ * drives the board through data-step / data-eval / data-returned on the container and data-at
+ * (here | past) on each lane. The board rules for those live under "the run" below; the still's
+ * rules apply only while the container has no data-step.
+ */
+import Button from "@/components/ui/Button.astro";
+import SectionHead from "./SectionHead.astro";
+
+const rules = [
+  "Every ticket gets 2–5 testable acceptance criteria before a worker starts.",
+  "A ticket that fails goes back to its worker, up to 3 rounds, then to the lead and you.",
+  "Only a commit with a PASS reaches main.",
+];
+---
+
+<section class="ak-section ak-wrap" id="studio" aria-labelledby="studio-title">
+  <SectionHead eyebrow="The studio" title="Run a ticket through the studio" titleId="studio-title">
+    The lead, evaluator and shipper stay up for the life of a project, and each hands off to a fresh
+    session when it runs low. The lead starts a worker for each ticket. The evaluator gets the
+    acceptance criteria and the running app, never the worker's reasoning.
+  </SectionHead>
+
+  <div class="ak-body ak-panel ak-studio" data-studio-moment>
+    <div class="ak-controls">
+      <div class="ak-controls-ticket">
+        <span class="ak-meta">Ticket</span>
+        <p class="ak-ticket-label">PANTRY-4 · Shopping list by aisle</p>
+      </div>
+      <div class="ak-controls-actions">
+        <label class="ak-switch">
+          <input class="ak-bug-input" type="checkbox" checked aria-describedby="studio-outcome" />
+          <span class="ak-switch-track" aria-hidden="true"></span>
+          Plant a bug
+        </label>
+        <Button disabled aria-describedby="studio-still" data-run-ticket>Run ticket</Button>
+        <Button variant="secondary" disabled aria-describedby="studio-still" data-motion-toggle>Pause motion</Button>
+      </div>
+      <p class="ak-controls-note">
+        <span id="studio-still">Showing the end of the run.</span>
+        <span id="studio-outcome" aria-live="polite">
+          <span data-when="bug">Bug planted: the evaluator sends PANTRY-4 back to the worker.</span>
+          <span data-when="clean">No bug: PANTRY-4 passes and ships.</span>
+        </span>
+      </p>
+      <p class="ak-sr" aria-live="polite" data-studio-log></p>
+    </div>
+
+    <div class="ak-board">
+      <ol class="ak-lanes">
+        <li class="ak-lane" data-lane="lead">
+          <h3 class="ak-lane-name">Lead <span>plans</span></h3>
+          <div class="ak-cell">
+            <div class="ak-ticket">
+              <span class="ak-ticket-id"><span>PANTRY-4</span><span>Planned</span></span>
+              <h4 class="ak-ticket-title">Shopping list by aisle</h4>
+              <span class="ak-ticket-meta">3 testable criteria</span>
+            </div>
+          </div>
+        </li>
+        <li class="ak-lane" data-lane="worker">
+          <h3 class="ak-lane-name">Worker <span>builds</span></h3>
+          <div class="ak-cell">
+            <div class="ak-ticket">
+              <span class="ak-ticket-id"><span>PANTRY-4</span><span data-alt="Fixed">Built</span></span>
+              <h4 class="ak-ticket-title">Shopping list by aisle</h4>
+              <span class="ak-ticket-meta" data-alt="Fix pushed · round 2">Branch pantry-4 · test added</span>
+            </div>
+          </div>
+        </li>
+        <li class="ak-lane ak-lane--eval" data-lane="eval">
+          <h3 class="ak-lane-name">Evaluator <span>checks</span></h3>
+          <div class="ak-cell">
+            <div class="ak-ticket">
+              <span class="ak-ticket-id"><span>PANTRY-4</span><span data-alt="Round 2 / 3">Round 1 / 3</span></span>
+              <h4 class="ak-ticket-title">Shopping list by aisle</h4>
+              <ul class="ak-criteria" aria-label="Acceptance criteria">
+                <li><span aria-hidden="true">✓</span><span><span class="ak-sr">Pass: </span>Groups by aisle</span></li>
+                <li><span aria-hidden="true">✓</span><span><span class="ak-sr">Pass: </span>Checks survive reload</span></li>
+                <li data-when="bug"><span class="ak-x" aria-hidden="true">✕</span><span><span class="ak-sr">Fail: </span>No console errors</span></li>
+                <li data-when="clean"><span aria-hidden="true">✓</span><span><span class="ak-sr">Pass: </span>No console errors</span></li>
+              </ul>
+              <span class="ak-ticket-meta" data-when="bug">TypeError on /list · planted</span>
+              <span class="ak-ticket-meta" data-when="clean">Phone and desktop checked</span>
+              <span class="ak-verdict">
+                <span class="ak-badge ak-badge--back" data-when="bug">Sent back</span>
+                <span class="ak-badge ak-badge--pass" data-when="clean">Pass</span>
+              </span>
+            </div>
+          </div>
+        </li>
+        <li class="ak-lane" data-lane="ship">
+          <h3 class="ak-lane-name">Shipper <span>ships</span></h3>
+          <div class="ak-cell">
+            <div class="ak-waiting" data-when="bug">Waiting for a pass</div>
+            <div class="ak-ticket" data-when="clean">
+              <span class="ak-ticket-id"><span>PANTRY-4</span><span>Live</span></span>
+              <h4 class="ak-ticket-title">Shopping list by aisle</h4>
+              <span class="ak-ticket-meta">Checked live · note written</span>
+            </div>
+          </div>
+        </li>
+      </ol>
+      <div class="ak-return" data-when="bug">
+        <span class="ak-return-line" aria-hidden="true"></span>
+        <p class="ak-return-label"><span aria-hidden="true">←</span> PANTRY-4 back to the worker · round 1 of 3</p>
+      </div>
+    </div>
+  </div>
+
+  <ul class="ak-rules" aria-label="Rules every ticket follows">
+    {rules.map((r) => <li>{r}</li>)}
+  </ul>
+</section>
+
+<style>
+  .ak-studio {
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* the bug switch picks which end state shows: always in the controls, on the board only for the
+     still (the run sets the board itself) */
+  .ak-studio:has(.ak-bug-input:checked) .ak-controls [data-when="clean"],
+  .ak-studio:has(.ak-bug-input:not(:checked)) .ak-controls [data-when="bug"],
+  .ak-studio:not([data-step]):has(.ak-bug-input:checked) .ak-board [data-when="clean"],
+  .ak-studio:not([data-step]):has(.ak-bug-input:not(:checked)) .ak-board [data-when="bug"] {
+    display: none;
+  }
+
+  /* ---------- controls: a toolbar above the board at every width ---------- */
+  .ak-controls {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-16) var(--space-24);
+    align-items: center;
+    padding: var(--space-20) var(--space-24);
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .ak-controls-ticket {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .ak-ticket-label {
+    font-size: var(--type-body);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-ui);
+  }
+
+  .ak-controls-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12) var(--space-16);
+    align-items: center;
+  }
+
+  .ak-controls-note {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-12);
+    color: var(--text-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-controls-note [data-when],
+  #studio-outcome {
+    color: var(--text-primary);
+  }
+
+  /* the switch: square track, action green when on */
+  .ak-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-12);
+    min-height: var(--touch-target);
+    margin-right: var(--space-8);
+    font-size: var(--type-ui);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .ak-bug-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+  }
+
+  .ak-switch-track {
+    position: relative;
+    flex: none;
+    width: 3.25rem;
+    height: 1.75rem;
+    border: var(--stroke-control) solid var(--border-strong);
+    background: var(--bg-plate);
+  }
+
+  .ak-switch-track::after {
+    content: "";
+    position: absolute;
+    top: var(--space-4);
+    left: var(--space-4);
+    width: var(--space-16);
+    height: var(--space-16);
+    background: var(--text-primary);
+    transition: transform var(--motion-ui) var(--ease-out);
+  }
+
+  .ak-bug-input:checked + .ak-switch-track {
+    border-color: var(--action-primary);
+    background: var(--action-primary);
+  }
+
+  .ak-bug-input:checked + .ak-switch-track::after {
+    background: var(--text-inverse);
+    transform: translateX(1.5rem);
+  }
+
+  .ak-bug-input:focus-visible + .ak-switch-track {
+    outline: var(--stroke-frame) solid var(--focus-ring);
+    outline-offset: var(--stroke-frame);
+  }
+
+  /* ---------- the board: four stations ---------- */
+  .ak-board {
+    padding: var(--space-24);
+  }
+
+  .ak-lanes {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--space-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ak-lane {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    min-width: 0;
+  }
+
+  .ak-lane-name {
+    padding-bottom: var(--space-8);
+    border-bottom: var(--stroke-control) solid var(--border-strong);
+    font-family: var(--font-mono);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .ak-lane-name span {
+    color: var(--text-muted);
+    font-weight: var(--weight-regular);
+  }
+
+  .ak-lane-name span::before {
+    content: "· ";
+  }
+
+  .ak-cell {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ak-ticket {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-16);
+    border: var(--stroke-rule) solid var(--border-strong);
+    background: var(--bg-canvas);
+  }
+
+  .ak-ticket-id {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-8);
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-caps);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .ak-ticket-title {
+    font-family: var(--font-mono);
+    font-size: var(--type-body);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-title);
+    text-wrap: balance;
+  }
+
+  .ak-ticket-meta {
+    display: block;
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-caps);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .ak-criteria {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-criteria li {
+    display: grid;
+    grid-template-columns: var(--space-20) minmax(0, 1fr);
+    gap: var(--space-4);
+  }
+
+  .ak-x {
+    color: var(--status-returned);
+    font-weight: var(--weight-bold);
+  }
+
+  .ak-verdict {
+    display: flex;
+    padding-top: var(--space-4);
+  }
+
+  .ak-waiting {
+    display: grid;
+    flex: 1;
+    place-items: center;
+    min-height: 8rem;
+    padding: var(--space-16);
+    border: var(--stroke-rule) dashed var(--border-muted);
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-caps);
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  /* the route back: evaluator to worker */
+  .ak-return {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0 var(--space-16);
+    margin-top: var(--space-16);
+  }
+
+  .ak-return-line {
+    grid-column: 2 / 4;
+    grid-row: 1;
+    height: var(--space-16);
+    margin-inline: var(--space-64);
+    border: var(--stroke-control) solid var(--status-returned);
+    border-top: 0;
+  }
+
+  .ak-return-label {
+    grid-column: 2 / 4;
+    grid-row: 2;
+    justify-self: center;
+    padding-top: var(--space-8);
+    color: var(--status-returned);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  /* ---------- the rules under the panel ---------- */
+  .ak-rules {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-24);
+    margin: var(--space-32) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ak-rules li {
+    padding-top: var(--space-12);
+    border-top: var(--stroke-control) solid var(--accent-ground);
+    color: var(--text-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  /* ---------- the run: only while story.ts has set data-step ---------- */
+  .ak-studio[data-step] .ak-board {
+    /* where a ticket arrives from: the station to its left */
+    --ak-from-x: calc(-100% - var(--space-16));
+    --ak-from-y: 0px;
+  }
+
+  .ak-studio[data-dir="back"] .ak-board {
+    --ak-from-x: calc(100% + var(--space-16));
+  }
+
+  .ak-studio[data-dir="drop"] .ak-board {
+    --ak-from-x: 0px;
+    --ak-from-y: calc(-1 * var(--space-24));
+  }
+
+  /* a lane with no data-at: the station is empty */
+  .ak-studio[data-step] .ak-lane:not([data-at]) .ak-ticket {
+    visibility: hidden;
+  }
+
+  /* passed through: the card stays, quieter */
+  .ak-studio[data-step] .ak-lane[data-at="past"] .ak-ticket {
+    border-color: var(--border-muted);
+    background: transparent;
+  }
+
+  /* the evaluator shows the verdict of the round it's on */
+  .ak-studio[data-eval="fail"] .ak-lane--eval [data-when="clean"],
+  .ak-studio[data-eval="pass"] .ak-lane--eval [data-when="bug"] {
+    display: none;
+  }
+
+  /* the shipper waits until the ticket reaches it */
+  .ak-studio[data-step] .ak-lane[data-lane="ship"]:not([data-at]) .ak-ticket,
+  .ak-studio[data-step] .ak-lane[data-lane="ship"][data-at] .ak-waiting {
+    display: none;
+  }
+
+  .ak-studio[data-run="clean"] .ak-return {
+    display: none;
+  }
+
+  .ak-studio[data-run="bug"]:not([data-returned]) .ak-return {
+    visibility: hidden;
+  }
+
+  /* motion: the card slides in from the last station; the verdict badge fades in once it has
+     arrived; the route back draws from the evaluator to the worker */
+  .ak-studio[data-step]:not([data-instant]) .ak-lane[data-at="here"] .ak-ticket {
+    animation: ak-ticket-travel var(--motion-showcase-travel) var(--ease-out) both;
+  }
+
+  .ak-studio[data-step]:not([data-instant]) .ak-lane[data-at="here"] .ak-badge {
+    animation: ak-fade-in var(--motion-showcase-verdict) var(--ease-out) var(--motion-showcase-travel) both;
+  }
+
+  .ak-studio[data-dir="back"]:not([data-instant]) .ak-return-line {
+    transform-origin: 100% 0;
+    animation: ak-route-draw var(--motion-showcase-travel) var(--ease-out) both;
+  }
+
+  .ak-studio[data-dir="back"]:not([data-instant]) .ak-return-label {
+    animation: ak-fade-in var(--motion-showcase-travel) var(--ease-out) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ak-studio *,
+    .ak-studio *::before,
+    .ak-studio *::after {
+      animation: none !important;
+      transition: none !important;
+    }
+
+    /* Pause motion is for motion, so it goes when there is none */
+    .ak-studio[data-enhanced] [data-motion-toggle] {
+      display: none;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .ak-controls {
+      grid-template-columns: minmax(0, 1fr);
+      padding: var(--space-16);
+    }
+
+    .ak-board {
+      padding: var(--space-16);
+    }
+
+    .ak-lanes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ak-waiting {
+      min-height: 4rem;
+    }
+
+    .ak-return {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ak-return-line {
+      display: none;
+    }
+
+    .ak-return-label {
+      grid-column: 1;
+      grid-row: 1;
+      justify-self: start;
+      padding-top: 0;
+      text-align: left;
+    }
+
+    .ak-return-label span {
+      display: inline-block;
+      transform: rotate(90deg);
+    }
+
+    .ak-rules {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-16);
+    }
+
+    /* stacked: a ticket arrives from the station above (or below, going back) */
+    .ak-studio[data-step] .ak-board {
+      --ak-from-x: 0px;
+      --ak-from-y: calc(-1 * var(--space-48));
+    }
+
+    .ak-studio[data-dir="back"] .ak-board {
+      --ak-from-x: 0px;
+      --ak-from-y: var(--space-48);
+    }
+  }
+</style>

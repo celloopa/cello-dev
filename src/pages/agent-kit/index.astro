@@ -1,0 +1,51 @@
+---
+/*
+ * /agent-kit: the Agent Studio Kit as a plain tool page (AK-9). The page is complete without
+ * script: every section is static, the studio shows its end-state still and the FAQ is native
+ * <details>. Two scripts enhance it: AgentKitScript (Copy prompt, Show full prompt) and
+ * AgentKitStory (story.ts: the studio's ticket run and Pause motion).
+ */
+import Layout from "@/layouts/Layout.astro";
+import "@/components/agent-kit/agent-kit.css";
+import Hero from "@/components/agent-kit/Hero.astro";
+import HowItWorks from "@/components/agent-kit/HowItWorks.astro";
+import Studio from "@/components/agent-kit/Studio.astro";
+import Proof from "@/components/agent-kit/Proof.astro";
+import Setup from "@/components/agent-kit/Setup.astro";
+import Costs from "@/components/agent-kit/Costs.astro";
+import Lessons from "@/components/agent-kit/Lessons.astro";
+import Faq from "@/components/agent-kit/Faq.astro";
+import Close from "@/components/agent-kit/Close.astro";
+import AgentKitScript from "@/components/agent-kit/AgentKitScript.astro";
+import AgentKitStory from "@/components/agent-kit/AgentKitStory.astro";
+---
+
+<Layout
+  title="Agent Studio Kit - Cello"
+  description="Run your AI agents like a small software studio. Three prompts for Claude Code set up one folder of notes your agents read, a note on every session, and a lead, evaluator and shipper on each project, with a worker for each ticket."
+  canonicalPath="/agent-kit/"
+>
+  <Fragment slot="head">
+    <!-- the saved Pause motion choice, before first paint (story.ts writes it; key "ak-motion") -->
+    <script is:inline>
+      (() => {
+        try {
+          if (localStorage.getItem("ak-motion") === "paused") document.documentElement.dataset.motion = "paused";
+        } catch {}
+      })();
+    </script>
+  </Fragment>
+  <div class="ak">
+    <Hero />
+    <HowItWorks />
+    <Studio />
+    <Proof />
+    <Setup />
+    <Costs />
+    <Lessons />
+    <Faq />
+    <Close />
+  </div>
+  <AgentKitScript />
+  <AgentKitStory />
+</Layout>

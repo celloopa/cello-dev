@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agent Studio Kit · Concept A · Blueprint sheet</title>
+<link rel="preload" href="fonts/geist-mono-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/national-park-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../../src/styles/tokens.css">
+<link rel="stylesheet" href="concepts.css">
+<style>
+  /* PROPOSED roles (not in tokens.json; see README) */
+  :root {
+    --status-returned: #ff7a59; /* proposed primitive ember-400. 7.08:1 on ink-950 */
+    --construction-strong: var(--accent-construction); /* lines that must read: leaders, dimension lines */
+    --construction-faint: color-mix(in srgb, var(--accent-construction) 22%, transparent); /* the sheet grid, decorative */
+  }
+  :root[data-theme="light"] {
+    --status-returned: #b3361c; /* proposed ember-700. 5.21:1 on paper-100 */
+    --construction-strong: #1f6fbf; /* proposed blueprint-700. 4.41:1 on paper-100 (blueprint-500 is 2.24:1) */
+    --construction-faint: color-mix(in srgb, #1f6fbf 20%, transparent);
+  }
+
+  /* ---------- sheet frame ---------- */
+  .sheet {
+    position: relative;
+    border-inline: var(--stroke-rule) solid var(--construction-faint);
+  }
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-16);
+    padding-block: var(--space-16);
+    border-bottom: var(--stroke-control) solid var(--border-strong);
+  }
+  .topbar .crumb {
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+  }
+  .topbar .crumb b {
+    color: var(--text-accent);
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: var(--space-48);
+    padding-block: var(--space-64) var(--space-48);
+    align-items: start;
+  }
+  .hero h1 {
+    margin-top: var(--space-16);
+    font-size: clamp(3.25rem, 8.4vw, 7.5rem);
+  }
+  .hero .lede {
+    margin-top: var(--space-24);
+    max-width: var(--layout-measure-narrow);
+    font-size: var(--type-body-lg);
+    line-height: var(--leading-small);
+  }
+  .hero .opinion {
+    margin-top: var(--space-16);
+    font-size: var(--type-small);
+  }
+  .chapters {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin-top: var(--space-40);
+    padding: 0;
+    list-style: none;
+    border-top: var(--stroke-control) solid var(--border-strong);
+  }
+  .chapters li {
+    padding: var(--space-12) var(--space-8) 0 0;
+    border-right: var(--stroke-rule) solid var(--border-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+  }
+  .chapters li:last-child {
+    border-right: 0;
+  }
+  .chapters li span {
+    display: block;
+    color: var(--text-muted);
+  }
+  .chapters li b {
+    display: block;
+    margin-top: var(--space-4);
+  }
+  .chapters li[aria-current] b {
+    color: var(--text-accent);
+  }
+
+  .drawing {
+    position: relative;
+  }
+  .drawing svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .c-line { stroke: var(--construction-strong); fill: none; stroke-width: 1; }
+  .c-faint { stroke: var(--construction-faint); fill: none; stroke-width: 1; }
+  .c-dash { stroke-dasharray: 4 4; }
+  .ring { stroke: var(--text-primary); fill: none; stroke-width: 22; }
+  .sun { fill: var(--action-primary); }
+  .ground { fill: var(--accent-ground); }
+  .bar { fill: var(--text-primary); }
+
+  .titleblock {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: var(--space-16);
+    border: var(--stroke-control) solid var(--border-strong);
+    background: var(--bg-plate);
+  }
+  .titleblock div {
+    padding: var(--space-8) var(--space-12);
+    border-right: var(--stroke-rule) solid var(--border-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+  .titleblock div:last-child {
+    border-right: 0;
+  }
+  .titleblock span {
+    display: block;
+    color: var(--text-muted);
+  }
+  .titleblock b {
+    display: block;
+    margin-top: var(--space-4);
+  }
+
+  /* ---------- section heads ---------- */
+  .chapter {
+    padding-block: var(--space-64);
+    border-top: var(--stroke-control) solid var(--border-strong);
+  }
+  .chapter-head {
+    display: grid;
+    grid-template-columns: 8rem minmax(0, 1fr);
+    gap: var(--space-24);
+    align-items: start;
+  }
+  .chapter-num {
+    font-family: var(--font-title);
+    font-size: var(--type-section-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-display);
+    color: var(--text-accent);
+  }
+  .chapter-head h2 {
+    margin-top: var(--space-8);
+    font-size: var(--type-section-title);
+  }
+  .chapter-head p {
+    margin-top: var(--space-16);
+    max-width: var(--layout-measure-narrow);
+    color: var(--text-muted);
+  }
+
+  /* ---------- schematic ---------- */
+  .schematic {
+    position: relative;
+    margin-top: var(--space-48);
+    padding: var(--space-32) var(--space-24) var(--space-24);
+    border: var(--stroke-rule) solid var(--construction-faint);
+    background-image:
+      linear-gradient(var(--construction-faint) 1px, transparent 1px),
+      linear-gradient(90deg, var(--construction-faint) 1px, transparent 1px);
+    background-size: 24px 24px;
+    background-position: -1px -1px;
+  }
+  .schematic-label {
+    position: absolute;
+    top: 0;
+    left: var(--space-24);
+    transform: translateY(-50%);
+    padding: 0 var(--space-8);
+    background: var(--bg-canvas);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .stations {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: auto 56px auto;
+    column-gap: var(--space-32);
+    padding: 0;
+    list-style: none;
+  }
+  .station {
+    position: relative;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-16);
+    background: var(--bg-plate);
+    border: var(--stroke-frame) solid var(--border-strong);
+    min-width: 0;
+  }
+  /* the line between stations */
+  .station:nth-child(-n + 3)::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: calc(-1 * var(--space-32) - var(--stroke-frame));
+    width: var(--space-32);
+    height: var(--stroke-bar);
+    background: var(--text-primary);
+  }
+  .station-id {
+    font-size: var(--type-label);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .station h3 {
+    font-family: var(--font-title);
+    font-size: var(--type-heading);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+  }
+  .station p {
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+    color: var(--text-muted);
+  }
+  .station-state {
+    margin-top: auto;
+    padding-top: var(--space-8);
+    border-top: var(--stroke-rule) solid var(--border-muted);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+  .station--done .station-state { color: var(--text-muted); }
+  .station--active { border-color: var(--status-returned); }
+  .station--active .station-state { color: var(--status-returned); }
+  .station--wait { border-style: dashed; }
+  .station--wait .station-state { color: var(--text-muted); }
+
+  /* the return path: evaluator back to worker */
+  .return {
+    grid-row: 2;
+    grid-column: 2 / 4;
+    position: relative;
+    margin-inline: 22% 22%;
+    border: var(--stroke-control) dashed var(--status-returned);
+    border-top: 0;
+  }
+  .return::before {
+    /* arrowhead into the worker */
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -9px;
+    border: 8px solid transparent;
+    border-bottom: 12px solid var(--status-returned);
+    border-top: 0;
+  }
+  .ticket {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 50%);
+    display: inline-flex;
+    gap: var(--space-8);
+    align-items: center;
+    padding: var(--space-4) var(--space-12);
+    background: var(--bg-plate);
+    border: var(--stroke-control) solid var(--status-returned);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--status-returned);
+  }
+
+  .notes {
+    grid-row: 3;
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    column-gap: var(--space-32);
+    margin-top: var(--space-24);
+  }
+  .note {
+    position: relative;
+    padding-top: var(--space-24);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+  .note::before {
+    /* leader line up to its station */
+    content: "";
+    position: absolute;
+    top: calc(-1 * var(--space-24) - 56px);
+    left: var(--space-16);
+    width: var(--stroke-rule);
+    height: calc(var(--space-24) + 56px + var(--space-16));
+    background: var(--construction-strong);
+  }
+  .note p {
+    background: var(--bg-plate);
+    padding: var(--space-8) var(--space-12);
+    border-left: var(--stroke-control) solid var(--construction-strong);
+  }
+  .note b {
+    color: var(--text-primary);
+  }
+  .note--1 { grid-column: 1; }
+  .note--3 { grid-column: 3; }
+  .note--4 { grid-column: 4; }
+  .note--3::before, .note--4::before { height: var(--space-40); top: calc(-1 * var(--space-16)); }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-16) var(--space-24);
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-32);
+    padding-top: var(--space-24);
+    border-top: var(--stroke-control) solid var(--border-strong);
+  }
+  .controls .group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+  }
+
+  .readout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-32);
+    margin-top: var(--space-32);
+  }
+  .eval {
+    background: var(--bg-raised);
+    border: var(--stroke-control) solid var(--border-strong);
+  }
+  .eval-head {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-12);
+    padding: var(--space-12) var(--space-16);
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+  .eval-head b { color: var(--status-returned); }
+  .eval ol {
+    padding: var(--space-8) var(--space-16) var(--space-16);
+    list-style: none;
+    font-size: var(--type-small);
+  }
+  .eval li {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: var(--space-12);
+    padding-block: var(--space-8);
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
+  }
+  .eval li:last-child { border-bottom: 0; }
+  .eval .v {
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+  }
+  .eval .v--fail { color: var(--status-returned); }
+  .eval .ev { display: block; color: var(--text-muted); }
+  .why h3 {
+    font-family: var(--font-title);
+    font-size: var(--type-heading);
+    line-height: var(--leading-heading);
+  }
+  .why p { margin-top: var(--space-12); color: var(--text-muted); max-width: var(--layout-measure-narrow); }
+
+  /* ---------- prompt panel ---------- */
+  .panel {
+    position: relative;
+    margin-top: var(--space-48);
+    border: var(--stroke-frame) solid var(--border-strong);
+    background: var(--bg-plate);
+  }
+  .panel::before,
+  .panel::after {
+    /* registration marks at two corners */
+    content: "";
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border: var(--stroke-rule) solid var(--construction-strong);
+  }
+  .panel::before { top: -14px; left: -14px; border-right: 0; border-bottom: 0; }
+  .panel::after { bottom: -14px; right: -14px; border-left: 0; border-top: 0; }
+  .panel-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-24);
+    justify-content: space-between;
+    align-items: end;
+    padding: var(--space-24);
+    border-bottom: var(--stroke-control) solid var(--border-strong);
+  }
+  .panel-head h3 {
+    margin-top: var(--space-8);
+    font-family: var(--font-title);
+    font-size: var(--type-heading);
+    line-height: var(--leading-heading);
+  }
+  .panel-head p {
+    margin-top: var(--space-8);
+    max-width: var(--layout-measure-narrow);
+    font-size: var(--type-small);
+    color: var(--text-muted);
+  }
+  .panel-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12);
+  }
+  .tabs {
+    display: flex;
+    gap: 0;
+    margin-top: var(--space-32);
+    border-bottom: var(--stroke-control) solid var(--border-strong);
+  }
+  .tabs span {
+    padding: var(--space-8) var(--space-16);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border: var(--stroke-control) solid transparent;
+    border-bottom: 0;
+  }
+  .tabs span[aria-current] {
+    color: var(--text-primary);
+    border-color: var(--border-strong);
+    background: var(--bg-plate);
+    margin-bottom: calc(-1 * var(--stroke-control));
+  }
+
+  /* ---------- costs: bill of materials ---------- */
+  .bom {
+    width: 100%;
+    margin-top: var(--space-48);
+    border-collapse: collapse;
+    border: var(--stroke-control) solid var(--border-strong);
+    background: var(--bg-plate);
+    font-size: var(--type-small);
+  }
+  .bom th,
+  .bom td {
+    padding: var(--space-12) var(--space-16);
+    text-align: left;
+    vertical-align: top;
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
+  }
+  .bom thead th {
+    font-size: var(--type-label);
+    letter-spacing: var(--track-wide);
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: var(--stroke-control) solid var(--border-strong);
+  }
+  .bom td:first-child { color: var(--text-muted); width: 3rem; }
+  .bom th[scope="row"] { font-weight: var(--weight-bold); white-space: nowrap; }
+  .tag {
+    display: inline-block;
+    padding: 2px var(--space-8);
+    border: var(--stroke-control) solid var(--border-strong);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .tag--pay { background: var(--bg-inverse); color: var(--text-inverse); }
+  .tag--skip { border-style: dashed; color: var(--text-muted); border-color: var(--text-muted); }
+
+  footer {
+    padding-block: var(--space-32) var(--space-64);
+    border-top: var(--stroke-control) solid var(--border-strong);
+    font-size: var(--type-small);
+    color: var(--text-muted);
+  }
+
+  /* ---------- phone ---------- */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: minmax(0, 1fr); gap: var(--space-32); padding-block: var(--space-40) var(--space-32); }
+    .chapters { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .chapters li { padding-right: var(--space-4); font-size: 0.625rem; letter-spacing: var(--track-caps); }
+    .titleblock { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .titleblock div:nth-child(2) { border-right: 0; }
+    .titleblock div:nth-child(-n + 2) { border-bottom: var(--stroke-rule) solid var(--border-muted); }
+    .chapter { padding-block: var(--space-48); }
+    .chapter-head { grid-template-columns: minmax(0, 1fr); gap: var(--space-8); }
+    .schematic { padding: var(--space-24) var(--space-16) var(--space-16); }
+    .stations {
+      grid-template-columns: minmax(0, 1fr) 40px;
+      grid-template-rows: auto;
+      row-gap: var(--space-24);
+      column-gap: 0;
+    }
+    .station { grid-column: 1; grid-row: auto; }
+    .station:nth-child(1) { grid-row: 1; }
+    .station:nth-child(2) { grid-row: 2; }
+    .station:nth-child(3) { grid-row: 3; }
+    .station:nth-child(4) { grid-row: 4; }
+    .station:nth-child(-n + 3)::after {
+      top: auto;
+      bottom: calc(-1 * var(--space-24) - var(--stroke-frame));
+      left: var(--space-24);
+      right: auto;
+      width: var(--stroke-bar);
+      height: var(--space-24);
+    }
+    .return {
+      grid-column: 2;
+      grid-row: 2 / 4;
+      margin: 40% 0 40% 0;
+      border: var(--stroke-control) dashed var(--status-returned);
+      border-left: 0;
+    }
+    .return::before {
+      top: -9px;
+      left: -2px;
+      border: 8px solid transparent;
+      border-right: 12px solid var(--status-returned);
+      border-left: 0;
+    }
+    .ticket {
+      left: auto;
+      right: -6px;
+      bottom: 50%;
+      transform: translateY(50%) rotate(-90deg);
+      transform-origin: right center;
+      display: none;
+    }
+    .ticket-mobile { display: inline-flex !important; }
+    .notes { grid-row: 5; grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr); row-gap: var(--space-12); margin-top: var(--space-8); }
+    .note { grid-column: 1 !important; padding-top: 0; }
+    .note::before { display: none; }
+    .readout { grid-template-columns: minmax(0, 1fr); }
+    .bom thead { display: none; }
+    .bom, .bom tbody, .bom tr, .bom td, .bom th { display: block; width: auto; }
+    .bom tr { padding: var(--space-12) var(--space-16); border-bottom: var(--stroke-rule) solid var(--border-muted); }
+    .bom th, .bom td { padding: 0; border: 0; }
+    .bom td:first-child { display: none; }
+    .bom th[scope="row"] { display: inline-block; margin-right: var(--space-8); }
+    .bom td:nth-child(3) { display: inline-block; }
+    .bom td:last-child { margin-top: var(--space-8); color: var(--text-muted); }
+  }
+  .ticket-mobile {
+    display: none;
+    margin-top: var(--space-16);
+    gap: var(--space-8);
+    align-items: center;
+    padding: var(--space-4) var(--space-12);
+    background: var(--bg-plate);
+    border: var(--stroke-control) solid var(--status-returned);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    color: var(--status-returned);
+  }
+</style>
+</head>
+<body data-bug="on">
+<div class="wrap sheet">
+
+  <header class="topbar">
+    <span class="crumb"><b>cello.design</b> / agent-kit</span>
+    <div class="theme-switch" role="group" aria-label="Theme">
+      <button type="button" data-set-theme="dusk">Dusk</button>
+      <button type="button" data-set-theme="light">Day</button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="h1">
+    <div>
+      <span class="eyebrow eyebrow--accent">Sheet 00 · A starter kit for Claude Code</span>
+      <h1 id="h1" class="title">Agent Studio Kit</h1>
+      <p class="lede">How I run AI agents like a small software studio: a shared second brain they all read, automatic notes on every session, and a lead → worker → evaluator → shipper pipeline that builds real apps. Three prompts set it up on your machine.</p>
+      <p class="opinion">[Cello's words]</p>
+      <ol class="chapters" aria-label="Chapters">
+        <li><span>01</span><b>Brain</b></li>
+        <li><span>02</span><b>Notes</b></li>
+        <li aria-current="step"><span>03</span><b>Studio</b></li>
+        <li><span>04</span><b>Proof</b></li>
+        <li><span>05</span><b>Setup</b></li>
+      </ol>
+    </div>
+
+    <figure class="drawing" aria-label="Construction drawing of the mark: a C-ring, a green sun and a grounding triangle, with blueprint construction lines">
+      <svg viewBox="0 0 480 440" role="presentation">
+        <!-- construction grid -->
+        <g class="c-faint">
+          <line x1="0" y1="40" x2="480" y2="40"/><line x1="0" y1="220" x2="480" y2="220"/><line x1="0" y1="400" x2="480" y2="400"/>
+          <line x1="60" y1="0" x2="60" y2="440"/><line x1="240" y1="0" x2="240" y2="440"/><line x1="420" y1="0" x2="420" y2="440"/>
+        </g>
+        <!-- construction geometry -->
+        <circle class="c-line c-dash" cx="240" cy="220" r="170"/>
+        <circle class="c-line c-dash" cx="240" cy="220" r="62"/>
+        <line class="c-line" x1="70" y1="390" x2="410" y2="50"/>
+        <line class="c-line" x1="226" y1="220" x2="254" y2="220"/><line class="c-line" x1="240" y1="206" x2="240" y2="234"/>
+        <!-- art -->
+        <path class="ground" d="M90 330 L240 170 L390 330 Z"/>
+        <circle class="sun" cx="240" cy="170" r="62"/>
+        <path class="ring" d="M372 112 A150 150 0 1 0 372 328"/>
+        <rect class="bar" x="70" y="330" width="340" height="14"/>
+        <!-- dimension: sun radius -->
+        <line class="c-line" x1="240" y1="170" x2="302" y2="170"/>
+        <line class="c-line" x1="302" y1="160" x2="302" y2="180"/>
+        <!-- leader -->
+        <polyline class="c-line" points="302,170 350,90 440,90"/>
+      </svg>
+      <div class="titleblock" role="list">
+        <div role="listitem"><span>Drawn by</span><b>Cello</b></div>
+        <div role="listitem"><span>Sheet</span><b>03 / 05</b></div>
+        <div role="listitem"><span>Roles</span><b>4</b></div>
+        <div role="listitem"><span>Prompts</span><b>3</b></div>
+      </div>
+    </figure>
+  </section>
+
+  <!-- STUDIO -->
+  <section class="chapter" aria-labelledby="studio-h">
+    <div class="chapter-head">
+      <span class="chapter-num" aria-hidden="true">03</span>
+      <div>
+        <span class="eyebrow eyebrow--accent">The studio</span>
+        <h2 id="studio-h" class="title">Four stations, one ticket</h2>
+        <p>One agent plans with you, workers build in parallel, a separate one tests their work, and one ships it. Run a ticket through, and plant a bug to watch it come back.</p>
+      </div>
+    </div>
+
+    <div class="schematic">
+      <span class="schematic-label">Fig. 3 · Ticket PANTRY-4 · run 1</span>
+      <ol class="stations">
+        <li class="station station--done">
+          <span class="station-id">ST-01</span>
+          <h3>Lead</h3>
+          <p>Grills you on the idea, plans, writes tickets with acceptance criteria.</p>
+          <span class="station-state">Planned · 3 criteria</span>
+        </li>
+        <li class="station station--done">
+          <span class="station-id">ST-02</span>
+          <h3>Worker</h3>
+          <p>Builds one ticket on its own branch, with a test.</p>
+          <span class="station-state">Built · branch pantry-4</span>
+        </li>
+        <li class="station station--active">
+          <span class="station-id">ST-03</span>
+          <h3>Evaluator</h3>
+          <p>Fresh eyes. Tests the criteria in a real browser.</p>
+          <span class="station-state">Fail · sent back</span>
+        </li>
+        <li class="station station--wait">
+          <span class="station-id">ST-04</span>
+          <h3>Shipper</h3>
+          <p>Ships only passing work, checks it live.</p>
+          <span class="station-state">Waiting for a pass</span>
+        </li>
+        <li class="return" aria-hidden="true"><span class="ticket">← PANTRY-4 · round 1 of 3</span></li>
+        <li class="notes" aria-label="Annotations">
+          <div class="note note--1"><p><b>A</b> Every ticket gets 2–5 criteria you can test.</p></div>
+          <div class="note note--3"><p><b>B</b> Never sees the worker's chat. An agent grading its own work usually passes itself.</p></div>
+          <div class="note note--4"><p><b>C</b> Accepts only a pass on that exact commit.</p></div>
+        </li>
+      </ol>
+      <span class="ticket-mobile">↑ PANTRY-4 · back to worker · 1/3</span>
+
+      <div class="controls">
+        <label class="switch">
+          <input type="checkbox" id="plant-bug" checked>
+          <span class="switch-track" aria-hidden="true"></span>
+          Plant a bug
+        </label>
+        <div class="group">
+          <button class="button button--primary" type="button">Run ticket</button>
+          <button class="button button--secondary" type="button">Pause</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="readout">
+      <div class="eval" aria-label="Evaluator report">
+        <div class="eval-head"><span>docs/evals/pantry-4.md</span><b>Fail</b></div>
+        <ol>
+          <li><span class="v">Pass</span><span>The list groups this week's ingredients by aisle.<span class="ev">Phone and desktop, screenshots attached</span></span></li>
+          <li><span class="v">Pass</span><span>Checking an item off survives a reload.</span></li>
+          <li><span class="v v--fail">Fail</span><span>No console errors.<span class="ev">TypeError on /list: items is undefined. The planted bug.</span></span></li>
+        </ol>
+      </div>
+      <div class="why">
+        <h3>Prove the checker works</h3>
+        <p>Plant one deliberate bug. If the evaluator doesn't catch it, it isn't evaluating.</p>
+        <p class="opinion">[Cello's words]</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SETUP: one prompt -->
+  <section class="chapter" aria-labelledby="setup-h">
+    <div class="chapter-head">
+      <span class="chapter-num" aria-hidden="true">05</span>
+      <div>
+        <span class="eyebrow eyebrow--accent">Setup</span>
+        <h2 id="setup-h" class="title">Paste these into Claude Code, in order</h2>
+        <p>Each one stops for your OK between phases. Plenty of people stop after the first two, and that's a useful setup on its own.</p>
+      </div>
+    </div>
+    <div class="tabs" aria-hidden="true"><span>01 Brain</span><span>02 Notes</span><span aria-current="true">03 Studio</span></div>
+    <article class="panel" style="margin-top:0;border-top:0">
+      <div class="panel-head">
+        <div>
+          <span class="eyebrow">Prompt 03 / 03 · about an afternoon, in phases</span>
+          <h3>The studio pipeline</h3>
+          <p>Toolbox, roles, self-testing, hosting and local AI, then a first app built end to end.</p>
+        </div>
+        <div class="panel-actions">
+          <button class="button button--primary" type="button" data-copy data-target="p3"><span data-label>Copy prompt</span></button>
+          <button class="button button--secondary" type="button" data-download="agent-studio-3-studio.md" data-target="p3"><span>Download .md</span></button>
+        </div>
+      </div>
+      <pre class="prompt-text" id="p3">Read AGENT.md first. My second brain and session recaps are set up. Now I want a small software studio (lead / worker / evaluator / shipper) for building apps for myself and the people around me: reminders, meal planning, small tools.
+
+## Ground rules
+- Work in the phases below. At the end of each phase, show me what you built and what you tested, then stop and wait for my OK.
+- Show me each file before installing it. Ask before anything that costs money, sends data off my machines, or changes global settings.
+- For any third-party tool: read its README/SKILL.md first (don't trust memory for install steps or flags), show me what it'll install, and record it in `registry/` with what it's for and when to use it.
+- Never change firewall, router, DNS, VPN, reverse-proxy or power settings yourself: give me the exact changes and I'll apply them.
+- Never store passwords, keys or tokens in the brain or in Git.
+
+## Phase 0: survey and questions
+Check and report: OS, CPU, RAM, GPU and VRAM, free disk, and what's installed (git, Node and its version, Python, Docker, Ollama; on Windows, whether WSL2 is set up).
+
+Then ask me, all at once:
+1. Who uses the apps (just me, or family/friends on their phones)? iPhone, Android or both? One first app idea to run the pipeline on.
+2. Where should apps run: only on this computer, a home server I have, or a small rented server? Should they work away from home?
+3. If I have a server or network setup: what it runs, my reverse proxy, domain, how I do certificates and remote access.
+4. Budget appetite: free/local only, or a few paid tools if they clearly save time?
+5. Board: a plain `docs/board.md` in each repo, or GitHub issues?
+
+Then propose a folder layout (on Windows: app repos and dev servers inside WSL2, the brain on the Windows side) and write it into AGENT.md.
+
+## Phase 1: toolbox
+
+**Matt Pocock's skills** (github.com/mattpocock/skills). Install with the `skills` CLI as the README says, user-level. Browse the whole repo and recommend any I'm missing, but at least:
+
+| Skill | Where it fits |
+|---|---|
+| `grill-me` / `grilling` | The lead grills me on every new app idea *before* writing the plan: who it's for, edge cases, what "done" means. |
+| `grill-with-docs` / `domain-modeling` | When an app has real data: pin down the terms and record decisions as ADRs in the repo. |
+| `research` | The lead's research step: primary sources into a repo .md, not from memory. |
+| `prototype` | A throwaway prototype to test an idea on my phone before the real build. |
+| `improve-codebase-architecture` | Monthly scheduled pass per app, producing a report of what to simplify. I choose what becomes tickets. |
+| `triage` | Only if I chose GitHub issues as the board. |
+| `writing-great-skills` | Read before writing any of my own skills. |
+| `teach` | For me, when I want to learn part of my stack, not just have it built. Only I start it. |
+
+**REA, Reverse Engineer Anything** (rea.tools, github.com/morluto/rea). Investigates how a *shipped* app works (JavaScript/Electron/web apps; native apps need an extra engine), so my apps can learn from ones I like. Check which Node versions it supports and use a pinned Node rather than changing my system Node. Don't approve optional install scripts without asking me. Only apps I use or own, for learning concepts; never copy proprietary code, assets or branding.
+
+**Playwright:** Playwright MCP (Microsoft) so you can drive a real browser at phone and desktop sizes, click through flows and take screenshots; and Playwright Test in every app repo, a small smoke test of the main flows that is part of the check command.
+
+**Chrome DevTools MCP** (github.com/ChromeDevTools/chrome-devtools-mcp): Playwright drives, DevTools inspects. Console errors, failed or slow network requests, a performance trace at a throttled mobile connection, and audits (performance, accessibility, best practices, PWA installability; use the Lighthouse CLI if the MCP lacks audits). If I have Android, also show me how to connect a real phone over USB debugging.
+
+**Also:** Context7 (or a similar docs MCP) so workers code against current library docs, and Anthropic's built-in skill-creator.
+
+**Test:** show each tool working once.
+
+## Phase 2: the pipeline
+
+**Roles**
+- **Lead** (one session per app, the one I talk to): `grill-me` me → `research` (optionally a `reference-study`: REA on one app + feature I like → observed behavior, evidence, 2–3 concepts, a recommendation; I pick) → optional `prototype` → plan in `projects/&lt;app&gt;.md` (goal, who it's for, screens, data, decisions) → small tickets, each with 2–5 testable acceptance criteria. Makes product calls with me. Never writes big code itself.
+- **Workers** (subagents or separate sessions, one ticket each): build in their own git branch/worktree, add or update a Playwright test, run the checks, and hand back: branch + commit, what changed, checks run, screenshots, anything unfinished. Never merge, deploy or write their own evals.
+- **Evaluator** (a separate subagent with fresh context): gets ONLY the acceptance criteria, the standing criteria and the running app, never the worker's chat. Walks each criterion with Playwright MCP at phone and desktop size, checks console, network, performance and audits with DevTools MCP, and writes `docs/evals/&lt;ticket&gt;.md`: pass/fail per criterion with evidence, measured results separate from its opinion. Verdict: PASS, or FAIL with specific fixes. On FAIL the worker fixes and it goes back, max 3 rounds, then it escalates to the lead and me. Never edits code.
+- **Shipper** (at first the lead runs this through a background subagent; its own session once 2+ workers run at once): accepts only a PASS eval on that exact commit, merges to main, deploys, re-runs a quick eval on the live URL, writes a one-paragraph release note to `output/` in the brain, and tells me what shipped.
+
+**Standing criteria** for every app (in its `docs/ship-profile.md`): no console errors, no failed requests, accessibility ≥ 90, installs as a PWA, works at phone width, usable within ~3s on a throttled mobile connection.
+
+Rules: nothing reaches main without a PASS; I give the go for anything other people will see; one heavy job at a time (builds, local models, image generation) so the computer stays usable.
+
+**Default stack:** PWAs (they install to phone home screens and send push notifications; on iPhone that needs iOS 16.4+ and adding to the home screen). A simple full-stack framework with SQLite, one repo per app, packaged as a Docker image, Playwright Test from the start. A shared tiny UI kit once there are 2+ apps.
+
+## Phase 3: hosting and local AI
+
+**Hosting.** Use my Phase 0 answers; don't pick for me. Write a deploy plan for my approval covering:
+- **Real HTTPS** (PWA install, offline mode and push need it): prefer a domain + Let's Encrypt (DNS challenge works for internal-only apps) over self-signed certs.
+- **Remote access** only the way I choose (my VPN, Tailscale, or public with login), nothing inbound opened unless I say so. Web push needs outbound access to the browser's push service.
+- **Least-privilege deploy access:** a dedicated deploy user/key, never my admin credentials, never committed.
+- **Per app:** container, data volume, backups with a tested restore, health check, rollback. Exact steps go in `docs/ship-profile.md`, so the shipper deploys the same way every time.
+
+**Local AI.** Pick what fits my hardware and tell me what you chose and why (say plainly if my GPU will be slow or unsupported):
+- **Ollama** with a current open model sized to my memory, for cheap private jobs: nightly recap summaries, tagging inbox notes, AI features inside my apps. Not the main coding agent; that stays with you.
+- **faster-whisper** (or whisper.cpp) for voice notes → brain inbox.
+- **ComfyUI** for app icons, illustrations and placeholder art, with a saved reusable workflow.
+
+## Phase 4: skills and schedules
+Read `writing-great-skills` first. Create user-level skills that call Matt's skills instead of duplicating them: `new-app` (scaffold repo + brain note + board + ship profile + Playwright), `lead` / `worker` / `evaluator` / `shipper` role briefs, `reference-study`, `walkthrough`, `evaluate`, `ship`, and `app-health` (weekly: every live app up, cert expiry, last backup + restore test, disk, standing criteria vs last week). Schedule `app-health` weekly and `improve-codebase-architecture` monthly. Add everything to `registry/automations.md`.
+
+## Phase 5: prove it end to end
+1. Run the pipeline on my first app idea: the lead grills me, researches and plans; two workers build two tickets in parallel; the evaluator checks each, including one deliberate FAIL (e.g. a planted console error) so I can see it caught and fixed; the shipper deploys; I open it on my phone over HTTPS.
+2. Confirm that session got recapped and appears in the next nightly digest.
+3. Tell me plainly anything you couldn't get working or couldn't test.</pre>
+    </article>
+  </section>
+
+  <!-- COSTS -->
+  <section class="chapter" aria-labelledby="costs-h">
+    <div class="chapter-head">
+      <span class="chapter-num" aria-hidden="true">$</span>
+      <div>
+        <span class="eyebrow eyebrow--accent">Bill of materials</span>
+        <h2 id="costs-h" class="title">What to pay for, what to run locally</h2>
+        <p class="opinion">[Cello's words]</p>
+      </div>
+    </div>
+    <table class="bom">
+      <thead><tr><th scope="col">Item</th><th scope="col">Part</th><th scope="col">Call</th><th scope="col">Why</th></tr></thead>
+      <tbody>
+        <tr><td>01</td><th scope="row">Claude plan</th><td><span class="tag tag--pay">Pay</span></td><td>The one worth paying for. Parallel workers use a lot, so a higher tier keeps the pipeline from stalling.</td></tr>
+        <tr><td>02</td><th scope="row">Local models</th><td><span class="tag">Local</span></td><td>Great for private chores: summaries, transcription, AI features inside your apps. Not a replacement for Claude as the coder.</td></tr>
+        <tr><td>03</td><th scope="row">Images</th><td><span class="tag">Local</span></td><td>ComfyUI runs free on a decent GPU. A ChatGPT plan helps with text in images and adds Codex as a second coder.</td></tr>
+        <tr><td>04</td><th scope="row">Firecrawl, Mobbin</th><td><span class="tag tag--skip">Skip</span></td><td>Skip at first. Built-in web search and screenshots of apps you like cover personal projects.</td></tr>
+        <tr><td>05</td><th scope="row">Hosting</th><td><span class="tag">Local</span></td><td>Your own computer or home server is free. A small rented server is only needed when apps must run while yours is off.</td></tr>
+        <tr><td>06</td><th scope="row">App stores</th><td><span class="tag tag--skip">Skip</span></td><td>Not needed. Web apps install to phone home screens.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>Concept A · Blueprint sheet · AK-1. Static still; motion is described in README.md.</footer>
+</div>
+<script src="concepts.js"></script>
+</body>
+</html>

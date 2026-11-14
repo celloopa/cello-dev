@@ -1,0 +1,147 @@
+/*
+  /agent-kit (AK-9): a plain tool page in the site's system. Centered hero, eyebrowed sections,
+  square panels on --bg-raised with muted rules. Roles only; the section's own tokens (tokens.json
+  "Agent kit") are --status-returned for the SENT BACK badge and the showcase motion for the
+  studio run. Every class is prefixed ak- because this file is global (imported by
+  src/pages/agent-kit/index.astro).
+*/
+
+/* The site's global "p, span" sizing (Layout) would beat inheritance here; class rules still win. */
+.ak :where(p, span) {
+  margin-block: 0;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.ak :where(h1, h2, h3, h4) {
+  margin: 0;
+  color: var(--text-primary);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.ak-wrap {
+  width: 100%;
+  max-width: var(--layout-container);
+  margin-inline: auto;
+  padding-inline: var(--layout-gutter);
+}
+
+.ak-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- sections ---------- */
+.ak-section {
+  padding-block: var(--space-96) 0;
+  scroll-margin-top: var(--space-64);
+}
+
+.ak-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-16);
+  max-width: 44rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.ak-title {
+  font-family: var(--font-title);
+  font-size: var(--type-section-title);
+  font-weight: var(--weight-extrabold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--track-tight);
+  text-align: center;
+  text-wrap: balance;
+}
+
+.ak-intro {
+  text-align: center;
+  max-width: var(--layout-measure-narrow);
+  color: var(--text-muted);
+  font-size: var(--type-body);
+  line-height: var(--leading-read);
+  text-wrap: pretty;
+}
+
+.ak-body {
+  margin-top: var(--space-48);
+}
+
+/* on the raised surface, small accent text drops under 4.5:1 in Day (signal-700 on paper plus
+   the raised tint), so labels inside a panel take the text color; green stays on the canvas */
+.ak-panel,
+.ak-step {
+  --text-accent: var(--text-primary);
+}
+
+/* a square panel on the raised surface */
+.ak-panel {
+  border: var(--stroke-rule) solid var(--border-muted);
+  background: var(--bg-raised);
+}
+
+/* small uppercase meta (needs, time, ids) */
+.ak-meta {
+  color: var(--text-muted);
+  font-size: var(--type-label);
+  letter-spacing: var(--track-caps);
+  line-height: var(--leading-ui);
+  text-transform: uppercase;
+}
+
+/* a text badge: status is always a word; color only adds to it */
+.ak-badge {
+  display: inline-block;
+  padding: var(--space-4) var(--space-8);
+  border: var(--stroke-control) solid currentColor;
+  color: var(--text-primary);
+  font-size: var(--type-label);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--track-wide);
+  line-height: var(--leading-ui);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ak-badge--back {
+  color: var(--status-returned);
+}
+
+.ak-badge--start {
+  color: var(--text-accent);
+}
+
+@media (max-width: 768px) {
+  .ak-section {
+    padding-block: var(--space-64) 0;
+  }
+
+  .ak-body {
+    margin-top: var(--space-32);
+  }
+}
+
+/* Pause motion: like the reduced-motion contract (animations.css), every animation finishes at
+   once and nothing repeats, so entrances land and loops stop. Loops whose last frame is "gone" (the
+   logo's assemble-and-break, the paper grain's drift) are switched off instead, showing their
+   resting state. The ticket run checks data-motion itself (story.ts). */
+html[data-motion="paused"] *,
+html[data-motion="paused"] *::before,
+html[data-motion="paused"] *::after {
+  animation-duration: var(--motion-none) !important;
+  animation-delay: var(--motion-none) !important;
+  animation-iteration-count: 1 !important;
+}
+
+html[data-motion="paused"] :is(.texture-layer, .has-texture, .has-texture-hover, .logo-svg *, .mark-animated *),
+html[data-motion="paused"] :is(.has-texture, .has-texture-hover)::after {
+  animation: none !important;
+}

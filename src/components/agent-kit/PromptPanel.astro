@@ -1,0 +1,188 @@
+---
+/*
+ * PromptPanel: one kit prompt. The head says which prompt it is, what it sets up, what it needs
+ * and when it was last checked; Copy prompt and Download .md sit beside it (under it on phones).
+ * The text shows its first dozen lines until "Show full prompt". Copy and the disclosure are
+ * wired by AgentKitScript.astro.
+ */
+import Button from "@/components/ui/Button.astro";
+import { promptMeta, type Prompt } from "@/lib/agent-kit/prompts";
+
+interface Props {
+  prompt: Prompt;
+  text: string;
+  start?: boolean;
+}
+
+const { prompt, text, start = false } = Astro.props;
+const base = `prompt-${prompt.no}`;
+const meta = promptMeta(prompt.file);
+---
+
+<article class="ak-panel ak-prompt" id={base} aria-labelledby={`${base}-title`} data-prompt={prompt.file}>
+  <div class="ak-prompt-head">
+    <div class="ak-prompt-info">
+      <div class="ak-prompt-top">
+        <span class="ak-meta">Prompt {prompt.no} of 03</span>
+        {start && <span class="ak-badge ak-badge--start">Start here</span>}
+      </div>
+      <h3 class="ak-prompt-title" id={`${base}-title`}>{prompt.title}</h3>
+      <p class="ak-prompt-summary">{prompt.summary}</p>
+      <p class="ak-meta">
+        {prompt.needs}
+        {prompt.time && <> · {prompt.time}</>}
+      </p>
+      <p class="ak-prompt-version" data-prompt-version>
+        v{meta.version} · Last checked against my setup <time datetime={meta.checked}>{meta.checked}</time>
+      </p>
+    </div>
+
+    <div class="ak-prompt-actions">
+      <Button data-copy-prompt={`${base}-text`} data-status={`${base}-status`} aria-describedby={`${base}-title`}>
+        <span data-copy-label>Copy prompt</span>
+      </Button>
+      <Button variant="secondary" href={`/agent-kit/prompts/${prompt.file}`} download={prompt.file} aria-describedby={`${base}-title`}>
+        Download .md
+      </Button>
+      <p class="ak-sr" role="status" id={`${base}-status`}></p>
+    </div>
+  </div>
+
+  <div class="ak-prompt-body">
+    <pre class="ak-prompt-text" id={`${base}-text`} data-collapsed tabindex="-1">{text}</pre>
+    <button
+      class="ak-prompt-toggle"
+      type="button"
+      aria-expanded="false"
+      aria-controls={`${base}-text`}
+      data-toggle-prompt
+    >
+      Show full prompt
+    </button>
+  </div>
+</article>
+
+<style>
+  .ak-prompt {
+    scroll-margin-top: var(--space-64);
+  }
+
+  .ak-prompt-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-24);
+    align-items: start;
+    padding: var(--space-24);
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .ak-prompt-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+
+  .ak-prompt-top {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8) var(--space-16);
+    align-items: center;
+  }
+
+  .ak-prompt-title {
+    margin-top: var(--space-4);
+    font-family: var(--font-title);
+    font-size: var(--type-heading);
+    font-weight: var(--weight-extrabold);
+    line-height: var(--leading-heading);
+    text-wrap: balance;
+  }
+
+  .ak-prompt-summary {
+    max-width: var(--layout-measure-narrow);
+    color: var(--text-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-prompt-version {
+    color: var(--text-muted);
+    font-size: var(--type-label);
+    letter-spacing: var(--track-caps);
+    line-height: var(--leading-ui);
+  }
+
+  .ak-prompt-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    min-width: 13rem;
+  }
+
+  .ak-prompt-actions :global(.button) {
+    justify-content: center;
+  }
+
+  .ak-prompt-body {
+    padding: var(--space-16) var(--space-24) var(--space-24);
+  }
+
+  .ak-prompt-text {
+    margin: 0;
+    padding: var(--space-16);
+    overflow: hidden;
+    background: var(--bg-muted);
+    font-family: var(--font-mono);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  /* collapsed: the first dozen lines, fading out */
+  .ak-prompt-text[data-collapsed] {
+    max-height: calc(12em * var(--leading-small));
+    mask-image: linear-gradient(to bottom, black 70%, transparent);
+  }
+
+  .ak-prompt-toggle {
+    min-height: var(--touch-target);
+    margin-top: var(--space-8);
+    padding: 0 var(--space-4);
+    border: 0;
+    border-bottom: var(--stroke-control) solid var(--action-primary);
+    background: transparent;
+    color: var(--text-primary);
+    font-size: var(--type-ui);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+    transition: color var(--motion-ui) var(--ease-out);
+  }
+
+  .ak-prompt-toggle:hover {
+    color: var(--action-primary);
+  }
+
+  @media (max-width: 768px) {
+    .ak-prompt-head {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-16);
+      padding: var(--space-16);
+    }
+
+    .ak-prompt-actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+
+    .ak-prompt-body {
+      padding: var(--space-16);
+    }
+
+    .ak-prompt-text {
+      padding: var(--space-12);
+    }
+  }
+</style>
