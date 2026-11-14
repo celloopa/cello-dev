@@ -40,14 +40,18 @@ export const prompts: Prompt[] = [
   },
 ];
 
-// Version and last-checked date per prompt live in meta.json beside the prompts, so upkeep edits
-// data, not markup, and the .md files stay exactly the prompt text.
-type Meta = { version: string; checked: string };
+// Version, last-checked date and changelog per prompt live in meta.json beside the prompts, so
+// upkeep edits data, not markup, and the .md files stay exactly the prompt text. The upkeep check
+// that proposes changes is described in Cello Brain (registry/agent-kit-upkeep.md).
+type Change = { version: string; date: string; note: string };
+type Meta = { version: string; checked: string; changes: Change[] };
 const meta: Record<string, Meta> = JSON.parse(fs.readFileSync(path.join(DIR, "meta.json"), "utf8"));
 
 export const promptMeta = (file: string): Meta => {
   const m = meta[file];
   if (!m?.version || !m?.checked) throw new Error(`src/content/agent-kit/prompts/meta.json has no version and checked date for ${file}`);
+  if (!m.changes?.length || m.changes[0].version !== m.version)
+    throw new Error(`src/content/agent-kit/prompts/meta.json: ${file} needs a changelog whose first entry is v${m.version}`);
   return m;
 };
 
@@ -57,3 +61,14 @@ export const promptBytes =(file: string): Buffer => {
 };
 
 export const promptText = (file: string): string => promptBytes(file).toString("utf8");
+
+/** The first line of each download: which prompt, its version and date, and where the latest is. */
+export const downloadHeader = (file: string): string => {
+  const p = prompts.find((x) => x.file === file);
+  const m = promptMeta(file);
+  return `<!-- Agent Studio Kit, prompt ${p?.no} of 03, v${m.version}, last checked ${m.checked}. Latest: https://cello.design/agent-kit/ -->\n\n`;
+};
+
+/** A download is the header line, a blank line, then the prompt's source bytes unchanged. */
+export const promptDownload = (file: string): Buffer =>
+  Buffer.concat([Buffer.from(downloadHeader(file), "utf8"), promptBytes(file)]);

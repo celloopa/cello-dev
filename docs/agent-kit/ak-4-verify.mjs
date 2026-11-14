@@ -12,6 +12,7 @@ const root = process.cwd();
 const require = createRequire(path.join(root, "package.json"));
 const { chromium } = require("playwright-core");
 
+const splitDownload = (buf) => { const s = buf.toString("utf8"); const i = s.indexOf("\n\n"); return { header: s.slice(0, i), body: Buffer.from(s.slice(i + 2), "utf8") }; };
 const BASE = process.argv[2] ?? "http://127.0.0.1:4420";
 const URL_ = `${BASE}/agent-kit/`;
 const SHOTS = path.join(root, "docs/agent-kit/shots/ak-4");
@@ -297,7 +298,7 @@ for (const [w, h] of [[1440, 900], [390, 844]]) {
   const clip = await page.evaluate(() => navigator.clipboard.readText());
   const dl = await art.locator("a[download]").getAttribute("href");
   const body = await (await page.request.get(BASE + dl)).body();
-  ok("AC6 copy still copies the exact prompt, download serves the exact bytes", clip === src && Buffer.compare(body, Buffer.from(src)) === 0);
+  ok("AC6 copy still copies the exact prompt, download serves the exact bytes", clip === src && splitDownload(body).header.startsWith("<!-- Agent Studio Kit, prompt") && Buffer.compare(splitDownload(body).body, Buffer.from(src)) === 0);
   await ctx.close();
 }
 

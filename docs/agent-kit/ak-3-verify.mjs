@@ -7,6 +7,7 @@ const root = process.cwd();
 const require = createRequire(path.join(root, "package.json"));
 const { chromium } = require("playwright-core");
 
+const splitDownload = (buf) => { const s = buf.toString("utf8"); const i = s.indexOf("\n\n"); return { header: s.slice(0, i), body: Buffer.from(s.slice(i + 2), "utf8") }; };
 const BASE = process.argv[2] ?? "http://localhost:4321";
 const URL_ = `${BASE}/agent-kit/`;
 const SHOTS = path.join(root, "docs/agent-kit/shots/ak-3");
@@ -76,7 +77,8 @@ for (const [w, h] of [[390, 844], [1440, 900]]) {
         ok(`${f} status resets`, (await art.locator('[role="status"]').textContent()) === "");
         const dl = await art.locator("a[download]").getAttribute("href");
         const body = await (await page.request.get(BASE + dl)).body();
-        ok(`${f} download bytes equal source`, Buffer.compare(body, fs.readFileSync(path.join(root, "src/content/agent-kit/prompts", f))) === 0, dl);
+        const dlParts = splitDownload(body);
+        ok(`${f} download = version header + source bytes`, /^<!-- Agent Studio Kit, prompt \d\d of 03, v\d+\.\d+, last checked \d{4}-\d\d-\d\d\. Latest: https:\/\/cello\.design\/agent-kit\/ -->$/.test(dlParts.header) && Buffer.compare(dlParts.body, fs.readFileSync(path.join(root, "src/content/agent-kit/prompts", f))) === 0, dlParts.header);
         const t = art.locator("[data-toggle-prompt]");
         await t.click();
         ok(`${f} Show all expands`, (await t.getAttribute("aria-expanded")) === "true" && (await art.locator("pre").getAttribute("data-collapsed")) === null);
