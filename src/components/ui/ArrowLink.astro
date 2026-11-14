@@ -39,6 +39,7 @@ const external = variant === "external";
 
 <style>
   .arrow-link {
+    position: relative;
     display: inline-flex;
     gap: var(--space-8);
     align-items: center;
@@ -51,6 +52,13 @@ const external = variant === "external";
     text-transform: uppercase;
     text-decoration: none;
     transition: color var(--motion-ui) var(--ease-out);
+  }
+
+  /* the tap area reaches the 44px touch target around the line without changing how it looks */
+  .arrow-link::before {
+    content: "";
+    position: absolute;
+    inset: min(0px, calc(50% - var(--touch-target) / 2));
   }
 
   .arrow-link:hover,
