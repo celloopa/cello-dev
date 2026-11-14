@@ -29,14 +29,14 @@ export const prompts: Prompt[] = [
     no: "02",
     title: "Automatic session notes and habits",
     summary: "Logs every session, writes a nightly digest, and adds morning, weekly and monthly routines.",
-    needs: "Needs: order 01",
+    needs: "Needs: prompt 01",
   },
   {
     file: "3-studio-pipeline.md",
     no: "03",
     title: "The studio pipeline",
     summary: "Sets up the tools, the four roles, self-testing, hosting and local AI, then builds a first app end to end.",
-    needs: "Needs: orders 01 and 02",
+    needs: "Needs: prompts 01 and 02",
   },
 ];
 

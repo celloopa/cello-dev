@@ -1,29 +1,28 @@
 ---
 /*
- * /agent-kit: the Agent Studio Kit, direction C "Job tickets" (docs/agent-kit/concepts). The page
- * is complete without script (AK-3): chapters are <section>s with an id and data-chapter, in the
- * order of stops.ts, and the studio shows its end-state still. The scroll story (AK-4, story.ts)
- * enhances it: data-ch / data-seen on .ak, chapter reveals, the rails' aria-current, and the
- * studio's ticket run in [data-studio-moment].
+ * /agent-kit: the Agent Studio Kit as a plain tool page (AK-9). The page is complete without
+ * script: every section is static, the studio shows its end-state still and the FAQ is native
+ * <details>. Two scripts enhance it: AgentKitScript (Copy prompt, Show full prompt) and
+ * AgentKitStory (story.ts: the studio's ticket run and Pause motion).
  */
 import Layout from "@/layouts/Layout.astro";
 import "@/components/agent-kit/agent-kit.css";
 import Hero from "@/components/agent-kit/Hero.astro";
-import Brain from "@/components/agent-kit/Brain.astro";
-import Notes from "@/components/agent-kit/Notes.astro";
+import HowItWorks from "@/components/agent-kit/HowItWorks.astro";
 import Studio from "@/components/agent-kit/Studio.astro";
 import Proof from "@/components/agent-kit/Proof.astro";
 import Setup from "@/components/agent-kit/Setup.astro";
-import RateCard from "@/components/agent-kit/RateCard.astro";
+import Costs from "@/components/agent-kit/Costs.astro";
 import Lessons from "@/components/agent-kit/Lessons.astro";
-import StoryRail from "@/components/agent-kit/StoryRail.astro";
+import Faq from "@/components/agent-kit/Faq.astro";
+import Close from "@/components/agent-kit/Close.astro";
 import AgentKitScript from "@/components/agent-kit/AgentKitScript.astro";
 import AgentKitStory from "@/components/agent-kit/AgentKitStory.astro";
 ---
 
 <Layout
   title="Agent Studio Kit - Cello"
-  description="How I run AI agents like a small software studio: one folder of notes they all read, a note on every session, and a lead, evaluator and shipper on each project, with a worker for each ticket. Three prompts set it up on your computer."
+  description="Run your AI agents like a small software studio. Three prompts for Claude Code set up one folder of notes your agents read, a note on every session, and a lead, evaluator and shipper on each project, with a worker for each ticket."
   canonicalPath="/agent-kit/"
 >
   <Fragment slot="head">
@@ -38,14 +37,14 @@ import AgentKitStory from "@/components/agent-kit/AgentKitStory.astro";
   </Fragment>
   <div class="ak">
     <Hero />
-    <StoryRail />
-    <Brain />
-    <Notes />
+    <HowItWorks />
     <Studio />
     <Proof />
     <Setup />
-    <RateCard />
+    <Costs />
     <Lessons />
+    <Faq />
+    <Close />
   </div>
   <AgentKitScript />
   <AgentKitStory />

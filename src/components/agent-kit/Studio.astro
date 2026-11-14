@@ -1,36 +1,43 @@
 ---
 /*
- * 03 · The studio: one ticket's story across the four stations (lead → worker → evaluator →
- * shipper), drawn as a static end-state still. With "Plant a bug" on (the default) the evaluator
- * stamps PANTRY-4 SENT BACK and the route returns it to the worker; off, it passes and ships.
- * The switch works without script (:has), and without script that still is the whole chapter.
- * AK-4 (story.ts) enhances [data-studio-moment] into the run: it enables Run ticket and Pause
- * motion and drives the board through data-step / data-eval / data-returned on the container and
- * data-at (here | past) on each lane. The board rules for those live under "the run" below; the
- * still's rules apply only while the container has no data-step.
+ * The studio: one ticket across four stations (lead → worker → evaluator → shipper) in a plain
+ * product panel, drawn as a static end-state still. With "Plant a bug" on (the default) the
+ * evaluator marks PANTRY-4 SENT BACK and the route returns it to the worker; off, it passes and
+ * ships. The switch works without script (:has), and without script that still is the whole demo.
+ * story.ts enhances [data-studio-moment] into the run: it enables Run ticket and Pause motion and
+ * drives the board through data-step / data-eval / data-returned on the container and data-at
+ * (here | past) on each lane. The board rules for those live under "the run" below; the still's
+ * rules apply only while the container has no data-step.
  */
 import Button from "@/components/ui/Button.astro";
-import ChapterHead from "./ChapterHead.astro";
-import { eyebrowOf } from "./stops";
-import CelloWords from "./CelloWords.astro";
+import SectionHead from "./SectionHead.astro";
+
+const rules = [
+  "Every ticket gets 2–5 testable acceptance criteria before a worker starts.",
+  "A ticket that fails goes back to its worker, up to 3 rounds, then to the lead and you.",
+  "Nothing reaches main without a PASS on that exact commit.",
+];
 ---
 
-<section class="ak-chapter ak-wrap" id="studio" data-chapter="studio" aria-labelledby="studio-title">
-  <ChapterHead eyebrow={eyebrowOf("studio")} title="Every ticket gets stamped" titleId="studio-title">
-    Each project has one lead that plans with you, one evaluator and one shipper. They keep running
-    and hand off to a fresh session before they run out of room. The lead starts a worker for each
-    ticket, and a ticket reaches the last hook only with a pass.
-  </ChapterHead>
+<section class="ak-section ak-wrap" id="studio" aria-labelledby="studio-title">
+  <SectionHead eyebrow="The studio" title="Run a ticket through the studio" titleId="studio-title">
+    The lead, evaluator and shipper stay up for the life of a project, and each hands off to a fresh
+    session when it runs low. The lead starts a worker for each ticket. The evaluator gets the
+    acceptance criteria and the running app, never the worker's reasoning.
+  </SectionHead>
 
-  <div class="ak-studio" data-studio-moment>
+  <div class="ak-body ak-panel ak-studio" data-studio-moment>
     <div class="ak-controls">
-      <p class="ak-ticket-label">Your ticket: <b>PANTRY-4 · Shopping list by aisle</b></p>
-      <label class="ak-switch">
-        <input class="ak-bug-input" type="checkbox" checked aria-describedby="studio-outcome" />
-        <span class="ak-switch-track" aria-hidden="true"></span>
-        Plant a bug
-      </label>
-      <div class="ak-run">
+      <div class="ak-controls-ticket">
+        <span class="ak-meta">Ticket</span>
+        <p class="ak-ticket-label">PANTRY-4 · Shopping list by aisle</p>
+      </div>
+      <div class="ak-controls-actions">
+        <label class="ak-switch">
+          <input class="ak-bug-input" type="checkbox" checked aria-describedby="studio-outcome" />
+          <span class="ak-switch-track" aria-hidden="true"></span>
+          Plant a bug
+        </label>
         <Button disabled aria-describedby="studio-still" data-run-ticket>Run ticket</Button>
         <Button variant="secondary" disabled aria-describedby="studio-still" data-motion-toggle>Pause motion</Button>
       </div>
@@ -42,62 +49,60 @@ import CelloWords from "./CelloWords.astro";
         </span>
       </p>
       <p class="ak-sr" aria-live="polite" data-studio-log></p>
-      <p class="ak-controls-take">
-        Plant one deliberate bug first. Trust the evaluator's passes once it has caught that one.
-        <CelloWords />
-      </p>
     </div>
 
     <div class="ak-board">
-      <div class="ak-cols" aria-hidden="true">
-        <span>Lead <i>· plans</i></span>
-        <span>Worker <i>· builds</i></span>
-        <span>Evaluator <i>· checks</i></span>
-        <span>Shipper <i>· ships</i></span>
-      </div>
-      <div class="ak-rail" aria-hidden="true"></div>
       <ol class="ak-lanes">
-        <li class="ak-lane ak-hooked" data-lane="lead">
-          <h3 class="ak-lane-name">Lead <i>· plans</i></h3>
-          <div class="ak-stub ak-stub--hole ak-stub--trace ak-ticket">
-            <span class="ak-ticket-id"><span>PANTRY-4</span><span>Planned</span></span>
-            <h4 class="ak-ticket-title">Shopping list by aisle</h4>
-            <span class="ak-ticket-meta">3 testable criteria</span>
+        <li class="ak-lane" data-lane="lead">
+          <h3 class="ak-lane-name">Lead <span>plans</span></h3>
+          <div class="ak-cell">
+            <div class="ak-ticket">
+              <span class="ak-ticket-id"><span>PANTRY-4</span><span>Planned</span></span>
+              <h4 class="ak-ticket-title">Shopping list by aisle</h4>
+              <span class="ak-ticket-meta">3 testable criteria</span>
+            </div>
           </div>
         </li>
-        <li class="ak-lane ak-hooked" data-lane="worker">
-          <h3 class="ak-lane-name">Worker <i>· builds</i></h3>
-          <div class="ak-stub ak-stub--hole ak-stub--trace ak-ticket">
-            <span class="ak-ticket-id"><span>PANTRY-4</span><span data-alt="Fixed">Built</span></span>
-            <h4 class="ak-ticket-title">Shopping list by aisle</h4>
-            <span class="ak-ticket-meta" data-alt="Fix pushed · round 2">Branch pantry-4 · test added</span>
+        <li class="ak-lane" data-lane="worker">
+          <h3 class="ak-lane-name">Worker <span>builds</span></h3>
+          <div class="ak-cell">
+            <div class="ak-ticket">
+              <span class="ak-ticket-id"><span>PANTRY-4</span><span data-alt="Fixed">Built</span></span>
+              <h4 class="ak-ticket-title">Shopping list by aisle</h4>
+              <span class="ak-ticket-meta" data-alt="Fix pushed · round 2">Branch pantry-4 · test added</span>
+            </div>
           </div>
         </li>
-        <li class="ak-lane ak-lane--eval ak-hooked" data-lane="eval">
-          <h3 class="ak-lane-name">Evaluator <i>· checks</i></h3>
-          <div class="ak-stub ak-stub--hole ak-ticket ak-ticket--stamped">
-            <span class="ak-ticket-id"><span>PANTRY-4</span><span data-alt="Round 2 / 3">Round 1 / 3</span></span>
-            <h4 class="ak-ticket-title">Shopping list by aisle</h4>
-            <ul class="ak-criteria" aria-label="Acceptance criteria">
-              <li><span aria-hidden="true">✓</span><span><span class="ak-sr">Pass: </span>Groups by aisle</span></li>
-              <li><span aria-hidden="true">✓</span><span><span class="ak-sr">Pass: </span>Checks survive reload</span></li>
-              <li data-when="bug"><span class="ak-x" aria-hidden="true">✕</span><span><span class="ak-sr">Fail: </span>No console errors</span></li>
-              <li data-when="clean"><span aria-hidden="true">✓</span><span><span class="ak-sr">Pass: </span>No console errors</span></li>
-            </ul>
-            <hr class="ak-perf" />
-            <span class="ak-ticket-meta" data-when="bug">TypeError on /list · planted</span>
-            <span class="ak-ticket-meta" data-when="clean">Phone and desktop checked</span>
-            <span class="ak-stamp ak-stamp--back" data-when="bug">Sent back</span>
-            <span class="ak-stamp ak-stamp--pass" data-when="clean">Pass</span>
+        <li class="ak-lane ak-lane--eval" data-lane="eval">
+          <h3 class="ak-lane-name">Evaluator <span>checks</span></h3>
+          <div class="ak-cell">
+            <div class="ak-ticket">
+              <span class="ak-ticket-id"><span>PANTRY-4</span><span data-alt="Round 2 / 3">Round 1 / 3</span></span>
+              <h4 class="ak-ticket-title">Shopping list by aisle</h4>
+              <ul class="ak-criteria" aria-label="Acceptance criteria">
+                <li><span aria-hidden="true">✓</span><span><span class="ak-sr">Pass: </span>Groups by aisle</span></li>
+                <li><span aria-hidden="true">✓</span><span><span class="ak-sr">Pass: </span>Checks survive reload</span></li>
+                <li data-when="bug"><span class="ak-x" aria-hidden="true">✕</span><span><span class="ak-sr">Fail: </span>No console errors</span></li>
+                <li data-when="clean"><span aria-hidden="true">✓</span><span><span class="ak-sr">Pass: </span>No console errors</span></li>
+              </ul>
+              <span class="ak-ticket-meta" data-when="bug">TypeError on /list · planted</span>
+              <span class="ak-ticket-meta" data-when="clean">Phone and desktop checked</span>
+              <span class="ak-verdict">
+                <span class="ak-badge ak-badge--back" data-when="bug">Sent back</span>
+                <span class="ak-badge ak-badge--pass" data-when="clean">Pass</span>
+              </span>
+            </div>
           </div>
         </li>
-        <li class="ak-lane ak-hooked" data-lane="ship">
-          <h3 class="ak-lane-name">Shipper <i>· ships</i></h3>
-          <div class="ak-waiting" data-when="bug">Waiting for a pass</div>
-          <div class="ak-stub ak-stub--hole ak-ticket" data-when="clean">
-            <span class="ak-ticket-id"><span>PANTRY-4</span><span>Live</span></span>
-            <h4 class="ak-ticket-title">Shopping list by aisle</h4>
-            <span class="ak-ticket-meta">Checked live · note written</span>
+        <li class="ak-lane" data-lane="ship">
+          <h3 class="ak-lane-name">Shipper <span>ships</span></h3>
+          <div class="ak-cell">
+            <div class="ak-waiting" data-when="bug">Waiting for a pass</div>
+            <div class="ak-ticket" data-when="clean">
+              <span class="ak-ticket-id"><span>PANTRY-4</span><span>Live</span></span>
+              <h4 class="ak-ticket-title">Shopping list by aisle</h4>
+              <span class="ak-ticket-meta">Checked live · note written</span>
+            </div>
           </div>
         </li>
       </ol>
@@ -107,14 +112,16 @@ import CelloWords from "./CelloWords.astro";
       </div>
     </div>
   </div>
+
+  <ul class="ak-rules" aria-label="Rules every ticket follows">
+    {rules.map((r) => <li>{r}</li>)}
+  </ul>
 </section>
 
 <style>
   .ak-studio {
     display: flex;
     flex-direction: column;
-    gap: var(--space-40);
-    margin-top: var(--space-48);
   }
 
   /* the bug switch picks which end state shows: always in the controls, on the board only for the
@@ -126,52 +133,48 @@ import CelloWords from "./CelloWords.astro";
     display: none;
   }
 
-  /* ---------- controls: above the board at every width ---------- */
+  /* ---------- controls: a toolbar above the board at every width ---------- */
   .ak-controls {
     display: grid;
-    grid-template-columns: auto auto minmax(0, 1fr);
-    gap: var(--space-16) var(--space-32);
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-16) var(--space-24);
     align-items: center;
-    padding-block: var(--space-16);
-    border-block: var(--stroke-control) solid var(--border-strong);
+    padding: var(--space-20) var(--space-24);
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
   }
 
-  .ak-ticket-label {
-    grid-column: 1 / -1;
-    font-size: var(--type-small);
-    letter-spacing: var(--track-caps);
-    text-transform: uppercase;
-  }
-
-  .ak-ticket-label b {
-    font-weight: var(--weight-bold);
-  }
-
-  .ak-run {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-12);
-  }
-
-  .ak-controls-note,
-  .ak-controls-take {
-    color: var(--text-muted);
-    font-size: var(--type-small);
-    line-height: var(--leading-small);
-  }
-
-  .ak-controls-note {
+  .ak-controls-ticket {
     display: flex;
     flex-direction: column;
     gap: var(--space-4);
   }
 
-  .ak-controls-note [data-when] {
-    color: var(--text-primary);
+  .ak-ticket-label {
+    font-size: var(--type-body);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-ui);
   }
 
-  .ak-controls-take {
+  .ak-controls-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-12) var(--space-16);
+    align-items: center;
+  }
+
+  .ak-controls-note {
     grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-12);
+    color: var(--text-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-controls-note [data-when],
+  #studio-outcome {
+    color: var(--text-primary);
   }
 
   /* the switch: square track, action green when on */
@@ -181,6 +184,7 @@ import CelloWords from "./CelloWords.astro";
     align-items: center;
     gap: var(--space-12);
     min-height: var(--touch-target);
+    margin-right: var(--space-8);
     font-size: var(--type-ui);
     font-weight: var(--weight-bold);
     letter-spacing: var(--track-caps);
@@ -230,20 +234,30 @@ import CelloWords from "./CelloWords.astro";
     outline-offset: var(--stroke-frame);
   }
 
-  /* ---------- the board ---------- */
-  .ak-cols,
+  /* ---------- the board: four stations ---------- */
+  .ak-board {
+    padding: var(--space-24);
+  }
+
   .ak-lanes {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--space-24);
+    gap: var(--space-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
   }
 
-  .ak-cols {
-    padding-bottom: var(--space-12);
+  .ak-lane {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    min-width: 0;
   }
 
-  .ak-cols span,
   .ak-lane-name {
+    padding-bottom: var(--space-8);
+    border-bottom: var(--stroke-control) solid var(--border-strong);
     font-family: var(--font-mono);
     font-size: var(--type-label);
     font-weight: var(--weight-bold);
@@ -252,40 +266,28 @@ import CelloWords from "./CelloWords.astro";
     text-transform: uppercase;
   }
 
-  .ak-cols i,
-  .ak-lane-name i {
+  .ak-lane-name span {
     color: var(--text-muted);
-    font-style: normal;
     font-weight: var(--weight-regular);
   }
 
-  /* desktop: the column heads name the lanes; the lane's own h3 stays for screen readers */
-  .ak-lane-name {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
+  .ak-lane-name span::before {
+    content: "· ";
   }
 
-  .ak-lanes {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .ak-lane--eval {
-    transform: translateY(var(--space-24));
+  .ak-cell {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
   .ak-ticket {
-    padding: var(--space-40) var(--space-16) var(--space-16);
-  }
-
-  .ak-ticket--stamped,
-  .ak-ticket:has(.ak-stamp) {
-    padding-bottom: var(--space-64);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+    padding: var(--space-16);
+    border: var(--stroke-rule) solid var(--border-strong);
+    background: var(--bg-canvas);
   }
 
   .ak-ticket-id {
@@ -300,17 +302,15 @@ import CelloWords from "./CelloWords.astro";
   }
 
   .ak-ticket-title {
-    text-wrap: balance;
-    margin-top: var(--space-8);
-    font-family: var(--font-title);
-    font-size: var(--type-title);
+    font-family: var(--font-mono);
+    font-size: var(--type-body);
     font-weight: var(--weight-bold);
     line-height: var(--leading-title);
+    text-wrap: balance;
   }
 
   .ak-ticket-meta {
     display: block;
-    padding-top: var(--space-8);
     color: var(--text-muted);
     font-size: var(--type-label);
     letter-spacing: var(--track-caps);
@@ -319,7 +319,7 @@ import CelloWords from "./CelloWords.astro";
   }
 
   .ak-criteria {
-    margin: var(--space-12) 0;
+    margin: 0;
     padding: 0;
     list-style: none;
     font-size: var(--type-small);
@@ -333,19 +333,26 @@ import CelloWords from "./CelloWords.astro";
   }
 
   .ak-x {
-    color: var(--status-returned-on-stub);
+    color: var(--status-returned);
     font-weight: var(--weight-bold);
+  }
+
+  .ak-verdict {
+    display: flex;
+    padding-top: var(--space-4);
   }
 
   .ak-waiting {
     display: grid;
+    flex: 1;
     place-items: center;
-    min-height: 10rem;
+    min-height: 8rem;
     padding: var(--space-16);
-    border: var(--stroke-control) dashed var(--border-muted);
+    border: var(--stroke-rule) dashed var(--border-muted);
     color: var(--text-muted);
     font-size: var(--type-label);
     letter-spacing: var(--track-caps);
+    text-align: center;
     text-transform: uppercase;
   }
 
@@ -353,16 +360,16 @@ import CelloWords from "./CelloWords.astro";
   .ak-return {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--space-24);
-    margin-top: var(--space-40);
+    gap: 0 var(--space-16);
+    margin-top: var(--space-16);
   }
 
   .ak-return-line {
     grid-column: 2 / 4;
     grid-row: 1;
-    height: var(--space-32);
+    height: var(--space-16);
     margin-inline: var(--space-64);
-    border: var(--stroke-control) dashed var(--status-returned);
+    border: var(--stroke-control) solid var(--status-returned);
     border-top: 0;
   }
 
@@ -375,39 +382,53 @@ import CelloWords from "./CelloWords.astro";
     font-size: var(--type-label);
     font-weight: var(--weight-bold);
     letter-spacing: var(--track-caps);
+    text-align: center;
     text-transform: uppercase;
   }
 
-  /* ---------- the run (AK-4): only while story.ts has set data-step ---------- */
+  /* ---------- the rules under the panel ---------- */
+  .ak-rules {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-24);
+    margin: var(--space-32) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ak-rules li {
+    padding-top: var(--space-12);
+    border-top: var(--stroke-control) solid var(--accent-ground);
+    color: var(--text-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  /* ---------- the run: only while story.ts has set data-step ---------- */
   .ak-studio[data-step] .ak-board {
-    /* where a ticket arrives from: the lane to its left, sliding right along the rail */
-    --ak-from-x: calc(-100% - var(--space-24));
+    /* where a ticket arrives from: the station to its left */
+    --ak-from-x: calc(-100% - var(--space-16));
     --ak-from-y: 0px;
-    --ak-swing: -3deg;
   }
 
   .ak-studio[data-dir="back"] .ak-board {
-    --ak-from-x: calc(100% + var(--space-24));
-    --ak-swing: 3deg;
+    --ak-from-x: calc(100% + var(--space-16));
   }
 
   .ak-studio[data-dir="drop"] .ak-board {
     --ak-from-x: 0px;
-    --ak-from-y: calc(-1 * var(--space-48));
-    --ak-swing: 0deg;
+    --ak-from-y: calc(-1 * var(--space-24));
   }
 
-  /* a lane with no data-at: the hook is empty */
+  /* a lane with no data-at: the station is empty */
   .ak-studio[data-step] .ak-lane:not([data-at]) .ak-ticket {
     visibility: hidden;
   }
 
-  .ak-studio[data-step] .ak-lane[data-at="here"] .ak-ticket {
-    border-style: solid;
-  }
-
+  /* passed through: the card stays, quieter */
   .ak-studio[data-step] .ak-lane[data-at="past"] .ak-ticket {
-    border-style: dashed;
+    border-color: var(--border-muted);
+    background: transparent;
   }
 
   /* the evaluator shows the verdict of the round it's on */
@@ -416,7 +437,7 @@ import CelloWords from "./CelloWords.astro";
     display: none;
   }
 
-  /* the shipper waits until the ticket is on its hook */
+  /* the shipper waits until the ticket reaches it */
   .ak-studio[data-step] .ak-lane[data-lane="ship"]:not([data-at]) .ak-ticket,
   .ak-studio[data-step] .ak-lane[data-lane="ship"][data-at] .ak-waiting {
     display: none;
@@ -430,18 +451,14 @@ import CelloWords from "./CelloWords.astro";
     visibility: hidden;
   }
 
-  /* motion: the ticket slides in from the last lane and swings from its hook as it lands; the
-     stamp locks in once it has arrived; the route back draws from the evaluator to the worker */
-  .ak-studio[data-step] .ak-ticket {
-    transform-origin: 50% 0;
-  }
-
+  /* motion: the card slides in from the last station; the verdict badge fades in once it has
+     arrived; the route back draws from the evaluator to the worker */
   .ak-studio[data-step]:not([data-instant]) .ak-lane[data-at="here"] .ak-ticket {
     animation: ak-ticket-travel var(--motion-showcase-travel) var(--ease-out) both;
   }
 
-  .ak-studio[data-step]:not([data-instant]) .ak-lane[data-at="here"] .ak-stamp {
-    animation: ak-stamp-lock var(--motion-showcase-stamp) var(--ease-out) var(--motion-showcase-travel) both;
+  .ak-studio[data-step]:not([data-instant]) .ak-lane[data-at="here"] .ak-badge {
+    animation: ak-fade-in var(--motion-showcase-verdict) var(--ease-out) var(--motion-showcase-travel) both;
   }
 
   .ak-studio[data-dir="back"]:not([data-instant]) .ak-return-line {
@@ -460,53 +477,33 @@ import CelloWords from "./CelloWords.astro";
       animation: none !important;
       transition: none !important;
     }
-  }
 
-  /* Pause motion and reduced motion: the button is for motion, so it goes when there is none */
-  @media (prefers-reduced-motion: reduce) {
+    /* Pause motion is for motion, so it goes when there is none */
     .ak-studio[data-enhanced] [data-motion-toggle] {
       display: none;
     }
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     .ak-controls {
       grid-template-columns: minmax(0, 1fr);
+      padding: var(--space-16);
     }
 
-    .ak-cols {
-      display: none;
-    }
-
-    .ak-lane-name {
-      position: static;
-      width: auto;
-      height: auto;
-      overflow: visible;
-      clip-path: none;
-      margin-bottom: var(--space-8);
+    .ak-board {
+      padding: var(--space-16);
     }
 
     .ak-lanes {
       grid-template-columns: minmax(0, 1fr);
-      gap: var(--space-16);
     }
 
-    .ak-lane {
-      padding-top: 0;
-    }
-
-    .ak-lane::before {
-      display: none;
-    }
-
-    .ak-lane--eval {
-      transform: none;
+    .ak-waiting {
+      min-height: 4rem;
     }
 
     .ak-return {
       grid-template-columns: minmax(0, 1fr);
-      margin-top: var(--space-16);
     }
 
     .ak-return-line {
@@ -517,6 +514,8 @@ import CelloWords from "./CelloWords.astro";
       grid-column: 1;
       grid-row: 1;
       justify-self: start;
+      padding-top: 0;
+      text-align: left;
     }
 
     .ak-return-label span {
@@ -524,7 +523,12 @@ import CelloWords from "./CelloWords.astro";
       transform: rotate(90deg);
     }
 
-    /* phones: lanes stack, so a ticket arrives from the lane above (or below, going back) */
+    .ak-rules {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-16);
+    }
+
+    /* stacked: a ticket arrives from the station above (or below, going back) */
     .ak-studio[data-step] .ak-board {
       --ak-from-x: 0px;
       --ak-from-y: calc(-1 * var(--space-48));

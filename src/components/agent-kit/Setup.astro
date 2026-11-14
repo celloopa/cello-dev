@@ -1,30 +1,27 @@
 ---
 /*
- * 05 · Setup: the three prompts as stacked work orders, 01 marked "Start here". The text of each
- * comes from its one source file (src/lib/agent-kit/prompts.ts).
+ * Setup: the three prompts as panels, 01 marked "Start here". The text of each comes from its one
+ * source file (src/lib/agent-kit/prompts.ts).
  */
-import ChapterHead from "./ChapterHead.astro";
-import { eyebrowOf } from "./stops";
-import WorkOrder from "./WorkOrder.astro";
+import SectionHead from "./SectionHead.astro";
+import PromptPanel from "./PromptPanel.astro";
 import { prompts, promptText } from "@/lib/agent-kit/prompts";
 ---
 
-<section class="ak-chapter ak-wrap" id="setup" data-chapter="setup" aria-labelledby="setup-title">
-  <ChapterHead eyebrow={eyebrowOf("setup")} title="Three work orders" titleId="setup-title">
-    Open Claude Code, paste them in order and answer its questions. Each prompt stops for your OK
-    between phases. The first two make a useful setup on their
-    own.
-  </ChapterHead>
-  <div class="ak-orders">
-    {prompts.map((p, i) => <WorkOrder prompt={p} text={promptText(p.file)} start={i === 0} />)}
+<section class="ak-section ak-wrap" id="setup" aria-labelledby="setup-title">
+  <SectionHead eyebrow="Setup" title="Copy the three prompts" titleId="setup-title">
+    Open Claude Code, paste them in order and answer its questions. The first two make a useful
+    setup on their own.
+  </SectionHead>
+  <div class="ak-body ak-prompts">
+    {prompts.map((p, i) => <PromptPanel prompt={p} text={promptText(p.file)} start={i === 0} />)}
   </div>
 </section>
 
 <style>
-  .ak-orders {
+  .ak-prompts {
     display: flex;
     flex-direction: column;
-    gap: var(--space-40);
-    margin-top: var(--space-48);
+    gap: var(--space-32);
   }
 </style>

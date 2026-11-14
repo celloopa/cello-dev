@@ -1,210 +1,86 @@
 ---
 /*
- * Hero: the title, what the kit is, the way in (prompt 01), a one-line proof teaser, and the
- * chapter index as five paper stubs hanging from the earth rail. The stubs are the in-page
- * chapter nav: real links, all five visible on a phone (they wrap, no sideways swipe). They come
- * from the one list of stops (stops.ts); the scroll story marks the current one aria-current=step.
+ * Hero: centered. Who it's by, a two-line headline, one sentence of what you get, one primary
+ * action (prompt 01, in Setup) and a quiet link down to the studio demo.
  */
 import Button from "@/components/ui/Button.astro";
 import ArrowLink from "@/components/ui/ArrowLink.astro";
-import CelloWords from "./CelloWords.astro";
-import { stops } from "./stops";
-
+import Eyebrow from "@/components/ui/Eyebrow.astro";
 ---
 
-<section class="ak-hero ak-wrap" id="hero" data-chapter="hero" aria-labelledby="ak-title">
-  <p class="ak-crumb"><a href="/">cello.design</a> <span aria-hidden="true">/</span> agent-kit</p>
-  <div class="ak-hero-top">
-    <div>
-      <span class="ak-eyebrow">Work order · a starter kit for Claude Code</span>
-      <h1 class="ak-title" id="ak-title">Agent Studio Kit</h1>
-    </div>
-    <div class="ak-hero-copy">
-      <p class="ak-lede">
-        How I run AI agents like a small software studio: one folder of notes they all read, a note
-        on every session, and a lead, evaluator and shipper on each project, with a worker for each
-        ticket. Three prompts set it up on your computer.
-      </p>
-      <CelloWords />
-      <div class="ak-hero-actions">
-        <Button href="#setup">Start with prompt 01 →</Button>
-      </div>
-      <p class="ak-teaser">
-        Two things it built: Ghosted's feature pipeline, and this page.
-        <ArrowLink href="#proof" variant="down">See the proof</ArrowLink>
-      </p>
-    </div>
+<section class="ak-hero ak-wrap" id="top" aria-labelledby="ak-h1">
+  <Eyebrow tone="accent">Agent Studio Kit · by Cello</Eyebrow>
+  <h1 class="ak-h1" id="ak-h1">
+    <span>Run your AI agents</span>
+    <span>like a small software studio</span>
+  </h1>
+  <p class="ak-lede">
+    Three prompts give your agents one folder of notes to read, a note on every session, and a
+    lead, evaluator and shipper on each project, with a worker for each ticket.
+  </p>
+  <div class="ak-hero-actions">
+    <Button href="#setup">Get prompt 01</Button>
+    <ArrowLink href="#studio" variant="down">Watch a ticket run</ArrowLink>
   </div>
-
-  <nav class="ak-index" aria-label="Chapters">
-    <div class="ak-rail" aria-hidden="true"></div>
-    <ol class="ak-index-list">
-      {
-        stops.map((c) => (
-          <li class="ak-hooked">
-            <a class="ak-index-link" href={`#${c.id}`} data-stop-link={c.id}>
-              <span class="ak-stub ak-stub--hole ak-index-stub">
-                <span class="ak-index-no">No. {c.no}</span>
-                <span class="ak-index-name">{c.name}</span>
-                <span class="ak-index-note">{c.note}</span>
-              </span>
-            </a>
-          </li>
-        ))
-      }
-    </ol>
-  </nav>
+  <p class="ak-meta ak-hero-meta">For Claude Code · Plain Markdown · Prompt 01 takes about 30 minutes</p>
 </section>
 
 <style>
   .ak-hero {
-    padding-block: var(--space-32) var(--space-64);
-  }
-
-  .ak-crumb {
-    font-size: var(--type-label);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--track-wide);
-    text-transform: uppercase;
-  }
-
-  .ak-crumb a {
-    display: inline-flex;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    min-height: var(--touch-target);
-    color: var(--text-accent);
-    text-decoration: underline;
-    text-decoration-thickness: var(--stroke-control);
-    text-underline-offset: var(--space-4);
+    padding-block: var(--space-96) var(--space-32);
+    text-align: center;
   }
 
-  .ak-crumb a:hover {
-    color: var(--text-primary);
-  }
-
-  .ak-hero-top {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 24rem);
-    gap: var(--space-48);
-    align-items: end;
-    margin-top: var(--space-32);
-  }
-
-  .ak-title {
-    margin-top: var(--space-16);
-    color: var(--text-primary);
+  .ak-h1 {
+    max-width: 24ch;
+    text-align: center;
+    margin-top: var(--space-24);
     font-family: var(--font-title);
-    font-size: var(--type-display-hero);
+    font-size: var(--type-page-title);
     font-weight: var(--weight-extrabold);
-    line-height: var(--leading-display);
+    line-height: var(--leading-tight);
     letter-spacing: var(--track-tight);
-    text-transform: uppercase;
     text-wrap: balance;
   }
 
-  .ak-hero-copy {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--space-16);
+  .ak-h1 span {
+    display: block;
   }
 
   .ak-lede {
+    max-width: 40rem;
+    text-align: center;
+    margin-top: var(--space-24);
+    color: var(--text-muted);
     font-size: var(--type-body-lg);
     line-height: var(--leading-read);
+    text-wrap: pretty;
   }
 
-  .ak-teaser {
+  .ak-hero-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-8) var(--space-16);
+    gap: var(--space-16) var(--space-32);
     align-items: center;
-    padding-top: var(--space-16);
-    border-top: var(--stroke-rule) solid var(--border-muted);
-    color: var(--text-muted);
-    font-size: var(--type-small);
-    line-height: var(--leading-small);
+    justify-content: center;
+    margin-top: var(--space-40);
   }
 
-  .ak-index {
-    margin-top: var(--space-48);
-  }
-
-  .ak-index-list {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: var(--space-16);
-    margin: 0;
-    padding: 0 var(--space-16);
-    list-style: none;
-  }
-
-  .ak-index-link {
-    display: block;
-    color: var(--text-on-stub);
-    text-decoration: none;
-  }
-
-  .ak-index-stub {
-    display: flex;
-    flex-direction: column;
-    min-height: 9.5rem;
-    padding: var(--space-40) var(--space-16) var(--space-16);
-    transition: box-shadow var(--motion-ui) var(--ease-out);
-  }
-
-  .ak-index-link:hover .ak-index-stub,
-  .ak-index-link:focus-visible .ak-index-stub,
-  .ak-index-link[aria-current="step"] .ak-index-stub {
-    box-shadow: var(--shadow-offset) var(--shadow-offset) 0 var(--action-primary);
-  }
-
-  .ak-index-no,
-  .ak-index-note {
-    color: var(--text-muted);
-    font-size: var(--type-label);
-    letter-spacing: var(--track-wide);
-    line-height: var(--leading-ui);
-    text-transform: uppercase;
-  }
-
-  .ak-index-name {
-    margin-top: var(--space-4);
-    font-family: var(--font-title);
-    font-size: var(--type-title);
-    font-weight: var(--weight-extrabold);
-    line-height: var(--leading-tight);
-    text-transform: uppercase;
-  }
-
-  .ak-index-note {
-    margin-top: auto;
-    padding-top: var(--space-12);
-    text-transform: none;
-    letter-spacing: var(--track-caps);
+  .ak-hero-meta {
+    margin-top: var(--space-32);
+    text-align: center;
   }
 
   @media (max-width: 768px) {
-    .ak-hero-top {
-      grid-template-columns: minmax(0, 1fr);
-      gap: var(--space-24);
-      margin-top: var(--space-16);
+    .ak-hero {
+      padding-block: var(--space-64) var(--space-16);
     }
 
-    /* phones: all five stay in view, three and two, no sideways swipe */
-    .ak-index-list {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--space-12);
-      padding: 0;
-    }
-
-    .ak-index-stub {
-      min-height: 7rem;
-      padding: var(--space-32) var(--space-8) var(--space-12);
-    }
-
-    .ak-index-name {
-      font-size: var(--type-body);
+    .ak-h1 span {
+      display: inline;
     }
   }
 </style>

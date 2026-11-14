@@ -1,0 +1,135 @@
+---
+/*
+ * How it works: the three prompts as three steps, each a number, a title, one line, what it sets
+ * up (the stages, the note layers, the roles) and what it needs. Titles, needs and time come from
+ * src/lib/agent-kit/prompts.ts, the same list Setup uses.
+ */
+import SectionHead from "./SectionHead.astro";
+import { prompts } from "@/lib/agent-kit/prompts";
+
+const detail: Record<string, { body: string; flow: string[]; flowLabel: string }> = {
+  "1-second-brain.md": {
+    body: "A folder of plain Markdown your agents read before they start, so they already know your projects, decisions and preferences.",
+    flow: ["inbox/", "projects/", "output/", "wiki/"],
+    flowLabel: "The four folders a note moves through",
+  },
+  "2-session-notes.md": {
+    body: "Each session is logged as it ends and summarized overnight. Each morning you approve what becomes permanent.",
+    flow: ["Hook", "Recap", "Nightly digest"],
+    flowLabel: "The three layers of session notes",
+  },
+  "3-studio-pipeline.md": {
+    body: "A lead plans each app with you, a worker builds each ticket, an evaluator checks it and a shipper puts it live.",
+    flow: ["Lead", "Worker", "Evaluator", "Shipper"],
+    flowLabel: "The four studio roles, in order",
+  },
+};
+---
+
+<section class="ak-section ak-wrap" id="how" aria-labelledby="how-title">
+  <SectionHead eyebrow="How it works" title="Three prompts, run in order" titleId="how-title">
+    Open Claude Code, paste a prompt and answer its questions. Each one shows you what it built
+    before you move on.
+  </SectionHead>
+
+  <ol class="ak-body ak-steps">
+    {
+      prompts.map((p) => {
+        const d = detail[p.file];
+        return (
+          <li class="ak-step">
+            <span class="ak-step-no" aria-hidden="true">{p.no}</span>
+            <h3 class="ak-step-title">
+              <span class="ak-sr">Prompt {p.no}: </span>
+              {p.title}
+            </h3>
+            <p class="ak-step-body">{d.body}</p>
+            <ol class="ak-flow" aria-label={d.flowLabel}>
+              {d.flow.map((f) => (
+                <li>{f}</li>
+              ))}
+            </ol>
+            <p class="ak-meta ak-step-meta">
+              {p.needs}
+              {p.time && <> · {p.time}</>}
+            </p>
+          </li>
+        );
+      })
+    }
+  </ol>
+</section>
+
+<style>
+  .ak-steps {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-24);
+    padding: 0;
+    list-style: none;
+  }
+
+  .ak-step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    padding: var(--space-24);
+    border: var(--stroke-rule) solid var(--border-muted);
+    background: var(--bg-raised);
+  }
+
+  .ak-step-no {
+    display: inline-grid;
+    place-items: center;
+    width: var(--space-40);
+    height: var(--space-40);
+    border: var(--stroke-control) solid var(--action-primary);
+    color: var(--text-accent);
+    font-size: var(--type-small);
+    font-weight: var(--weight-bold);
+  }
+
+  .ak-step-title {
+    margin-top: var(--space-8);
+    font-family: var(--font-mono);
+    font-size: var(--type-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-title);
+    text-wrap: balance;
+  }
+
+  .ak-step-body {
+    color: var(--text-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-small);
+  }
+
+  .ak-flow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    margin: var(--space-4) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ak-flow li {
+    padding: var(--space-4) var(--space-8);
+    background: var(--bg-muted);
+    font-size: var(--type-label);
+    line-height: var(--leading-ui);
+  }
+
+  .ak-step-meta {
+    margin-top: auto;
+    padding-top: var(--space-12);
+    border-top: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  @media (max-width: 900px) {
+    .ak-steps {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--space-16);
+    }
+  }
+</style>

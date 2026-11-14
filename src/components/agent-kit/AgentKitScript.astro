@@ -1,10 +1,10 @@
 ---
 /*
- * The page's only script: Copy and Show all on the work orders. One delegated listener, so it
+ * Copy prompt and Show full prompt on the prompt panels. One delegated listener, so it
  * keeps working across view-transition navigations without re-binding.
  *
  * Copy writes the prompt's exact text (the <pre>'s text, which is the source file) to the
- * clipboard, says "Copied" in the order's polite live region and on the button, and resets after
+ * clipboard, says "Copied" in the panel's polite live region and on the button, and resets after
  * about 2 s. If the clipboard refuses, it opens and selects the text instead and says
  * "Selected. Press Ctrl+C (⌘C on a Mac) to copy.".
  */

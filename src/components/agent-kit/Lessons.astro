@@ -1,10 +1,8 @@
 ---
 /*
- * Lessons from running the kit (from the source page), its caveat, and the way back into the
- * portfolio.
+ * Lessons from running the kit (from the source page), and its caveat.
  */
-import ArrowLink from "@/components/ui/ArrowLink.astro";
-import ChapterHead from "./ChapterHead.astro";
+import SectionHead from "./SectionHead.astro";
 
 const lessons = [
   { title: "Get grilled before anything is built", body: "The most useful step is the agent asking you hard questions about the idea first. It saves rebuilding later." },
@@ -16,12 +14,13 @@ const lessons = [
 ];
 ---
 
-<section class="ak-chapter ak-wrap" id="lessons" data-chapter="lessons" aria-labelledby="lessons-title">
-  <ChapterHead eyebrow="Lessons" title="What I learned running it" titleId="lessons-title">
-    Six things running the kit taught me.
-  </ChapterHead>
+<section class="ak-section ak-wrap" id="lessons" aria-labelledby="lessons-title">
+  <SectionHead eyebrow="Lessons" title="What I learned running it" titleId="lessons-title">
+    Tool names and install steps change, so the prompts tell your agent to read each tool's README
+    instead of trusting its memory.
+  </SectionHead>
 
-  <ol class="ak-lessons">
+  <ol class="ak-body ak-lessons">
     {
       lessons.map((l, i) => (
         <li class="ak-lesson">
@@ -32,92 +31,50 @@ const lessons = [
       ))
     }
   </ol>
-
-  <p class="ak-caveat">
-    Tool names and install steps change, so the prompts tell your agent to read each tool's README
-    instead of trusting its memory.
-  </p>
-
-  <nav class="ak-more" aria-labelledby="more-title">
-    <h2 class="ak-more-title" id="more-title">More of my work</h2>
-    <ul>
-      <li><ArrowLink href="/projects">Case studies</ArrowLink></li>
-      <li><ArrowLink href="/design-system">Design system</ArrowLink></li>
-      <li><ArrowLink href="/about">About me</ArrowLink></li>
-    </ul>
-  </nav>
 </section>
 
 <style>
   .ak-lessons {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-32) var(--space-24);
-    margin: var(--space-48) 0 0;
+    gap: var(--space-40) var(--space-32);
     padding: 0;
     list-style: none;
   }
 
   .ak-lesson {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
     padding-top: var(--space-16);
-    border-top: var(--stroke-bar) solid var(--accent-ground);
+    border-top: var(--stroke-control) solid var(--accent-ground);
+    color: var(--text-muted);
     font-size: var(--type-small);
     line-height: var(--leading-small);
   }
 
   .ak-lesson-no {
-    color: var(--text-muted);
+    color: var(--text-accent);
     font-size: var(--type-label);
+    font-weight: var(--weight-bold);
     letter-spacing: var(--track-wide);
   }
 
   .ak-lesson-title {
-    text-wrap: balance;
-    margin: var(--space-4) 0 var(--space-8);
     font-family: var(--font-mono);
     font-size: var(--type-body);
     font-weight: var(--weight-bold);
     line-height: var(--leading-title);
+    text-wrap: balance;
   }
 
-  .ak-caveat {
-    max-width: var(--layout-measure);
-    margin-top: var(--space-48);
-    color: var(--text-muted);
-    font-size: var(--type-small);
-    line-height: var(--leading-read);
+  @media (max-width: 900px) {
+    .ak-lessons {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
-  .ak-more {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-24) var(--space-48);
-    align-items: center;
-    margin-top: var(--space-64);
-    padding-top: var(--space-32);
-    border-top: var(--stroke-frame) solid var(--border-strong);
-  }
-
-  .ak-more-title {
-    margin: 0;
-    color: var(--text-accent);
-    font-family: var(--font-title);
-    font-size: var(--type-heading);
-    font-weight: var(--weight-extrabold);
-    line-height: var(--leading-heading);
-    text-transform: uppercase;
-  }
-
-  .ak-more ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-16) var(--space-32);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  @media (max-width: 768px) {
+  @media (max-width: 600px) {
     .ak-lessons {
       grid-template-columns: minmax(0, 1fr);
       gap: var(--space-24);

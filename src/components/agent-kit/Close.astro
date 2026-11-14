@@ -1,0 +1,90 @@
+---
+/*
+ * Close: the offer once more (prompt 01 is the way in), then the way back into the portfolio.
+ */
+import Button from "@/components/ui/Button.astro";
+import ArrowLink from "@/components/ui/ArrowLink.astro";
+import SectionHead from "./SectionHead.astro";
+---
+
+<section class="ak-section ak-wrap ak-close" id="start" aria-labelledby="start-title">
+  <div class="ak-panel ak-close-panel">
+    <SectionHead eyebrow="Start here" title="Set up the second brain first" titleId="start-title">
+      Prompt 01 takes about 30 minutes and needs nothing else. Add session notes and the studio when
+      you want them.
+    </SectionHead>
+    <div class="ak-close-actions">
+      <Button href="#prompt-01">Get prompt 01</Button>
+    </div>
+  </div>
+
+  <nav class="ak-more" aria-labelledby="more-title">
+    <h3 class="ak-more-title" id="more-title">More of my work</h3>
+    <ul>
+      <li><ArrowLink href="/projects">Case studies</ArrowLink></li>
+      <li><ArrowLink href="/design-system">Design system</ArrowLink></li>
+      <li><ArrowLink href="/about">About me</ArrowLink></li>
+    </ul>
+  </nav>
+</section>
+
+<style>
+  .ak-close {
+    padding-bottom: var(--space-96);
+  }
+
+  .ak-close-panel {
+    padding: var(--space-64) var(--space-24);
+  }
+
+  .ak-close-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--space-32);
+  }
+
+  .ak-more {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-16) var(--space-48);
+    align-items: center;
+    justify-content: space-between;
+    margin-top: var(--space-64);
+    padding-top: var(--space-24);
+    border-top: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .ak-more-title {
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .ak-more ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-16) var(--space-32);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (max-width: 768px) {
+    .ak-close {
+      padding-bottom: var(--space-64);
+    }
+
+    .ak-close-panel {
+      padding: var(--space-40) var(--space-16);
+    }
+
+    .ak-more {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

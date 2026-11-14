@@ -1,0 +1,158 @@
+---
+/*
+ * FAQ: native <details>/<summary>, so it opens with Enter or Space and works without script. Every
+ * answer comes from the prompts or from facts elsewhere on this page.
+ */
+import SectionHead from "./SectionHead.astro";
+
+const faqs = [
+  {
+    q: "Which AI does it need?",
+    a: [
+      "Claude Code. The prompts set up Claude Code hooks, skills and slash commands. The notes are plain Markdown, so other agents you use, such as Codex, can read and write them too.",
+    ],
+  },
+  {
+    q: "What does it cost?",
+    a: [
+      "A Claude plan is the one cost worth paying for. Parallel workers use a lot of it, so a higher tier keeps the pipeline from stalling. ComfyUI runs free on a decent GPU, and hosting on your own computer costs nothing.",
+    ],
+  },
+  {
+    q: "Do I need Obsidian?",
+    a: [
+      "No. The notes are plain Markdown files in a folder. Prompt 01 asks whether you use Obsidian or another notes app, and the folder works either way.",
+    ],
+  },
+  {
+    q: "Where are my notes stored, and what stays private?",
+    a: [
+      "In a folder on your computer. Prompt 01 asks where it should live, suggests a default for your OS and recommends a local Git repo.",
+      "Passwords, API keys and tokens are never stored. Session recaps and agent memory go in a private/ folder that Git ignores, with keys, tokens, passwords and emails redacted. The nightly digest runs on your computer, because that's where the transcripts are.",
+    ],
+  },
+  {
+    q: "Can I stop after prompt 01?",
+    a: [
+      "Yes. Prompt 01 plus a week of capturing gets you most of the benefit, and the first two prompts make a useful setup on their own. Add the studio when you have an app to build.",
+    ],
+  },
+  {
+    q: "Does it work on Windows and Mac?",
+    a: [
+      "Yes. Prompt 02 starts by checking your OS, where Claude Code keeps session transcripts (in WSL too, if you use it) and which scheduler you have: Task Scheduler, cron, launchd or the Claude desktop app's scheduled tasks. On Windows, prompt 03 puts app repos and dev servers inside WSL2.",
+    ],
+  },
+  {
+    q: "Will the agent change things without asking?",
+    a: [
+      "Prompt 01 asks its questions before it creates anything. Prompts 02 and 03 show you each file before installing it and ask before anything that costs money, sends data off your computer or changes global settings. Prompt 03 stops after each phase to show what it built and tested, and waits for your OK.",
+      "Prompt 03 leaves firewall, router, DNS, VPN, reverse-proxy and power settings to you: it gives you the exact changes to make.",
+    ],
+  },
+];
+---
+
+<section class="ak-section ak-wrap" id="faq" aria-labelledby="faq-title">
+  <SectionHead eyebrow="FAQ" title="Questions before you start" titleId="faq-title" />
+
+  <div class="ak-body ak-faq">
+    {
+      faqs.map((f) => (
+        <details class="ak-faq-item">
+          <summary>
+            <span class="ak-faq-q">{f.q}</span>
+            <span class="ak-faq-icon" aria-hidden="true" />
+          </summary>
+          <div class="ak-faq-a">
+            {f.a.map((p) => (
+              <p>{p}</p>
+            ))}
+          </div>
+        </details>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .ak-faq {
+    max-width: 48rem;
+    margin-inline: auto;
+    border-top: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .ak-faq-item {
+    border-bottom: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  .ak-faq-item summary {
+    display: flex;
+    gap: var(--space-16);
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--touch-target);
+    padding: var(--space-20) var(--space-4);
+    list-style: none;
+    font-size: var(--type-body);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-title);
+    transition: color var(--motion-ui) var(--ease-out);
+  }
+
+  .ak-faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .ak-faq-item summary:hover {
+    color: var(--action-primary);
+  }
+
+  /* a plus that turns into a minus */
+  .ak-faq-icon {
+    position: relative;
+    flex: none;
+    width: var(--space-16);
+    height: var(--space-16);
+  }
+
+  .ak-faq-icon::before,
+  .ak-faq-icon::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: var(--stroke-control);
+    background: currentColor;
+    transform: translateY(-50%);
+    transition: transform var(--motion-ui) var(--ease-out);
+  }
+
+  .ak-faq-icon::after {
+    transform: translateY(-50%) rotate(90deg);
+  }
+
+  .ak-faq-item[open] .ak-faq-icon::after {
+    transform: translateY(-50%) rotate(0deg);
+  }
+
+  .ak-faq-a {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-12);
+    max-width: var(--layout-measure);
+    padding: 0 var(--space-4) var(--space-24);
+    color: var(--text-muted);
+    font-size: var(--type-small);
+    line-height: var(--leading-read);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ak-faq-item summary,
+    .ak-faq-icon::before,
+    .ak-faq-icon::after {
+      transition: none;
+    }
+  }
+</style>

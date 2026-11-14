@@ -1,26 +1,21 @@
 /*
- * /agent-kit's scroll story (AK-4). Plain DOM, no animation library; CSS does the motion.
+ * /agent-kit's studio run (AK-4, simplified in AK-9). Plain DOM, no animation library; CSS does
+ * the motion. There is no scroll listener: two IntersectionObservers do all the watching.
  *
- * 1. The driver. Chapter tops are measured once (and again on ResizeObserver / resize), never per
- *    frame: a scroll only schedules one rAF, which reads scrollY and compares it with the cached
- *    tops. It writes data-ch on .ak (the current stop, with hysteresis so a boundary can't flicker),
- *    aria-current="step" on every rail link for that stop, and data-in on each chapter once it has
- *    scrolled in (data-seen on .ak is the furthest one). Writes happen only when a value changes.
- *
- * 2. The studio moment: one ticket, lead → worker → evaluator → shipper.
+ * 1. The studio moment: one ticket, lead → worker → evaluator → shipper.
  *      init ──(Run ticket, or ≥50% of the board in view while untouched)──▶ playing ──▶ end
- *      init / playing ──(scrolled past, Pause motion, the bug switch mid-run)──▶ done (lands at
- *      the end state at once, no burst)
- *    Run ticket replays from end or done. With reduced motion the board keeps the AK-3 still until
- *    Run ticket, which lands the end state at once; with Pause motion on, the moment sits at its end.
- *    Each step is announced in the polite log ("Evaluator: sent back — TypeError on /list"), and
- *    the bug switch's outcome region (#studio-outcome) is rewritten to the one current sentence.
+ *      init / playing ──(scrolled or jumped past, Pause motion, the bug switch mid-run)──▶ done
+ *      (lands at the end state at once, no burst)
+ *    Run ticket replays from end or done. With reduced motion the board keeps the static still
+ *    until Run ticket, which lands the end state at once; with Pause motion on, the moment sits at
+ *    its end. Each step is announced in the polite log ("Evaluator: sent back. TypeError on
+ *    /list"), and the bug switch's outcome region (#studio-outcome) is rewritten to the one
+ *    current sentence.
  *
- * 3. Pause motion: aria-pressed, saved in localStorage "ak-motion", applied before first paint by
- *    the inline script in index.astro (html[data-motion="paused"]). It pauses every loop (CSS),
- *    shows every chapter, and lands the moment at its end.
+ * 2. Pause motion: aria-pressed, saved in localStorage "ak-motion", applied before first paint by
+ *    the inline script in index.astro (html[data-motion="paused"]). It pauses every loop (CSS)
+ *    and lands the moment at its end.
  */
-import { stops } from "./stops";
 
 type Lane = "lead" | "worker" | "eval" | "ship";
 type At = "here" | "past" | undefined;
@@ -32,7 +27,7 @@ interface Step {
   /** round 2: the worker's fix and the evaluator's second round */
   round2?: boolean;
   returned?: boolean;
-  stamp?: boolean;
+  verdict?: boolean;
   say: string;
 }
 
@@ -43,15 +38,15 @@ const RUNS: Record<"bug" | "clean", Step[]> = {
   bug: [
     lead,
     worker,
-    { lanes: "pph.", dir: "on", eval: "fail", stamp: true, say: "Evaluator: sent back. TypeError on /list" },
+    { lanes: "pph.", dir: "on", eval: "fail", verdict: true, say: "Evaluator: sent back. TypeError on /list" },
     { lanes: "php.", dir: "back", eval: "fail", returned: true, round2: true, say: "Worker: PANTRY-4 is back, fix pushed for round 2" },
-    { lanes: "pph.", dir: "on", eval: "pass", returned: true, round2: true, stamp: true, say: "Evaluator: pass, round 2 of 3" },
+    { lanes: "pph.", dir: "on", eval: "pass", returned: true, round2: true, verdict: true, say: "Evaluator: pass, round 2 of 3" },
     { lanes: "ppph", dir: "on", eval: "pass", returned: true, round2: true, say: "Shipper: PANTRY-4 is live" },
   ],
   clean: [
     { ...lead, eval: "pass" },
     { ...worker, eval: "pass" },
-    { lanes: "pph.", dir: "on", eval: "pass", stamp: true, say: "Evaluator: pass, all 3 criteria" },
+    { lanes: "pph.", dir: "on", eval: "pass", verdict: true, say: "Evaluator: pass, all 3 criteria" },
     { lanes: "ppph", dir: "on", eval: "pass", say: "Shipper: PANTRY-4 is live" },
   ],
 };
@@ -65,8 +60,6 @@ const NOTE = {
   end: "Showing the end of the run.",
 };
 const MOTION_KEY = "ak-motion";
-/** how far past a boundary (px) the reading line must go before the current chapter changes */
-const HYSTERESIS = 48;
 
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 let teardown: (() => void) | null = null;
@@ -83,8 +76,6 @@ function isPaused() {
 }
 
 function init() {
-  const ak = document.querySelector<HTMLElement>(".ak");
-  if (!ak) return;
   const cleanups: Array<() => void> = [];
   const listen = (t: EventTarget, type: string, fn: EventListener, opts?: AddEventListenerOptions) => {
     t.addEventListener(type, fn, opts);
@@ -96,79 +87,8 @@ function init() {
     if (localStorage.getItem(MOTION_KEY) === "paused") document.documentElement.dataset.motion = "paused";
   } catch {}
 
-  /* ---------- 1. the driver ---------- */
-  const sections = stops.map((s) => document.getElementById(s.id));
-  const links = stops.map((s) => Array.from(document.querySelectorAll<HTMLAnchorElement>(`[data-stop-link="${s.id}"]`)));
-  const rail = document.querySelector<HTMLElement>("[data-story-rail]");
-  const studioAt = stops.findIndex((s) => s.id === "studio");
-  let skipMoment: (() => void) | null = null;
-  let tops: number[] = [];
-  let vh = innerHeight;
-  let cur = -1; // stop index, -1 = hero
-  let seen = -1;
-  let ticking = false;
-
-  function setCh(i: number) {
-    if (i === cur) return;
-    links[cur]?.forEach((a) => a.removeAttribute("aria-current"));
-    links[i]?.forEach((a) => a.setAttribute("aria-current", "step"));
-    cur = i;
-    ak!.dataset.ch = String(i + 1);
-    // jumped past the studio (a rail link, Home/End): the IntersectionObserver never saw it, so settle it
-    if (i > studioAt) skipMoment?.();
-  }
-
-  function update() {
-    ticking = false;
-    const y = scrollY;
-    const line = y + vh * 0.4;
-    let i = -1;
-    for (let k = 0; k < tops.length; k++) if (tops[k] <= line) i = k;
-    if (i !== cur) {
-      // forward as soon as the reading line crosses the next top; back only once it is
-      // HYSTERESIS above the current chapter's top, so a boundary never flickers
-      const backEdge = (tops[cur] ?? 0) - HYSTERESIS;
-      if (cur === -2 || i > cur || line <= backEdge || cur - i > 1) setCh(i);
-    }
-    const reveal = y + vh * 0.85;
-    while (seen + 1 < tops.length && tops[seen + 1] <= reveal) {
-      seen++;
-      sections[seen]?.setAttribute("data-in", "");
-      ak!.dataset.seen = String(seen + 1);
-    }
-  }
-
-  function schedule() {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(update);
-  }
-
-  function measure() {
-    vh = innerHeight;
-    const y = scrollY;
-    tops = sections.map((s) => (s ? s.getBoundingClientRect().top + y : Infinity));
-    schedule();
-  }
-
-  ak.dataset.story = "";
-  if (rail) rail.hidden = false;
-  cur = -2; // first update sets data-ch without hysteresis
-  measure();
-  listen(window, "scroll", schedule, { passive: true });
-  listen(window, "resize", measure);
-  const ro = new ResizeObserver(measure);
-  ro.observe(ak);
-  cleanups.push(() => ro.disconnect());
-
-  /* ---------- 2. the studio moment ---------- */
   const moment = document.querySelector<HTMLElement>("[data-studio-moment]");
-  if (moment) {
-    const m = initMoment(moment, listen);
-    skipMoment = m.skip;
-    cleanups.push(m.dispose);
-    if (cur > studioAt) m.skip();
-  }
+  if (moment) cleanups.push(initMoment(moment, listen).dispose);
 
   teardown = () => {
     cleanups.forEach((fn) => fn());
@@ -189,9 +109,9 @@ function initMoment(moment: HTMLElement, listen: (t: EventTarget, type: string, 
   // durations from the showcase tokens, read once
   const css = getComputedStyle(moment);
   const travel = ms(css.getPropertyValue("--motion-showcase-travel"), 700);
-  const stamp = ms(css.getPropertyValue("--motion-showcase-stamp"), 300);
-  const beat = travel + stamp; // a step: the ticket arrives, then a beat to read it
-  const stampBeat = beat + stamp; // a verdict: the stamp locks in after the ticket lands, then holds
+  const verdict = ms(css.getPropertyValue("--motion-showcase-verdict"), 300);
+  const beat = travel + verdict; // a step: the ticket arrives, then a beat to read it
+  const verdictBeat = beat + verdict; // a verdict: the badge fades in after the ticket lands, then holds
 
   let state: "still" | "init" | "playing" | "end" | "done" = "still";
   let timer = 0;
@@ -283,7 +203,7 @@ function initMoment(moment: HTMLElement, listen: (t: EventTarget, type: string, 
       render(step, run, false);
       say(step.say);
       i++;
-      if (i < steps.length) timer = window.setTimeout(next, step.stamp ? stampBeat : beat);
+      if (i < steps.length) timer = window.setTimeout(next, step.verdict ? verdictBeat : beat);
       else
         timer = window.setTimeout(() => {
           state = "end";
@@ -326,14 +246,16 @@ function initMoment(moment: HTMLElement, listen: (t: EventTarget, type: string, 
       if (paused && (state === "playing" || state === "init")) land(false);
     });
 
-  // visitor can, else it plays itself once ≥50% of the board is in view; scrolled past → lands
+  // it plays itself once ≥50% of the board is in view; scrolled past while untouched, or left
+  // mid-run, it lands at the end
+  let boardShown = false;
   const io = new IntersectionObserver(
     ([entry]) => {
       if (!entry) return;
       const root = entry.rootBounds?.height || innerHeight;
       const shown = Math.max(entry.intersectionRatio, entry.intersectionRect.height / root);
+      boardShown = entry.isIntersecting;
       if (state === "init" && shown >= 0.5) play();
-      // skipped (scrolled past while untouched) or left mid-run: settle finished
       else if (state === "init" && !entry.isIntersecting && entry.boundingClientRect.top < 0) land(false);
       else if (state === "playing" && !entry.isIntersecting) land(false);
     },
@@ -341,13 +263,24 @@ function initMoment(moment: HTMLElement, listen: (t: EventTarget, type: string, 
   );
   if (board) io.observe(board);
 
+  // jumped straight past (a link to Setup, Home/End): the board never crossed a threshold, so the
+  // sections after the studio settle it instead
+  const after = new IntersectionObserver((entries) => {
+    // only once the board is wholly above the viewport (a section just below it can show first)
+    if (state === "init" && !boardShown && entries.some((e) => e.isIntersecting) && (board?.getBoundingClientRect().bottom ?? 0) < 0) land(false);
+  });
+  const studio = moment.closest("section");
+  let next = studio?.nextElementSibling;
+  while (next) {
+    after.observe(next);
+    next = next.nextElementSibling;
+  }
+
   return {
-    skip: () => {
-      if (state === "init") land(false);
-    },
     dispose: () => {
       window.clearTimeout(timer);
       io.disconnect();
+      after.disconnect();
     },
   };
 }

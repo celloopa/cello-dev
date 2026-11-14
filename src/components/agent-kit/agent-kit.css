@@ -1,13 +1,10 @@
 /*
-  /agent-kit, direction C "Job tickets" (docs/agent-kit/concepts/c-job-tickets.html): paper stubs on
-  an earth rail. Roles only. The stub roles (--bg-stub, --*-on-stub) and --status-returned* are the
-  section's own (AK-2, tokens.json "Agent kit"). Every class is prefixed ak- because this file is
-  global (imported by src/pages/agent-kit/index.astro).
+  /agent-kit (AK-9): a plain tool page in the site's system. Centered hero, eyebrowed sections,
+  square panels on --bg-raised with muted rules. Roles only; the section's own tokens (tokens.json
+  "Agent kit") are --status-returned for the SENT BACK badge and the showcase motion for the
+  studio run. Every class is prefixed ak- because this file is global (imported by
+  src/pages/agent-kit/index.astro).
 */
-
-.ak {
-  --ak-hook: var(--space-24);
-}
 
 /* The site's global "p, span" sizing (Layout) would beat inheritance here; class rules still win. */
 .ak :where(p, span) {
@@ -18,6 +15,9 @@
 
 .ak :where(h1, h2, h3, h4) {
   margin: 0;
+  color: var(--text-primary);
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .ak-wrap {
@@ -25,20 +25,6 @@
   max-width: var(--layout-container);
   margin-inline: auto;
   padding-inline: var(--layout-gutter);
-}
-
-.ak-eyebrow {
-  display: block;
-  color: var(--text-accent);
-  font-size: var(--type-label);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-ui);
-  letter-spacing: var(--track-wide);
-  text-transform: uppercase;
-}
-
-.ak-muted {
-  color: var(--text-muted);
 }
 
 .ak-sr {
@@ -50,200 +36,103 @@
   white-space: nowrap;
 }
 
-/* ---------- [Cello's words]: an opinion line still to be written, shown as an open slot ---------- */
-.ak-slot {
-  display: inline-block;
-  padding: var(--space-4) var(--space-8);
-  border: var(--stroke-control) dashed var(--border-strong);
-  color: var(--text-muted);
-  font-size: var(--type-small);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--track-caps);
-  line-height: var(--leading-ui);
-}
-
-/* ---------- the stub: an opaque paper plate in both themes ---------- */
-.ak-stub {
-  /* a stub is paper, so the roles inside it are the on-stub ones, whatever the theme */
-  --text-primary: var(--text-on-stub);
-  --text-muted: var(--text-on-stub-muted);
-  --text-inverse: var(--text-on-stub-action);
-  --text-accent: var(--action-on-stub);
-  --action-primary: var(--action-on-stub);
-  --focus-ring: var(--action-on-stub);
-  --border-strong: var(--text-on-stub);
-  --border-muted: var(--border-on-stub-muted);
-  --bg-plate: var(--bg-stub);
-  position: relative;
-  border: var(--stroke-frame) solid var(--text-on-stub);
-  background: var(--bg-stub);
-  color: var(--text-on-stub);
-}
-
-/* the site's global heading colors resolve at :root (legacy aliases), so headings on a stub take its ink */
-.ak-stub :where(h1, h2, h3, h4) {
-  color: inherit;
-}
-
-/* the punched hole a hanging stub hangs from */
-.ak-stub--hole::before {
-  content: "";
-  position: absolute;
-  top: var(--space-12);
-  left: 50%;
-  width: var(--space-12);
-  height: var(--space-12);
-  border-radius: var(--radius-circle);
-  background: var(--bg-canvas);
-  box-shadow: inset 0 0 0 var(--stroke-control) var(--text-on-stub);
-  transform: translateX(-50%);
-}
-
-.ak-stub--trace {
-  border-style: dashed;
-}
-
-.ak-perf {
-  margin: 0;
-  border: 0;
-  border-top: var(--stroke-control) dashed var(--text-on-stub);
-}
-
-/* the rail: a thick earth bar the stubs hang from */
-.ak-rail {
-  height: var(--space-12);
-  background: var(--accent-ground);
-}
-
-/* a hook: the bar from the rail down to a stub */
-.ak-hooked {
-  position: relative;
-  padding-top: var(--ak-hook);
-}
-
-.ak-hooked::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: var(--stroke-bar);
-  height: var(--ak-hook);
-  background: var(--text-primary);
-  transform: translateX(-50%);
-}
-
-/* the stamp: a judgement that always carries its word */
-.ak-stamp {
-  --ak-stamp-rot: -8deg;
-  position: absolute;
-  right: var(--space-12);
-  bottom: var(--space-12);
-  padding: var(--space-4) var(--space-12);
-  border: var(--stroke-bar) solid currentColor;
-  background: var(--bg-stub);
-  font-size: var(--type-ui);
-  font-weight: var(--weight-black);
-  line-height: var(--leading-ui);
-  letter-spacing: var(--track-wide);
-  text-transform: uppercase;
-  white-space: nowrap;
-  transform: rotate(var(--ak-stamp-rot));
-}
-
-.ak-stamp--back {
-  color: var(--status-returned-on-stub);
-}
-
-.ak-stamp--pass {
-  --ak-stamp-rot: 6deg;
-  color: var(--text-on-stub);
-}
-
-/* ---------- chapters ---------- */
-.ak-chapter {
-  padding-block: var(--space-96) var(--space-32);
+/* ---------- sections ---------- */
+.ak-section {
+  padding-block: var(--space-96) 0;
   scroll-margin-top: var(--space-64);
 }
 
-.ak-chapter-head {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--space-32);
-  align-items: end;
+.ak-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-16);
+  max-width: 44rem;
+  margin-inline: auto;
+  text-align: center;
 }
 
-.ak-chapter-title {
-  margin-top: var(--space-12);
-  color: var(--text-primary);
+.ak-title {
   font-family: var(--font-title);
   font-size: var(--type-section-title);
   font-weight: var(--weight-extrabold);
   line-height: var(--leading-tight);
   letter-spacing: var(--track-tight);
-  text-transform: uppercase;
+  text-align: center;
   text-wrap: balance;
 }
 
-.ak-chapter-intro {
+.ak-intro {
+  text-align: center;
   max-width: var(--layout-measure-narrow);
   color: var(--text-muted);
   font-size: var(--type-body);
   line-height: var(--leading-read);
+  text-wrap: pretty;
 }
 
-.ak-chapter-intro .ak-slot {
-  margin-top: var(--space-8);
+.ak-body {
+  margin-top: var(--space-48);
+}
+
+/* on the raised surface, small accent text drops under 4.5:1 in Day (signal-700 on paper plus
+   the raised tint), so labels inside a panel take the text color; green stays on the canvas */
+.ak-panel,
+.ak-step {
+  --text-accent: var(--text-primary);
+}
+
+/* a square panel on the raised surface */
+.ak-panel {
+  border: var(--stroke-rule) solid var(--border-muted);
+  background: var(--bg-raised);
+}
+
+/* small uppercase meta (needs, time, ids) */
+.ak-meta {
+  color: var(--text-muted);
+  font-size: var(--type-label);
+  letter-spacing: var(--track-caps);
+  line-height: var(--leading-ui);
+  text-transform: uppercase;
+}
+
+/* a text badge: status is always a word; color only adds to it */
+.ak-badge {
+  display: inline-block;
+  padding: var(--space-4) var(--space-8);
+  border: var(--stroke-control) solid currentColor;
+  color: var(--text-primary);
+  font-size: var(--type-label);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--track-wide);
+  line-height: var(--leading-ui);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ak-badge--back {
+  color: var(--status-returned);
+}
+
+.ak-badge--start {
+  color: var(--text-accent);
 }
 
 @media (max-width: 768px) {
-  .ak-chapter {
-    padding-block: var(--space-64) var(--space-16);
+  .ak-section {
+    padding-block: var(--space-64) 0;
   }
 
-  .ak-chapter-head {
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-16);
+  .ak-body {
+    margin-top: var(--space-32);
   }
-}
-
-/* ---------- the scroll story (AK-4, story.ts) ----------
-  story.ts sets data-story on .ak, data-ch (the current stop, 1-based; 0 in the hero), data-seen
-  (the furthest stop reached) and data-in on each chapter once it has scrolled in. None of these
-  exist without script, so nothing here hides anything on the AK-3 page. */
-
-/* a chapter's art drops onto its hooks as the chapter scrolls in (--motion-showcase-reveal,
-   --motion-stagger); the text
-   never waits. Not the studio (its run is its own moment) and not the work orders (they are text). */
-@media (prefers-reduced-motion: no-preference) {
-  html:not([data-motion="paused"]) .ak[data-story] .ak-chapter:not(#studio, #setup) :is(.ak-hooked > .ak-stub, .ak-sheet, .ak-annotation) {
-    opacity: 0;
-  }
-
-  html:not([data-motion="paused"]) .ak[data-story] .ak-chapter[data-in]:not(#studio, #setup) :is(.ak-hooked > .ak-stub, .ak-sheet, .ak-annotation) {
-    animation: ak-assemble var(--motion-showcase-reveal) var(--ease-out) calc(var(--ak-i, 0) * var(--motion-stagger)) both;
-  }
-}
-
-.ak :is(li, .ak-sheet):nth-child(2) {
-  --ak-i: 1;
-}
-
-.ak :is(li, .ak-sheet):nth-child(3) {
-  --ak-i: 2;
-}
-
-.ak :is(li, .ak-sheet):nth-child(4) {
-  --ak-i: 3;
-}
-
-.ak :is(li, .ak-sheet):nth-child(n + 5) {
-  --ak-i: 4;
 }
 
 /* Pause motion: like the reduced-motion contract (animations.css), every animation finishes at
    once and nothing repeats, so entrances land and loops stop. Loops whose last frame is "gone" (the
    logo's assemble-and-break, the paper grain's drift) are switched off instead, showing their
-   resting state. The ticket run and the chapter reveals check data-motion themselves. */
+   resting state. The ticket run checks data-motion itself (story.ts). */
 html[data-motion="paused"] *,
 html[data-motion="paused"] *::before,
 html[data-motion="paused"] *::after {
