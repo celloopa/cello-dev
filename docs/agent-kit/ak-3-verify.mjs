@@ -37,9 +37,21 @@ for (const [w, h] of [[390, 844], [1440, 900]]) {
       return { prim, link: h.querySelector(".arrow-link")?.getAttribute("href"), align: getComputedStyle(h.querySelector("h1")).textAlign };
     });
     ok(`${tag} hero: one primary action to #setup, a link to #studio, centered`, hero.prim.length === 1 && hero.prim[0] === "#setup" && hero.link === "#studio" && hero.align === "center", JSON.stringify(hero));
-    // AK-9: the page's sections in order, each with an accent eyebrow
-    const secs = await page.$$eval(".ak > section", (els) => els.map((e) => ({ id: e.id, eyebrow: !!e.querySelector(".eyebrow--accent") })));
-    ok(`${tag} sections in order, each eyebrowed`, JSON.stringify(secs.map((s) => s.id)) === JSON.stringify(["top", "how", "studio", "proof", "setup", "costs", "lessons", "faq", "start"]) && secs.every((s) => s.eyebrow), JSON.stringify(secs));
+    // AK-10: the page's sections in order, each with its heading; only the hero, Proof and Lessons
+    // keep an accent eyebrow
+    const secs = await page.$$eval(".ak > section", (els) => els.map((e) => ({ id: e.id, eyebrow: e.querySelector(".eyebrow--accent")?.textContent.trim() ?? null, h: e.querySelector("h1, h2").textContent.replace(/\s+/g, " ").trim() })));
+    const want = [
+      ["top", "Agent Studio Kit · by Cello", "Run your AI agents like a small software studio"],
+      ["how", null, "Each prompt interviews you before it builds"],
+      ["studio", null, "The evaluator never sees how the code was written"],
+      ["proof", "Ghosted, October 2026", "70 production releases in four days"],
+      ["setup", null, "Read the whole prompt before you paste it"],
+      ["costs", null, "Claude is the one bill you need. Most of the rest runs on your computer."],
+      ["lessons", "Lessons", "Where agents slip, and the check for each"],
+      ["faq", null, "FAQ"],
+      ["start", null, "Set up the second brain first"],
+    ];
+    ok(`${tag} sections in order with their headings, eyebrows only on hero, Proof and Lessons`, JSON.stringify(secs.map((s) => [s.id, s.eyebrow, s.h])) === JSON.stringify(want), JSON.stringify(secs));
     // AK-9: no placeholder text
     const text = await page.evaluate(() => document.body.innerText + document.documentElement.outerHTML);
     ok(`${tag} no placeholder text`, !/\[Cello|\[Story|\[verify\]|CelloWords|ak-slot/.test(text));
