@@ -9,12 +9,12 @@ import CelloWords from "./CelloWords.astro";
 
 type Mark = "yes" | "optional" | "later" | null;
 const rows: { item: string; note: string; pay: Mark; local: Mark; skip: Mark }[] = [
-  { item: "Claude plan", note: "The one worth paying for. Parallel workers use a lot, so a higher tier keeps the pipeline from stalling.", pay: "yes", local: null, skip: null },
-  { item: "Local models", note: "Private chores: summaries, transcription, AI features inside your apps. Not a replacement for Claude as the coder.", pay: null, local: "yes", skip: null },
+  { item: "Claude plan", note: "The one worth paying for. Parallel workers use a lot of it, so a higher tier keeps the pipeline from stalling.", pay: "yes", local: null, skip: null },
+  { item: "Local models", note: "Good for private chores: summaries, transcription and AI features inside your apps. Claude stays the coder.", pay: null, local: "yes", skip: null },
   { item: "Images", note: "ComfyUI runs free on a decent GPU. A ChatGPT plan helps with text in images and adds Codex as a second coder.", pay: "optional", local: "yes", skip: null },
-  { item: "Firecrawl, Mobbin", note: "Skip at first. Built-in web search and screenshots of apps you like cover personal projects.", pay: null, local: null, skip: "yes" },
-  { item: "Hosting", note: "Your own computer or home server is free. Rent a small server only when apps must run while yours is off.", pay: "later", local: "yes", skip: null },
-  { item: "App stores", note: "Not needed. Web apps install to phone home screens.", pay: null, local: null, skip: "yes" },
+  { item: "Firecrawl, Mobbin", note: "Skip them at first. Built-in web search and screenshots of apps you like are enough for personal projects.", pay: null, local: null, skip: "yes" },
+  { item: "Hosting", note: "Your own computer or home server costs nothing. Rent a small server only when apps must run while yours is off.", pay: "later", local: "yes", skip: null },
+  { item: "App stores", note: "Skip them. Web apps install to phone home screens.", pay: null, local: null, skip: "yes" },
 ];
 const cols = ["pay", "local", "skip"] as const;
 ---

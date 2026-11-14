@@ -43,15 +43,15 @@ const RUNS: Record<"bug" | "clean", Step[]> = {
   bug: [
     lead,
     worker,
-    { lanes: "pph.", dir: "on", eval: "fail", stamp: true, say: "Evaluator: sent back — TypeError on /list" },
+    { lanes: "pph.", dir: "on", eval: "fail", stamp: true, say: "Evaluator: sent back. TypeError on /list" },
     { lanes: "php.", dir: "back", eval: "fail", returned: true, round2: true, say: "Worker: PANTRY-4 is back, fix pushed for round 2" },
-    { lanes: "pph.", dir: "on", eval: "pass", returned: true, round2: true, stamp: true, say: "Evaluator: pass — round 2 of 3" },
+    { lanes: "pph.", dir: "on", eval: "pass", returned: true, round2: true, stamp: true, say: "Evaluator: pass, round 2 of 3" },
     { lanes: "ppph", dir: "on", eval: "pass", returned: true, round2: true, say: "Shipper: PANTRY-4 is live" },
   ],
   clean: [
     { ...lead, eval: "pass" },
     { ...worker, eval: "pass" },
-    { lanes: "pph.", dir: "on", eval: "pass", stamp: true, say: "Evaluator: pass — all 3 criteria" },
+    { lanes: "pph.", dir: "on", eval: "pass", stamp: true, say: "Evaluator: pass, all 3 criteria" },
     { lanes: "ppph", dir: "on", eval: "pass", say: "Shipper: PANTRY-4 is live" },
   ],
 };

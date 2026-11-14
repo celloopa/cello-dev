@@ -23,15 +23,15 @@ const STOPS = ["brain", "notes", "studio", "proof", "setup"];
 const BUG_RUN = [
   "Lead: PANTRY-4 planned, 3 testable criteria",
   "Worker: built on branch pantry-4, test added",
-  "Evaluator: sent back — TypeError on /list",
+  "Evaluator: sent back. TypeError on /list",
   "Worker: PANTRY-4 is back, fix pushed for round 2",
-  "Evaluator: pass — round 2 of 3",
+  "Evaluator: pass, round 2 of 3",
   "Shipper: PANTRY-4 is live",
 ];
 const CLEAN_RUN = [
   "Lead: PANTRY-4 planned, 3 testable criteria",
   "Worker: built on branch pantry-4, test added",
-  "Evaluator: pass — all 3 criteria",
+  "Evaluator: pass, all 3 criteria",
   "Shipper: PANTRY-4 is live",
 ];
 

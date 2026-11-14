@@ -109,7 +109,7 @@ for (const [w, h] of [[390, 844], [1440, 900]]) {
       const status = await art.locator('[role="status"]').textContent();
       const sel = await page.evaluate(() => String(window.getSelection()));
       const src = fs.readFileSync(path.join(root, "src/content/agent-kit/prompts/1-second-brain.md"), "utf8");
-      ok("clipboard failure selects text and announces", status === "Selected — press Ctrl+C" && sel.trim() === src.trim(), `status=${status} sel=${sel.length}/${src.length}`);
+      ok("clipboard failure selects text and announces", status === "Selected. Press Ctrl+C (⌘C on a Mac) to copy." && sel.trim() === src.trim(), `status=${status} sel=${sel.length}/${src.length}`);
     }
     ok(`${tag} console errors = 0`, errors.length === 0, errors.join(" | "));
     await ctx.close();

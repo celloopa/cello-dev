@@ -6,7 +6,7 @@
  * Copy writes the prompt's exact text (the <pre>'s text, which is the source file) to the
  * clipboard, says "Copied" in the order's polite live region and on the button, and resets after
  * about 2 s. If the clipboard refuses, it opens and selects the text instead and says
- * "Selected — press Ctrl+C".
+ * "Selected. Press Ctrl+C (⌘C on a Mac) to copy.".
  */
 ---
 
@@ -56,7 +56,7 @@
       const selection = window.getSelection();
       selection?.removeAllRanges();
       selection?.addRange(range);
-      announce(btn, "Selected — press Ctrl+C");
+      announce(btn, "Selected. Press Ctrl+C (⌘C on a Mac) to copy.");
     }
   }
 

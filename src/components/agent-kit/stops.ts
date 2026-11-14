@@ -20,7 +20,7 @@ export interface Stop {
 export const stops: Stop[] = [
   { id: "brain", no: "01", name: "Brain", note: "Plain Markdown", eyebrow: "The brain" },
   { id: "notes", no: "02", name: "Notes", note: "Every session", eyebrow: "Session notes" },
-  { id: "studio", no: "03", name: "Studio", note: "4 stations", eyebrow: "The studio" },
+  { id: "studio", no: "03", name: "Studio", note: "4 roles", eyebrow: "The studio" },
   { id: "proof", no: "04", name: "Proof", note: "2 ship stories", eyebrow: "Proof" },
   { id: "setup", no: "05", name: "Setup", note: "3 prompts", eyebrow: "Setup" },
 ];

@@ -7,17 +7,17 @@ import ChapterHead from "./ChapterHead.astro";
 import { eyebrowOf } from "./stops";
 
 const stages = [
-  { folder: "inbox/", role: "Capture", body: "Capture anything. No organizing." },
-  { folder: "projects/", role: "Working", body: "One note per project: goal, decisions, links." },
-  { folder: "output/", role: "Shipped", body: "What actually shipped." },
-  { folder: "wiki/", role: "Lasting lessons", body: "Lessons, only from finished projects." },
+  { folder: "inbox/", role: "Capture", body: "Anything, unsorted." },
+  { folder: "projects/", role: "Working", body: "One note per project: the goal, decisions and links." },
+  { folder: "output/", role: "Shipped", body: "What shipped." },
+  { folder: "wiki/", role: "Lasting lessons", body: "Lessons from finished projects only." },
 ];
 ---
 
 <section class="ak-chapter ak-wrap" id="brain" data-chapter="brain" aria-labelledby="brain-title">
-  <ChapterHead eyebrow={eyebrowOf("brain")} title="Knowledge moves forward only when work earns it" titleId="brain-title">
-    A folder of plain Markdown your agents read before working. They know your projects, decisions
-    and preferences without you explaining again.
+  <ChapterHead eyebrow={eyebrowOf("brain")} title="Notes move forward when work earns it" titleId="brain-title">
+    A folder of plain Markdown your agents read before they start. They already know your projects,
+    decisions and preferences, so you stop explaining them.
   </ChapterHead>
 
   <div class="ak-brain">
@@ -40,9 +40,9 @@ const stages = [
     <aside class="ak-rule" aria-labelledby="wiki-rule-title">
       <h3 class="ak-rule-title" id="wiki-rule-title">The wiki rule</h3>
       <p>
-        A wiki page is only ever harvested from a finished project and its outputs. Nothing goes in
-        from a raw note or a chat answer, so it grows slowly and everything in it has been tested
-        by real work.
+        A wiki page only comes from a finished project and what it shipped. Raw notes and chat
+        answers stay out, so the wiki grows slowly and every page in it has been tested by real
+        work.
       </p>
     </aside>
   </div>
