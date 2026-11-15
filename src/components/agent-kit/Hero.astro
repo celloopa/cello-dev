@@ -10,19 +10,44 @@ import Eyebrow from "@/components/ui/Eyebrow.astro";
 
 <section class="ak-hero ak-wrap" id="top" aria-labelledby="ak-h1">
   <Eyebrow tone="accent">Agent Studio Kit · by Cello</Eyebrow>
+  <!-- AK-11 A/B: a 50/50 headline per browser (local storage "ak-hero"); ?hero=a|b previews one without saving.
+       Without script, A shows. Runs before the headline paints, and again on each ClientRouter swap. -->
+  <script is:inline>
+    (() => {
+      const s = document.currentScript && document.currentScript.parentElement;
+      let v = new URLSearchParams(location.search).get("hero");
+      if (v !== "a" && v !== "b") {
+        try {
+          v = localStorage.getItem("ak-hero");
+          if (v !== "a" && v !== "b") {
+            v = Math.random() < 0.5 ? "a" : "b";
+            localStorage.setItem("ak-hero", v);
+          }
+        } catch {
+          v = Math.random() < 0.5 ? "a" : "b";
+        }
+      }
+      if (s) s.dataset.hero = v;
+    })();
+  </script>
   <h1 class="ak-h1" id="ak-h1">
-    <span>Hand off a ticket, go get pizza,</span>
-    <span>come back to a checked build</span>
+    <span class="ak-h1-a">
+      <span>Hand off a ticket, go get pizza,</span>
+      <span>come back to a checked build</span>
+    </span>
+    <span class="ak-h1-b">
+      <span>A full software team in your hand,</span>
+      <span>and nothing ships until you say so</span>
+    </span>
   </h1>
   <p class="ak-lede">
-    Your agents work like a small software studio: a lead plans, a worker builds, an evaluator sends
-    back what fails, and a shipper waits for your go. Three prompts set it up in Claude Code.
+    A lead plans, a worker builds, an evaluator sends back what fails, and a shipper waits for your go.
   </p>
   <div class="ak-hero-actions">
-    <Button href="#setup">Get prompt 01</Button>
-    <ArrowLink href="#studio" variant="down">Watch a ticket run</ArrowLink>
+    <Button href="#setup" data-cta="ak-hero-setup">Get prompt 01</Button>
+    <ArrowLink href="#studio" variant="down" data-cta="ak-hero-studio">Watch a ticket run</ArrowLink>
   </div>
-  <p class="ak-meta ak-hero-meta">For Claude Code · Plain Markdown · Prompt 01 takes about 30 minutes</p>
+  <p class="ak-meta ak-hero-meta">Three prompts for Claude Code · Plain Markdown</p>
 </section>
 
 <style>
@@ -47,6 +72,15 @@ import Eyebrow from "@/components/ui/Eyebrow.astro";
   }
 
   .ak-h1 span {
+    display: block;
+  }
+
+  .ak-h1 .ak-h1-b,
+  .ak-hero[data-hero="b"] .ak-h1-a {
+    display: none;
+  }
+
+  .ak-hero[data-hero="b"] .ak-h1-b {
     display: block;
   }
 
@@ -76,11 +110,17 @@ import Eyebrow from "@/components/ui/Eyebrow.astro";
 
   @media (max-width: 768px) {
     .ak-hero {
-      padding-block: var(--space-64) var(--space-16);
+      padding-block: var(--space-40) var(--space-8);
     }
 
-    .ak-h1 span {
+    .ak-h1 span,
+    .ak-hero[data-hero="b"] .ak-h1-b {
       display: inline;
+    }
+
+    .ak-h1 .ak-h1-b,
+    .ak-hero[data-hero="b"] .ak-h1-a {
+      display: none;
     }
   }
 </style>

@@ -50,10 +50,10 @@ const meta = promptMeta(prompt.file);
     </div>
 
     <div class="ak-prompt-actions">
-      <Button data-copy-prompt={`${base}-text`} data-status={`${base}-status`} aria-describedby={`${base}-title`}>
+      <Button data-cta={`ak-copy-${prompt.no}`} data-copy-prompt={`${base}-text`} data-status={`${base}-status`} aria-describedby={`${base}-title`}>
         <span data-copy-label>Copy prompt</span>
       </Button>
-      <Button variant="secondary" href={`/agent-kit/prompts/${prompt.file}`} download={prompt.file} aria-describedby={`${base}-title`}>
+      <Button variant="secondary" data-cta={`ak-download-${prompt.no}`} href={`/agent-kit/prompts/${prompt.file}`} download={prompt.file} aria-describedby={`${base}-title`}>
         Download .md
       </Button>
       <p class="ak-sr" role="status" id={`${base}-status`}></p>

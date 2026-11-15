@@ -68,6 +68,12 @@ function onClick(e: MouseEvent) {
   track("cta_click", { cta, path: location.pathname.slice(0, 200) });
 }
 
+/** Send cta_click for a code without a click: /agent-kit counts which hero headline was shown (AK-11 A/B). */
+export function trackCta(cta: string) {
+  if (import.meta.env.DEV || !/^[a-z0-9][a-z0-9_-]{0,63}$/.test(cta)) return;
+  track("cta_click", { cta, path: location.pathname.slice(0, 200) });
+}
+
 function start() {
   if (import.meta.env.DEV) return;
   const w = window as { __celloAnalytics?: boolean };
