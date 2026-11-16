@@ -41,7 +41,7 @@ const ARTIFACTS = {
   "asheville-dispensary": ["/images/projects/ad-assets/ad-assets-thumbnail.png", null],
   ghosted: ["/images/projects/ghosted/v3/board.webp", null],
   vegavengers: ["/images/projects/veg-avengers-thumbnail.png", null],
-  daybreak: ["/images/projects/daybreak/hero.webp", null],
+  crest: ["/images/projects/daybreak/hero.webp", null],
 };
 
 async function flatten(id) {

@@ -2,5 +2,8 @@
 /projects/ad-asset-directory  /projects/asheville-dispensary  301
 /projects/ascendant-traders   /projects                       301
 
+# Daybreak was renamed Crest on 2026-10-29; the case study moved with it (2026-11-16)
+/projects/daybreak            /projects/crest                 301
+
 # Booking link for intro calls (2026-11-16). 302 so the target can change later.
 /book  https://cal.com/cellodesign/intro  302

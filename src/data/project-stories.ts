@@ -18,10 +18,10 @@ export const projectStories: Record<string, { problem: string; decision: string;
     outcome: "Two non-technical editors run the live CMS. AI proposes updates; an editor decides what gets published.",
     mark: "/images/project-marks/vegavengers.svg",
   },
-  daybreak: {
+  crest: {
     problem: "My planner made me commit the day, and let unfinished work pile up as guilt.",
     decision: "Nothing is late, it just needs a place. The planner and the AI only propose.",
     outcome: "Rebuilt from the ground up and in daily use on Mac and iPhone since October 15. I haven’t tested it with other people yet.",
-    mark: "/images/project-marks/daybreak.webp",
+    mark: "/images/project-marks/crest.svg",
   },
 };
