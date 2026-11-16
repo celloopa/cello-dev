@@ -23,7 +23,7 @@ if (!fs.existsSync(path.join(dist, "index.html"))) { console.error("dist/ is mis
 
 const PAGES = arg("--pages")?.split(",") ?? [
   "/", "/projects/", "/projects/ghosted/", "/projects/asheville-dispensary/", "/projects/vegavengers/",
-  "/projects/daybreak/", "/blog/", "/blog/designing-for-the-second-user/", "/resume/", "/design-system/",
+  "/projects/crest/", "/blog/", "/blog/designing-for-the-second-user/", "/resume/", "/design-system/",
   "/card/", "/404.html",
 ];
 

@@ -2,6 +2,14 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-11-16 — The planner case study is Crest
+
+- The app was renamed Crest on 2026-10-29, so the case study is now titled Crest and lives at `/projects/crest/`; `/projects/daybreak` redirects there (301 in `public/_redirects`). The history stays true: the first version was Daybreak, and the rebuild Cello switched to on October 15 became Crest two weeks later. About names Crest too.
+- "A look that follows the sun" now covers all three looks (round one rejected for dashed lines, the warm October look, flat paper and ink with one blue since October 29) and the planner mark.
+- New `hero.webp`, `look.webp` and `og.png`, composed from the planner repo's fictional fixture captures of the Crest look (2026-10-29 and 2026-11-12); `/images/card/crest.webp` regenerated from the new hero. `catch-up`, `talk-through`, `focus` and `maps` still show the October look, and the page says so in one line; no Crest captures of those screens exist yet. The image folder keeps its `daybreak` name.
+- The home rail and work list use `project-marks/crest.svg`, the planner mark, drawn in one color like the other marks. Removed `project-marks/daybreak.webp`.
+- Validation: clean `pnpm build` (20 pages, 0 errors); the case study and home checked rendered at 1440 px.
+
 ## 2026-10-27 — Daybreak case study for the rebuilt app
 
 - Rewrote the Daybreak case study around the ground-up rebuild Cello switched to on October 15: why it was rebuilt, the paper-by-day / ink-by-night look (round one rejected for dashed lines), Catch up and check-ins, AI that only proposes (a four-step flow replaces the six-step operation model), Focus, errand runs with Maps, and outcome and limits. Kept in the conversational voice and short; `engagement` stays "My product · Since July 2026".

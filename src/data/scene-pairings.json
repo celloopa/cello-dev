@@ -11,7 +11,7 @@
     "asheville-dispensary": "bald-mountain",
     "ghosted": "ecola",
     "vegavengers": "ramona",
-    "daybreak": "meadows"
+    "crest": "meadows"
   },
   "$postsDescription": "Posts rotate through these, stable per slug: a hash of the slug picks one, so a post keeps its scene when other posts are added or removed.",
   "posts": [

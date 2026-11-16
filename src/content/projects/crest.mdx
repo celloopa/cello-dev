@@ -1,5 +1,5 @@
 ---
-title: Daybreak
+title: Crest
 description: A day planner that never makes you feel behind. I rebuilt my Mac and iPhone app from the ground up, with a new look, a planner that proposes instead of nags, and AI that can only suggest.
 image: /images/projects/daybreak/hero.webp
 ogImage: /images/projects/daybreak/og.png
@@ -14,14 +14,14 @@ techStack:
 role: Product Designer / AI Systems
 engagement: My product · Since July 2026
 highlights:
-  - "Rebuilt Daybreak from the ground up after it started asking for upkeep: no morning ritual to unlock the day, nothing ever shown as late"
-  - "A new identity that follows the real sun: paper by day, ink by night, one token system shared by code and Figma"
+  - "Rebuilt my first planner, Daybreak, from the ground up after it started asking for upkeep: no morning ritual to unlock the day, nothing ever shown as late"
+  - "Named Crest since October 29, with an identity that follows the real sun: paper by day, ink at dusk, one token system shared by code and Figma"
   - "AI that only proposes. Ask and Talk through draw changes on the plan, code checks every one, and nothing moves until I keep it"
   - "Cut the context sent to the model from the whole app state (about 85k tokens) to a few hundred tokens of plan lines that code writes"
   - "Switched over on October 15 with all 70 days of my history imported. A second import run created nothing"
 summary:
   - label: Problem
-    value: "The first Daybreak worked, but it made me commit the day before I could use it, only ran while the Mac app was open, and let unfinished work pile up as yesterday's guilt."
+    value: "The first version, Daybreak, worked, but it made me commit the day before I could use it, only ran while the Mac app was open, and let unfinished work pile up as yesterday's guilt."
   - label: Role
     value: "Product designer and only user. I made every product call, one question at a time. Coding agents did most of the building from those decisions."
   - label: Key decision
@@ -40,29 +40,33 @@ import MediaFull from "@/components/media/MediaFull.astro";
 
 ## Context
 
-The first Daybreak did its job, and then it started asking for upkeep. I had to commit the day in a morning ritual before the app was any use. Nothing happened unless the Mac app was open. Unfinished work rolled into tomorrow and sat there. One block was deferred six mornings in a row.
+The first version was called Daybreak. It did its job, and then it started asking for upkeep. I had to commit the day in a morning ritual before the app was any use. Nothing happened unless the Mac app was open. Unfinished work rolled into tomorrow and sat there. One block was deferred six mornings in a row.
 
-So I rebuilt it. Same goal, a calm plan for the day, but with new foundations: a planner that proposes and never nags, AI that can only suggest, and a look that holds up next to Apple's own apps.
+So I rebuilt it, and on October 29 the rebuild got its own name: Crest. Same goal, a calm plan for the day, but with new foundations: a planner that proposes and never nags, AI that can only suggest, and a look that holds up next to Apple's own apps.
 
 <MediaFull
   src="/images/projects/daybreak/hero.webp"
-  alt="Three iPhone screens of Daybreak: Today in the light paper look with the Now card, the Focus ring at 48 minutes left in the dark ink look, and Today in ink with two proposed changes"
-  caption="Today by day, Focus, and Today by night. All screens use sample data."
+  alt="Three iPhone screens of Crest: Today on paper with the day's habits and an Any time list, the Week view showing three days, and the same Today in ink at dusk"
+  caption="Today by day, the week, and Today at dusk. All screens use sample data."
   uncropped
 />
 
 ## A look that follows the sun
 
-Daybreak is paper by day and blueprint ink by night, and it switches at the real sunset. The sun on Today is the clock, not decoration.
+Crest is paper by day and ink at dusk, and it switches at the real sunset. On the Now card a small blue sun crosses a horizon as the block runs.
 
-The first pass matched the design system and still looked wrong. The tokens and contrast checks all passed, but the dashed lines made it read like a wireframe. Round two kept what each state means (now, proposed, done) and changed how it's drawn: light, glass and finish instead of dashes. Code is the source of truth. Figma is generated from the same tokens, and the tests fail if the two drift apart.
+The look took three tries. The first pass matched the design system and still looked wrong. The tokens and contrast checks all passed, but the dashed lines made it read like a wireframe. Round two, the one I switched to on October 15, drew each state with warm light and glass. On October 29 I dropped the glow. The canvas went flat: paper, ink, and one blue.
+
+The name and the mark came the same day. Three sheets of marks went by and none of them stuck, so I asked for a planner with the sun coming up behind it. The mark is that closed planner, with a mountain shaped like Mount Hood cut into the cover. Code is still the source of truth. Figma is generated from the same tokens, and the tests fail if the two drift apart.
 
 <MediaFull
   src="/images/projects/daybreak/look.webp"
-  alt="Three Today screens: the rejected first round in ink with dashed outlines, then the chosen design in paper and in ink"
-  caption="Round one, rejected, then the chosen design in paper and ink."
+  alt="Three Today screens of the same sample day: the October design with a warm peach sky and an orange sun, then Crest on flat paper and in ink, each with a blue sun"
+  caption="The October look, then Crest by day and at dusk, on the same sample day."
   uncropped
 />
+
+The screens further down this page were captured before October 29, so they still wear the warm look.
 
 ## Nothing is late
 
@@ -109,7 +113,7 @@ Start a block and it becomes a session. The ring counts down on the Now card and
 
 ## Errands that plan their own route
 
-Errands go into a bank. Pick a few and Daybreak makes a run: stops in order, a driving estimate from Apple Maps, and one block on the day. The estimate is marked "unverified", and one Undo takes the whole run back.
+Errands go into a bank. Pick a few and Crest makes a run: stops in order, a driving estimate from Apple Maps, and one block on the day. The estimate is marked "unverified", and one Undo takes the whole run back.
 
 <MediaFull
   src="/images/projects/daybreak/maps.webp"
@@ -120,6 +124,6 @@ Errands go into a bank. Pick a few and Daybreak makes a run: stops in order, a d
 
 ## Outcome and limits
 
-I switched to the new Daybreak on October 15. It imported my old plans, all 70 days of them, and a second run created nothing. It runs on my Mac and iPhone with private iCloud sync, and other agents can change the plan only through a bridge where each change has an Undo and deletions wait for me.
+I switched to the rebuild on October 15, two weeks before it was called Crest. It imported my old plans, all 70 days of them, and a second run created nothing. It runs on my Mac and iPhone with private iCloud sync, and other agents can change the plan only through a bridge where each change has an Undo and deletions wait for me.
 
 Every feature started as a question I answered, and there have been more than a hundred so far. Each one was checked against sample data on both devices before it shipped. It's still a one-person product. Next is testing the planner with other people before I treat my own days as the rule.

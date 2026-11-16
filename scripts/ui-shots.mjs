@@ -25,7 +25,7 @@ fs.mkdirSync(out, { recursive: true });
 
 const PAGES = arg("--pages")?.split(",") ?? [
   "/", "/projects/", "/projects/ghosted/", "/projects/asheville-dispensary/", "/projects/vegavengers/",
-  "/projects/daybreak/", "/blog/", "/blog/designing-for-the-second-user/", "/resume/", "/design-system/",
+  "/projects/crest/", "/blog/", "/blog/designing-for-the-second-user/", "/resume/", "/design-system/",
   "/card/", "/404.html",
 ];
 const WIDTHS = [[1440, 900], [390, 844]];
