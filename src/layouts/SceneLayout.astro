@@ -263,6 +263,17 @@ const current = (href: string) => {
         font: inherit;
       }
 
+      /* Titles share their words across lines, so none ends on one lonely word at phone widths
+         (screen audit 2026-11-13). */
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        text-wrap: balance;
+      }
+
       ::selection {
         background: var(--action-primary);
         color: var(--text-inverse);
@@ -335,6 +346,15 @@ const current = (href: string) => {
       .footer-utils a {
         display: block;
         color: var(--text-muted);
+      }
+
+      /* every footer link is a 44px touch target */
+      .footer-nav a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: var(--touch-target);
+        min-height: var(--touch-target);
       }
 
       .footer-utils a:hover,

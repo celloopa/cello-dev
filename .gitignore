@@ -41,3 +41,4 @@ generated/
 
 # Figma file key for scripts/figma-sync.mjs (kept out of the public repo)
 .figma.local.json
+.screen-audit/

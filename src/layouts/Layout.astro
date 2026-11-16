@@ -378,7 +378,9 @@ const SOCIAL_ICONS: SocialIcon = {
       }
 
       .footer-nav a {
-        display: block;
+        display: flex;
+        align-items: center;
+        min-height: var(--touch-target);
         position: relative;
         padding: var(--space-8) var(--space-12);
         border: 2px solid transparent;
@@ -426,8 +428,8 @@ const SOCIAL_ICONS: SocialIcon = {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 40px;
-        height: 40px;
+        width: var(--touch-target);
+        height: var(--touch-target);
         border: 2px solid var(--text-primary);
         background: var(--bg-canvas);
         color: var(--text-primary);
@@ -483,6 +485,17 @@ const SOCIAL_ICONS: SocialIcon = {
       *::before,
       *::after {
         box-sizing: border-box;
+      }
+
+      /* Titles share their words across lines, so none ends on one lonely word at phone widths
+         (screen audit 2026-11-13). */
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        text-wrap: balance;
       }
 
       /* Bold Saul Bass typography. Titles (h1, h2) set in National Park (I4). */

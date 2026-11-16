@@ -15,6 +15,7 @@
     "preview": "astro preview",
     "astro": "astro",
     "ui:shots": "node scripts/ui-shots.mjs",
+    "screen:audit": "node scripts/screen-audit.mjs",
     "motion:table": "node scripts/motion-table.mjs",
     "figma:sync": "node scripts/figma-sync.mjs",
     "sync-projects": "npx tsx scripts/sync-projects.ts",
