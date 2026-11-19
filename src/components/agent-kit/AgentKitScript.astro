@@ -11,20 +11,6 @@
 ---
 
 <script>
-  import { trackCta } from "@/lib/analytics/client";
-
-  // AK-11 A/B: suffix each /agent-kit click code with the headline shown (-a / -b) and count the view.
-  function tagVariant() {
-    const v = document.querySelector<HTMLElement>(".ak-hero")?.dataset.hero;
-    if (v !== "a" && v !== "b") return;
-    for (const el of document.querySelectorAll<HTMLElement>('[data-cta^="ak-"]')) {
-      if (!/-[ab]$/.test(el.dataset.cta ?? "")) el.dataset.cta = `${el.dataset.cta}-${v}`;
-    }
-    // count views only on the live site, so test runs on previews and localhost stay out of the split
-    if (location.hostname === "cello.design") trackCta(`ak-hero-view-${v}`);
-  }
-  document.addEventListener("astro:page-load", tagVariant);
-
   const RESET_MS = 2000;
   const timers = new WeakMap<HTMLElement, number>();
 

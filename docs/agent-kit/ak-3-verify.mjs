@@ -39,10 +39,7 @@ for (const [w, h] of [[390, 844], [1440, 900]]) {
     ok(`${tag} hero: one primary action to #setup, a link to #studio, centered`, hero.prim.length === 1 && hero.prim[0] === "#setup" && hero.link === "#studio" && hero.align === "center", JSON.stringify(hero));
     // AK-10: the page's sections in order, each with its heading; only the hero, Proof and Lessons
     // keep an accent eyebrow
-    const secs = await page.$$eval(".ak > section", (els) => els.map((e) => ({ id: e.id, eyebrow: e.querySelector(".eyebrow--accent")?.textContent.trim() ?? null, h: e.querySelector("h1, h2").innerText.replace(/\s+/g, " ").trim() })));
-    // AK-11 A/B: the hero shows one of two headlines
-    const AB = ["Hand off a ticket, go get pizza, come back to a checked build", "A full software team in your hand, and nothing ships until you say so"];
-    if (AB.includes(secs[0]?.h)) secs[0].h = AB[0];
+    const secs = await page.$$eval(".ak > section", (els) => els.map((e) => ({ id: e.id, eyebrow: e.querySelector(".eyebrow--accent")?.textContent.trim() ?? null, h: e.querySelector("h1, h2").textContent.replace(/\s+/g, " ").trim() })));
     const want = [
       ["top", "Agent Studio Kit · by Cello", "Hand off a ticket, go get pizza, come back to a checked build"],
       ["studio", null, "Failed checks go back to the worker before they reach you"],
