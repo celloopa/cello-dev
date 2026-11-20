@@ -7,7 +7,7 @@
  *
  * One container and one gap (craft-principles, Layout and width): the heading and the plates
  * share the scene frame, and the plates rearrange by the frame's width with a container query:
- * one column on a phone, two from 34rem, three from 56rem, all six in a row from 104rem, where
+ * one column on a phone (name and status only, so the strip stays short; the hook is on /now), two from 34rem, three from 56rem, all six in a row from 104rem, where
  * each plate still holds its hook in a few short lines. Each plate is opaque, so its text never
  * sits on scene art.
  */
@@ -117,6 +117,15 @@ const entries = nowEntries.map((entry) => ({
   .now-strip-hook {
     font-size: var(--type-small);
     line-height: var(--leading-read);
+    text-wrap: pretty;
+  }
+
+  /* a phone: one short row per entry, name and status (evaluator, CDEV-82: six full plates ran 1.4 screens) */
+  @container (width < 34rem) {
+    .now-strip-list { gap: var(--space-12); }
+    .now-strip-item { grid-template-rows: auto auto; gap: var(--space-4); padding: var(--space-16); }
+    .now-strip-hook { display: none; }
+    .now-strip-status { margin-top: 0; }
   }
 
   .now-strip-status {
@@ -127,6 +136,7 @@ const entries = nowEntries.map((entry) => ({
     letter-spacing: var(--track-wide);
     line-height: var(--leading-ui);
     text-transform: uppercase;
+    text-wrap: balance;
   }
 
   .now-strip-item:hover,
