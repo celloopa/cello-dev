@@ -13,10 +13,10 @@ const story = projectStories[slug];
   {ownership && <p class="ownership"><strong>My role.</strong>{" "}{ownership}</p>}
 </section>}
 <style>
-.case-brief { max-width: var(--ds-container); margin-bottom: var(--space-48); }
+.case-brief { margin-bottom: var(--space-48); }
 dl { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-32); padding-block: var(--space-24); margin: 0; border-block: 1px solid var(--border-strong); }
 dt { margin-bottom: var(--space-12); font-size: var(--type-small); text-transform: uppercase; letter-spacing: var(--track-caps); color: var(--text-accent); }
 dd { margin: 0; font-size: var(--type-ui); line-height: var(--leading-read); }
-.ownership { max-width: 80ch; margin: var(--space-24) 0 0; font-size: var(--type-small); line-height: var(--leading-read); }
+.ownership { max-width: var(--layout-measure-wide-read); margin: var(--space-24) 0 0; font-size: var(--type-small); line-height: var(--leading-read); }
 @media (width <= 700px) { dl { grid-template-columns: 1fr; gap: var(--space-24); } }
 </style>

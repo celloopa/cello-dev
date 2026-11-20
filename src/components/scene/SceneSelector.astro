@@ -89,13 +89,30 @@ const { items, preview = false, label, kind = "project" } = Astro.props;
     border-top: var(--stroke-rule) solid var(--border-muted);
   }
 
+  /* A row per story whose picture grows with the frame; from 1600px the stories stand side by
+     side as columns, so a wide screen fills its row instead of leaving a strip (CDEV-78). */
   .selector-item {
     display: grid;
-    grid-template-columns: minmax(0, 17rem) minmax(0, 1fr);
-    gap: var(--space-32);
-    align-items: start;
-    padding-block: var(--space-32);
+    grid-template-columns: minmax(0, clamp(15rem, 30%, 26rem)) minmax(0, 1fr);
+    gap: var(--space-fluid-24-48);
+    align-items: center;
+    padding-block: var(--space-fluid-24-48);
     border-bottom: var(--stroke-rule) solid var(--border-muted);
+  }
+
+  @media (width >= 1600px) {
+    .selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+      gap: 0 var(--space-48);
+    }
+
+    .selector-item {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto 1fr;
+      align-items: start;
+      gap: var(--space-24);
+    }
   }
 
   .selector-swatch {

@@ -92,18 +92,26 @@ const place = homeSection("how");
     text-transform: uppercase;
   }
 
+  /* The entries fill the frame in balanced columns: one on a phone, two from about 900px, three
+     on wide screens. Each card keeps its own height (some have pictures, some don't), read down
+     each column in order, with the same gap on every side (CDEV-78). */
   .now-list {
-    display: grid;
-    gap: var(--space-24);
-    max-width: var(--layout-measure);
+    columns: 3 26rem;
+    column-gap: var(--space-fluid-24-48);
     margin: var(--space-48) 0 0;
     padding: 0;
     list-style: none;
   }
 
   .entry {
-    padding: var(--space-24);
+    break-inside: avoid;
+    margin-bottom: var(--space-fluid-24-48);
+    padding: var(--space-fluid-24-32);
     scroll-margin-top: var(--space-96);
+  }
+
+  .entry-status {
+    margin: var(--space-16) 0 0;
   }
 
   .entry-image {
@@ -130,7 +138,6 @@ const place = homeSection("how");
   }
 
   .entry-status {
-    margin: var(--space-16) 0 0;
     font-size: var(--type-small);
     line-height: var(--leading-small);
   }

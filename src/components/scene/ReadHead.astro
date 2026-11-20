@@ -55,8 +55,9 @@ const isVideo = (src: string) => src.endsWith(".webm") || src.endsWith(".mp4");
 }
 
 <style>
+  /* The head shares the frame's left edge with the brief, media and text under it; only its
+     lines are held to a measure (CDEV-78). */
   .read-head {
-    max-width: var(--layout-measure);
     margin-bottom: var(--space-48);
     color: var(--text-on-art);
   }

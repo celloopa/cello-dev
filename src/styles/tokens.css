@@ -140,6 +140,15 @@
   --layout-measure-narrow: 46ch; /* Ledes and card copy. */
   --touch-target: 44px;
 
+  /* Fluid frame (CDEV-78, pending Cello; scene pages only. Not synced to Figma until approved, then these move into Layout and Space) */
+  --layout-frame: 110rem; /* The scene pages' frame (home, work, case studies, now, about, writing): it grows with the screen between the frame gutters up to 1760px, so containers stretch and shrink between breakpoints instead of holding one width. Very wide screens get more columns or a side panel inside it, never longer lines. /agent-kit keeps --layout-container. */
+  --layout-frame-gutter: clamp(1rem, 5vw, 5rem); /* Side padding of the scene frame: 16px on a phone, 5% of the screen between, 80px from 1600px up. */
+  --layout-measure-wide-read: 44rem; /* Upper bound for case-study text in the wide frame (704px, about 95 characters of Geist Sans at body size). Set in rem so mono and sans text beside each other share a right edge. */
+  --space-fluid-24-32: clamp(1.5rem, 2vw, 2rem); /* Padding inside a repeated card: 24px on a phone, 32px from 1600px up. */
+  --space-fluid-24-48: clamp(1.5rem, 2.5vw, 3rem); /* Gap between repeated cards or rows, and their inner gaps: 24px to 48px with the screen. */
+  --space-fluid-32-64: clamp(2rem, 4vw, 4rem); /* Space above and below a repeated slot: 32px to 64px with the screen, the same for every slot. */
+  --space-fluid-32-96: clamp(2rem, 4vw, 6rem); /* Gap between a slot's media and its copy, or the text and its side panel: 32px to 96px with the screen. */
+
   /* Shape and stroke */
   --radius-circle: 50%; /* Dots only. Everything else is square, on purpose. */
   --stroke-rule: 1px; /* Dividers. */

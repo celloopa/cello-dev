@@ -220,7 +220,8 @@ const { wide = false } = Astro.props;
     margin-inline: 0;
   }
 
-  /* Wide: the text takes the whole frame, sharing the media's left edge. */
+  /* Wide: the text starts on the media's left edge and the media take the whole frame, but lines
+     stop at the wide reading bound, so a wider screen never makes longer lines (CDEV-78). */
   .prose-wide > :global(p),
   .prose-wide > :global(ul),
   .prose-wide > :global(ol),
@@ -228,6 +229,6 @@ const { wide = false } = Astro.props;
   .prose-wide > :global(h2),
   .prose-wide > :global(h3) {
     grid-column: 1 / -1;
-    max-width: none;
+    max-width: var(--layout-measure-wide-read);
   }
 </style>

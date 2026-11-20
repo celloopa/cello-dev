@@ -109,31 +109,26 @@ const all = { href: "/projects", label: "All work" };
         )
       }
 
-      {
-        (summary || sectionLinks.length > 2) && (
-          <div class="read-open">
+      <div class="read-main" data-toc={sectionLinks.length > 2 ? "" : undefined}>
+        {sectionLinks.length > 2 && (
+          <nav class="read-toc" aria-label="On this page">
+            <Eyebrow as="span" tone="on-art" class="read-toc-label">
+              On this page
+            </Eyebrow>
+            <ul>
+              {sectionLinks.map((h) => (
+                <li>
+                  <a href={`#${h.slug}`}>{h.text}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
 
-            {sectionLinks.length > 2 && (
-              <nav class="read-toc" aria-label="On this page">
-                <Eyebrow as="span" tone="on-art" class="read-toc-label">
-                  On this page
-                </Eyebrow>
-                <ul>
-                  {sectionLinks.map((h) => (
-                    <li>
-                      <a href={`#${h.slug}`}>{h.text}</a>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            )}
-          </div>
-        )
-      }
-
-      <Prose wide>
-        <Content />
-      </Prose>
+        <Prose wide>
+          <Content />
+        </Prose>
+      </div>
 
       {summary && <details class="read-details"><summary>Project details and tools</summary><CaseMeta items={summary} /></details>}
 
@@ -157,13 +152,46 @@ const all = { href: "/projects", label: "All work" };
     gap: var(--space-16);
   }
 
-  /* ---------- the opening: summary panels and the section links ---------- */
-  .read-open {
+  /* ---------- the text and its section links ----------
+     Under 1200px the links sit above the text. From 1200px up they become a side panel that stays
+     in view beside the text, so a wider screen gets a panel, not longer lines (CDEV-78). */
+  .read-main {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .read-toc {
     margin-bottom: var(--space-48);
   }
 
-  .read-open :global(.case-meta) {
-    margin-top: 0;
+  @media (width >= 1200px) {
+    .read-main[data-toc] {
+      grid-template-columns: minmax(0, 1fr) clamp(15rem, 20vw, 22rem);
+      column-gap: var(--space-fluid-32-96);
+    }
+
+    .read-main[data-toc] > :global(.prose) {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .read-main[data-toc] .read-toc {
+      grid-column: 2;
+      grid-row: 1;
+      align-self: start;
+      position: sticky;
+      top: var(--space-96);
+      margin: 0;
+    }
+
+    .read-main[data-toc] .read-toc ul {
+      flex-direction: column;
+      flex-wrap: nowrap;
+    }
+
+    .read-main[data-toc] .read-toc a {
+      width: 100%;
+    }
   }
 
   .read-toc-label {

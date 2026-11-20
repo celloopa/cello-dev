@@ -310,7 +310,7 @@ const homeDescription =
   /* the secondary pair: smaller, side by side */
   .hero-routes a:not(:first-child) strong { font-size: var(--type-small); }
   .hero-routes a:not(:first-child) > span { font-size: var(--type-label); }
-  .work :global(.container) { max-width: var(--ds-container-wide); padding-inline: var(--layout-gutter); }
+  /* The work heading, its slots and the links under them share the one scene frame and one left edge. */
   .hero-name {
     margin: 0 0 var(--space-12);
     font-family: var(--font-title);
@@ -334,11 +334,9 @@ const homeDescription =
   }
 
   .work-list {
-    width: 100%;
-    max-width: var(--ds-container-wide);
-    box-sizing: border-box;
+    width: min(100% - 2 * var(--layout-frame-gutter), var(--layout-frame));
     margin: var(--space-32) auto 0;
-    padding-inline: var(--layout-gutter);
+    padding: 0;
     list-style: none;
   }
 
@@ -356,9 +354,8 @@ const homeDescription =
      (it covered the first letters of the work rows and Let’s Talk at 1024–1440; screen audit
      2026-11-13). The clearance is the rail's inset, its stops at their 1.15 scale and one gap. */
   @media (width >= 900px) {
-    .work, .contact { --rail-clearance: max(var(--layout-gutter), calc(var(--space-16) * 2 + var(--touch-target) * 1.15)); }
-    .work :global(.container), .work-list { padding-inline: var(--rail-clearance); }
-    .contact :global(.container) { width: min(100% - 2 * var(--rail-clearance), var(--layout-container)); }
+    .work, .contact { --rail-clearance: max(var(--layout-frame-gutter), calc(var(--space-16) * 2 + var(--touch-target) * 1.15)); }
+    .work :global(.container), .work-list, .contact :global(.container) { width: min(100% - 2 * var(--rail-clearance), var(--layout-frame)); }
   }
 
   .contact {

@@ -2,6 +2,16 @@
 
 All notable changes to this portfolio site should be documented here.
 
+## 2026-11-20 — Fluid layout on the scene pages (CDEV-78)
+
+- Scene pages (home, work, case studies, now, about, writing) share one fluid frame: it grows and shrinks with the screen between fluid gutters (16px to 80px) up to 1760px, in place of the fixed 1100px column. /agent-kit keeps `--layout-container` and is pixel-identical.
+- New tokens in a pending group, "Fluid frame (CDEV-78, pending Cello)": `--layout-frame`, `--layout-frame-gutter`, `--layout-measure-wide-read` (44rem) and four fluid spaces (`--space-fluid-24-32`, `-24-48`, `-32-64`, `-32-96`). Not synced to Figma until approved, as with the Scene and Agent kit groups; the Figma hash is unchanged.
+- Home's case-study slots are sized by their content (no 72svh minimum), with one fluid gap, one 3:2 media-to-copy ratio and one left edge shared with their heading.
+- /projects rows grow their picture with the frame; from 1600px the stories stand side by side as columns. Writing uses the same list and gets the same.
+- /now is balanced columns of cards (one, two or three by width) instead of one 68ch column.
+- Case studies: the head shares the frame's left edge; body lines stop at 44rem while media keep the frame; "On this page" becomes a sticky side panel from 1200px.
+- Validation: clean `pnpm build`; captures of /, /projects, /now and the three case studies at 390, 768, 1024, 1280, 1440, 1920 and 2560 before and after, in Brain inbox/2026-11-20-cdev78-layout/.
+
 ## 2026-10-27 — Daybreak case study for the rebuilt app
 
 - Rewrote the Daybreak case study around the ground-up rebuild Cello switched to on October 15: why it was rebuilt, the paper-by-day / ink-by-night look (round one rejected for dashed lines), Catch up and check-ins, AI that only proposes (a four-step flow replaces the six-step operation model), Focus, errand runs with Maps, and outcome and limits. Kept in the conversational voice and short; `engagement` stays "My product · Since July 2026".
