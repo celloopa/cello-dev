@@ -24,7 +24,7 @@ export const nowPage = {
   title: "What I’m building now",
   description:
     "What Cello is building now: Ghosted, the agent kit and Pocket Startup, Crest, Tabor, Plate and Second Chair, with what each one does and where it stands.",
-  lede: "Two of these you can open on your phone today: Ghosted and the agent kit. The rest I use myself while I build them, and each one says where it stands.",
+  lede: "Two of these are live today: Ghosted and the agent kit. The rest I use myself while I build them, and each one says where it stands.",
   updated: "Updated November 2026",
 } as const;
 
@@ -79,7 +79,7 @@ export const nowEntries: NowEntry[] = [
     hook: "One grocery list for the whole house",
     name: "Plate",
     body: [
-      "is an iPhone app a household shares: one week of meals, one grocery list and the week’s workouts. Paste the list from your phone’s notes and it shows what’s missing in one tap. A training planner is built and still being tried.",
+      "is an iPhone app a household shares: one week of meals, one grocery list and the week’s workouts. Paste the list from your phone’s notes and it shows what’s missing in one tap. A training planner is built and waiting on its first real run.",
     ],
     status: "In progress. Not public yet.",
     links: [],

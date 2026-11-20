@@ -41,16 +41,16 @@ import MediaTwo from '@/components/media/MediaTwo.astro';
 
 VegAvengers helps people find vegan festivals, animal sanctuaries and advocacy groups. Its editors now keep the festival list current from an admin of their own, and nothing goes live until one of them approves it.
 
-## Why did every fix need a developer?
+## Every fix waited on a developer: me
 
-Because the content had no owner who could fix it, only a developer.
+Only a developer could edit the festival list, and that was me.
 
 <MediaTwo items={[
   { src: "/images/projects/tool-switcher.webm", alt: "The first VegAvengers site switching between festival and sanctuary search", caption: "The first site: festivals and sanctuaries as two modes of one search." },
   { src: "/images/projects/vegfests.webm", alt: "Festival search narrowing results as someone types a city", caption: "Search that works when you half remember: a month name, a city, or UK when you mean England." }
 ]} />
 
-The first version was a fast, searchable site, and it worked. The festival list behind it kept going out of date. Festival dates changed. Festival websites went dark. Every correction was a developer task, so every correction was mine.
+The first version was a fast, searchable site, and it worked. The festival list behind it kept going out of date. Festival dates changed. Festival websites went dark.
 
 ## Can non-technical editors run it?
 
@@ -68,7 +68,7 @@ Every photo in a gallery carries a credit. The first real post was a photo essay
 
 The festival list and the blog sit in different places in the admin, because they're different jobs.
 
-## What about dates like "TBD"?
+## Dates stay as the festival wrote them
 
 The record keeps them exactly as the festival wrote them. Festivals announce dates like "6/5-6/7/26", "TBD" or "sometime in the fall".
 
@@ -122,7 +122,7 @@ When the checker found nothing new, it updated a note on the published record. T
 
 Then I ran it against the live site. A festival with a dead link got its draft, the second check added its evidence, and the published page stayed exactly as it was until a person decided.
 
-## Who runs it now?
+## The editors run it, and an outage can't take it down
 
 The editors do. When one of them publishes, the site rebuilds itself. If the CMS is ever down, the public site and its search use a saved copy of the content. An outage can make the site less fresh, but it can't take it down.
 
