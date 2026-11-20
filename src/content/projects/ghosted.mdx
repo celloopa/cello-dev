@@ -1,7 +1,7 @@
 ---
 title: Ghosted
 description: Tailoring your resume for every job is repetitive, and an AI is faster only if you can see what it changed. Ghosted shows every AI edit in yellow and waits for you to keep it. My own product, used by real job seekers since October 2026.
-image: /images/projects/ghosted/v3/swipe-keep.webm
+image: /images/projects/ghosted/v4/proposal-keep.webm
 ogImage: /images/projects/ghosted/v3/og.png
 url: https://ghosted.cello.design
 techStack:
@@ -38,6 +38,7 @@ order: 2
 ---
 
 import MediaFull from '@/components/media/MediaFull.astro';
+import MediaPlayer from '@/components/media/MediaPlayer.astro';
 
 Paste a job link, and Ghosted rewrites your own resume for it. Nothing changes until you say so: every edit waits in yellow for Keep or Reject.
 
@@ -46,8 +47,8 @@ Paste a job link, and Ghosted rewrites your own resume for it. Nothing changes u
 Only what you keep. You ask for a change in the chat, and it lands on the page in yellow. Keep it, reject it, or click the line and fix it yourself. Until you keep it, your resume stays as it was.
 
 <MediaFull
-  src="/images/projects/ghosted/v3/proposal.webp"
-  alt="A resume with a new summary and four bullets highlighted in yellow, under a bar with Reject and Keep buttons"
+  src="/images/projects/ghosted/v4/proposal.webp"
+  alt="A resume with the AI's changes highlighted in yellow, under a bar with Keep, Reject and Edit it myself"
   caption="An AI proposal on the real page, waiting for your decision. (Demo data: a fictional resume.)"
 />
 
@@ -61,11 +62,23 @@ It writes only from what you've told it. Your base resume is the full record and
 
 Before you apply, each job also gets a Fit report that points to the resume line behind each claim, and a reading list where every link comes from a real search.
 
+<MediaFull
+  src="/images/projects/ghosted/v4/fit.webp"
+  alt="The Fit report with two strengths opened, each showing the line on the resume that proves it"
+  caption="Fit: each strength opens to the resume line that proves it. (Fictional job.)"
+/>
+
 This is my third try at the idea since January. The first two kept the AI's writing apart from the resume. This one puts it on the page, which is why every edit has to be a proposal. The [launch post](/blog/programmatic-resumes-you-can-chat-with) walks through it screen by screen.
 
 ## What if you don't have a resume yet?
 
 You build one with the ghost, one card at a time beside the live page: school, activities, work, helping out, wins and skills.
+
+<MediaFull
+  src="/images/projects/ghosted/v4/first-resume.webp"
+  alt="A first resume halfway done: the ghost asks about activities on a card beside the growing one-page resume"
+  caption="A first resume, one card at a time, for a fictional student."
+/>
 
 A high school student applying to college had nothing to tailor. I wanted Ghosted to be where he writes his first one, "like a gamified interview with the ghost."
 
@@ -76,8 +89,11 @@ Short facts go straight onto the page with no AI. A typed answer becomes new lin
 Yellow means one thing in Ghosted: the AI changed this. It marks the logo or a pending AI change, always as a background under ink, the same in light and dark.
 
 <MediaFull
-  src="/images/projects/ghosted/v3/swipe-keep-full.webm"
-  caption="A proposal lands and the ghost swipes the highlights in. Keep settles the yellow into plain ink."
+  src="/images/projects/ghosted/v4/proposal-keep.webm"
+  mp4="/images/projects/ghosted/v4/proposal-keep.mp4"
+  poster="/images/projects/ghosted/v4/proposal-keep-poster.webp"
+  alt="A proposal is written onto the resume in yellow, then Keep is pressed and the yellow settles into ink"
+  caption="A proposal arrives in yellow (sped up), and Keep settles it into plain ink."
 />
 
 Buttons and links are blue. If the main button were yellow, yellow would mean both "click here" and "the AI changed this." The design system writes that rule beside the color, in Figma and in code.
@@ -99,9 +115,15 @@ The order of work. Ghosted opened to its first testers on October 8, the first o
 One example, start to finish. On a call, a tester closed the new "your base resume changed" bar and then couldn't find her way back to it. Closing a bar shouldn't lose anything, and bringing changes in should be a choice. So Dismiss became "Not now", a "Base updated" button reopens the bar, and you pick which changes to bring in.
 
 <MediaFull
-  src="/images/projects/ghosted/v3/board.webp"
-  alt="The job board with fictional jobs across Saved, Applied, Interviewing, Offer, Rejected and Ghosted, with a follow-up nudge on an old application"
-  caption="The board after 'it feels a bit empty': status dates, a checklist on saved jobs, and a nudge to follow up when a company goes quiet. (Fictional jobs.)"
+  src="/images/projects/ghosted/v4/base-changed.webp"
+  alt="A bar saying the resume this job came from has changed, with Not now, Choose what to bring in, and Bring changes in"
+  caption="The bar a tester lost, now with Not now and a choice of what to bring in."
+/>
+
+<MediaFull
+  src="/images/projects/ghosted/v4/board.webp"
+  alt="The job board with fictional jobs across Saved, Applied, Interviewing, Offer, Rejected and Ghosted, with a nudge to follow up on a quiet application"
+  caption="The board: a column per status and a nudge to follow up when a company goes quiet. (Fictional jobs.)"
 />
 
 More of what testers found:
@@ -112,12 +134,12 @@ More of what testers found:
 - A tester asked for templates. Columns and sidebars break the systems that read applications, so I made five looks of the one safe template, applied live.
 - A tester asked for events outside tech, and For you now finds them.
 
-Testing on my own phone, I wrote "we're getting a bit crowded." The rule became: show what the current task needs, keep everything else one tap away, and remove nothing. Drag had never worked on phones, so board cards got a Move to menu.
+Testing on my own phone, I wrote "we're getting a bit crowded." The rule became: show what the current task needs, keep everything else one tap away, and remove nothing. Drag had never worked on phones, so a job now moves from its status menu.
 
 <MediaFull
-  src="/images/projects/ghosted/v3/phones.webp"
-  alt="Three phone screens: the board with a Move to menu, a job's resume near the top of the screen, and the chat"
-  caption="On a phone: Move to instead of drag, the resume near the top, the chat one tap away."
+  src="/images/projects/ghosted/v4/phones.webp"
+  alt="Three phone screens: a job's status menu on the board, a proposal on the resume, and the sheet that opens when you tap a line"
+  caption="On a phone: move a job from its status menu, review a proposal, tap a line to fix it."
 />
 
 ## How does a new tester learn it?
@@ -125,7 +147,7 @@ Testing on my own phone, I wrote "we're getting a bit crowded." The rule became:
 A tour in the real app, where the ghost would "hold your hand and explain things while trusting your intelligence." I asked for it because some new testers signed in and never saved a resume.
 
 <MediaFull
-  src="/images/projects/ghosted/v3/tour-look.webp"
+  src="/images/projects/ghosted/v4/tour-look.webp"
   alt="The walkthrough: the screen dimmed except the resume, with the ghost's card explaining that nothing will be changed"
   caption="The look-don't-touch tour, for people who already have work in the app. (Fictional demo account.)"
 />
@@ -134,7 +156,24 @@ The screen dims, the control that matters sits in a cutout, and doing the real t
 
 Then I asked what it would do to a tester who already had jobs and applications out. The hands-on version has you practice an edit on your base resume, which would have flagged every one of her jobs as changed. So anyone with work in the app gets a shorter tour that changes nothing, and its first card says so.
 
-The tour is also a one-minute narrated video, recorded from the real app, with English and Spanish captions. A recorded tour goes stale the first time a screen moves, so a weekly check compares each step with the last cut and, when one looks different, re-records it and sends me the new cut. The trial runs worked; the first scheduled run is still ahead.
+## A tour video that keeps up with the app
+
+New testers can also watch the tour: one minute of the real app, narrated, with English and Spanish captions. The narrator is a voice made from my own calm reads.
+
+<MediaPlayer
+  src="/images/projects/ghosted/tour/ghosted-tour.mp4"
+  poster="/images/projects/ghosted/tour/ghosted-tour.webp"
+  label="Ghosted's one-minute narrated tour of the app, on a fictional demo account"
+  caption="The one-minute tour, as testers see it in the app. Sound is off until you turn it on. (Fictional demo account.)"
+  tracks={[
+    { src: "/images/projects/ghosted/tour/ghosted-tour.en.vtt", lang: "en", label: "English" },
+    { src: "/images/projects/ghosted/tour/ghosted-tour.es.vtt", lang: "es", label: "Español" }
+  ]}
+/>
+
+A recorded tour goes stale the first time a screen moves. So it's set up to keep itself current. Every Monday a check looks at what shipped. If a ship touched the screens the tour shows and a quick pass finds a step that looks different, it re-records that step, re-voices only the new lines and sends me the cut to approve. It never publishes on its own: a new cut reaches testers only through a ship.
+
+In trial runs it made a new cut, and on an unchanged app it found nothing to do. Its first scheduled run is still ahead.
 
 Nothing reaches testers until I say ship it, the same way nothing reaches your resume until you keep it.
 
@@ -152,6 +191,6 @@ Every product decision here was mine and written down before the code. AI coding
 
 ## Live now, with tester sign-up
 
-Yes. Ghosted is live at ghosted.cello.design. Since the first testers it has grown interview prep, thank-you notes and a resume built from LinkedIn screenshots, the last two because people asked for them.
+Ghosted is live at ghosted.cello.design. Since the first testers it has grown interview prep, thank-you notes and a resume built from LinkedIn screenshots, the last two because people asked for them.
 
 Today, a new visitor can sign up on the site for a tester code. Next, a native speaker reads the Spanish screens and captions.

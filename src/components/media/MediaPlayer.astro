@@ -1,0 +1,65 @@
+---
+/*
+ * MediaPlayer (CDEV-68): a video someone chooses to watch, with controls and captions, unlike
+ * MediaVideo's silent loops. Starts muted (the viewer turns the sound on), captions on, and loads
+ * nothing until played. Same frame and caption as MediaFull.
+ *
+ *   src       the mp4
+ *   poster    a still shown before play
+ *   label     the video's accessible name
+ *   tracks    caption files; the first is on by default
+ */
+interface Track {
+  src: string;
+  lang: string;
+  label: string;
+}
+
+interface Props {
+  src: string;
+  poster: string;
+  label: string;
+  caption?: string;
+  tracks?: Track[];
+}
+
+const { src, poster, label, caption, tracks = [] } = Astro.props;
+---
+
+<div class="media-gallery media-player">
+  <figure class="media-item">
+    <video class="project-media" controls muted playsinline preload="none" poster={poster} aria-label={label}>
+      <source src={src} type="video/mp4" />
+      {tracks.map((t, i) => <track kind="captions" src={t.src} srclang={t.lang} label={t.label} default={i === 0} />)}
+    </video>
+    {caption && <figcaption>{caption}</figcaption>}
+  </figure>
+</div>
+
+<style>
+  .media-gallery {
+    margin: var(--space-32) 0;
+  }
+
+  .media-item {
+    margin: 0;
+  }
+
+  .media-item figcaption {
+    margin: 0;
+    padding: var(--space-12) 0;
+    border-bottom: var(--stroke-control) solid var(--action-primary);
+    color: var(--text-primary);
+    font-size: var(--type-small);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--track-caps);
+    text-transform: uppercase;
+  }
+
+  .project-media {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: var(--stroke-bar) solid var(--border-strong);
+  }
+</style>
