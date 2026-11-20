@@ -1,7 +1,6 @@
 ---
 /*
- * /now (CDEV-54, CDEV-59): what Cello is building now, one entry per project, text only until
- * demo-data screens exist. Entries live in src/data/now.ts. Each entry sits on a Panel plate, so
+ * /now (CDEV-54, CDEV-59): what Cello is building now, one entry per project, with demo-data screens where they exist (CDEV-68). Entries live in src/data/now.ts. Each entry sits on a Panel plate, so
  * its text never sits on scene art; the scene is the How I Build place, reused (no new art).
  */
 import SceneLayout from "@/layouts/SceneLayout.astro";
@@ -33,6 +32,7 @@ const place = homeSection("how");
         nowEntries.map((entry) => (
           <Panel as="li" class="entry" id={entry.id} aria-labelledby={`${entry.id}-hook`}>
             <h2 class="entry-hook" id={`${entry.id}-hook`}>{entry.hook}</h2>
+            {entry.image && <img class="entry-image" src={entry.image.src} alt={entry.image.alt} loading="lazy" decoding="async" />}
             {entry.body.map((paragraph, i) =>
               i === 0 ? (
                 <p class="entry-body"><strong>{entry.name}</strong> {paragraph}</p>
@@ -97,6 +97,14 @@ const place = homeSection("how");
   .entry {
     padding: var(--space-24);
     scroll-margin-top: var(--space-96);
+  }
+
+  .entry-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin-block: var(--space-16);
+    border: var(--stroke-bar) solid var(--border-strong);
   }
 
   .entry-hook {
