@@ -31,15 +31,19 @@ const place = homeSection("how");
     <ol class="now-list">
       {
         nowEntries.map((entry) => (
-          <Panel as="li" class="entry" id={entry.id} aria-labelledby={`${entry.id}-hook`}>
+          <Panel as="li" class:list={["entry", { "entry--wide": entry.clips?.length }]} id={entry.id} aria-labelledby={`${entry.id}-hook`}>
             <h2 class="entry-hook" id={`${entry.id}-hook`}>{entry.hook}</h2>
-            {entry.image && <img class="entry-image" src={entry.image.src} alt={entry.image.alt} loading="lazy" decoding="async" />}
-            {entry.clips && entry.clips.map((clip) => (
-              <figure class="entry-clip">
-                <MediaVideo src={clip.src} mp4={clip.mp4} poster={clip.poster} label={clip.label} class="entry-image" />
-                <figcaption>{clip.caption}</figcaption>
-              </figure>
-            ))}
+            {(entry.image || entry.clips) && (
+              <div class="entry-media">
+                {entry.image && <img class="entry-image" src={entry.image.src} alt={entry.image.alt} loading="lazy" decoding="async" />}
+                {entry.clips && entry.clips.map((clip) => (
+                  <figure class="entry-clip">
+                    <MediaVideo src={clip.src} mp4={clip.mp4} poster={clip.poster} label={clip.label} class="entry-image" />
+                    <figcaption>{clip.caption}</figcaption>
+                  </figure>
+                ))}
+              </div>
+            )}
             {entry.body.map((paragraph, i) =>
               i === 0 ? (
                 <p class="entry-body"><strong>{entry.name}</strong> {paragraph}</p>
@@ -112,6 +116,29 @@ const place = homeSection("how");
 
   .entry-status {
     margin: var(--space-16) 0 0;
+  }
+
+  /* An entry with several pictures and clips spans the full width under the balanced columns,
+     its media side by side, so one tall card never leaves the other columns short. */
+  .entry--wide {
+    column-span: all;
+  }
+
+  .entry--wide .entry-media {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    gap: var(--space-16);
+    align-items: start;
+    margin-block: var(--space-16);
+  }
+
+  .entry--wide .entry-media :global(.entry-image),
+  .entry--wide .entry-clip {
+    margin: 0;
+  }
+
+  .entry--wide .entry-body {
+    max-width: var(--layout-measure);
   }
 
   .entry-image {

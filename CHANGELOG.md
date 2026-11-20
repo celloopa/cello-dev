@@ -8,7 +8,7 @@ All notable changes to this portfolio site should be documented here.
 - New tokens in a pending group, "Fluid frame (CDEV-78, pending Cello)": `--layout-frame`, `--layout-frame-gutter`, `--layout-measure-wide-read` (44rem) and four fluid spaces (`--space-fluid-24-32`, `-24-48`, `-32-64`, `-32-96`). Not synced to Figma until approved, as with the Scene and Agent kit groups; the Figma hash is unchanged.
 - Home's case-study slots are sized by their content (no 72svh minimum), with one fluid gap, one 3:2 media-to-copy ratio and one left edge shared with their heading.
 - /projects rows grow their picture with the frame; from 1600px the stories stand side by side as columns. Writing uses the same list and gets the same.
-- /now is balanced columns of cards (one, two or three by width) instead of one 68ch column.
+- /now is balanced columns of cards (one, two or three by width) instead of one 68ch column; Second Chair, the entry with several clips, spans the full width under them with its media side by side.
 - Case studies: the head shares the frame's left edge; body lines stop at 44rem while media keep the frame; "On this page" becomes a sticky side panel from 1200px.
 - Validation: clean `pnpm build`; captures of /, /projects, /now and the three case studies at 390, 768, 1024, 1280, 1440, 1920 and 2560 before and after, in Brain inbox/2026-11-20-cdev78-layout/.
 
