@@ -11,6 +11,7 @@
  *   status  where it stands, in plain words
  *   links   only public places
  *   image   an optional demo-data screen (CDEV-68); never his own data
+ *   clips   optional short loops of demo work, each with a caption
  */
 export interface NowEntry {
   id: string;
@@ -20,6 +21,8 @@ export interface NowEntry {
   status: string;
   links: { href: string; label: string; external?: boolean }[];
   image?: { src: string; alt: string };
+  /** short silent loops with a caption each (CDEV-68) */
+  clips?: { src: string; mp4: string; poster: string; label: string; caption: string }[];
 }
 
 export const nowPage = {
@@ -91,12 +94,20 @@ export const nowEntries: NowEntry[] = [
   },
   {
     id: "second-chair",
-    hook: "Type “make a four-chord loop in A minor” into Ableton Live",
+    hook: "Ask “play it and check my levels” with your song open in Ableton Live",
     name: "Second Chair",
     body: [
-      "is a helper inside Ableton Live, the music program, that does what you ask by text or voice without taking over your screen. That request comes back as a clip of notes built from music theory. It also saves, imports and exports, and splits a track into stems with Live’s own tool. It works offline too, with a small model on your computer.",
+      "lets the AI helper you already chat with work inside your Live set. You ask in plain words, and it reads the set, sets up effects, checks levels and loudness, writes automation, and explains each step so you can do it yourself next time.",
+      "It asks before it changes your set, never overwrites a clip, and can take back its own changes. The ideas stay yours: it writes notes only when you ask for that one thing.",
+      "Live gives scripts no save button, so it saves the way you would: through Live's own File menu, in the background, then checks the save landed.",
     ],
-    status: "In use on my Mac and PC, and open source. A YouTube series about it is planned.",
+    status: "Beta and open source, in use on my Mac and PC. A YouTube series about it is planned.",
     links: [{ href: "https://github.com/celloopa/second-chair", label: "See Second Chair on GitHub", external: true }],
+    image: { src: "/images/now/second-chair/control-surface.webp", alt: "Live's Settings, Tempo and MIDI tab, with SecondChair chosen as a control surface" },
+    clips: [
+      { src: "/images/now/second-chair/drum-rack-playing.webm", mp4: "/images/now/second-chair/drum-rack-playing.mp4", poster: "/images/now/second-chair/drum-rack-playing-poster.webp", label: "A Drum Rack of Live's own 808 sounds that Second Chair built, playing a two-bar beat it wrote", caption: "A drum kit it built from Live's own 808 sounds, and the beat it wrote, playing." },
+      { src: "/images/now/second-chair/automation-sweep.webm", mp4: "/images/now/second-chair/automation-sweep.mp4", poster: "/images/now/second-chair/automation-sweep-poster.webp", label: "Live's Arrangement playing through a filter sweep that Second Chair wrote as automation", caption: "A filter sweep it wrote as automation, rising and settling over eight bars." },
+      { src: "/images/now/second-chair/chord-coach-playing.webm", mp4: "/images/now/second-chair/chord-coach-playing.mp4", poster: "/images/now/second-chair/chord-coach-playing-poster.webp", label: "Chord Coach in Live naming each chord as it plays, with the keys lit and a trail of past chords", caption: "Chord Coach, a device that ships with it: it names the chord you're playing and lights the keys." },
+    ],
   },
 ];

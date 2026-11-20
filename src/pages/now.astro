@@ -5,6 +5,7 @@
  */
 import SceneLayout from "@/layouts/SceneLayout.astro";
 import Panel from "@/components/ui/Panel.astro";
+import MediaVideo from "@/components/media/MediaVideo.astro";
 import ArrowLink from "@/components/ui/ArrowLink.astro";
 import WorkWithMe from "@/components/WorkWithMe.astro";
 import { homeSection } from "@/lib/scene/pairing";
@@ -33,6 +34,12 @@ const place = homeSection("how");
           <Panel as="li" class="entry" id={entry.id} aria-labelledby={`${entry.id}-hook`}>
             <h2 class="entry-hook" id={`${entry.id}-hook`}>{entry.hook}</h2>
             {entry.image && <img class="entry-image" src={entry.image.src} alt={entry.image.alt} loading="lazy" decoding="async" />}
+            {entry.clips && entry.clips.map((clip) => (
+              <figure class="entry-clip">
+                <MediaVideo src={clip.src} mp4={clip.mp4} poster={clip.poster} label={clip.label} class="entry-image" />
+                <figcaption>{clip.caption}</figcaption>
+              </figure>
+            ))}
             {entry.body.map((paragraph, i) =>
               i === 0 ? (
                 <p class="entry-body"><strong>{entry.name}</strong> {paragraph}</p>
@@ -106,6 +113,10 @@ const place = homeSection("how");
     margin-block: var(--space-16);
     border: var(--stroke-bar) solid var(--border-strong);
   }
+
+  .entry-clip { margin: 0 0 var(--space-16); }
+
+  .entry-clip figcaption { font-size: var(--type-small); color: var(--text-muted); }
 
   .entry-hook {
     margin: 0;
