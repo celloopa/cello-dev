@@ -7,7 +7,7 @@ export const projectStories: Record<string, { problem: string; decision: string;
     mark: "/images/project-marks/asheville-dispensary.svg",
   },
   ghosted: {
-    problem: "An AI can tailor a resume in a minute. I only trust it if I can see every change it made.",
+    problem: "An AI can tailor a resume quickly. I only trust it if I can see every change it made.",
     decision: "Make each edit a yellow proposal on the real resume, ready to keep, reject, or fix yourself.",
     outcome: "Real testers have used it since October 8, and their reports set what I build next. I haven’t measured hiring outcomes.",
     mark: "/images/project-marks/ghosted.svg",

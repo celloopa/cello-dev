@@ -18,9 +18,9 @@ engagement: My product · Since January 2026
 highlights:
   - Every AI edit is a yellow proposal you keep, reject or fix yourself
   - The highlight became the brand, and yellow means only that
-  - Real testers since October 8, and what they report sets the order of work
+  - Real testers since October 8, and their reports decide what gets built next
   - A first-resume interview for someone with nothing on the page yet
-  - A narrated tour that is re-filmed when its screens change, and waits for my OK
+  - A narrated tour, set up to re-film itself when its screens change, that waits for my OK
 summary:
   - label: Problem
     value: "Tailoring a resume for every job is repetitive, and an AI can do it faster. I only trust that if I can see exactly what it changed and undo any of it."
@@ -29,7 +29,7 @@ summary:
   - label: Key decision
     value: "Every AI change is a proposal, highlighted in yellow on the real page for you to keep or reject. Yellow means only that, everywhere in the product."
   - label: Shipped
-    value: "Live at ghosted.cello.design and in early testing since October 8, 2026. A narrated tour shows new testers around and is re-filmed when the app changes."
+    value: "Live at ghosted.cello.design and in early testing since October 8, 2026. A narrated tour shows new testers around, and it is set up to re-film itself when the app changes."
   - label: Tools
     value: "React, Vite, TypeScript, typst.ts, Node, Hono, SQLite, Codex (GPT on my ChatGPT subscription), Firecrawl, Figma."
 featured: true
@@ -38,7 +38,6 @@ order: 2
 ---
 
 import MediaFull from '@/components/media/MediaFull.astro';
-import MediaTwo from '@/components/media/MediaTwo.astro';
 
 You paste a job link, and Ghosted rewrites your own resume for it. Nothing changes until you say so: every edit waits in yellow for Keep or Reject.
 
@@ -54,24 +53,13 @@ You ask for a change in the chat, and it lands on the page in yellow. Keep it, r
 
 The resume is drawn live in the browser, and the PDF comes from the same renderer, so what you see is what you download. Every change is saved as a version, so Undo and Restore never lose anything.
 
-The AI writes only from what you've told it. Your base resume is the full record and is never trimmed. Each job gets a one-page copy cut from it, and when a bullet needs more, the ghost asks you for specifics.
+The AI writes only from what you've told it. Your base resume is the full record and is never trimmed. Each job gets a one-page copy cut from it, and when a bullet needs more, Ghosted asks you for specifics.
 
 Chat replies stream in as they're written. Resume edits arrive whole, because you can only judge a finished proposal.
 
+Before you apply, each job also gets a Fit report that points to the resume line behind each claim, and a reading list where every link comes from a real search.
+
 This is my third try at the idea since January. The first two kept the AI's writing apart from the resume. This one puts it on the page, which is why every edit has to be a proposal. The [launch post](/blog/programmatic-resumes-you-can-chat-with) walks through it screen by screen.
-
-## Every link comes from a real search
-
-Before you apply, each job gets a Fit report and a reading list. Both are written by the AI, so both had to be checkable.
-
-<MediaTwo items={[
-  { src: "/images/projects/ghosted/v3/fit.webp", alt: "The Fit tab: what's already strong with proof from the resume, then what to lead with and the gaps to prepare as checklists", caption: "Fit: the proof first, then the prep, ticked off as you go. (Fictional job.)" },
-  { src: "/images/projects/ghosted/v3/research.webp", alt: "The Research tab: five topics to read before applying, each with links from real sites, one ticked as read", caption: "Research: what to read before you apply. (Fictional job.)" }
-]} />
-
-Fit opens on what's already strong, each point with the resume line that proves it. Ghosted then checks that the line is really on your resume, and flags any it can't find.
-
-Research picks what's worth reading and writes a search for each topic. The AI never types a link. The server runs the searches, keeps only real results, and strips your name and contact details before any search leaves.
 
 ## What if you don't have a resume yet?
 
@@ -146,15 +134,11 @@ It runs in the real app. The screen dims, the control that matters sits in a cut
 
 Then I asked what it would do to a tester who already had jobs and applications out. The hands-on version has you practice an edit on your base resume, which would have flagged every one of her jobs as changed. So anyone with work in the app gets a shorter tour that changes nothing, and its first card says so.
 
-The tour is now also a one-minute narrated video, recorded from the real app, with English and Spanish captions. A recorded tour goes stale the first time a screen moves. So once a week, a check looks for ships that touched the tour's screens and compares each step with the last cut. Only when a step looks different does it re-record, re-voice the changed lines and send me the new cut.
+The tour is now also a one-minute narrated video, recorded from the real app, with English and Spanish captions. A recorded tour goes stale the first time a screen moves, so I set it up to keep up: a weekly check looks for ships that touched the tour's screens and compares each step with the last cut. When a step looks different, it re-records, re-voices the changed lines and sends me the new cut. The trial runs worked; the first scheduled run is still ahead.
 
 Nothing reaches testers until I say ship it, the same way nothing reaches your resume until you keep it.
 
-## How it was built
-
-The flow, the chat-beside-the-page model, the brand and every product decision here are mine, written down before the code. AI coding tools carried out much of that code from my specs, while I tested, reviewed it and shipped each release. Ghosted's own AI is OpenAI's GPT, running on my ChatGPT subscription.
-
-## What I learned
+## Where the design work is
 
 Adding AI to a product is the easy part. The design work is deciding how much the model gets to do, and making sure the person can see, judge and undo every bit of it.
 
@@ -164,8 +148,10 @@ Every first-run decision has to be asked again for the person who already has wo
 
 The same proposal model works for someone with nothing on the page yet, as long as the AI only ever writes what they just said.
 
+Every product decision here was mine and written down before the code. AI coding tools carried out much of that code, and Ghosted's own AI is OpenAI's GPT on my ChatGPT subscription.
+
 ## Where it is now
 
-Ghosted is live at ghosted.cello.design. Since the first testers it has grown interview prep, thank-you notes and a resume built from LinkedIn screenshots, the last two because testers asked.
+Ghosted is live at ghosted.cello.design. Since the first testers it has grown interview prep, thank-you notes and a resume built from LinkedIn screenshots, the last two because people asked for them.
 
 Next, a native speaker reads the Spanish screens and captions.

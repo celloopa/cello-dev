@@ -10,12 +10,10 @@ import Section from "@/components/ui/Section.astro";
 import WorkWithMe from "@/components/WorkWithMe.astro";
 import { workWithMe } from "@/data/work-with-me";
 import { homeScene, homeSection, sceneForProject } from "@/lib/scene/pairing";
-import { basics } from "@cv";
 import { sceneOptions } from "@/lib/scene/slots";
 import { projectEyebrow } from "@/lib/project-label";
 
 const PLACE = homeScene(); // no-JS fallback from the shared hero slot
-const { email } = basics;
 
 const allProjects = await getCollection("projects");
 const featuredProjects = allProjects
