@@ -24,7 +24,7 @@ export const nowPage = {
   title: "What I’m building now",
   description:
     "What Cello is building now: Ghosted, the agent kit and Pocket Startup, Crest, Tabor, Plate and Second Chair, with what each one does and where it stands.",
-  lede: "Two of these are live today: Ghosted and the agent kit. The rest I use myself while I build them, and each one says where it stands.",
+  lede: "Three of these are live today: Ghosted, the agent kit and Second Chair’s code. The rest I use myself while I build them, and each one says where it stands.",
   updated: "Updated November 2026",
 } as const;
 
@@ -91,7 +91,7 @@ export const nowEntries: NowEntry[] = [
     body: [
       "is a helper inside Ableton Live, the music program, that does what you ask by text or voice without taking over your screen. That request comes back as a clip of notes built from music theory. It also saves, imports and exports, and splits a track into stems with Live’s own tool. It works offline too, with a small model on your computer.",
     ],
-    status: "In use on my Mac and PC. A YouTube series about it is planned.",
-    links: [],
+    status: "In use on my Mac and PC, and open source. A YouTube series about it is planned.",
+    links: [{ href: "https://github.com/celloopa/second-chair", label: "See Second Chair on GitHub", external: true }],
   },
 ];
