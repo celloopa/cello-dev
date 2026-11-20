@@ -1,6 +1,6 @@
 ---
 title: "Designing for the second user"
-description: "I shipped Ghosted's walkthrough for an empty account. Then I thought about a tester who already had a resume, jobs and applications out."
+description: "What does an onboarding tour built for an empty account do to someone who already has real work in the app? Ghosted's would have changed it, so the tour learned a second mode."
 publishDate: 2026-10-11
 updatedDate: 2026-11-20
 image: /images/projects/ghosted/v3/tour-look.webp
@@ -14,21 +14,21 @@ draft: false
 
 import MediaFull from '@/components/media/MediaFull.astro';
 
-Ghosted's walkthrough now has two modes. A new account learns by doing, and an account that already has work in it gets a tour that only points things out.
+What does an onboarding tour built for an empty account do to someone who already has real work in the app? In Ghosted's first walkthrough, it would have flagged her jobs as changed and left a fake application on her board.
 
-This is how I got there on October 11, 2026, and the three questions I'll ask of the next tour I design.
+Now the walkthrough has two modes. A new account learns by doing, and an account with work in it gets a tour that only points things out. This is how I got there on October 11, 2026, and the three questions I'll ask of the next tour I design.
 
 ## Who was the tour for?
 
-I shipped the walkthrough thinking about someone opening an empty account. They'd have a few minutes to learn the app, try an edit and add their first job. That was the person I had in mind for every onboarding flow I'd designed.
+Someone opening an empty account. They'd have a few minutes to learn the app, try an edit and add their first job. That was the person I had in mind for every onboarding flow I'd designed.
 
-The same evening, I thought about one of Ghosted's first testers. She already had a base resume, several jobs and applications out. What would happen if the tour asked her to practice on all of that?
+After shipping it, I thought about one of Ghosted's first testers. She already had a base resume, several jobs and applications out. What would happen if the tour asked her to practice on all of that?
 
-## Learn by doing, in the real app
+## How did the first tour work?
 
-I wanted the ghost to explain things while trusting your intelligence. Adobe's hands-on tutorials and Logic's first run were the references I kept coming back to. You learn in the actual app, with the thing you're going to use.
+You learned by doing, in the real app. I wanted the ghost to explain things while trusting your intelligence, like Adobe's hands-on tutorials and Logic's first run.
 
-So the tour dims the screen around one control. A blue ring shows where to look, and the ghost explains it from a card beside it. Every step has Next and Dismiss, and doing the thing also moves you forward.
+The tour dims the screen around one control. A blue ring shows where to look, and the ghost explains it from a card. Every step has Next and Dismiss, and doing the thing also moves you forward.
 
 The first version had nine steps. Click a line on your base resume to edit it, ask the chat for a change, then open New job and paste a link. After tailoring, review the yellow highlights and keep or reject the proposal. The job's own resume, Fit checklist and Research tab came after that.
 
@@ -36,17 +36,19 @@ On an empty account, those were useful things to try. On her account, they were 
 
 ## What would it do to her work?
 
-I asked Claude, which builds Ghosted with me. Its first answer was reassuring: the tour never changes anything by itself. She still has to edit, tailor or press Keep.
+Change it. I asked Claude, which builds Ghosted with me. Its first answer was reassuring: the tour never changes anything by itself. She still has to edit, tailor or press Keep.
 
 I wasn't reassured. If I ask someone to make an edit as part of a tour, I need to think about what that edit does.
 
 A practice change to her base resume would flag every one of her jobs with “Your base resume changed,” including jobs she'd already applied to. A practice job would leave a fake application on her board. Tailoring it would run an AI request she didn't need.
 
-Leaving halfway was stranger. Pressing Next past Tailor left the tour waiting for her next AI proposal. If she asked for a real change days later, a “6 of 9” card could pop up in the middle of it, long after she'd forgotten the tour existed.
+Leaving halfway was stranger. Pressing Next past Tailor left the tour waiting for her next AI proposal. If she asked for a real change days later, a “6 of 9” card could pop up in the middle of it.
 
 The flow made sense for the person I'd pictured. I hadn't thought enough about the person who was already there.
 
-## Show her around her own work
+## What does she get instead?
+
+A tour of her own work that explains instead of asking.
 
 <MediaFull
   src="/images/projects/ghosted/v3/tour-look.webp"
@@ -54,31 +56,31 @@ The flow made sense for the person I'd pictured. I hadn't thought enough about t
   caption="The look-don't-touch tour. The first sentence is the promise. (Fictional demo account.)"
 />
 
-For accounts that already have jobs, the tour now explains instead of asking. The spotlights stay, but “try this” becomes “here's how.” Rather than adding and tailoring a job, it opens her most recent one and shows her the relevant parts.
+The spotlights stay, but “try this” becomes “here's how.” Instead of adding a job, it opens her most recent one and shows her around.
 
 That first revision took her tour from nine steps to seven. It dropped the steps she didn't need: the practice edit, the extra job and the tailoring run.
 
 I considered a sandbox with a sample resume. Her work would stay safe, but she'd learn on someone else's information, and the sample would need cleaning up afterward. I could also have kept the hands-on tour and trusted her to undo the practice. I didn't like asking someone with applications out to do that cleanup.
 
-## Fill in what's missing
+## What about tabs her old jobs never had?
 
-Her jobs were older than Fit and Research. If the tour pointed at those tabs as they were, she'd find them empty.
+The tour fills them in. Her jobs were older than Fit and Research, so those tabs would have been empty.
 
-So I made one exception. When the tour opens a job without a Fit report or research, it generates them as the job opens, and they're ready by the time the tour reaches them.
+When the tour opens a job without a Fit report or research, it generates them as the job opens, and they're ready by the time the tour reaches them.
 
-That's an AI request started by taking the tour. I'm comfortable with it because it gives her something useful on an existing job. The distinction stays clear: the tour leaves her resume and applications alone, and fills in those missing reports.
+That's an AI request started by taking the tour. I'm comfortable with it because it gives her something useful on an existing job. The tour leaves her resume and applications alone, and fills in those missing reports.
 
-## Say it before she starts
+## How does she know it's safe before she starts?
 
-She needed to know this before deciding to take the tour. I couldn't expect her to discover her work was safe by going through it.
+The tour tells her up front. I couldn't expect her to discover her work was safe by going through it.
 
-So the promise sits in the one-time offer, the first card and the What's new entry. The offer says, “It only points things out: nothing in it changes your work.” The first card says, “Your resume and jobs stay exactly as they are: I'll only point things out.”
+The promise sits in the one-time offer, the first card and the What's new entry. The offer says, “It only points things out: nothing in it changes your work.” The first card says, “Your resume and jobs stay exactly as they are: I'll only point things out.”
 
-An unfinished tour also has an end now. If it's been waiting more than a day, it closes quietly on the next load. You can replay it from the menu whenever you want.
+An unfinished tour also has an end now. If it's been waiting more than a day, it closes quietly on the next load. You can replay it from the menu.
 
 ## Could it be shorter?
 
-Later, I asked whether the steps covered what mattered and whether any could be combined. Then I asked for it shorter again, with an honest answer if we'd gone as far as we could.
+Yes, and it gained the ending it was missing. I asked whether any steps could be combined, then asked again, with an honest answer if we'd gone as far as we could.
 
 The first two steps both pointed at the resume page, and clicking it in the first already skipped the second, so I combined them. The note that each job has its own resume became a sentence in the proposal card.
 
@@ -92,7 +94,7 @@ That left seven steps for a new account and five for someone with jobs already. 
 
 What does this step actually write? What happens if someone leaves halfway? And what work do they already have here?
 
-Those questions would have helped me earlier. Her own work was a useful way to show her the app. I just needed to stop asking her to practice changing it.
+Those questions would have helped me earlier. Her own work was a useful way to show her the app. I needed to stop asking her to practice changing it.
 
 I made these decisions by working through the questions one at a time. Claude Code wrote the code, and the product's AI is OpenAI's GPT, running on my ChatGPT subscription. The [case study](/projects/ghosted) has more of the story.
 

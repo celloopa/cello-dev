@@ -1,6 +1,6 @@
 ---
 title: VegAvengers Marketing
-description: A festival and sanctuary site I kept fixing, rebuilt as one its two editors run themselves, with an AI checker that only ever writes drafts.
+description: When every fix waits for a developer, a site goes stale. VegAvengers' two editors now keep its festival list current themselves, and an AI checker drafts fixes for them to approve.
 image: /images/projects/vegHero.webm
 ogImage: /images/projects/veg-avengers-thumbnail.png
 url: https://vegavengers.com
@@ -39,38 +39,22 @@ import FlowDiagram from '@/components/FlowDiagram.astro';
 import MediaFull from '@/components/media/MediaFull.astro';
 import MediaTwo from '@/components/media/MediaTwo.astro';
 
-VegAvengers helps people find vegan festivals, animal sanctuaries and advocacy groups. This is how its festival list moved off my to-do list and into an admin its editors run themselves.
+VegAvengers helps people find vegan festivals, animal sanctuaries and advocacy groups. Its editors now keep the festival list current from an admin of their own, and nothing goes live until one of them approves it.
 
-## Why did every fix come to me?
+## Why did every fix need a developer?
+
+Because the content had no owner who could fix it, only a developer.
 
 <MediaTwo items={[
   { src: "/images/projects/tool-switcher.webm", alt: "The first VegAvengers site switching between festival and sanctuary search", caption: "The first site: festivals and sanctuaries as two modes of one search." },
   { src: "/images/projects/vegfests.webm", alt: "Festival search narrowing results as someone types a city", caption: "Search that works when you half remember: a month name, a city, or UK when you mean England." }
 ]} />
 
-The first version was a fast, searchable site, and it worked. The festival list behind it kept going out of date.
+The first version was a fast, searchable site, and it worked. The festival list behind it kept going out of date. Festival dates changed. Festival websites went dark. Every correction was a developer task, so every correction was mine.
 
-Festival dates changed. Festival websites went dark. Every correction was a developer task, so every correction was mine.
+## Can non-technical editors run it?
 
-The question became who keeps that list true, and how much of it should need me at all.
-
-## Let the dates stay messy
-
-<MediaFull
-  src="/images/projects/cms/cms-festivals.webm"
-  alt="The festival list in the admin, showing one festival's 2025 and 2026 editions as separate records"
-  caption="One festival, two years. Last year's edition is confirmed and published. This year's is still to be announced, with a suggested update waiting as a draft."
-/>
-
-Festivals announce dates like "6/5-6/7/26", "TBD" or "sometime in the fall". I wanted the content model to take that as it comes.
-
-Each record keeps the date exactly as the festival wrote it. Where the date is clear enough, it also stores it as a calendar date. Visitors see what the festival said, and search can still sort by date.
-
-Each year's festival is its own record. Next year starts as a copy, and last year's stays as history.
-
-Every record also says where it came from: a spreadsheet import, a person, or the checker. Editors can't change the fields the checker fills in, so they can see at a glance which parts are the checker's and which are theirs.
-
-## Show the editors only what they need
+Yes, two of them do, every day. The admin came with far more than they need, so most of my design work there was taking things out.
 
 <MediaFull
   src="/images/projects/cms/cms-editorial.webm"
@@ -78,15 +62,31 @@ Every record also says where it came from: a spreadsheet import, a person, or th
   caption="Writing a photo essay, then finding its images in the library, each with its alt text and credit."
 />
 
-The admin came with far more than the editors need, so most of my design work there was taking things out.
-
 I cut the formatting buttons down to meaning: emphasis, links and structure. The templates handle how it looks, so nobody fights alignment buttons at midnight.
 
 Every photo in a gallery carries a credit. The first real post was a photo essay, and crediting each photographer was part of publishing it.
 
 The festival list and the blog sit in different places in the admin, because they're different jobs.
 
+## What about dates like "TBD"?
+
+The record keeps them exactly as the festival wrote them. Festivals announce dates like "6/5-6/7/26", "TBD" or "sometime in the fall".
+
+<MediaFull
+  src="/images/projects/cms/cms-festivals.webm"
+  alt="The festival list in the admin, showing one festival's 2025 and 2026 editions as separate records"
+  caption="One festival, two years. Last year's edition is confirmed and published. This year's is still to be announced, with a suggested update waiting as a draft."
+/>
+
+Where the date is clear enough, the record also stores it as a calendar date. Visitors see what the festival said, and search can still sort by date.
+
+Each year's festival is its own record. Next year starts as a copy, and last year's stays as history.
+
+Every record also says where it came from: a spreadsheet import, a person, or the checker. Editors can't change the fields the checker fills in, so they can see at a glance which parts are the checker's and which are theirs.
+
 ## How does the checker spot a stale date?
+
+It visits each festival that's still waiting on a date and looks for a new one on the festival's own website.
 
 <FlowDiagram
   title="A suggestion becomes a draft"
@@ -100,11 +100,11 @@ The festival list and the blog sit in different places in the admin, because the
   caption="Every suggestion waits as a draft on the festival's own record."
 />
 
-The checker goes after the original problem. It visits each festival that's still waiting on a date and looks for a new one.
-
 A dead link gets flagged in a draft too, and a second check tries the link again later. The checker never makes up a new link.
 
 ## Where does an editor say yes?
+
+In the draft and compare screens they already use. I could have built a separate review screen. I had the checker write ordinary drafts instead.
 
 <MediaFull
   src="/images/projects/cms/cms-draft-review.webm"
@@ -112,17 +112,13 @@ A dead link gets flagged in a draft too, and a second check tries the link again
   caption="A real check on live data: the dead-link evidence in the notes, the version history, and the comparison an editor reads before publishing."
 />
 
-I could have built a separate review screen. I had the checker write ordinary drafts instead.
-
-The editors already knew the draft and compare screens. A suggestion from the checker looks like a colleague's unpublished edit, with the evidence attached, and approving it is one click.
+A suggestion from the checker looks like a colleague's unpublished edit, with the evidence attached, and approving it is one click.
 
 ## What broke before launch?
 
-Before the checker touched live data, I put it through a review whose only job was to break it. The review found real problems.
+A quiet one: the checker could bury an editor's unpublished draft. I found it in a review whose only job was to break the checker before it touched live data.
 
-The worst one was quiet. When the checker found nothing new, it updated a note on the published record. That small update could bury a draft an editor hadn't published yet, and nobody would see it go.
-
-Now the checker looks for a waiting draft before it writes anything.
+When the checker found nothing new, it updated a note on the published record. That small update could bury a draft an editor hadn't published yet, and nobody would see it go. Now the checker looks for a waiting draft before it writes anything.
 
 Then I ran it against the live site. A festival with a dead link got its draft, the second check added its evidence, and the published page stayed exactly as it was until a person decided.
 

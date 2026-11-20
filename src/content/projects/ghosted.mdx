@@ -1,6 +1,6 @@
 ---
 title: Ghosted
-description: A resume editor where the AI proposes every change in yellow, and you decide what stays. My own product, in the hands of real job seekers since October 2026.
+description: Tailoring your resume for every job is repetitive, and an AI is faster only if you can see what it changed. Ghosted shows every AI edit in yellow and waits for you to keep it. My own product, used by real job seekers since October 2026.
 image: /images/projects/ghosted/v3/swipe-keep.webm
 ogImage: /images/projects/ghosted/v3/og.png
 url: https://ghosted.cello.design
@@ -39,9 +39,11 @@ order: 2
 
 import MediaFull from '@/components/media/MediaFull.astro';
 
-You paste a job link, and Ghosted rewrites your own resume for it. Nothing changes until you say so: every edit waits in yellow for Keep or Reject.
+Paste a job link, and Ghosted rewrites your own resume for it. Nothing changes until you say so: every edit waits in yellow for Keep or Reject.
 
 ## What does the AI get to change?
+
+Only what you keep. You ask for a change in the chat, and it lands on the page in yellow. Keep it, reject it, or click the line and fix it yourself. Until you keep it, your resume stays as it was.
 
 <MediaFull
   src="/images/projects/ghosted/v3/proposal.webp"
@@ -49,13 +51,13 @@ You paste a job link, and Ghosted rewrites your own resume for it. Nothing chang
   caption="An AI proposal on the real page, waiting for your decision. (Demo data: a fictional resume.)"
 />
 
-You ask for a change in the chat, and it lands on the page in yellow. Keep it, reject it, or click the line and fix it yourself. Until you keep it, your resume stays as it was.
-
-The resume is drawn live in the browser, and the PDF comes from the same renderer, so what you see is what you download. Every change is saved as a version, so Undo and Restore never lose anything.
-
-The AI writes only from what you've told it. Your base resume is the full record and is never trimmed. Each job gets a one-page copy cut from it, and when a bullet needs more, Ghosted asks you for specifics.
+The PDF you download comes from the same renderer as the page you're looking at, so what you see is what you send. Every change is saved as a version, so Undo and Restore never lose anything.
 
 Chat replies stream in as they're written. Resume edits arrive whole, because you can only judge a finished proposal.
+
+## Will it make things up?
+
+It writes only from what you've told it. Your base resume is the full record and is never trimmed. Each job gets a one-page copy cut from it, and when a bullet needs more, Ghosted asks you for specifics.
 
 Before you apply, each job also gets a Fit report that points to the resume line behind each claim, and a reading list where every link comes from a real search.
 
@@ -63,15 +65,24 @@ This is my third try at the idea since January. The first two kept the AI's writ
 
 ## What if you don't have a resume yet?
 
+You build one with the ghost, one card at a time beside the live page: school, activities, work, helping out, wins and skills.
+
 A high school student applying to college had nothing to tailor. I wanted Ghosted to be where he writes his first one, "like a gamified interview with the ghost."
 
-So a new account can build a resume with the ghost, one card at a time beside the live page: school, activities, work, helping out, wins and skills. Short facts go straight onto the page with no AI. A typed answer becomes new lines that swipe in yellow, and the next answer keeps them.
+Short facts go straight onto the page with no AI. A typed answer becomes new lines that swipe in yellow, and the next answer keeps them. Tried on a made-up student with two clubs, two jobs and a food pantry, it ended on a one-page resume with nothing invented.
 
-Tried on a made-up student with two clubs, two jobs and a food pantry, it ended on a one-page resume with nothing invented.
+## Why is everything yellow?
 
-## The highlight became the brand
+Yellow means one thing in Ghosted: the AI changed this. It marks the logo or a pending AI change, always as a background under ink, the same in light and dark.
 
-By the second day of testing, Ghosted worked and still looked like a placeholder. I had AI design tools lay out a brand in Figma, with logo studies, a palette, type and motion, and chose from what they made.
+<MediaFull
+  src="/images/projects/ghosted/v3/swipe-keep-full.webm"
+  caption="A proposal lands and the ghost swipes the highlights in. Keep settles the yellow into plain ink."
+/>
+
+Buttons and links are blue. If the main button were yellow, yellow would mean both "click here" and "the AI changed this." The design system writes that rule beside the color, in Figma and in code.
+
+When a proposal lands, the highlights swipe in behind a small Paper Ghost cursor. My first swipe ran so fast I couldn't see the cursor, so I slowed it down. When you keep a proposal, the yellow fades into ink while the text stays still.
 
 <MediaFull
   src="/images/projects/ghosted/brand/logo-explorations.webp"
@@ -79,22 +90,11 @@ By the second day of testing, Ghosted worked and still looked like a placeholder
   caption="The logo studies. The Paper Ghost won because it explains the name and the product at once: a ghost made from a document."
 />
 
-The one thing Ghosted could own was already on the screen: the yellow that marks what the AI changed. So the highlighter yellow became the brand color.
+By the second day of testing, Ghosted worked and still looked like a placeholder. The one thing it could own was already on the screen, so the highlighter yellow became the brand color.
 
-It means the logo or a pending AI change, always as a background under ink, the same in light and dark. Blue is for buttons and links. If the main button were yellow, yellow would mean both "click here" and "the AI changed this." The design system writes that rule beside the color, in Figma and in code.
+## What did real testers change?
 
-<MediaFull
-  src="/images/projects/ghosted/v3/swipe-keep-full.webm"
-  caption="A proposal lands and the ghost swipes the highlights in. Keep settles the yellow into plain ink."
-/>
-
-When a proposal lands, the highlights swipe in behind a small Paper Ghost cursor. My first swipe ran so fast I couldn't see the cursor, so I slowed it down. When you keep a proposal, the yellow fades into ink while the text stays still.
-
-I turned down yellow buttons and a 3D ghost mascot, which clashed with the flat mark.
-
-## Let testers set the order of work
-
-Ghosted opened to its first testers on October 8. The first one used it that day.
+The order of work. Ghosted opened to its first testers on October 8, the first one used it that day, and their reports have decided what gets built next.
 
 One example, start to finish. On a call, a tester closed the new "your base resume changed" bar and then couldn't find her way back to it. Closing a bar shouldn't lose anything, and bringing changes in should be a choice. So Dismiss became "Not now", a "Base updated" button reopens the bar, and you pick which changes to bring in.
 
@@ -120,9 +120,9 @@ Testing on my own phone, I wrote "we're getting a bit crowded." The rule became:
   caption="On a phone: Move to instead of drag, the resume near the top, the chat one tap away."
 />
 
-## Keep the tour as current as the app
+## How does a new tester learn it?
 
-Some new testers signed in and never saved a resume. So I asked for a walkthrough where the ghost would "hold your hand and explain things while trusting your intelligence."
+A tour in the real app, where the ghost would "hold your hand and explain things while trusting your intelligence." I asked for it because some new testers signed in and never saved a resume.
 
 <MediaFull
   src="/images/projects/ghosted/v3/tour-look.webp"
@@ -130,15 +130,15 @@ Some new testers signed in and never saved a resume. So I asked for a walkthroug
   caption="The look-don't-touch tour, for people who already have work in the app. (Fictional demo account.)"
 />
 
-It runs in the real app. The screen dims, the control that matters sits in a cutout, and doing the real thing counts as Next.
+The screen dims, the control that matters sits in a cutout, and doing the real thing counts as Next.
 
 Then I asked what it would do to a tester who already had jobs and applications out. The hands-on version has you practice an edit on your base resume, which would have flagged every one of her jobs as changed. So anyone with work in the app gets a shorter tour that changes nothing, and its first card says so.
 
-The tour is now also a one-minute narrated video, recorded from the real app, with English and Spanish captions. A recorded tour goes stale the first time a screen moves, so I set it up to keep up: a weekly check looks for ships that touched the tour's screens and compares each step with the last cut. When a step looks different, it re-records, re-voices the changed lines and sends me the new cut. The trial runs worked; the first scheduled run is still ahead.
+The tour is also a one-minute narrated video, recorded from the real app, with English and Spanish captions. A recorded tour goes stale the first time a screen moves, so a weekly check compares each step with the last cut and, when one looks different, re-records it and sends me the new cut. The trial runs worked; the first scheduled run is still ahead.
 
 Nothing reaches testers until I say ship it, the same way nothing reaches your resume until you keep it.
 
-## Where the design work is
+## Where's the design work in an AI product?
 
 Adding AI to a product is the easy part. The design work is deciding how much the model gets to do, and making sure the person can see, judge and undo every bit of it.
 
@@ -150,8 +150,8 @@ The same proposal model works for someone with nothing on the page yet, as long 
 
 Every product decision here was mine and written down before the code. AI coding tools carried out much of that code, and Ghosted's own AI is OpenAI's GPT on my ChatGPT subscription.
 
-## Where it is now
+## Can you use it now?
 
-Ghosted is live at ghosted.cello.design. Since the first testers it has grown interview prep, thank-you notes and a resume built from LinkedIn screenshots, the last two because people asked for them.
+Yes. Ghosted is live at ghosted.cello.design. Since the first testers it has grown interview prep, thank-you notes and a resume built from LinkedIn screenshots, the last two because people asked for them.
 
-Next, a native speaker reads the Spanish screens and captions.
+The Spanish screens and captions are next, once a native speaker reads them. Today, a new visitor can sign up on the site for a tester code.

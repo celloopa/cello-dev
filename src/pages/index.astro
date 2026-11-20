@@ -116,7 +116,7 @@ const homeDescription =
           ))
         }
       </ol>
-      <div class="container"><ArrowLink href="/projects" class="view-all">All Case Studies</ArrowLink></div>
+      <div class="container view-all-row"><ArrowLink href="/projects" class="view-all">All Case Studies</ArrowLink><ArrowLink href="/now" class="view-all">What I’m building now</ArrowLink></div>
   </Section>
 
   <Section
@@ -344,6 +344,12 @@ const homeDescription =
 
   .view-all {
     margin-top: var(--space-32);
+  }
+
+  .view-all-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-16) var(--space-32);
   }
 
   /* The chapter rail is fixed at the left from 900px up; every column here starts clear of it

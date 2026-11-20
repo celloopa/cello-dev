@@ -1,6 +1,6 @@
 ---
 title: "Programmatic resumes you can chat with"
-description: "I rebuilt Ghosted around a live resume you can edit by chatting. You can see each AI change on the page, try another direction, or keep writing yourself."
+description: "How do you let an AI tailor your resume without losing track of what it changed? In Ghosted, each change shows on the page, and you keep it, try another direction or write it yourself."
 publishDate: 2026-10-08
 updatedDate: 2026-11-20
 image: /images/projects/ghosted/v3/highlights.webp
@@ -15,17 +15,19 @@ draft: false
 import MediaFull from '@/components/media/MediaFull.astro';
 import MediaTwo from '@/components/media/MediaTwo.astro';
 
-Ghosted is a resume editor you talk to. Every change the AI suggests shows up highlighted on the page, and you keep it or reject it.
+How do you let an AI tailor your resume without losing track of what it changed? In Ghosted, every change it suggests shows up highlighted on the page, and you keep it or reject it.
 
-This is a tour of the version that went live on October 8, 2026, in the order you'd use it. The screenshots use a made-up resume for Rowan Ellis and sample Design Engineer jobs. What changed later is in the dated updates at the end.
+This is a tour of the version that went live on October 8, 2026, in the order you'd use it. The screenshots use a made-up resume and sample Design Engineer jobs. What changed later is in the dated updates at the end.
 
-## Why rebuild it?
+## What was wrong with the last version?
 
-The last version of Ghosted worked for me. Testers found it too complicated.
+Testers found it too complicated. It worked for me.
 
 So I went back through the steps between “here's my resume” and “I applied.” I wanted to look at my resume, talk through a change and see what happened, without bouncing between places in the app.
 
-## Bring in what you've actually done
+## What do you start with?
+
+Your own resume: upload a PDF, paste text or import a [JSON Resume](https://jsonresume.org) file. JSON Resume is already structured, so code handles that import without a model.
 
 <MediaFull
   src="/images/projects/ghosted/v3/interview.webp"
@@ -33,13 +35,13 @@ So I went back through the steps between “here's my resume” and “I applied
   caption="Asked what's missing, the AI names two specifics, a project's numbers and a line on mentoring, instead of writing anything."
 />
 
-You upload a PDF, paste text or import a [JSON Resume](https://jsonresume.org) file. JSON Resume is already structured, so code handles that import without a model.
-
 That becomes your base resume: a master copy with no length limit. The AI doesn't trim it. It asks one or two questions at a time about what's missing, and writes bullets from your answers.
 
 In version 2, I was trying to catch invented claims after the model had written them. Now I ask for the evidence before it starts. There's still something to review, but less to undo.
 
-## Paste a job link
+## How does it read the job?
+
+Paste a job link. Ghosted pulls the posting, trims it to the job, and you check the result.
 
 <MediaFull
   src="/images/projects/ghosted/v3/intake.webp"
@@ -47,11 +49,13 @@ In version 2, I was trying to catch invented claims after the model had written 
   caption="A posting pasted in and trimmed to the job, ready to tailor. (Demo data: a fictional job.)"
 />
 
-Ghosted tries the hiring platform's own data first. At launch that covered Greenhouse, Lever, Ashby, Workday, SmartRecruiters, Amazon and Microsoft, with Firecrawl as the fallback.
+It strips legal boilerplate, culture sections and embedded application forms. The useful brief sits between the title and the disclaimers, so the later steps work from that instead of the whole page.
 
-It strips legal boilerplate, culture sections and embedded application forms, and you check the result. The useful brief sits between the title and the disclaimers, so the later steps work from that instead of the whole page.
+At launch it read Greenhouse, Lever, Ashby, Workday, SmartRecruiters, Amazon and Microsoft from their own data, with Firecrawl as the fallback for other sites.
 
-## Review each change on the page
+## How do you see what the AI changed?
+
+On the resume itself. Each change appears highlighted, with buttons to accept or reject it.
 
 <MediaTwo items={[
   { src: "/images/projects/ghosted/v3/tailored.webp", alt: "Tailoring notes in the chat listing what was emphasized, such as the WCAG 2.2 work, beside the one-page tailored resume", caption: "The first tailoring pass says what it changed, on one page." },
@@ -60,19 +64,21 @@ It strips legal boilerplate, culture sections and embedded application forms, an
 
 Ghosted puts the job in a category and drafts a one-page resume from your base. It also tells you what it couldn't back up.
 
-Then you keep talking. “Trim it to one page.” “Lead with design systems.” Each change appears highlighted on the resume, with buttons to accept or reject it. The image at the top of this post shows one: a changed summary and bullets, with Keep and Reject above the page.
+Then you keep talking. “Trim it to one page.” “Lead with design systems.” The image at the top of this post shows one: a new summary and bullets, with Keep and Reject above.
 
 I wanted to judge a suggestion in the document itself. Does the new summary read well here? Did that bullet get too long? Those are easier to answer when I can see the page.
 
-The preview is Typst compiled in the browser, and the download comes from the same compiler. Before writing any app code, I checked that an edit re-renders fast enough to feel instant. That made a preview beside the conversation possible.
+The preview and the download come from the same Typst compiler, running in the browser, so the page you judge is the PDF you send.
 
-## Try a direction, then come back
+## What if you don't like where it went?
 
-Each change gets a version that records who made it, why and when: the AI, a direct edit or an import. Undo and Restore change which version is current; they don't delete the others.
+Go back. Each change gets a version that records who made it, why and when: the AI, a direct edit or an import. Undo and Restore change which version is current; they don't delete the others.
 
 So I can try a direction and come back if it doesn't work.
 
-## Edit a line yourself
+## Can you skip the chat?
+
+Yes. **Edit directly** swaps the chat for a form with your jobs, roles and bullets, including reorder and remove.
 
 <MediaFull
   src="/images/projects/ghosted/v3/edit-style.webp"
@@ -80,13 +86,13 @@ So I can try a direction and come back if it doesn't work.
   caption="The Style panel's Fine-tune: control down to the line, without touching code."
 />
 
-Chat shouldn't be the only way in. **Edit directly** swaps it for a form with your jobs, roles and bullets, including reorder and remove.
-
 **Style** covers fonts, margins and header alignment, down to the size, weight and color of your name, headings, companies, titles and dates. The preview updates while you type.
 
 When I know exactly which line or gap I want to change, I'd rather do it myself than explain it in a message.
 
-## Let past applications shape the next one
+## What happens after a few applications?
+
+Once a category has three jobs, Ghosted can draft an archetype: a resume for that kind of role, built from the wording and bullets you kept across those applications. New jobs in the category tailor from it instead of the full base.
 
 <MediaFull
   src="/images/projects/ghosted/v3/category.webp"
@@ -94,11 +100,11 @@ When I know exactly which line or gap I want to change, I'd rather do it myself 
   caption="Five Design Engineer jobs, the terms they share, and the bullets that keep getting reused. (Demo data.)"
 />
 
-Your jobs go into your own categories. Once a category has three jobs, Ghosted can draft an archetype: a resume for that kind of role, built from the wording and bullets you kept across those applications. New jobs in the category tailor from it instead of the full base.
-
 I wanted something between the resume with everything you've ever done and the resume for one job. The category view also shows shared posting terms and reused bullets. At launch the term list was still noisy, with words like “location” and “care” showing up.
 
-## Tell me what's wrong
+## What if something's wrong?
+
+Tell me from inside the app. **Leave feedback**, called Report a problem at launch, sends me a note and screenshots straight to Discord.
 
 <MediaFull
   src="/images/projects/ghosted/v3/report.webp"
@@ -106,13 +112,13 @@ I wanted something between the resume with everything you've ever done and the r
   caption="Anything at all: one button, screenshots included, never the resume itself."
 />
 
-Testers sign in with a personal code, and their work syncs to the server. **Leave feedback**, called Report a problem at launch, sends me a note and screenshots straight to Discord.
+Testers sign in with a personal code, and their work syncs to the server.
 
 My first tester asked for formatting in her job notes. She planned to keep them open in an interview the next day, so I shipped it that evening. That's why the button sits close by: I hear what someone is trying to do and change the part in their way.
 
 ## Who built what?
 
-I worked out the flow, the product model and the decisions in planning a few days before the rebuild. A coding agent built the first working version from that plan in a day. It replaced version 2 at ghosted.cello.design that afternoon.
+I worked out the flow, the product model and the decisions in planning a few days before the rebuild. An AI coding tool built the first working version from that plan in a day. It replaced version 2 at ghosted.cello.design that afternoon.
 
 At launch I was starting to take over the foundations by hand: the resume data model, the template, the prompts and version history. Next on my list were a brand identity, more changes led by testers, and eventually an open-source 1.0 where people connect the AI subscription they already pay for. Those were still plans at launch.
 
@@ -120,7 +126,7 @@ At launch I was starting to take over the foundations by hand: the resume data m
 
 These describe the product on their dates, newest first.
 
-**November 20, 2026 · Getting in is quicker.** You no longer wait on an invite: a new visitor gets a sign-up code on the spot.
+**November 20, 2026 · Getting in is quicker.** A new visitor can sign up on the site for a tester code.
 
 **October 11, 2026 · The ghost shows you around.** New accounts get a guided walkthrough in the real app, from the base resume to Download PDF. The screen dims around one control, the ghost explains it from a card, and every step has Next and Dismiss. For people who already have jobs, the tour points things out without asking them to practice edits, and it fills in Fit and Research on an older job that's missing them.
 
@@ -132,7 +138,7 @@ These describe the product on their dates, newest first.
 
 Every tailored job also gets a Fit checklist: strengths, what to lead with and gaps to prepare for. Research suggests things to read before applying. The AI picks the topics; the links come from a web search. The [case study](/projects/ghosted) has the story.
 
-**October 10, 2026 · Leaner and streaming.** AI requests had been carrying a command-line tool's long instructions with every edit. A direct model connection made each chat edit much lighter. Replies now stream as they're written, while resume edits still arrive whole for review. I also added an Effort picker beside Send and a way to see your usage.
+**October 10, 2026 · Leaner and streaming.** A direct model connection made each chat edit much lighter. Replies now stream as they're written, while resume edits still arrive whole for review. I also added an Effort picker beside Send and a way to see your usage.
 
 **October 9, 2026 · It has a face now.**
 
