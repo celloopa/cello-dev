@@ -1,21 +1,21 @@
 /** Short reading paths, grounded in the corresponding MDX case studies. */
 export const projectStories: Record<string, { problem: string; decision: string; outcome: string; mark: string }> = {
   "asheville-dispensary": {
-    problem: "Three distinct brands needed a coherent system across social, web, print and packaging.",
-    decision: "Share the foundations and reusable structures, with each brand supplying its own visual identity.",
-    outcome: "A shared asset directory is in use; audits and editable guides are extending the system across media.",
+    problem: "Three brands needed their own look everywhere, and approved files were hard to find.",
+    decision: "Build all three from one set of parts, and let each brand bring its own colors, type and imagery.",
+    outcome: "One file library, with a portal in each brand's look, is in use. The guides and templates are in review.",
     mark: "/images/project-marks/asheville-dispensary.svg",
   },
   ghosted: {
-    problem: "AI can tailor a resume quickly. People still need to see and control every change.",
-    decision: "Make each edit a yellow proposal on the real resume, ready to keep, reject, or revise.",
-    outcome: "Used by 30+ users, and their feedback shapes each release. I haven’t measured hiring outcomes.",
+    problem: "An AI can tailor a resume in a minute. I only trust it if I can see every change it made.",
+    decision: "Make each edit a yellow proposal on the real resume, ready to keep, reject, or fix yourself.",
+    outcome: "Real testers have used it since October 8, and their reports set what I build next. I haven’t measured hiring outcomes.",
     mark: "/images/project-marks/ghosted.svg",
   },
   vegavengers: {
-    problem: "Festival information was going stale, and every correction landed on a developer.",
-    decision: "Give editors their own publishing workflow, and have AI suggestions show up as ordinary drafts with evidence.",
-    outcome: "Two non-technical editors run the live CMS. AI proposes updates; an editor decides what gets published.",
+    problem: "Festival dates kept going stale, and every fix came to me.",
+    decision: "Give the editors a CMS of their own, and have the AI checker write drafts with evidence for them to approve.",
+    outcome: "Two editors run it every day. The checker suggests; an editor decides what goes live.",
     mark: "/images/project-marks/vegavengers.svg",
   },
   daybreak: {

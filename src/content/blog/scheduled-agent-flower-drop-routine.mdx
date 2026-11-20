@@ -2,7 +2,7 @@
 title: Automating product drops gave me time to redesign them
 description: I replaced a weekly video-production routine, then used the time it freed up to build more varied motion templates without adding another editing step to each drop.
 publishDate: 2026-10-29
-updatedDate: 2026-10-29
+updatedDate: 2026-11-20
 image: /images/blog/product-drops/review-sheet.webp
 tags:
   - Design systems
@@ -15,52 +15,55 @@ draft: false
 import MediaFull from '@/components/media/MediaFull.astro';
 import MediaTwo from '@/components/media/MediaTwo.astro';
 
-The CEO liked the new flower stories. My reply was simple: I’d use this style for the next drop.
+Flower drops at Asheville Dispensary now have animated stories, and making the next batch shouldn't add an editing pass. Automating the old routine is what paid for the redesign.
 
-That was a good place to end a design review. It was also a useful test of the automation I’d already built. I could make the stories more animated, give them more variation and spend time on their composition without signing myself up to edit every future video by hand.
+The new renderer still needs to be connected to the live workflow. Everything below is the review cut, made with historical products and offers.
 
-The review sequence contains three product stories and a separate logo/website end card, seven seconds each. The products and offer text are historical examples used to review the templates.
+<MediaFull
+  src="/images/blog/product-drops/familiar-sequence.mp4"
+  poster="/images/blog/product-drops/familiar-sequence-poster.webp"
+  alt="The Familiar sequence: three animated flower stories, then a black leaf-textured Asheville Dispensary logo and website end card"
+  caption="The review export. Each of the three product stories and the separate end card can also be sent on its own."
+/>
 
-The new renderer still needs to be connected to the live workflow. The direction has a positive response and a next use; the cutover is ahead. But the important design constraint is already there: improving the template should change what the next run produces, without adding another manual production step to that run.
+The CEO liked the new flower stories. I said I'd use this style for the next drop.
 
-## The routine before the routine
+The design constraint that matters is already in place: improving the template changes what the next run produces, without adding a manual step to that run.
 
-I lead design for Asheville Dispensary and its related brands. Flower drops were one of those small, recurring jobs that filled more of the week than their size suggested.
-
-An announcement arrived with the strains, tiers and sale wording. I found the product pages and gathered their photos and videos. In Figma, I duplicated the story card and replaced its content. Then I moved through conversion commands, Premiere and Media Encoder to put footage behind the card, mask it into a circle and export the finished story.
-
-After that came the handoff: attach the files to Asana, post them for approval in Slack, and make sure the complete batch was there.
-
-It took seven tools and roughly three to five hours a week. That was my working estimate for the manual routine, rather than a controlled time study. The annoying part was how much of it repeated a decision I’d already made. The layout was approved. The crop was known. The output dimensions were known. I was carrying those decisions between applications.
+## What did the routine take?
 
 <MediaTwo items={[
   { src: "/images/projects/asheville/drop-card.webp", alt: "Original White Runtz story card with a Greenhouse ounce-sale label and product photograph", caption: "The original card: a repeatable composition with a small set of changing content fields." },
   { src: "/images/projects/asheville/drop-story.webm", alt: "Original automated White Runtz story with product footage playing through a circular mask", caption: "The first automated output, from October 8: the familiar card and circular footage, without the new layer animation." }
 ]} />
 
-## First, reproduce the approved result
+I lead design for Asheville Dispensary and its related brands. Flower drops were a small, recurring job that filled more of the week than their size suggested.
+
+An announcement arrived with the strains, tiers and sale wording. I found the product pages and gathered photos and videos. In Figma, I duplicated the story card and replaced its content. Then conversion commands, Premiere and Media Encoder put footage behind the card, masked it into a circle and exported the story. After that came the handoff: attach the files to Asana, post them for approval in Slack, and make sure the whole batch was there.
+
+Seven tools and a few hours every week, by my rough count. Most of it repeated decisions I'd already made. The layout was approved, the crop was known, the output size was known. I was carrying those decisions between applications.
+
+## Rebuild the approved card in code
 
 My first goal was to get the existing work out reliably.
 
-When I looked closely at an old export, it was a 4.73-second composition with no animated artwork. A card sat over product footage. There was no reason to open a video editor to reproduce that arrangement.
+An old export turned out to be a short composition with no animated artwork: a card over product footage. Reproducing that didn't need a video editor.
 
-I measured the mask and output settings, then used FFmpeg to compose the video. That also caught something easy to miss in the old files: exports intended to be silent could still contain an audio track. The generated version could enforce silence explicitly.
+I measured the mask and output settings, then composed the video with FFmpeg. That caught something easy to miss: exports meant to be silent could still carry an audio track. The generated version enforces silence.
 
-The wider routine read the announcement, found product media, filled the approved design, rendered the files and prepared the review handoff. Over time, more of the intermediate work moved into code too.
+## Fix the wrong strain and the wrong tier
 
-It needed more than a rendering command. Search once returned a lookalike strain, and a stale sitemap pointed at an old page. I added direct URL checks, title matching and a record of why a page had been selected. Later, a disagreement between the announced tier and a website category led to the wrong tier being used. That became a clearer boundary: the announcement owns the offer and tier; the website supplies the media.
+The wider routine read the announcement, found product media, filled the approved design, rendered the files and prepared the review handoff. That took more than a rendering command.
 
-I also separated preparing files from notifying people. Files could attach quietly while a batch was being completed. The review message waited for the whole batch and the right hours.
+Search once returned a lookalike strain, and a stale sitemap pointed at an old page. I added direct URL checks, title matching and a record of why each page was picked.
 
-Those corrections mattered to the design work that followed. I needed a dependable production loop before I could spend the recovered time exploring what it should produce next.
+Later, the announced tier disagreed with a website category, and the wrong tier was used. That set a clearer boundary: the announcement owns the offer and tier, and the website supplies the media.
 
-## The time went back into the design
+I also separated preparing files from notifying people. Files attach quietly while a batch is completed. The review message waits for the whole batch and the right hours.
 
-Once I wasn’t assembling every story manually, I could work on the template itself.
+A dependable loop had to come first. Only then could I spend the recovered time on what it should produce.
 
-The original automation had reproduced the old result. Now I wanted more variation: a clearer entrance, a little more space for the product, and a sequence that felt composed from beginning to end.
-
-I started with motion studies in Storybook. Gentle rise, staggered slide and stamp pop let me compare how the name and sale treatment arrived. A Study Lab exposed the timing and travel values, so I could change one thing, replay it and inspect an exact frame.
+## Study the motion in Storybook
 
 <MediaFull
   src="/images/blog/product-drops/storybook-compare-all.webp"
@@ -69,9 +72,9 @@ I started with motion studies in Storybook. Gentle rise, staggered slide and sta
   uncropped
 />
 
-There was a practical reason to make those controls explicit. A description like “a little slower” is useful in conversation, but it doesn’t preserve a revision. A saved study records when the name starts, how long it moves, when the sale stamp appears and how far things travel.
+The old automation reproduced the old result. Now I wanted more variation: a clearer entrance, more room for the product, and a sequence that felt composed from start to finish.
 
-The Storybook studies use the same frame-drawing function for the browser preview and their offline export. Their export reports include sampled frames, so the actual video can be checked against the preview.
+Gentle rise, staggered slide and stamp pop let me compare how the name and sale treatment arrive.
 
 <MediaFull
   src="/images/blog/product-drops/storybook-study-lab.webp"
@@ -80,15 +83,11 @@ The Storybook studies use the same frame-drawing function for the browser previe
   uncropped
 />
 
-That was the exploration environment. The later Familiar sequence was a separate composition and renderer, so I checked its encoded files and transitions directly too. I wasn’t treating a good-looking Storybook canvas as proof that every deliverable worked.
+The Study Lab exposes timing and travel, so I can change one thing, replay it and inspect an exact frame. “A little slower” is useful in conversation, but it doesn't preserve a revision. A saved study records when the name starts, how long it moves, when the sale stamp appears and how far things travel.
 
-## Keep the familiar build, give it room
+The browser preview and the offline export use the same frame-drawing function, and export reports include sampled frames to check the video against the preview. The later Familiar sequence had its own renderer, so I checked its encoded files and transitions directly too. I wasn't treating a good-looking Storybook canvas as proof that every deliverable worked.
 
-Of the layouts I reviewed, Familiar was my favorite. I wanted to keep the recognizable card, circular footage and product identity, then give them more room to move.
-
-The background flower cutouts got larger and entered and exited with each slide. Their positions and rotations varied across the batch. I zoomed the footage a little more for the two Private Reserve strains while leaving the Smalls treatment wider, where the group of smaller buds was part of the image.
-
-Then I carried the motion through every element: the heading, name panel, pills, video window, seal and background cutout. Giving each element an exit mattered as much as its entrance. The next story needed a clean place to begin.
+## Give the familiar layout room to move
 
 <MediaFull
   src="/images/blog/product-drops/familiar-before-after.webp"
@@ -97,37 +96,32 @@ Then I carried the motion through every element: the heading, name panel, pills,
   uncropped
 />
 
-The last layout adjustment was to raise the heading and pills, move the video up and make it slightly larger. That exposed more of the background flower at the bottom. It was a small change to the composition, but the product felt less boxed in.
+Of the layouts I reviewed, Familiar was my favorite. I kept the recognizable card, circular footage and product identity, and gave them more room to move.
 
-## The end card needed to belong
+The background flower cutouts got larger and now enter and exit with each slide, with positions and rotations varied across the batch. I zoomed the footage further for the two Private Reserve strains and left the Smalls wider, where the group of smaller buds is part of the image.
 
-I wanted the logo and website to have their own story at the end.
+Then the motion went through every element: heading, name panel, pills, video window, seal and background cutout. Exits mattered as much as entrances. The next story needs a clean place to begin.
 
-The first direction became a black card with light type. For the detail behind it, I went back to the brand audit and existing assets. The leaf artwork gave it a connection to the rest of the brand without adding a new decorative language just for this video.
+Last, I raised the heading and pills and moved the video up, slightly larger. More of the background flower shows at the bottom, and the product feels less boxed in.
 
-That took a few revisions. A visible square in the leaf treatment interrupted the background, so I changed the crop and mask. Then the leaves became too subtle in the encoded version. I brought them back until they were visible in the actual file.
+## Make the end card belong
 
-The final product story fades to black before the end card arrives. I checked the joins in the exported sequence, along with playback at desktop and phone sizes. A transition only counts if it survives the export people will watch.
+The logo and website get their own story at the end: a black card with light type. For the detail behind it, I went back to the brand audit and existing assets. The leaf artwork ties it to the rest of the brand without a new decorative language just for this video.
 
-<MediaFull
-  src="/images/blog/product-drops/familiar-sequence.mp4"
-  poster="/images/blog/product-drops/familiar-sequence-poster.webp"
-  alt="Twenty-eight-second Familiar sequence with three animated flower stories and a black leaf-textured Asheville Dispensary logo and website end card"
-  caption="The 28-second review export. Each of the three product stories and the separate end card can also be sent individually."
-/>
+That took a few revisions. A visible square in the leaf treatment interrupted the background, so I changed the crop and mask. Then the leaves got too subtle in the encoded version, so I brought them back until they showed in the actual file.
 
-## A production decision I can reuse
+The last product story fades to black before the end card arrives. I checked the joins in the exported sequence, and playback at desktop and phone sizes. A transition only counts if it survives the export people will watch.
 
-I sent one combined preview to the team, with the individual files in an Asana task. That made it possible to watch the pacing and review the pieces that would actually be delivered.
+## What does it still cost?
 
-Jimmy, the CEO, replied that he liked them a lot. I confirmed I’d use the style for the next flower drop.
+I sent the team one combined preview, with the individual files alongside. They could watch the pacing and review the pieces that would actually be delivered.
 
-The first automation had already replaced the manual assembly routine. This redesign is an investment on top of that: time spent improving a reusable result. Once the new renderer is connected, the same website media should feed the animated templates, and the same review process should receive the outputs.
+There will still be review, exceptions and occasional template changes, and rendering takes compute time. I haven't timed a live batch with this version yet. The aim is to avoid an extra editing pass for each drop, without claiming the work has no ongoing cost.
 
-There will still be review, exceptions and occasional template changes. Rendering also takes compute time. I haven’t timed a live batch with this version yet. The aim is to avoid an additional editing pass for each drop, rather than claim the work has no ongoing cost.
+The earlier routine taught me to watch that cost. Idle days once got expensive because scheduled checks opened full agent sessions. Moving the first check into a script brought an idle day down to cents. That figure belongs to the old version.
 
-The earlier routine’s cost history made that distinction useful. An idle day once cost $12.10 because scheduled checks opened full agent sessions. Moving the initial check into a script reduced the historical estimate to about $0.30 a day under the revised schedule. Those are measurements from that version, not a price promise for the new workflow.
+## What's next
 
-The wider [Asheville Dispensary case study](/projects/asheville-dispensary/) is about the brand system behind the work: shared foundations, distinct identities and materials that need to hold together across print and digital.
+The style is set for the next flower drop. Next, the new renderer gets connected, so the same website media feeds the animated templates and the same review receives the output.
 
-This is one application of that system. Automating the old routine gave me room to redesign the stories. Keeping the redesign in a reusable renderer gives that work a way to reach the next batch.
+The wider [Asheville Dispensary case study](/projects/asheville-dispensary/) is about the brand system behind this work: shared foundations, distinct identities and materials that hold together across print and digital.

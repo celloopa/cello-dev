@@ -1,0 +1,104 @@
+---
+/*
+ * WorkWithMe (CDEV-54): the site's one ask. Book the free intro call first; email stays for
+ * anyone who prefers it (hiring managers included). Strings live in src/data/work-with-me.ts.
+ *
+ *   variant   full   the three ways with their prices, the availability line and the actions
+ *                    (inside the home and About "Let's Talk" sections, which carry the intro)
+ *             short  one line and the actions, at the end of a case study
+ *   source    names where the click came from in analytics: data-cta="book-<source>"
+ *
+ * The ways sit on Panel plates, so their small text never sits on scene art.
+ */
+import Button from "@/components/ui/Button.astro";
+import ArrowLink from "@/components/ui/ArrowLink.astro";
+import Panel from "@/components/ui/Panel.astro";
+import { basics } from "@cv";
+import { bookingHref, workWithMe } from "@/data/work-with-me";
+
+interface Props {
+  variant?: "full" | "short";
+  source: string;
+  /** an extra link after email, e.g. the résumé on home */
+  extra?: { href: string; label: string };
+}
+
+const { variant = "full", source, extra } = Astro.props;
+const email = basics.email;
+---
+
+<div class:list={["work-with-me", `work-with-me--${variant}`]}>
+  {
+    variant === "full" ? (
+      <>
+        <ul class="ways" aria-label="Ways to work with me">
+          {workWithMe.ways.map((way) => (
+            <Panel as="li" class="way">
+              <h3 class="way-name">{way.name}</h3>
+              <p class="way-detail">{way.detail}</p>
+              <p class="way-price">{way.price}</p>
+            </Panel>
+          ))}
+        </ul>
+        <p class="availability">{workWithMe.availability}</p>
+      </>
+    ) : (
+      <p class="case-end-line">{workWithMe.caseEnd}</p>
+    )
+  }
+  <div class="actions">
+    <Button href={bookingHref} data-cta={`book-${source}`}>{workWithMe.book}</Button>
+    {email && <ArrowLink href={`mailto:${email}`} data-cta="email">{workWithMe.email}</ArrowLink>}
+    {extra && <ArrowLink href={extra.href}>{extra.label}</ArrowLink>}
+  </div>
+</div>
+
+<style>
+  .work-with-me { margin-top: var(--space-24); }
+
+  .ways {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: var(--space-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .way-name {
+    margin: 0;
+    font: var(--weight-bold) var(--type-heading) / var(--leading-tight) var(--font-title);
+  }
+
+  .way-detail { margin: var(--space-8) 0 0; }
+
+  .way-price {
+    margin: var(--space-16) 0 0;
+    font-weight: var(--weight-bold);
+    color: var(--text-accent);
+  }
+
+  .availability,
+  .case-end-line {
+    max-width: var(--layout-measure);
+    margin: var(--space-24) 0 0;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-24);
+    align-items: center;
+    margin-top: var(--space-24);
+  }
+
+  .work-with-me--short {
+    margin-top: var(--space-64);
+    padding: var(--space-32);
+    background: var(--bg-plate);
+    color: var(--text-primary);
+    border: var(--stroke-frame) solid var(--border-strong);
+  }
+
+  .work-with-me--short .case-end-line { margin-top: 0; }
+</style>

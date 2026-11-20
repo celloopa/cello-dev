@@ -5,9 +5,10 @@ import { getCollection } from "astro:content";
 import SceneLayout from "@/layouts/SceneLayout.astro";
 import ChapterRail from "@/components/scene/ChapterRail.astro";
 import WorkItem from "@/components/scene/WorkItem.astro";
-import Button from "@/components/ui/Button.astro";
 import ArrowLink from "@/components/ui/ArrowLink.astro";
 import Section from "@/components/ui/Section.astro";
+import WorkWithMe from "@/components/WorkWithMe.astro";
+import { workWithMe } from "@/data/work-with-me";
 import { homeScene, homeSection, sceneForProject } from "@/lib/scene/pairing";
 import { basics } from "@cv";
 import { sceneOptions } from "@/lib/scene/slots";
@@ -97,7 +98,7 @@ const homeDescription =
     title="Selected Case Studies"
     titleId="work-title"
     stop="Selected Case Studies"
-    intro="Client work and products of my own, from shared brand systems to AI tools and everyday planning. Here’s the problem, the decision, and what shipped."
+    intro="Client work and products of my own: a family of brands, a site its editors run, and an AI tool where you approve every change. Each one says the problem, the call I made, and what works now."
     data-scene-focus
   >
       <ol class="work-list">
@@ -125,14 +126,11 @@ const homeDescription =
     id="contact"
     title="Let’s Talk"
     titleId="contact-heading"
-    intro="I’m open to full-time product design and design engineering roles where I can focus deeply on a product alongside a team, remote in the US or in Portland. The fastest way to reach me is email."
+    intro={workWithMe.intro}
     data-scene-stop="Let’s Talk"
     data-scene-backdrop={sections.contact}
   >
-      <div class="contact-actions">
-        <Button href={`mailto:${email}`} data-cta="email">Email Me</Button>
-        <ArrowLink href="/resume">View Resume</ArrowLink>
-      </div>
+      <WorkWithMe source="home" extra={{ href: "/resume", label: "View résumé" }} />
   </Section>
   <noscript><p class="container"><a href="/about/">About and How I Build →</a></p></noscript>
   <script>

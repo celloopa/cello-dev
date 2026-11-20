@@ -19,6 +19,7 @@ import MediaTwo from "@/components/media/MediaTwo.astro";
 import MediaThree from "@/components/media/MediaThree.astro";
 import ReadHead from "@/components/scene/ReadHead.astro";
 import StoryEnd from "@/components/scene/StoryEnd.astro";
+import WorkWithMe from "@/components/WorkWithMe.astro";
 import { sceneForProject } from "@/lib/scene/pairing";
 import { projectEyebrow } from "@/lib/project-label";
 
@@ -135,6 +136,8 @@ const all = { href: "/projects", label: "All work" };
       </Prose>
 
       {summary && <details class="read-details"><summary>Project details and tools</summary><CaseMeta items={summary} /></details>}
+
+      <WorkWithMe variant="short" source={`case-${project.id}`} />
 
       <StoryEnd next={next} previous={previous} all={all} />
     </div>

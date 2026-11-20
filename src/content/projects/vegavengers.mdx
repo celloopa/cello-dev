@@ -1,6 +1,6 @@
 ---
 title: VegAvengers Marketing
-description: A content platform two non-technical editors can run themselves. I designed the CMS, publishing workflow, and AI review tools behind vegavengers.com.
+description: A festival and sanctuary site I kept fixing, rebuilt as one its two editors run themselves, with an AI checker that only ever writes drafts.
 image: /images/projects/vegHero.webm
 ogImage: /images/projects/veg-avengers-thumbnail.png
 url: https://vegavengers.com
@@ -14,22 +14,22 @@ techStack:
 role: Product Designer / Design Engineer
 engagement: Client · Since February 2025
 highlights:
-  - Designed and shipped the system of record for a nonprofit's content — collections, editorial workflow, and admin experience on Payload 3
-  - Modeled messy real-world festival data honestly, keeping original date text verbatim alongside parsed fields and provenance
-  - Built the editorial dashboard two non-technical editors use daily, from trimmed rich-text controls to per-photo credit tooling
-  - Shipped an AI freshness checker that proposes content changes as drafts, so nothing goes live without an editor's approval
-  - Designed the publish pipeline so a CMS outage can never break the public site
+  - Two non-technical editors run the site every day, without me
+  - Festival dates stay the way festivals write them, and search still works
+  - The admin shows the editors only what their job needs
+  - An AI checker finds stale dates and writes drafts an editor approves
+  - An outage can make the site less fresh, never take it down
 summary:
   - label: Problem
-    value: "The festival data behind vegavengers.com was going stale: dates changed, links died, and every fix was a developer task. Of 115 festivals with unconfirmed dates, 26 had dead links."
+    value: "Festival dates changed, links died, and every correction came to me as a developer task. The site's content had no owner who could fix it."
   - label: Role
-    value: "Solo product designer and design engineer, in a client engagement since February 2025: the content model, the editorial workflow, the admin experience, and the automation around them. The editors own editorial judgment and what gets published."
+    value: "Solo designer and builder since February 2025: the content model, the admin and the AI checker. The editors decide what gets published."
   - label: Key decision
-    value: "Put approval where the editors already work. The AI checker writes ordinary Payload drafts, so its proposals look like a colleague's unpublished edit, with the evidence attached."
+    value: "Put approval where the editors already work. The checker writes ordinary drafts with its evidence attached, in the screens they already use to publish."
   - label: Shipped
-    value: "A live Payload CMS that two non-technical editors run day to day, publish-triggered rebuilds that survive a CMS outage, and an AI checker that proposes but never publishes."
+    value: "A live CMS the two editors run every day, a public site that keeps working if the CMS goes down, and a checker that suggests but never publishes."
   - label: Tools
-    value: "Payload 3, Next.js, PostgreSQL, Cloudflare R2, Astro, React, TypeScript, self-hosted on Coolify."
+    value: "Payload CMS, Next.js, PostgreSQL, Cloudflare R2, Astro, React and TypeScript, self-hosted on Coolify."
 featured: true
 complete: true
 order: 3
@@ -39,109 +39,99 @@ import FlowDiagram from '@/components/FlowDiagram.astro';
 import MediaFull from '@/components/media/MediaFull.astro';
 import MediaTwo from '@/components/media/MediaTwo.astro';
 
-## Context
+VegAvengers helps people find vegan festivals, animal sanctuaries and advocacy groups. This is how its festival list moved off my to-do list and into an admin its editors run themselves.
 
-VegAvengers connects people with vegan festivals, animal sanctuaries and advocacy organizations. The first version I built was a fast, searchable Astro site, and it worked.
+## Why did every fix come to me?
 
-Then the data underneath it started to rot. Festival dates changed, websites died, and every correction was a developer task. Of 115 festivals with unconfirmed dates, 26 had links that had quietly gone dead.
+<MediaTwo items={[
+  { src: "/images/projects/tool-switcher.webm", alt: "The first VegAvengers site switching between festival and sanctuary search", caption: "The first site: festivals and sanctuaries as two modes of one search." },
+  { src: "/images/projects/vegfests.webm", alt: "Festival search narrowing results as someone types a city", caption: "Search that works when you half remember: a month name, a city, or UK when you mean England." }
+]} />
 
-At that point the problem wasn't really discovery anymore. It was content operations: who owns the data, how it gets updated, and how much of that work should need me at all. So I designed and shipped a second product, the system of record: a Payload CMS the organization's two editors run themselves.
+The first version was a fast, searchable site, and it worked. The festival list behind it kept going out of date.
 
-<MediaFull
-  src="/images/projects/vegHero.webm"
-  alt="VegAvengers homepage with animated taglines and navigation"
-  caption="The public site stayed fast and mission-forward; the new work moved upstream, into where its content comes from."
-/>
+Festival dates changed. Festival websites went dark. Every correction was a developer task, so every correction was mine.
 
-## Modeling messy reality
+The question became who keeps that list true, and how much of it should need me at all.
 
-Festival data doesn't show up as clean timestamps. It shows up as "6/5-6/7/26", "TBD" or "sometime in the fall." I wanted the content model to work with that instead of fighting it.
-
-**One document per festival edition.** A festival's 2026 edition is its own record. Rolling into next year is just duplicate and bump, and the history stays intact.
-
-**The original text beside the parsed fields.** `displayDate` keeps the free-text date exactly as it was published. `dateStart` and `dateEnd` hold parsed values where parsing is possible. People see what the festival actually said, and search still works on real dates.
-
-**Provenance and confidence as real fields.** Every record knows whether it came from a CSV import, a person or AI discovery. The fields the AI checker maintains are read-only in the admin, so you can see the line between machine bookkeeping and editorial judgment right in the interface.
+## Let the dates stay messy
 
 <MediaFull
   src="/images/projects/cms/cms-festivals.webm"
-  alt="Festival Database list in the Payload admin showing Somerset Vegan Festival's 2025 and 2026 editions"
-  caption="One festival, two edition records: 2025 confirmed and published, 2026 still TBD and carrying a pending draft the AI checker proposed."
+  alt="The festival list in the admin, showing one festival's 2025 and 2026 editions as separate records"
+  caption="One festival, two years. Last year's edition is confirmed and published. This year's is still to be announced, with a suggested update waiting as a draft."
 />
 
-## An admin two editors actually use
+Festivals announce dates like "6/5-6/7/26", "TBD" or "sometime in the fall". I wanted the content model to take that as it comes.
 
-Payload gives you a capable admin for free. The design work was deciding what the editors *shouldn't* have to see. Lynn and Harris aren't developers, and I treated that as a requirement, not a limitation.
+Each record keeps the date exactly as the festival wrote it. Where the date is clear enough, it also stores it as a calendar date. Visitors see what the festival said, and search can still sort by date.
 
-- I trimmed the rich-text controls on purpose. Editors mark meaning (emphasis, links, structure), and the templates handle presentation. Nobody should be fighting alignment buttons at midnight.
-- Photo galleries carry a credit on every image through a custom field editor, because attribution is an editorial value, not a nice-to-have. The first real post, a photo essay, drove that design.
-- The admin is branded and welcoming, and it's grouped the way the editors think about the work. "Festival Database" is a different place from the blog, because it's a different job.
+Each year's festival is its own record. Next year starts as a copy, and last year's stays as history.
+
+Every record also says where it came from: a spreadsheet import, a person, or the checker. Editors can't change the fields the checker fills in, so they can see at a glance which parts are the checker's and which are theirs.
+
+## Show the editors only what they need
 
 <MediaFull
   src="/images/projects/cms/cms-editorial.webm"
-  alt="Editing a blog post in the admin, then browsing the media library with per-image credits"
-  caption="The editorial surfaces: a photo-essay post with its gallery, and the media library where every image carries alt text and a credit."
+  alt="An editor writing a photo-essay post, then browsing the media library where each image has a credit"
+  caption="Writing a photo essay, then finding its images in the library, each with its alt text and credit."
 />
 
-## Publishing without fear
+The admin came with far more than the editors need, so most of my design work there was taking things out.
 
-The public site prerenders from the CMS, which raises an obvious question. What happens when the CMS is down, or an editor publishes at 2 a.m.?
+I cut the formatting buttons down to meaning: emphasis, links and structure. The templates handle how it looks, so nobody fights alignment buttons at midnight.
 
-- A publish triggers a **debounced build hook**, so a burst of edits becomes one rebuild. Media edits trigger it selectively: alt-text changes rebuild, focal-point nudges don't. That policy has its own test suite.
-- Builds **fall back to fixtures** if the CMS is unreachable, and live search falls back to a local dataset. An outage can make the site less fresh, but it can't take it down.
-- A nightly rebuild is the backstop, so the site never drifts more than a day from the system of record.
+Every photo in a gallery carries a credit. The first real post was a photo essay, and crediting each photographer was part of publishing it.
 
-## The AI checker: automation under approval
+The festival list and the blog sit in different places in the admin, because they're different jobs.
 
-This is the piece that goes after the original problem, the data going stale. A Payload jobs-queue task checks each unconfirmed festival. It scrapes the festival's website, asks a model one bounded question (is a new-season date published here?) and then diffs the answer against the published record.
+## How does the checker spot a stale date?
 
 <FlowDiagram
-  title="Drafts as approval"
+  title="A suggestion becomes a draft"
   items={[
-    { label: "Scrape", detail: "Fetch the festival's own website: the primary source, not a model's memory." },
-    { label: "Extract", detail: "One bounded model call answers one question, and its JSON is validated in code before anything is trusted." },
-    { label: "Diff", detail: "Compare against the published record. No difference means a metadata stamp, not a proposal." },
-    { label: "Draft", detail: "A change lands as a Payload draft, with the proposed status, the proposed date, and the evidence quoted in the notes." },
-    { label: "Editor publishes", detail: "The editor reviews the version diff in the admin they already know, and approval is one click." }
+    { label: "Read", detail: "Open the festival's own website, the source an editor would check." },
+    { label: "Ask", detail: "Ask the AI one question: is next season's date posted here? Ordinary code checks the answer before it gets used." },
+    { label: "Compare", detail: "Compare it with the published record. If nothing changed, note the check and move on, with nothing for anyone to review." },
+    { label: "Draft", detail: "Write the change as a draft, with the suggested date and the text it found quoted as evidence." },
+    { label: "Publish", detail: "An editor compares the versions in the admin they already use, and publishes or doesn't." }
   ]}
-  caption="The AI never publishes. Every content proposal becomes a draft on the record itself, reviewed in Payload's own version UI, so there's no bolt-on approval queue to learn."
+  caption="Every suggestion waits as a draft on the festival's own record."
 />
 
-The decision I care about most is where approval lives. I could have built a separate review dashboard. Instead, the checker writes ordinary Payload drafts. The approval screen is one the editors already trust, and an AI proposal looks exactly like a colleague's unpublished edit, with the evidence attached.
+The checker goes after the original problem. It visits each festival that's still waiting on a date and looks for a new one.
+
+A dead link gets flagged in a draft too, and a second check tries the link again later. The checker never makes up a new link.
+
+## Where does an editor say yes?
 
 <MediaFull
   src="/images/projects/cms/cms-draft-review.webm"
-  alt="Reviewing the AI checker's pending draft on Somerset Vegan Festival: check notes, version history, and the compare-versions diff"
-  caption="A real checker run on production data: the dead-link evidence in Check Notes, the version history, and the diff an editor reviews before choosing to publish."
+  alt="Reviewing the checker's draft on a festival: its notes, the version history and the side-by-side comparison"
+  caption="A real check on live data: the dead-link evidence in the notes, the version history, and the comparison an editor reads before publishing."
 />
 
-Dead links get their own path. They're flagged as a draft and handed to a follow-up job that checks the URL again but never makes up a replacement. And when nothing changed, the checker stamps bookkeeping fields on the published record without creating anything for anyone to review.
+I could have built a separate review screen. I had the checker write ordinary drafts instead.
 
-Before it touched production, the checker went through an adversarial review that turned up eleven real defects. The sharpest one: a routine metadata stamp could silently bury an editor's pending draft. That bug is why the system reads the draft state before every write.
+The editors already knew the draft and compare screens. A suggestion from the checker looks like a colleague's unpublished edit, with the evidence attached, and approving it is one click.
 
-Then I proved the whole pipeline against production data. A dead-link festival produced its draft, the follow-up probe added its evidence, and the published record stayed untouched until a person said otherwise.
+## What broke before launch?
 
-## Search designed for partial memory
+Before the checker touched live data, I put it through a review whose only job was to break it. The review found real problems.
 
-The discovery side stayed a product surface in its own right. People rarely search in clean database terms. They remember "a VegFest in March," or type "UK" and expect England to count.
+The worst one was quiet. When the checker found nothing new, it updated a note on the published record. That small update could bury a draft an editor hadn't published yet, and nobody would see it go.
 
-<MediaTwo items={[
-  { src: "/images/projects/tool-switcher.webm", alt: "ResourceToggle animation showing mode switching", caption: "The toggle makes festival and sanctuary discovery feel like two modes of one system, not two sites." },
-  { src: "/images/projects/vegfests.webm", alt: "VegFest search filtering festivals by city", caption: "Search handles month names, date formats, regions, and location synonyms, so it works when you only half remember." }
-]} />
+Now the checker looks for a waiting draft before it writes anything.
 
-Results are grouped into upcoming, TBD and past, so uncertainty shows instead of hiding. Now the AI checker also works on shrinking the TBD group at the source. Search queries Payload live and keeps the pre-CMS dataset as a fallback.
+Then I ran it against the live site. A festival with a dead link got its draft, the second check added its evidence, and the published page stayed exactly as it was until a person decided.
 
-<MediaFull
-  src="/images/projects/sanctuary.webm"
-  alt="Sanctuary search showing results filtered by region"
-  caption="Sanctuary discovery supports flexible region matching for people browsing by place rather than exact name."
-/>
+## Who runs it now?
 
-## Outcome and learning
+The editors do. When one of them publishes, the site rebuilds itself. If the CMS is ever down, the public site and its search use a saved copy of the content. An outage can make the site less fresh, but it can't take it down.
 
-VegAvengers went from a site I maintained to a platform its owners run. The editors publish on their own. The data has an owner, a trail showing where it came from, and an automated assistant that proposes but never decides.
+The festival list has owners, and each fact has a record of where it came from.
 
-It also sharpened an idea I keep coming back to, the same one Ghosted taught me from the other direction. Give deterministic code everything it can do. Give the model the smallest job it can be trusted with. And put a person's approval exactly where the consequences are.
+It also sharpened an idea I keep coming back to, the same one [Ghosted](/projects/ghosted) taught me from the other direction. Give code everything it can do. Give the model the smallest job it can be trusted with. And put a person's approval exactly where the consequences are.
 
 In a CMS, that place is publish, so that's where this system puts it.
