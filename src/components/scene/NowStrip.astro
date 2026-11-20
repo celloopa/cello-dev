@@ -1,0 +1,145 @@
+---
+/*
+ * NowStrip (CDEV-82): the homepage's "What I'm building now" strip, under the hero. Its entries
+ * are /now's own (src/data/now.ts), so the two never drift: each one is its name, its hook and
+ * the first sentence of its status, and links to its entry on /now (the entry's id). The heading
+ * links to /now. No copy of its own.
+ *
+ * One container and one gap (craft-principles, Layout and width): the heading and the plates
+ * share the scene frame, and the plates rearrange by the frame's width with a container query:
+ * one column on a phone, two from 34rem, three from 56rem, all six in a row from 104rem, where
+ * each plate still holds its hook in a few short lines. Each plate is opaque, so its text never
+ * sits on scene art.
+ */
+import type { HTMLAttributes } from "astro/types";
+import ArrowLink from "@/components/ui/ArrowLink.astro";
+import { nowEntries, nowPage } from "@/data/now";
+
+type Props = HTMLAttributes<"section">;
+const rest = Astro.props;
+
+// the first sentence of a status, set as a label without its full stop:
+// "Live and in testing. Sign up…" → "Live and in testing"
+const firstSentence = (text: string) => text.split(/(?<=\.)\s+/)[0].replace(/\.$/, "");
+const entries = nowEntries.map((entry) => ({
+  id: entry.id,
+  name: entry.name,
+  hook: entry.hook,
+  status: firstSentence(entry.status),
+}));
+---
+
+<section id="now-strip" class="now-strip" aria-labelledby="now-strip-title" data-scene-stop="Now" {...rest}>
+  <div class="now-strip-frame">
+    <h2 class="now-strip-title" id="now-strip-title">
+      <ArrowLink href="/now">{nowPage.title}</ArrowLink>
+    </h2>
+    <ol class="now-strip-list">
+      {
+        entries.map((entry) => (
+          <li>
+            <a class="now-strip-item" href={`/now#${entry.id}`}>
+              <span class="now-strip-name">{entry.name}</span>
+              <span class="now-strip-hook">{entry.hook}</span>
+              <span class="now-strip-status">{entry.status}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .now-strip {
+    padding-block: var(--space-fluid-32-64) 0;
+  }
+
+  .now-strip-frame {
+    container-type: inline-size;
+    width: min(100% - 2 * var(--layout-frame-gutter), var(--layout-frame));
+    margin-inline: auto;
+  }
+
+  /* clear of the chapter rail, the same clearance as home's work and contact columns */
+  @media (width >= 900px) {
+    .now-strip-frame {
+      width: min(100% - 2 * max(var(--layout-frame-gutter), calc(var(--space-16) * 2 + var(--touch-target) * 1.15)), var(--layout-frame));
+    }
+  }
+
+  /* the heading is the link to /now, in the site's arrow-link look */
+  .now-strip-title {
+    margin: 0;
+    color: var(--text-on-art);
+    font: inherit;
+    text-shadow: 0 0 var(--space-12) var(--bg-canvas), 0 0 var(--space-24) var(--bg-canvas);
+  }
+
+  .now-strip-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-fluid-24-48);
+    margin: var(--space-24) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @container (width >= 34rem) { .now-strip-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @container (width >= 56rem) { .now-strip-list { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @container (width >= 104rem) { .now-strip-list { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+
+  .now-strip-list li {
+    display: grid;
+  }
+
+  /* the whole plate is the link; the status sits on the plate's bottom edge so a row's statuses line up */
+  .now-strip-item {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: var(--space-8);
+    padding: var(--space-fluid-24-32);
+    border: var(--stroke-frame) solid var(--border-strong);
+    background: var(--bg-plate);
+    color: var(--text-primary);
+    text-decoration: none;
+    transition: border-color var(--motion-ui) var(--ease-out);
+  }
+
+  .now-strip-name {
+    font-family: var(--font-title);
+    font-size: var(--type-title);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-tight);
+    transition: color var(--motion-ui) var(--ease-out);
+  }
+
+  .now-strip-hook {
+    font-size: var(--type-small);
+    line-height: var(--leading-read);
+  }
+
+  .now-strip-status {
+    margin-top: var(--space-8);
+    color: var(--text-accent);
+    font-size: var(--type-label);
+    font-weight: var(--weight-bold);
+    letter-spacing: var(--track-wide);
+    line-height: var(--leading-ui);
+    text-transform: uppercase;
+  }
+
+  .now-strip-item:hover,
+  .now-strip-item:focus-visible {
+    border-color: var(--action-primary);
+  }
+
+  .now-strip-item:hover .now-strip-name,
+  .now-strip-item:focus-visible .now-strip-name {
+    color: var(--text-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .now-strip-item, .now-strip-name { transition: none; }
+  }
+</style>

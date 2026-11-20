@@ -5,6 +5,7 @@ import { getCollection } from "astro:content";
 import SceneLayout from "@/layouts/SceneLayout.astro";
 import ChapterRail from "@/components/scene/ChapterRail.astro";
 import WorkItem from "@/components/scene/WorkItem.astro";
+import NowStrip from "@/components/scene/NowStrip.astro";
 import ArrowLink from "@/components/ui/ArrowLink.astro";
 import Section from "@/components/ui/Section.astro";
 import WorkWithMe from "@/components/WorkWithMe.astro";
@@ -88,6 +89,9 @@ const homeDescription =
       })();
     </script>
   </section>
+
+  <!-- CDEV-82: /now's entries under the hero; the reading starts here, so the scene focuses as it comes in -->
+  <NowStrip data-scene-focus />
 
   <Section
     class="work"
